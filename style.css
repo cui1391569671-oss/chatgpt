@@ -1,52 +1,81 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont;
-  background: #f5f5f7;
-  color: #1d1d1f;
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont;
+background:#f5f5f7;
+color:#1d1d1f;
 }
 
-header {
-  padding: 18px 16px;
-  font-size: 20px;
-  font-weight: 700;
-  position: sticky;
-  top: 0;
-  backdrop-filter: blur(20px);
-  background: rgba(245,245,247,0.8);
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+header{
+padding:18px;
+font-size:22px;
+font-weight:700;
+position:sticky;
+top:0;
+backdrop-filter:blur(25px);
+background:rgba(245,245,247,0.85);
+border-bottom:1px solid rgba(0,0,0,0.06);
 }
 
-#app {
-  max-width: 800px;
-  margin: auto;
-  padding: 12px;
+#app{
+max-width:900px;
+margin:auto;
+padding:12px;
 }
 
-.section-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #6e6e73;
-  margin: 20px 8px 10px;
-  text-transform: uppercase;
+.loading{
+padding:20px;
+color:#6e6e73;
 }
 
-.card {
-  background: white;
-  border-radius: 16px;
-  padding: 14px;
-  margin-bottom: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-  transition: 0.2s;
+.hero{
+background:white;
+border-radius:22px;
+padding:18px;
+margin-bottom:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-.card:active {
-  transform: scale(0.98);
+.hero-title{
+font-size:18px;
+font-weight:700;
 }
 
-.card a {
-  text-decoration: none;
-  color: #1d1d1f;
-  font-weight: 600;
-  display: block;
-  line-height: 1.4;
+.hero-sub{
+font-size:13px;
+color:#6e6e73;
+margin-top:6px;
+}
+
+.section-title{
+font-size:12px;
+font-weight:700;
+color:#6e6e73;
+margin:18px 6px 8px;
+text-transform:uppercase;
+}
+
+.card{
+background:white;
+border-radius:16px;
+padding:14px;
+margin-bottom:10px;
+box-shadow:0 8px 20px rgba(0,0,0,0.06);
+transition:.2s;
+}
+
+.card:active{
+transform:scale(0.98);
+}
+
+.card a{
+text-decoration:none;
+color:#1d1d1f;
+font-weight:600;
+}
+
+.meta{
+font-size:11px;
+color:#6e6e73;
+margin-top:6px;
 }
