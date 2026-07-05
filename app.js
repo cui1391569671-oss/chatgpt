@@ -2,16 +2,25 @@ async function load(){
   const res = await fetch('./news.json');
   const data = await res.json();
 
-  let html = '';
+  const app = document.getElementById('app');
+  app.innerHTML = '';
 
-  for(const k in data){
-    html += `<h3>${k}</h3>`;
-    data[k].forEach(n=>{
-      html += `<div class='card'><a href='${n.link}' target='_blank'>${n.title}</a></div>`;
+  for(const key in data){
+    let html = `<div class='section-title'>${key}</div>`;
+
+    data[key].forEach(item=>{
+      html += `
+        <div class='card'>
+          <a href='${item.link}' target='_blank'>${item.title}</a>
+        </div>
+      `;
     });
-  }
 
-  document.getElementById('app').innerHTML = html;
+    const section = document.createElement('div');
+    section.innerHTML = html;
+    app.appendChild(section);
+  }
 }
+
 load();
-setInterval(load,60000);
+setInterval(load, 60000);
