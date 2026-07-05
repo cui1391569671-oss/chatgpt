@@ -1,6 +1,69 @@
 {
-  "hot": [],
-  "game": [],
-  "photo": [],
+  "hot": [
+    {
+      "title": "In Fourth of July Speech, Trump Celebrates America and Derides Foes",
+      "link": "https://www.nytimes.com/2026/07/05/us/politics/trump-speech-fourth-july.html"
+    },
+    {
+      "title": "The Brooklyn Bridge Briefly Catches Fire During a Fireworks Display",
+      "link": "https://www.nytimes.com/2026/07/04/nyregion/fire-brooklyn-bridge-fireworks.html"
+    },
+    {
+      "title": "Democrats Clash With Trump, as Political Tensions Rise on America’s 250th",
+      "link": "https://www.nytimes.com/2026/07/04/us/politics/democrats-clash-trump-america-250th-birthday.html"
+    },
+    {
+      "title": "‘Who Should I Vote for?’ Voters Turn to A.I. Before Casting Their Ballots",
+      "link": "https://www.nytimes.com/2026/07/04/us/politics/voters-ai-chatbots-elections.html"
+    },
+    {
+      "title": "Huge Crowds Mass in Tehran for Ayatollah’s State Funeral",
+      "link": "https://www.nytimes.com/2026/07/04/world/middleeast/iran-ayatollah-funeral.html"
+    }
+  ],
+  "game": [
+    {
+      "title": "The Best Roblox Games To Play Right Now",
+      "link": "https://www.gamespot.com/gallery/best-roblox-games/2900-6830/"
+    },
+    {
+      "title": "Prime Slimes: A Guide To Gaming’s Greatest Goo-Getters",
+      "link": "https://www.gamespot.com/articles/prime-slimes-a-guide-to-gamings-greatest-goo-getters/"
+    },
+    {
+      "title": "All Slay The Spire 2 Bosses",
+      "link": "https://www.gamespot.com/gallery/slay-the-spire-2-bosses/2900-7563/"
+    },
+    {
+      "title": "It’s Surprisingly Easy To Customize SteamOS",
+      "link": "https://www.gamespot.com/videos/its-surprisingly-easy-to-customize-steamos/"
+    },
+    {
+      "title": "Honkai Star Rail Next Update And Banners",
+      "link": "https://www.gamespot.com/articles/honkai-star-rail-next-update-and-banners/1100-6538813/"
+    }
+  ],
+  "photo": [
+    {
+      "title": "The Canon EOS Rebel 300D Came Out 23 Years Ago: How Well Has It Aged?",
+      "link": "https://petapixel.com/2026/07/04/the-canon-eos-rebel-300d-came-out-23-years-ago-how-well-has-it-aged/"
+    },
+    {
+      "title": "5 Easy Ways to Capture Creative Fireworks Photos",
+      "link": "https://petapixel.com/2026/07/04/5-easy-ways-to-capture-creative-fireworks-photos/"
+    },
+    {
+      "title": "X-Ray Telescope Celebrates America’s 250th Birthday With Cosmic Fireworks",
+      "link": "https://petapixel.com/2026/07/04/x-ray-telescope-celebrates-americas-250th-birthday-with-cosmic-fireworks/"
+    },
+    {
+      "title": "Save Big on Cameras, Lenses, Lights, and More With the Best Fourth of July Photography Deals",
+      "link": "https://petapixel.com/2026/07/03/save-big-on-cameras-lenses-lights-and-more-with-the-best-fourth-of-july-photography-deals/"
+    },
+    {
+      "title": "New Selfie-Friendly Dual Display Camera Has Y2K Energy",
+      "link": "https://petapixel.com/2026/07/03/new-selfie-friendly-dual-display-camera-has-big-y2k-energy/"
+    }
+  ],
   "cook": []
 }
