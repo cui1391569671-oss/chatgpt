@@ -1,3 +1,4 @@
+
 window.CONFIG = {
   feeds: {
     hot: "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",

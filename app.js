@@ -1,57 +1,46 @@
+
+function fallback(){
+  document.getElementById("app").innerHTML = `
+    <div style="padding:20px;color:#999">
+      ⚠️ 新闻加载失败（网络或RSS问题）
+    </div>`;
+}
+
 async function fetchRSS(url){
-  const api = "https://api.allorigins.win/get?url=" + encodeURIComponent(url);
   try{
+    const api = "https://api.allorigins.win/get?url=" + encodeURIComponent(url);
     const res = await fetch(api);
     const data = await res.json();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data.contents, "text/xml");
-    const items = xml.querySelectorAll("item");
+    if(!data.contents) return [];
 
-    return Array.from(items).slice(0,5).map(i=>({
-      title: i.querySelector("title")?.textContent || "",
-      link: i.querySelector("link")?.textContent || "#"
+    const xml = new DOMParser().parseFromString(data.contents,"text/xml");
+    const items = [...xml.querySelectorAll("item")];
+
+    return items.slice(0,5).map(i=>({
+      title:i.querySelector("title")?.textContent || "",
+      link:i.querySelector("link")?.textContent || "#"
     }));
   }catch(e){
     return [];
   }
 }
 
-function summarize(t){
-  return t && t.length>40 ? t.slice(0,40)+"..." : t;
-}
-
-async function load(){
+function render(data){
   const app = document.getElementById("app");
   app.innerHTML = "";
 
-  const feeds = window.CONFIG.feeds;
+  let hasData = false;
 
-  let all = {};
+  for(const k in data){
+    const list = data[k] || [];
+    if(list.length) hasData = true;
 
-  for(const k in feeds){
-    all[k] = await fetchRSS(feeds[k]);
-  }
-
-  const hot = all.hot?.[0];
-
-  if(hot){
-    const hero = document.createElement("div");
-    hero.className = "hero";
-    hero.innerHTML = `
-      <div class="hero-title">${hot.title}</div>
-      <div class="hero-sub">${summarize(hot.title)}</div>
-    `;
-    app.appendChild(hero);
-  }
-
-  for(const k in all){
     let html = `<div class='section-title'>${k}</div>`;
 
-    all[k].forEach(n=>{
+    list.forEach(n=>{
       html += `
         <div class='card'>
-          <a href='${n.link}' target='_blank'>${n.title}</a>
-          <div class='meta'>${summarize(n.title)}</div>
+          <a href="${n.link}" target="_blank">${n.title}</a>
         </div>
       `;
     });
@@ -60,6 +49,28 @@ async function load(){
     sec.innerHTML = html;
     app.appendChild(sec);
   }
+
+  if(!hasData){
+    fallback();
+  }
+}
+
+async function load(){
+  const app = document.getElementById("app");
+  app.innerHTML = "加载中...";
+
+  if(!window.CONFIG?.feeds){
+    fallback();
+    return;
+  }
+
+  let data = {};
+
+  for(const k in window.CONFIG.feeds){
+    data[k] = await fetchRSS(window.CONFIG.feeds[k]);
+  }
+
+  render(data);
 }
 
 load();
