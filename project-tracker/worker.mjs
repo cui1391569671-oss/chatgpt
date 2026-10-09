@@ -51,7 +51,11 @@ export default {
   if(!await authorized(request,env))return new Response('需要登录',{status:401,headers:{'WWW-Authenticate':'Basic realm="Project Tracker", charset="UTF-8"','Cache-Control':'no-store'}});
   const url=new URL(request.url);
   try{
-   if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET')return new Response(url.pathname==='/'?LANDING:url.pathname==='/projects'?HTML:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff'}});
+   if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET'){
+    const embedded=url.pathname==='/projects'&&url.searchParams.get('embedded')==='1';
+    const projectHtml=embedded?HTML.replace('</head>','<style>.header,.footer{display:none}.container{padding:8px;max-width:none}</style></head>'):HTML;
+    return new Response(url.pathname==='/'?LANDING:url.pathname==='/projects'?projectHtml:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':embedded?'SAMEORIGIN':'DENY','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff'}});
+   }
    if(url.pathname==='/api/workspace'){
     const scope=url.searchParams.get('scope')||'personal';
     if(!['personal','work'].includes(scope))return json({error:'Invalid scope'},400);
