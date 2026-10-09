@@ -34,6 +34,7 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
     <a href="/work" class="backlink">← 返回工作工作台</a>
   </div>
 
+<div id="pendingNotice" role="status" style="display:none;margin-bottom:16px;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--soft)"><span id="pendingMessage"></span> <button class="btn btn-outline" onclick="reviewPending()">查看本地副本</button></div>
 <div class="toolbar">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="搜索问题 / 原因 / 备注 / 项目…">
@@ -282,8 +283,7 @@ async function loadData() {
     const s=await r.json();
     data=s.data; projectPriorities=s.priorities; archive=s.archive; projects=s.projects||[...new Set([...data.map(x=>x.project),...archive.map(x=>x.project)])]; deletedProjects=s.deletedProjects||[]; cloudVersion=s.version;
     ready=true; localStorage.setItem(STORAGE_KEY,JSON.stringify(data)); setSync('云端已连接');
-    const pending=localStorage.getItem(PENDING_KEY);
-    if(pending) setSync('发现此前未同步修改，本地副本已保留，请核对云端数据');
+    inspectPending();
   } catch(e) {
     ready=false; data=[]; setSync('云端读取失败，请刷新重试。已停止编辑，避免覆盖数据');
     document.querySelectorAll('.toolbar button').forEach(b=>b.disabled=true);
@@ -293,6 +293,7 @@ async function loadData() {
 function cleanupDoneItems() {}
 
 function saveData() {
+  if(unresolvedPending){reviewPending();return Promise.resolve(false);}
   if(!ready || conflicted) {showToast('同步已暂停，本地副本已保留，请核对云端数据','error'); return Promise.resolve(false);}
   dataDirty=true;
   pendingState={data:structuredClone(data),priorities:structuredClone(projectPriorities),archive:structuredClone(archive),projects:structuredClone(projects),deletedProjects:structuredClone(deletedProjects)};
@@ -773,8 +774,41 @@ document.getElementById('addModal').addEventListener('click', function(e) {
 });
 
 
-let projects=[],deletedProjects=[],archive=[],cloudVersion=0,ready=false,conflicted=false,pendingState=null,saving=null;
+let projects=[],deletedProjects=[],archive=[],cloudVersion=0,ready=false,conflicted=false,pendingState=null,saving=null,unresolvedPending=null,pendingCloud=null;
 const PENDING_KEY='project_tracker_pending_v3';
+// PENDING_HELPERS_START
+function stableValue(value){if(Array.isArray(value))return value.map(stableValue);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(k=>[k,stableValue(value[k])]));return value;}
+function trackerSnapshot(s){return {data:s.data,priorities:s.priorities||{},archive:s.archive||[],projects:s.projects||[],deletedProjects:s.deletedProjects||[]};}
+function sameTracker(a,b){return JSON.stringify(stableValue(trackerSnapshot(a)))===JSON.stringify(stableValue(trackerSnapshot(b)));}
+function validPending(s){return !!s&&Array.isArray(s.data)&&Array.isArray(s.archive)&&Array.isArray(s.projects)&&Array.isArray(s.deletedProjects)&&s.priorities&&typeof s.priorities==='object'&&!Array.isArray(s.priorities);}
+// PENDING_HELPERS_END
+function currentTracker(){return trackerSnapshot({data,priorities:projectPriorities,archive,projects,deletedProjects});}
+function lockPendingEditing(locked){document.querySelectorAll('.toolbar button').forEach(b=>b.disabled=locked);document.getElementById('tableBody').style.pointerEvents=locked?'none':'';document.getElementById('tableBody').inert=locked;}
+function inspectPending(){
+ const raw=localStorage.getItem(PENDING_KEY);if(!raw)return;
+ let saved;try{saved=JSON.parse(raw);}catch{}
+ if(validPending(saved)&&sameTracker(saved,currentTracker())){localStorage.removeItem(PENDING_KEY);return;}
+ unresolvedPending=validPending(saved)?saved:{invalid:true,raw};pendingCloud=currentTracker();
+ document.getElementById('pendingMessage').textContent=unresolvedPending.invalid?'本地副本格式异常，请查看后处理。':'本地副本与云端不同，请选择恢复本地副本或保留云端数据后继续编辑。';
+ document.getElementById('pendingNotice').style.display='block';lockPendingEditing(true);
+}
+function reviewPending(){
+ if(!unresolvedPending)return;
+ const overlay=document.createElement('div');overlay.className='modal-overlay active';const panel=document.createElement('div');panel.className='modal';
+ const h=document.createElement('h3');h.textContent='核对本地副本';panel.appendChild(h);
+ const info=document.createElement('p');info.textContent='当前表格显示云端数据。恢复会用本地副本替换问题、项目和归档记录；请先核对下方内容。';panel.appendChild(info);
+ for(const [label,value] of [['云端数据',currentTracker()],['本地副本',unresolvedPending]]){const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent=label;details.appendChild(summary);const pre=document.createElement('pre');pre.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;max-height:240px;overflow:auto';pre.textContent=JSON.stringify(value,null,2);details.appendChild(pre);panel.appendChild(details);}
+ const actions=document.createElement('div');actions.className='modal-actions';
+ const button=(label,fn)=>{const b=document.createElement('button');b.className='btn btn-outline';b.textContent=label;b.onclick=fn;actions.appendChild(b);return b;};
+ if(!unresolvedPending.invalid)button('恢复本地副本',async()=>{
+  if(!confirm('确认用本地副本替换当前云端问题表？请确保已核对两份数据。'))return;
+  try{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)throw Error('无法核对云端，请稍后重试');const latest=await r.json();if(!sameTracker(latest,pendingCloud)){showToast('云端再次更新，请刷新后重新核对。本地副本仍保留。','error');return;}
+   const saved=unresolvedPending;cloudVersion=latest.version;unresolvedPending=null;conflicted=false;data=structuredClone(saved.data);projectPriorities=structuredClone(saved.priorities);archive=structuredClone(saved.archive);projects=structuredClone(saved.projects);deletedProjects=structuredClone(saved.deletedProjects);overlay.remove();document.getElementById('pendingNotice').style.display='none';lockPendingEditing(false);renderTable();await saveData();
+  }catch(e){showToast(e.message,'error');}
+ });
+ button('保留云端数据',()=>{if(!confirm('确认保留云端数据，并丢弃这份本地未同步副本？'))return;localStorage.removeItem(PENDING_KEY);unresolvedPending=null;document.getElementById('pendingNotice').style.display='none';lockPendingEditing(false);overlay.remove();});
+ button('稍后处理',()=>overlay.remove());panel.appendChild(actions);overlay.appendChild(panel);document.body.appendChild(overlay);
+}
 function setSync(msg){if(/失败|暂停|未同步|仍保留/.test(msg))showToast(msg,'error');}
 function viewArchive(){
  const overlay=document.createElement('div');overlay.className='modal-overlay active';
