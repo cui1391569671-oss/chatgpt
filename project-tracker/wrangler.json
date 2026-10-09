@@ -1,0 +1,18 @@
+{
+  "name": "project-tracker",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-09",
+  "keep_vars": true,
+  "triggers": {
+    "crons": [
+      "0 10 * * *"
+    ]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "project-tracker-db",
+      "database_id": "SET_DATABASE_ID_BEFORE_DEPLOY"
+    }
+  ]
+}
