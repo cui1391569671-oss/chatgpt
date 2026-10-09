@@ -1,4 +1,4 @@
-import {HTML,WORKBENCH} from './pages.mjs';
+import {HTML,WORKBENCH,LANDING} from './pages.mjs';
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 async function authorized(request,env){
  if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return false;
@@ -28,7 +28,7 @@ function valid(s){
  (!x.plannedDate || /^\d{4}-\d{2}-\d{2}$/.test(x.plannedDate)));
 }
 async function writeState(db,s){
- const payload=JSON.stringify({data:s.data,priorities:s.priorities,archive:s.archive,projects:s.projects||[...new Set([...s.data.map(x=>x.project),...s.archive.map(x=>x.project)])],deletedProjects:s.deletedProjects||[],workspace:s.workspace||{tasks:[],notes:[],events:[]}});
+ const payload=JSON.stringify({data:s.data,priorities:s.priorities,archive:s.archive,projects:s.projects||[...new Set([...s.data.map(x=>x.project),...s.archive.map(x=>x.project)])],deletedProjects:s.deletedProjects||[],workspace:s.workspace||{tasks:[],notes:[],events:[]},workWorkspace:s.workWorkspace||{tasks:[],notes:[],events:[]},workspaceVersions:s.workspaceVersions||{personal:1,work:1}});
  const result=await db.prepare('UPDATE tracker_state SET payload=?, version=version+1 WHERE id=1 AND version=?').bind(payload,s.version).run();
  return result.meta.changes===1;
 }
@@ -51,26 +51,38 @@ export default {
   if(!await authorized(request,env))return new Response('需要登录',{status:401,headers:{'WWW-Authenticate':'Basic realm="Project Tracker", charset="UTF-8"','Cache-Control':'no-store'}});
   const url=new URL(request.url);
   try{
-   if((url.pathname==='/' || url.pathname==='/projects') && request.method==='GET')return new Response(url.pathname==='/'?WORKBENCH:HTML,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff'}});
-   if(url.pathname==='/api/workspace' && request.method==='GET'){const s=await readState(env.DB);return json({workspace:s.workspace||{tasks:[],notes:[],events:[]},version:s.version});}
-   if(url.pathname==='/api/workspace' && request.method==='POST'){
-    if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
-    if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
-    const body=await request.text();if(new TextEncoder().encode(body).length>1500000)return json({error:'Too large'},413);
-    let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
-    if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace))return json({error:'Invalid workspace'},400);
-    const s=await readState(env.DB);if(s.version!==input.version)return json({error:'Version conflict'},409);
-    s.workspace=input.workspace;if(!await writeState(env.DB,s))return json({error:'Version conflict'},409);
-    return json({ok:true,version:s.version+1});
+   if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET')return new Response(url.pathname==='/'?LANDING:url.pathname==='/projects'?HTML:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff'}});
+   if(url.pathname==='/api/workspace'){
+    const scope=url.searchParams.get('scope')||'personal';
+    if(!['personal','work'].includes(scope))return json({error:'Invalid scope'},400);
+    const key=scope==='work'?'workWorkspace':'workspace';
+    if(request.method==='GET'){const s=await readState(env.DB);return json({workspace:s[key]||{tasks:[],notes:[],events:[]},version:s.workspaceVersions?.[scope]||1});}
+    if(request.method==='POST'){
+     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
+     if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
+     const body=await request.text();if(new TextEncoder().encode(body).length>1500000)return json({error:'Too large'},413);
+     let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
+     if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace))return json({error:'Invalid workspace'},400);
+     for(let attempt=0;attempt<3;attempt++){
+      const s=await readState(env.DB),versions={personal:1,work:1,...s.workspaceVersions};
+      if(versions[scope]!==input.version)return json({error:'Version conflict'},409);
+      s[key]=input.workspace;versions[scope]++;s.workspaceVersions=versions;
+      if(await writeState(env.DB,s))return json({ok:true,version:versions[scope]});
+     }
+     return json({error:'Version conflict'},409);
+    }
    }
-   if(url.pathname==='/api/state' && request.method==='GET')return json(await readState(env.DB));
+   if(url.pathname==='/api/state' && request.method==='GET'){
+    const {workspace,workWorkspace,workspaceVersions,...tracker}=await readState(env.DB);
+    return json(tracker);
+   }
    if(url.pathname==='/api/state' && request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
     const body=await request.text();if(new TextEncoder().encode(body).length>1500000)return json({error:'Too large'},413);
     let s;try{s=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
     if(!valid(s))return json({error:'Invalid state'},400);
-    const current=await readState(env.DB);s.workspace=current.workspace;
+    const current=await readState(env.DB);s.workspace=current.workspace;s.workWorkspace=current.workWorkspace;s.workspaceVersions=current.workspaceVersions;
     if(!await writeState(env.DB,s))return json({error:'Version conflict'},409);
     return json({ok:true,version:s.version+1});
    }

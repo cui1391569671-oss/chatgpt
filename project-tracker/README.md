@@ -14,13 +14,17 @@
 ## 首次构建检查
 连接仓库后，如果构建历史为空，先确认生产分支为 main、根目录为 project-tracker，监听路径包含 project-tracker/**。向该目录提交更新后，到 Deployments 页面中的 Go to build history 检查是否出现对应提交的构建记录。没有记录时需排查仓库连接和触发设置；有失败记录时查看日志。代码已提交不代表已上线，需确认生产部署完成并验证项目管理按钮。
 
-## 个人工作台
+## 双工作台（仅本人使用）
 
-首页 `/` 为个人工作台，包含工作总览、待办、笔记和日程；原项目问题表位于 `/projects`。
+首页 `/` 是空间选择入口，`/work` 是工作工作台，`/personal` 是私人工作台。两边都有独立的待办、笔记和日程。
+原项目问题表位于 `/projects`，从工作工作台进入。
+两个工作台沿用现有 TRACKER_USER 和 TRACKER_PASSWORD 登录，适用于仅本人使用。
 日程时间按北京时间录入，不连接外部日历，也不发送系统通知。
-个人数据保存在现有 `tracker_state` 记录的 `workspace` 字段，无需新建数据库或初始化 SQL。
-个人数据与项目数据使用同一版本号；多个页面同时更新时，过期页面提示重新加载，避免覆盖其他修改。
 
-修改 `index.html` 或 `workbench.html` 后运行 `npm run build:pages`，生成 Worker 使用的 `pages.mjs`，并将生成文件一起提交。
+数据保存在现有 `tracker_state` 记录中，原 `workspace` 归入私人范围，新增 `workWorkspace` 保存工作范围；无需新建数据库或初始化 SQL。
+两边维护独立版本号，互相保存不会造成工作台版本冲突。底层更新仍使用原子版本检查，避免并发覆盖。
+项目接口仅返回项目字段；项目保存与每日归档保留两边工作台的数据和版本。
+
+修改 `index.html`、`workbench.html` 或 `landing.html` 后运行 `npm run build:pages`，生成 Worker 使用的 `pages.mjs`，并将生成文件一起提交。
 Cloudflare 原构建命令 `node configure.mjs` 仍可部署提交中已生成的页面，建议改为 `npm run build` 自动生成。
-运行 `npm test` 验证数据保留、版本冲突、归档、输入校验和页面路由。
+运行 `npm test` 验证数据保留、空间隔离、版本冲突、归档、输入校验和页面路由。
