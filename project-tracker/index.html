@@ -18,7 +18,7 @@ button,input,textarea,select{font:inherit}button,a,input,textarea,select{outline
 .table-wrapper{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow-x:auto;margin-bottom:20px}table{width:100%;min-width:1100px;border-collapse:collapse}thead th{background:#f8f9fc;color:var(--text-light);padding:14px 16px;font-size:13px;font-weight:600;text-align:left;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}thead th:first-child{padding-left:20px}tbody td{padding:14px 16px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}tbody td:first-child{padding-left:20px}tbody tr:hover{background:#fafbff}tbody tr.done-row{background:var(--done-bg)}tbody tr.done-row td{color:#277856}tbody tr.warn-row{background:var(--warn-bg)}tbody tr.danger-row{background:var(--danger-bg)}tbody tr.project-separator td{height:10px;padding:0!important;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg)}
 .project-group-header{padding:14px 20px;background:var(--soft);color:var(--text);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}.project-group-header .badge{font-size:12px;padding:2px 8px;border-radius:6px;background:var(--card);color:var(--accent)}.project-group-header.collapsed .toggle-icon{transform:rotate(-90deg)}
 td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contenteditable=true]:focus,.proj-name:focus{background:var(--soft);outline:2px solid var(--accent)}.cb-wrap{text-align:center}.cb-wrap input{width:22px;height:22px;accent-color:var(--accent);cursor:pointer}.status-badge{white-space:nowrap;display:inline-block;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500}.status-badge.进行中{background:var(--soft);color:var(--accent)}.status-badge.已完成{background:#dceee3;color:#277856}.status-badge.暂停{background:#fff0c9;color:#8e6413}.overdue-tag{font-size:12px;padding:3px 7px;border-radius:6px;white-space:nowrap}.overdue-tag.yellow{background:#fff0c9;color:#8e6413}.overdue-tag.red{background:#ffe2dc;color:var(--danger)}
-.date-cell{white-space:nowrap;font-variant-numeric:tabular-nums}.date-cell input{width:140px;min-height:36px;border:1px solid var(--border);border-radius:8px;padding:6px 8px;font-size:13px;color:var(--text);background:var(--card);cursor:pointer}.date-cell input.empty-date{border-style:dashed;color:var(--text-light)}.seq-cell{text-align:center;color:var(--text-light);font-size:13px;font-weight:500}.legend{display:flex;flex-wrap:wrap;gap:16px;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-light);font-size:12px;background:var(--card)}.legend-item{display:flex;align-items:center;gap:6px}.legend-dot{width:10px;height:10px;border-radius:3px}.table-actions{display:flex;flex-wrap:wrap;gap:8px}.footer{text-align:center;color:var(--text-light);font-size:12px;padding:24px 0}
+.date-cell{white-space:nowrap;font-variant-numeric:tabular-nums}.date-cell input{width:140px;min-height:36px;border:1px solid var(--border);border-radius:8px;padding:6px 8px;font-size:13px;color:var(--text);background:var(--card);cursor:pointer}.date-cell input.empty-date{border-style:dashed;color:var(--text-light)}.seq-cell{text-align:center;color:var(--text-light);font-size:13px;font-weight:500}.legend{display:flex;flex-wrap:wrap;gap:16px;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-light);font-size:12px;background:var(--card)}.legend-item{display:flex;align-items:center;gap:6px}.legend-dot{width:10px;height:10px;border-radius:3px}.table-actions{display:flex;flex-wrap:wrap;gap:8px}
 .proj-cell-wrap,.status-cell-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}.proj-name{font-weight:600;color:var(--text);white-space:normal;overflow-wrap:anywhere}.priority-badge{display:inline-flex;align-items:center;justify-content:center;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;min-height:26px}.priority-badge:hover{outline:1px solid currentColor}.priority-urgent{background:#ffe2dc;color:var(--danger)}.priority-high{background:#fff0d9;color:#a85d13}.priority-medium{background:var(--soft);color:var(--accent)}.priority-low,.priority-none{background:#f0f3f8;color:var(--text-light)}.priority-none{border:1px dashed var(--border)}
 .priority-dropdown,.status-dropdown{position:absolute;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:6px;box-shadow:var(--shadow-lg);z-index:200;display:flex;flex-direction:column;gap:3px;min-width:120px}.priority-dropdown .pd-item,.status-dropdown .sd-item{padding:10px 12px;min-height:40px;background:none;border:0;border-radius:6px;text-align:left;font-size:13px;color:var(--text);cursor:pointer}.priority-dropdown .pd-item:hover,.status-dropdown .sd-item:hover{background:var(--bg)}.priority-dropdown .pd-item.active{background:var(--soft);color:var(--accent)}
 .modal-overlay{display:none;position:fixed;inset:0;background:#18243a70;z-index:1000;align-items:center;justify-content:center}.modal-overlay.active{display:flex}.modal{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:20px;padding:28px;width:min(560px,calc(100% - 32px));max-height:90dvh;overflow:auto;box-shadow:0 24px 80px #18243a25}.modal h3{font-size:20px;margin:0 0 16px}.modal label{display:block;font-size:14px;font-weight:600;margin:18px 0 6px}.modal input[type=text],.modal input[type=date],.modal select,.modal textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;color:var(--text);background:var(--card);font:inherit}.modal textarea{min-height:90px;resize:vertical}.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
@@ -34,12 +34,11 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
     <a href="/work" class="backlink">← 返回工作工作台</a>
   </div>
 
-  <div id="syncStatus" role="status" class="sync-status">正在连接云端…</div>
 <div class="toolbar">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="搜索问题 / 原因 / 备注 / 项目…">
     </div>
-    <div class="toolbar-row"><button class="btn btn-outline" onclick="manageProjects()">项目管理</button>
+    <div class="toolbar-row">
       <select id="filterStatus">
         <option value="">全部状态</option>
         <option value="未完成">未完成</option>
@@ -59,7 +58,6 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
         <option value="none">无标记</option>
       </select>
       <button class="btn btn-add" onclick="showAddModal()" title="添加新问题" id="btnAdd"></button>
-      <button class="btn btn-sync" id="syncBtn" onclick="syncToCloud()" title="强制同步当前数据到云端"></button>
       <button class="btn btn-del" onclick="deleteCompleted()" title="删除所有已完成的问题" id="btnDel"></button>
     </div>
   </div>
@@ -89,18 +87,15 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
     </div>
   </div>
 
-  <div class="table-actions"><button class="btn btn-outline" onclick="exportBackup()">导出完整备份</button> <button class="btn btn-outline" onclick="viewArchive()">查看已完成记录</button> <button class="btn btn-outline" onclick="exportPending()">导出未同步修改</button></div>
-<div class="footer">
-    数据保存至云端 · 已完成问题归档保留
-    &nbsp;·&nbsp; © 项目问题跟进表
-  </div>
+  <div class="table-actions"><button class="btn btn-outline" onclick="viewArchive()">查看已完成记录</button></div>
+
 </div>
 
 <!-- Add Issue Modal -->
 <div class="modal-overlay" id="addModal">
   <div class="modal">
     <h3 id="modalTitle">添加新问题</h3>
-    <label>所属项目</label>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px"><label style="margin:0">所属项目</label><button type="button" class="btn btn-outline" onclick="manageProjects()">项目管理</button></div>
     <select id="addProject"></select>
     <div id="newProjectRow" style="display:none;margin-top:6px;display:none;gap:8px;align-items:center">
       <input type="text" id="newProjectInput" placeholder="输入新项目名，如 P016 XXX项目" style="flex:1;padding:8px 12px;border:2px solid var(--accent);border-radius:8px;font-size:14px;outline:none">
@@ -267,7 +262,6 @@ async function init() {
   // 设置 SVG 图标
   document.getElementById('titleIcon').innerHTML = ICON.clipboard;
   document.getElementById('btnAdd').innerHTML = ICON.plus + ' 添加';
-  document.getElementById('syncBtn').innerHTML = '<span class="spin">' + ICON.sync + '</span> 同步';
   document.getElementById('btnDel').innerHTML = ICON.trash + ' 归档完成';
   document.querySelector('.modal h3').innerHTML = ICON.plus + ' 添加新问题';
 
@@ -289,7 +283,7 @@ async function loadData() {
     data=s.data; projectPriorities=s.priorities; archive=s.archive; projects=s.projects||[...new Set([...data.map(x=>x.project),...archive.map(x=>x.project)])]; deletedProjects=s.deletedProjects||[]; cloudVersion=s.version;
     ready=true; localStorage.setItem(STORAGE_KEY,JSON.stringify(data)); setSync('云端已连接');
     const pending=localStorage.getItem(PENDING_KEY);
-    if(pending) setSync('发现此前未同步修改，请先导出未同步修改备份，再核对云端数据');
+    if(pending) setSync('发现此前未同步修改，本地副本已保留，请核对云端数据');
   } catch(e) {
     ready=false; data=[]; setSync('云端读取失败，请刷新重试。已停止编辑，避免覆盖数据');
     document.querySelectorAll('.toolbar button').forEach(b=>b.disabled=true);
@@ -299,10 +293,10 @@ async function loadData() {
 function cleanupDoneItems() {}
 
 function saveData() {
-  if(!ready || conflicted) {showToast('同步已暂停，请导出未同步修改后刷新核对','error'); return Promise.resolve(false);}
+  if(!ready || conflicted) {showToast('同步已暂停，本地副本已保留，请核对云端数据','error'); return Promise.resolve(false);}
   dataDirty=true;
   pendingState={data:structuredClone(data),priorities:structuredClone(projectPriorities),archive:structuredClone(archive),projects:structuredClone(projects),deletedProjects:structuredClone(deletedProjects)};
-  try {localStorage.setItem(PENDING_KEY,JSON.stringify(pendingState));} catch(e) {setSync('本地备份失败，请立即导出备份');}
+  try {localStorage.setItem(PENDING_KEY,JSON.stringify(pendingState));} catch(e) {setSync('本地保存失败，请保持页面打开并检查浏览器存储空间');}
   return flushSave();
 }
 async function flushSave() {
@@ -312,7 +306,7 @@ async function flushSave() {
       const snapshot=pendingState; pendingState=null; setSync('正在保存…');
       try {
         const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...snapshot,version:cloudVersion})});
-        if(r.status===409) {conflicted=true; throw new Error('其他设备或归档任务已更新数据，请导出未同步修改，再刷新核对');}
+        if(r.status===409) {conflicted=true; throw new Error('其他设备或归档任务已更新数据，同步已暂停，本地副本已保留');}
         if(!r.ok) throw new Error('保存失败 '+r.status);
         cloudVersion=(await r.json()).version;
         if(!pendingState) {dataDirty=false;localStorage.removeItem(PENDING_KEY);setSync('已保存至云端');}
@@ -323,12 +317,6 @@ async function flushSave() {
     return !conflicted;
   })();
   try {return await saving;} finally {saving=null;}
-}
-
-// ========== 强制同步到云端 ==========
-async function syncToCloud() {
-  if(conflicted || !ready) {showToast('请导出未同步修改备份后刷新','error');return;}
-  const ok=await saveData();showToast(ok?'已同步至云端':'同步失败，请查看上方提示',ok?'success':'error');
 }
 
 function deleteCompleted() {
@@ -645,14 +633,11 @@ function updateStats() {
 }
 
 // ========== 添加问题 ==========
-function showAddModal() {
-  const modal = document.getElementById('addModal');
-  const projSel = document.getElementById('addProject');
-  // 填充项目列表（优先用数据中已有的项目，再补全预设列表）
-  const existingProjects = [...new Set(data.map(r => r.project))];
-  const allProjects = projectNames();
+function populateProjectSelect(){
+ const projSel=document.getElementById('addProject');
+ const selected=projSel.value;
   projSel.innerHTML = '';
-  allProjects.forEach(p => {
+  projectNames().forEach(p => {
     const opt = document.createElement('option');
     opt.value = p;
     opt.textContent = p;
@@ -665,6 +650,13 @@ function showAddModal() {
   newOpt.style.color = 'var(--accent)';
   newOpt.style.fontWeight = '600';
   projSel.appendChild(newOpt);
+ if(projectNames().includes(selected))projSel.value=selected;
+}
+function showAddModal() {
+  const modal = document.getElementById('addModal');
+  const projSel = document.getElementById('addProject');
+  populateProjectSelect();
+
   // 监听选择变化
   projSel.onchange = function() {
     if (this.value === '__new__') {
@@ -790,10 +782,7 @@ document.getElementById('addModal').addEventListener('click', function(e) {
 
 let projects=[],deletedProjects=[],archive=[],cloudVersion=0,ready=false,conflicted=false,pendingState=null,saving=null;
 const PENDING_KEY='project_tracker_pending_v3';
-function setSync(msg){document.getElementById('syncStatus').textContent=msg;}
-function downloadJSON(value,name){const u=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
-function exportBackup(){downloadJSON({data,priorities:projectPriorities,archive,projects,deletedProjects,version:cloudVersion},'tracker-backup.json');}
-function exportPending(){const saved=localStorage.getItem(PENDING_KEY);if(saved)downloadJSON(JSON.parse(saved),'tracker-pending.json');else showToast('没有未同步修改','info');}
+function setSync(msg){if(/失败|暂停|未同步|仍保留/.test(msg))showToast(msg,'error');}
 function viewArchive(){
  const overlay=document.createElement('div');overlay.className='modal-overlay active';
  const panel=document.createElement('div');panel.className='modal';
@@ -828,6 +817,7 @@ function manageProjects(){
  const overlay=document.createElement('div');overlay.className='modal-overlay active';
  const panel=document.createElement('div');panel.className='modal';
  const draw=()=>{
+  populateProjectSelect();
   panel.replaceChildren();
   const h=document.createElement('h3');h.textContent='项目管理';panel.appendChild(h);
   const input=document.createElement('input');input.type='text';input.placeholder='项目编号 + 名称，如 P017 新项目';input.maxLength=120;input.setAttribute('aria-label','新项目名称');panel.appendChild(input);
