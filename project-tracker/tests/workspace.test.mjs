@@ -85,3 +85,9 @@ test('simultaneous work and personal saves merge without lost updates',async()=>
  const business=await (await worker.fetch(request('/api/workspace?scope=work'),e)).json();
  assert.deepEqual(personal.workspace,workspace);assert.deepEqual(business.workspace,work);assert.equal(personal.version,2);assert.equal(business.version,2);
 });
+
+test('embedded project table stays authenticated and only allows same-origin framing',async()=>{
+ const e=env();const r=await worker.fetch(request('/projects?embedded=1'),e);assert.equal(r.status,200);assert.equal(r.headers.get('X-Frame-Options'),'SAMEORIGIN');assert.match(await r.text(),/\.header,\.footer\{display:none\}/);
+ assert.equal((await worker.fetch(new Request('https://test.local/projects?embedded=1'),e)).status,401);
+ assert.equal((await worker.fetch(request('/projects'),e)).headers.get('X-Frame-Options'),'DENY');
+});
