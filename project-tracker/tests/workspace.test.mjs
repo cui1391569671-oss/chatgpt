@@ -91,3 +91,17 @@ test('embedded project table stays authenticated and only allows same-origin fra
  assert.equal((await worker.fetch(new Request('https://test.local/projects?embedded=1'),e)).status,401);
  assert.equal((await worker.fetch(request('/projects'),e)).headers.get('X-Frame-Options'),'DENY');
 });
+
+test('personal game records survive reload and keep work space isolated',async()=>{
+ const e=env(),game=structuredClone(workspace);
+ Object.assign(game.tasks[0],{taskType:'game',gamePlatform:'PC / Switch'});
+ assert.equal((await worker.fetch(request('/api/workspace?scope=personal',{workspace:game,version:1}),e)).status,200);
+ const saved=await (await worker.fetch(request('/api/workspace?scope=personal'),e)).json();
+ assert.deepEqual(saved.workspace,game);
+ const work=await (await worker.fetch(request('/api/workspace?scope=work'),e)).json();
+ assert.equal(work.workspace.tasks.length,0);
+ const invalid=structuredClone(game);invalid.tasks[0].gamePlatform='x'.repeat(101);
+ assert.equal(validWorkspace(invalid),false);
+ invalid.tasks[0].gamePlatform='PC';invalid.tasks[0].taskType='invalid';
+ assert.equal(validWorkspace(invalid),false);
+});
