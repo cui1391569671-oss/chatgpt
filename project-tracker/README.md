@@ -28,3 +28,8 @@
 修改 `index.html`、`workbench.html` 或 `landing.html` 后运行 `npm run build:pages`，生成 Worker 使用的 `pages.mjs`，并将生成文件一起提交。
 Cloudflare 原构建命令 `node configure.mjs` 仍可部署提交中已生成的页面，建议改为 `npm run build` 自动生成。
 运行 `npm test` 验证数据保留、空间隔离、版本冲突、归档、输入校验和页面路由。
+
+## 日历与工作台切换
+
+工作和私人空间均提供月历，可切换月份、返回今天、按日期查看及新增日程。跨天日程在覆盖的日期内显示，搜索同步筛选月历标记与当天安排。
+导航中提供直接切换到另一工作台的按钮，也可返回工作台选择入口。
