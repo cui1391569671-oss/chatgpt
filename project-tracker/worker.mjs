@@ -38,6 +38,11 @@ function validWorkspace(w){
  const date=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
  const time=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)&&date(s.slice(0,10))&&Number(s.slice(11,13))<24&&Number(s.slice(14,16))<60;
  if(!w||typeof w!=='object'||!['tasks','notes','events'].every(k=>Array.isArray(w[k])&&w[k].length<=2000))return false;
+ if(w.vocabulary!==undefined){
+  if(!Array.isArray(w.vocabulary)||w.vocabulary.length>5000)return false;
+  const wordIds=new Set();const fields={lesson:100,word:200,phonetic:500,partOfSpeech:100,meaning:2000,example:5000,mastery:100,firstLearned:40,lastReviewed:40,reviewCount:20,note:5000};
+  if(!w.vocabulary.every(v=>{if(!v||!str(v.id,100)||!v.id||wordIds.has(v.id)||!str(v.word,200)||!v.word.trim()||!Object.entries(fields).every(([key,max])=>v[key]===undefined||str(v[key],max)))return false;wordIds.add(v.id);return true;}))return false;
+ }
  const ids=new Set();
  if(![...w.tasks,...w.notes,...w.events].every(x=>{if(!x||!str(x.id,100)||!x.id||ids.has(x.id)||!str(x.title,200)||!x.title.trim())return false;ids.add(x.id);return true;}))return false;
  return w.tasks.every(t=>(t.taskType===undefined||['task','game'].includes(t.taskType))&&(t.gamePlatform===undefined||str(t.gamePlatform,100))&&typeof t.done==='boolean'&&['high','normal','low'].includes(t.priority)&&str(t.detail,5000)&&(t.dueDate===''||date(t.dueDate)))&&

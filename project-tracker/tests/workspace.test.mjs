@@ -105,3 +105,14 @@ test('personal game records survive reload and keep work space isolated',async()
  invalid.tasks[0].gamePlatform='PC';invalid.tasks[0].taskType='invalid';
  assert.equal(validWorkspace(invalid),false);
 });
+
+test('personal vocabulary persists and survives work and project updates',async()=>{
+ const e=env(),personal=structuredClone(workspace);
+ personal.vocabulary=[{id:'word-1',word:'example',lesson:'001',meaning:'示例',mastery:'不会'}];
+ assert.equal((await worker.fetch(request('/api/workspace?scope=personal',{workspace:personal,version:1}),e)).status,200);
+ assert.equal((await worker.fetch(request('/api/workspace?scope=work',{workspace,version:1}),e)).status,200);
+ const project=await (await worker.fetch(request('/api/state'),e)).json();project.projects.push('新项目');
+ assert.equal((await worker.fetch(request('/api/state',project),e)).status,200);
+ assert.deepEqual((await (await worker.fetch(request('/api/workspace?scope=personal'),e)).json()).workspace.vocabulary,personal.vocabulary);
+ const invalid=structuredClone(personal);invalid.vocabulary[0].meaning='x'.repeat(2001);assert.equal(validWorkspace(invalid),false);
+});
