@@ -3,8 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node configure.mjs",
-    "deploy": "wrangler deploy --keep-vars"
+    "build": "node build-pages.mjs && node configure.mjs",
+    "deploy": "node build-pages.mjs && wrangler deploy --keep-vars",
+    "build:pages": "node build-pages.mjs",
+    "test": "node --test"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
