@@ -35,6 +35,8 @@ async function writeState(db,s){
 
 function projectCalendarItems(s){return (s.data||[]).filter(x=>!x.done&&x.status!=='已完成'&&/^\d{4}-\d{2}-\d{2}$/.test(x.plannedDate)&&!Number.isNaN(Date.parse(x.plannedDate))&&new Date(x.plannedDate).toISOString().slice(0,10)===x.plannedDate).map(x=>({project:x.project,title:x.task,date:x.plannedDate,status:x.status,reason:x.reason,note:x.note}));}
 
+function reminderTasks(s,requestedScope){const tasks=[];for(const [scope,key] of [['work','workWorkspace'],['personal','workspace']])for(const t of s[key]?.tasks||[])if(scope===requestedScope&&!t.done&&t.dueDate)tasks.push({id:scope+':'+t.id,recordId:t.id,scope,title:t.title,dueDate:t.dueDate,done:false,source:scope==='work'?'工作待办':t.taskType==='game'?'私人游戏待办':'私人待办'});if(requestedScope==='work')for(const [index,x] of projectCalendarItems(s).entries())tasks.push({id:'project:'+index,scope:'projects',title:x.title,project:x.project,dueDate:x.date,done:false,source:'项目问题 · '+x.project});return tasks;}
+
 function validWorkspace(w){
  const str=(s,max)=>typeof s==='string'&&s.length<=max;
  const date=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
@@ -105,6 +107,7 @@ export default {
      return json({error:'Version conflict'},409);
     }
    }
+   if(url.pathname==='/api/reminders'&&request.method==='GET'){const scope=url.searchParams.get('scope');if(!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);return json({tasks:reminderTasks(await readState(env.DB),scope)});}
    if(url.pathname==='/api/project-calendar'&&request.method==='GET')return json({items:projectCalendarItems(await readState(env.DB))});
    if(url.pathname==='/api/state' && request.method==='GET'){
     const {workspace,workWorkspace,workspaceVersions,...tracker}=await readState(env.DB);
@@ -136,4 +139,4 @@ export default {
   })());
  }
 };
-export {projectCalendarItems,valid,validWorkspace,writeState,readState};
+export {reminderTasks,projectCalendarItems,valid,validWorkspace,writeState,readState};
