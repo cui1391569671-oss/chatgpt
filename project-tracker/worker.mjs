@@ -43,6 +43,11 @@ function validWorkspace(w){
   const wordIds=new Set();const fields={lesson:100,word:200,phonetic:500,partOfSpeech:100,meaning:2000,example:5000,mastery:100,firstLearned:40,lastReviewed:40,reviewCount:20,note:5000};
   if(!w.vocabulary.every(v=>{if(!v||!str(v.id,100)||!v.id||wordIds.has(v.id)||!str(v.word,200)||!v.word.trim()||!Object.entries(fields).every(([key,max])=>v[key]===undefined||str(v[key],max)))return false;wordIds.add(v.id);return true;}))return false;
  }
+ if(w.wardrobe!==undefined){
+  if(!Array.isArray(w.wardrobe)||w.wardrobe.length>1000)return false;
+  const seen=new Set();if(!w.wardrobe.every(c=>c&&str(c.id,100)&&c.id&&!seen.has(c.id)&&(seen.add(c.id),true)&&str(c.name,100)&&c.name.trim()&&['top','bottom','dress','outer','shoes','accessory'].includes(c.category)&&Array.isArray(c.seasons)&&c.seasons.length>0&&c.seasons.every(x=>['spring','summer','autumn','winter'].includes(x))&&str(c.color,50)&&/^\/api\/wardrobe-images\/[a-f0-9-]{36}$/.test(c.image)))return false;
+ }
+ if(w.outfits!==undefined){if(!Array.isArray(w.outfits)||w.outfits.length>1000||!w.outfits.every(o=>o&&str(o.id,100)&&o.id&&str(o.name,100)&&o.name.trim()&&['spring','summer','autumn','winter'].includes(o.season)&&Array.isArray(o.items)&&o.items.length>0&&o.items.length<=12&&o.items.every(id=>w.wardrobe?.some(c=>c.id===id))))return false;}
  const ids=new Set();
  if(![...w.tasks,...w.notes,...w.events].every(x=>{if(!x||!str(x.id,100)||!x.id||ids.has(x.id)||!str(x.title,200)||!x.title.trim())return false;ids.add(x.id);return true;}))return false;
  return w.tasks.every(t=>(t.taskType===undefined||['task','game'].includes(t.taskType))&&(t.gamePlatform===undefined||str(t.gamePlatform,100))&&typeof t.done==='boolean'&&['high','normal','low'].includes(t.priority)&&str(t.detail,5000)&&(t.dueDate===''||date(t.dueDate)))&&
@@ -61,6 +66,18 @@ export default {
     const embedded=url.pathname==='/projects'&&url.searchParams.get('embedded')==='1';
     const projectHtml=embedded?HTML.replace('</head>','<style>.header,.footer{display:none}.container{padding:8px;max-width:none}</style></head>'):HTML;
     return new Response(url.pathname==='/'?LANDING:url.pathname==='/projects'?projectHtml:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':embedded?'SAMEORIGIN':'DENY','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff'}});
+   }
+   if(url.pathname==='/api/wardrobe-images'&&request.method==='POST'){
+    if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
+    if(request.headers.get('Content-Type')!=='image/jpeg')return json({error:'JPEG required'},415);
+    const bytes=new Uint8Array(await request.arrayBuffer());if(bytes.length>180000||bytes.length<4||bytes[0]!==255||bytes[1]!==216||bytes.at(-2)!==255||bytes.at(-1)!==217)return json({error:'Invalid image'},400);
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS wardrobe_images (id TEXT PRIMARY KEY, bytes BLOB NOT NULL)').run();
+    const id=crypto.randomUUID();await env.DB.prepare('INSERT INTO wardrobe_images (id,bytes) VALUES (?,?)').bind(id,Array.from(bytes)).run();return json({image:'/api/wardrobe-images/'+id});
+   }
+   if(/^\/api\/wardrobe-images\/[a-f0-9-]{36}$/.test(url.pathname)&&request.method==='GET'){
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS wardrobe_images (id TEXT PRIMARY KEY, bytes BLOB NOT NULL)').run();
+    const item=await env.DB.prepare('SELECT bytes FROM wardrobe_images WHERE id=?').bind(url.pathname.split('/').at(-1)).first();if(!item)return new Response('Not found',{status:404});
+    return new Response(new Uint8Array(item.bytes),{headers:{'Content-Type':'image/jpeg','Cache-Control':'private, max-age=86400','X-Content-Type-Options':'nosniff'}});
    }
    if(url.pathname==='/api/workspace'){
     const scope=url.searchParams.get('scope')||'personal';
