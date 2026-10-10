@@ -38,6 +38,10 @@ function validWorkspace(w){
  const date=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
  const time=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)&&date(s.slice(0,10))&&Number(s.slice(11,13))<24&&Number(s.slice(14,16))<60;
  if(!w||typeof w!=='object'||!['tasks','notes','events'].every(k=>Array.isArray(w[k])&&w[k].length<=2000))return false;
+ if(w.driveLinks!==undefined){
+  if(!Array.isArray(w.driveLinks)||w.driveLinks.length>500)return false;
+  const seen=new Set();if(!w.driveLinks.every(x=>{if(!x||!str(x.id,100)||!x.id||seen.has(x.id)||!str(x.title,200)||!x.title.trim()||!str(x.description,1000)||!str(x.url,2000))return false;seen.add(x.id);try{const u=new URL(x.url);return u.protocol==='https:'&&['drive.google.com','docs.google.com'].includes(u.hostname)&&!u.username&&!u.password&&!u.port;}catch{return false;}}))return false;
+ }
  if(w.vocabulary!==undefined){
   if(!Array.isArray(w.vocabulary)||w.vocabulary.length>5000)return false;
   const wordIds=new Set();const fields={lesson:100,word:200,phonetic:500,partOfSpeech:100,meaning:2000,example:5000,mastery:100,firstLearned:40,lastReviewed:40,reviewCount:20,note:5000};
