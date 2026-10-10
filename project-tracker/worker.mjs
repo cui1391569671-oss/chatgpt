@@ -37,6 +37,8 @@ function projectCalendarItems(s){return (s.data||[]).filter(x=>!x.done&&x.status
 
 function reminderTasks(s,requestedScope){const tasks=[];for(const [scope,key] of [['work','workWorkspace'],['personal','workspace']])for(const t of s[key]?.tasks||[])if(scope===requestedScope&&!t.done&&t.dueDate)tasks.push({id:scope+':'+t.id,recordId:t.id,scope,title:t.title,dueDate:t.dueDate,done:false,source:scope==='work'?'工作待办':t.taskType==='game'?'私人游戏待办':'私人待办'});if(requestedScope==='work')for(const [index,x] of projectCalendarItems(s).entries())tasks.push({id:'project:'+index,scope:'projects',title:x.title,project:x.project,dueDate:x.date,done:false,source:'项目问题 · '+x.project});return tasks;}
 
+function sameProjectState(a,b){const normalize=v=>Array.isArray(v)?v.map(normalize):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,normalize(v[k])])):v;const fields=v=>({data:v.data,archive:v.archive,priorities:v.priorities,projects:v.projects||[],deletedProjects:v.deletedProjects||[]});return JSON.stringify(normalize(fields(a)))===JSON.stringify(normalize(fields(b)));}
+
 function validWorkspace(w){
  const str=(s,max)=>typeof s==='string'&&s.length<=max;
  const date=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
@@ -119,9 +121,14 @@ export default {
     const body=await request.text();if(new TextEncoder().encode(body).length>1500000)return json({error:'Too large'},413);
     let s;try{s=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
     if(!valid(s))return json({error:'Invalid state'},400);
-    const current=await readState(env.DB);s.workspace=current.workspace;s.workWorkspace=current.workWorkspace;s.workspaceVersions=current.workspaceVersions;
-    if(!await writeState(env.DB,s))return json({error:'Version conflict'},409);
-    return json({ok:true,version:s.version+1});
+    if(s.base!==undefined&&!valid({...s.base,version:1}))return json({error:'Invalid base'},400);
+    for(let attempt=0;attempt<3;attempt++){
+     const current=await readState(env.DB);
+     if(current.version!==s.version&&(!s.base||!sameProjectState(s.base,current)))return json({error:'Project version conflict'},409);
+     const candidate={...s,version:current.version,workspace:current.workspace,workWorkspace:current.workWorkspace,workspaceVersions:current.workspaceVersions};
+     if(await writeState(env.DB,candidate))return json({ok:true,version:current.version+1});
+    }
+    return json({error:'Version conflict'},409);
    }
    return json({error:'Not found'},404);
   }catch(e){console.error(e);return json({error:'服务暂不可用，请检查 DB 绑定及初始化 SQL'},500);}
@@ -139,4 +146,4 @@ export default {
   })());
  }
 };
-export {reminderTasks,projectCalendarItems,valid,validWorkspace,writeState,readState};
+export {sameProjectState,reminderTasks,projectCalendarItems,valid,validWorkspace,writeState,readState};

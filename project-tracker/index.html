@@ -282,7 +282,7 @@ async function loadData() {
     if(!r.ok) throw new Error('读取失败 '+r.status);
     const s=await r.json();
     data=s.data; projectPriorities=s.priorities; archive=s.archive; projects=s.projects||[...new Set([...data.map(x=>x.project),...archive.map(x=>x.project)])]; deletedProjects=s.deletedProjects||[]; cloudVersion=s.version;
-    ready=true; localStorage.setItem(STORAGE_KEY,JSON.stringify(data)); setSync('云端已连接');
+    cloudBase=structuredClone(currentTracker());ready=true; localStorage.setItem(STORAGE_KEY,JSON.stringify(data)); setSync('云端已连接');
     inspectPending();
   } catch(e) {
     ready=false; data=[]; setSync('云端读取失败，请刷新重试。已停止编辑，避免覆盖数据');
@@ -290,13 +290,25 @@ async function loadData() {
   }
 }
 
+let projectRefreshing=false;
+async function refreshProjectTable(){
+ if(!ready||conflicted||unresolvedPending||dataDirty||pendingState||saving||projectRefreshing||document.querySelector('.modal-overlay.active')||document.activeElement?.closest('[contenteditable="true"],.date-cell input'))return;
+ projectRefreshing=true;const priorVersion=cloudVersion;
+ try{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)throw Error('云端更新检查失败 '+r.status);const latest=await r.json();if(dataDirty||pendingState||saving||cloudVersion!==priorVersion||document.querySelector('.modal-overlay.active')||document.activeElement?.closest('[contenteditable="true"],.date-cell input'))return;
+  if(latest.version!==cloudVersion){const changed=!sameTracker(latest,currentTracker());data=latest.data;archive=latest.archive;projectPriorities=latest.priorities;projects=latest.projects;deletedProjects=latest.deletedProjects;cloudVersion=latest.version;cloudBase=structuredClone(currentTracker());if(changed){renderTable();updateStats();if(window.parent!==window)window.parent.postMessage({type:'project-saved'},location.origin);}}
+ }catch(e){setSync(e.message+'；当前数据仍保留');}finally{projectRefreshing=false;}
+}
+setInterval(()=>{if(!document.hidden){if(pendingState&&!conflicted&&!unresolvedPending)flushSave();else refreshProjectTable();}},30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(pendingState&&!conflicted&&!unresolvedPending)flushSave();else refreshProjectTable();}});
+window.addEventListener('online',()=>{if(pendingState&&!conflicted&&!unresolvedPending)flushSave();else refreshProjectTable();});
+
 function cleanupDoneItems() {}
 
 function saveData() {
   if(unresolvedPending){reviewPending();return Promise.resolve(false);}
   if(!ready || conflicted) {showToast('同步已暂停，本地副本已保留，请核对云端数据','error'); return Promise.resolve(false);}
   dataDirty=true;
-  pendingState={data:structuredClone(data),priorities:structuredClone(projectPriorities),archive:structuredClone(archive),projects:structuredClone(projects),deletedProjects:structuredClone(deletedProjects)};
+  pendingState={base:structuredClone(cloudBase),data:structuredClone(data),priorities:structuredClone(projectPriorities),archive:structuredClone(archive),projects:structuredClone(projects),deletedProjects:structuredClone(deletedProjects)};
   try {localStorage.setItem(PENDING_KEY,JSON.stringify(pendingState));} catch(e) {setSync('本地保存失败，请保持页面打开并检查浏览器存储空间');}
   return flushSave();
 }
@@ -307,12 +319,12 @@ async function flushSave() {
       const snapshot=pendingState; pendingState=null; setSync('正在保存…');
       try {
         const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...snapshot,version:cloudVersion})});
-        if(r.status===409) {conflicted=true; throw new Error('其他设备或归档任务已更新数据，同步已暂停，本地副本已保留');}
+        if(r.status===409) {conflicted=true; throw new Error('问题表已被其他页面或归档任务修改，同步已暂停，请核对本地副本');}
         if(!r.ok) throw new Error('保存失败 '+r.status);
-        cloudVersion=(await r.json()).version;if(window.parent!==window)window.parent.postMessage({type:'project-saved'},location.origin);
+        cloudVersion=(await r.json()).version;cloudBase=structuredClone(trackerSnapshot(snapshot));if(pendingState){pendingState.base=structuredClone(cloudBase);try{localStorage.setItem(PENDING_KEY,JSON.stringify(pendingState));}catch{}}if(window.parent!==window)window.parent.postMessage({type:'project-saved'},location.origin);
         if(!pendingState) {dataDirty=false;localStorage.removeItem(PENDING_KEY);setSync('已保存至云端');}
       } catch(e) {
-        pendingState=pendingState || snapshot;setSync(e.message+'；本地修改仍保留');return false;
+        pendingState=pendingState || snapshot;if(conflicted){unresolvedPending=structuredClone(pendingState);pendingCloud=structuredClone(cloudBase);document.getElementById('pendingMessage').textContent='问题表存在同步冲突，请查看本地副本并核对云端内容。';document.getElementById('pendingNotice').style.display='block';lockPendingEditing(true);}setSync(e.message+'；本地修改仍保留');return false;
       }
     }
     return !conflicted;
@@ -774,7 +786,7 @@ document.getElementById('addModal').addEventListener('click', function(e) {
 });
 
 
-let projects=[],deletedProjects=[],archive=[],cloudVersion=0,ready=false,conflicted=false,pendingState=null,saving=null,unresolvedPending=null,pendingCloud=null;
+let projects=[],deletedProjects=[],archive=[],cloudVersion=0,ready=false,conflicted=false,pendingState=null,saving=null,unresolvedPending=null,pendingCloud=null,cloudBase=null;
 const PENDING_KEY='project_tracker_pending_v3';
 // PENDING_HELPERS_START
 function stableValue(value){if(Array.isArray(value))return value.map(stableValue);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(k=>[k,stableValue(value[k])]));return value;}
@@ -792,21 +804,23 @@ function inspectPending(){
  document.getElementById('pendingMessage').textContent=unresolvedPending.invalid?'本地副本格式异常，请查看后处理。':'本地副本与云端不同，请选择恢复本地副本或保留云端数据后继续编辑。';
  document.getElementById('pendingNotice').style.display='block';lockPendingEditing(true);
 }
-function reviewPending(){
+function reviewPending(){return openPendingReview();}
+async function openPendingReview(){
  if(!unresolvedPending)return;
+ try{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)throw Error('无法读取云端，请稍后重试');const latest=await r.json();pendingCloud=trackerSnapshot(latest);}catch(e){showToast(e.message,'error');return;}
  const overlay=document.createElement('div');overlay.className='modal-overlay active';const panel=document.createElement('div');panel.className='modal';
  const h=document.createElement('h3');h.textContent='核对本地副本';panel.appendChild(h);
- const info=document.createElement('p');info.textContent='当前表格显示云端数据。恢复会用本地副本替换问题、项目和归档记录；请先核对下方内容。';panel.appendChild(info);
- for(const [label,value] of [['云端数据',currentTracker()],['本地副本',unresolvedPending]]){const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent=label;details.appendChild(summary);const pre=document.createElement('pre');pre.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;max-height:240px;overflow:auto';pre.textContent=JSON.stringify(value,null,2);details.appendChild(pre);panel.appendChild(details);}
+ const info=document.createElement('p');info.textContent='下方展示最新云端数据与本地副本。恢复会替换问题、项目和归档记录；请先核对。';panel.appendChild(info);
+ for(const [label,value] of [['云端数据',pendingCloud],['本地副本',unresolvedPending]]){const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent=label;details.appendChild(summary);const pre=document.createElement('pre');pre.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;max-height:240px;overflow:auto';pre.textContent=JSON.stringify(value,null,2);details.appendChild(pre);panel.appendChild(details);}
  const actions=document.createElement('div');actions.className='modal-actions';
  const button=(label,fn)=>{const b=document.createElement('button');b.className='btn btn-outline';b.textContent=label;b.onclick=fn;actions.appendChild(b);return b;};
  if(!unresolvedPending.invalid)button('恢复本地副本',async()=>{
   if(!confirm('确认用本地副本替换当前云端问题表？请确保已核对两份数据。'))return;
   try{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)throw Error('无法核对云端，请稍后重试');const latest=await r.json();if(!sameTracker(latest,pendingCloud)){showToast('云端再次更新，请刷新后重新核对。本地副本仍保留。','error');return;}
-   const saved=unresolvedPending;cloudVersion=latest.version;unresolvedPending=null;conflicted=false;data=structuredClone(saved.data);projectPriorities=structuredClone(saved.priorities);archive=structuredClone(saved.archive);projects=structuredClone(saved.projects);deletedProjects=structuredClone(saved.deletedProjects);overlay.remove();document.getElementById('pendingNotice').style.display='none';lockPendingEditing(false);renderTable();await saveData();
+   const saved=unresolvedPending;cloudVersion=latest.version;cloudBase=structuredClone(trackerSnapshot(latest));unresolvedPending=null;conflicted=false;data=structuredClone(saved.data);projectPriorities=structuredClone(saved.priorities);archive=structuredClone(saved.archive);projects=structuredClone(saved.projects);deletedProjects=structuredClone(saved.deletedProjects);overlay.remove();document.getElementById('pendingNotice').style.display='none';lockPendingEditing(false);renderTable();await saveData();
   }catch(e){showToast(e.message,'error');}
  });
- button('保留云端数据',()=>{if(!confirm('确认保留云端数据，并丢弃这份本地未同步副本？'))return;localStorage.removeItem(PENDING_KEY);unresolvedPending=null;document.getElementById('pendingNotice').style.display='none';lockPendingEditing(false);overlay.remove();});
+ button('保留云端数据',async()=>{if(!confirm('确认保留云端数据，并丢弃这份本地未同步副本？'))return;localStorage.removeItem(PENDING_KEY);unresolvedPending=null;pendingState=null;conflicted=false;dataDirty=false;await loadData();renderTable();updateStats();document.getElementById('pendingNotice').style.display='none';lockPendingEditing(false);overlay.remove();});
  button('稍后处理',()=>overlay.remove());panel.appendChild(actions);overlay.appendChild(panel);document.body.appendChild(overlay);
 }
 function setSync(msg){if(/失败|暂停|未同步|仍保留/.test(msg))showToast(msg,'error');}
