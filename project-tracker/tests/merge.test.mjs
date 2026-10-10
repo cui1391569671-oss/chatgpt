@@ -25,3 +25,14 @@ test('save retries stale version and commits merged data',async()=>{
  vm.runInContext(code+html.slice(html.indexOf("let saveError='';"),html.indexOf('function empty(')),context);
  assert.equal(await context.change(local),true);assert.equal(writes[1].version,2);assert.deepEqual(writes[1].workspace.tasks.map(x=>x.id).sort(),['a','b','c']);assert.equal(rendered,true);
 });
+const deleteCode=html.slice(html.indexOf('async function deleteRecord('),html.indexOf('function empty('));
+for(const scenario of ['stale','changed-cancel','changed-confirm','already-deleted','retry']){
+ test('delete handles '+scenario+' without overwriting unrelated records',async()=>{
+  const remote=structuredClone(base);remote.tasks.push({id:'other',title:'其他页面新增'});if(scenario.startsWith('changed'))remote.tasks[0].title='远端改过';if(scenario==='already-deleted')remote.tasks=remote.tasks.filter(t=>t.id!=='a');
+  const writes=[];let prompts=0;
+  const c=vm.createContext({structuredClone,JSON,Error,state:structuredClone(base),version:1,busy:false,ready:true,conflict:false,api:'/api/workspace?scope=work',labels:{tasks:'待办'},setBusy:()=>{},status:()=>{},toast:()=>{},render:()=>{},confirm:()=>{prompts++;return scenario==='changed-confirm';},fetch:async(url,opts)=>{if(!opts?.method)return {ok:true,json:async()=>({workspace:remote,version:5+writes.length})};writes.push(JSON.parse(opts.body));return scenario==='retry'&&writes.length===1?{status:409}:{ok:true,status:200,json:async()=>({version:8})};}});
+  vm.runInContext(deleteCode,c);const result=await c.deleteRecord('tasks','a');assert.equal(result,scenario!=='changed-cancel');
+  if(scenario==='already-deleted'||scenario==='changed-cancel')assert.equal(writes.length,0);else{assert.equal(writes.at(-1).workspace.tasks.length,1);assert.equal(writes.at(-1).workspace.tasks[0].id,'other');assert.equal(writes[0].version,5);}
+  assert.equal(prompts,scenario.startsWith('changed')?1:0);
+ });
+}
