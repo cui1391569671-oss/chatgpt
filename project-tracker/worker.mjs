@@ -33,6 +33,8 @@ async function writeState(db,s){
  return result.meta.changes===1;
 }
 
+function projectCalendarItems(s){return (s.data||[]).filter(x=>!x.done&&x.status!=='已完成'&&/^\d{4}-\d{2}-\d{2}$/.test(x.plannedDate)&&!Number.isNaN(Date.parse(x.plannedDate))&&new Date(x.plannedDate).toISOString().slice(0,10)===x.plannedDate).map(x=>({project:x.project,title:x.task,date:x.plannedDate,status:x.status,reason:x.reason,note:x.note}));}
+
 function validWorkspace(w){
  const str=(s,max)=>typeof s==='string'&&s.length<=max;
  const date=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
@@ -103,6 +105,7 @@ export default {
      return json({error:'Version conflict'},409);
     }
    }
+   if(url.pathname==='/api/project-calendar'&&request.method==='GET')return json({items:projectCalendarItems(await readState(env.DB))});
    if(url.pathname==='/api/state' && request.method==='GET'){
     const {workspace,workWorkspace,workspaceVersions,...tracker}=await readState(env.DB);
     return json(tracker);
@@ -133,4 +136,4 @@ export default {
   })());
  }
 };
-export {valid,validWorkspace,writeState,readState};
+export {projectCalendarItems,valid,validWorkspace,writeState,readState};

@@ -309,7 +309,7 @@ async function flushSave() {
         const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...snapshot,version:cloudVersion})});
         if(r.status===409) {conflicted=true; throw new Error('其他设备或归档任务已更新数据，同步已暂停，本地副本已保留');}
         if(!r.ok) throw new Error('保存失败 '+r.status);
-        cloudVersion=(await r.json()).version;
+        cloudVersion=(await r.json()).version;if(window.parent!==window)window.parent.postMessage({type:'project-saved'},location.origin);
         if(!pendingState) {dataDirty=false;localStorage.removeItem(PENDING_KEY);setSync('已保存至云端');}
       } catch(e) {
         pendingState=pendingState || snapshot;setSync(e.message+'；本地修改仍保留');return false;
