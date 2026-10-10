@@ -1,4 +1,4 @@
-import {HTML,WORKBENCH,LANDING} from './pages.mjs';
+import {HTML,WORKBENCH,LANDING,FAVICON} from './pages.mjs';
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 async function authorized(request,env){
  if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return false;
@@ -56,6 +56,7 @@ export default {
   if(!await authorized(request,env))return new Response('需要登录',{status:401,headers:{'WWW-Authenticate':'Basic realm="Project Tracker", charset="UTF-8"','Cache-Control':'no-store'}});
   const url=new URL(request.url);
   try{
+   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
    if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET'){
     const embedded=url.pathname==='/projects'&&url.searchParams.get('embedded')==='1';
     const projectHtml=embedded?HTML.replace('</head>','<style>.header,.footer{display:none}.container{padding:8px;max-width:none}</style></head>'):HTML;
