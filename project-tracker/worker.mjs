@@ -53,6 +53,7 @@ function validWorkspace(w){
  }
  if(w.completedGames!==undefined){
   if(!Array.isArray(w.completedGames)||w.completedGames.length>2000)return false;
+  if(w.completedGames.some(g=>g?.mediaType!==undefined&&!['game','movie','tv','anime'].includes(g.mediaType)))return false;
   const seen=new Set();if(!w.completedGames.every(g=>{if(!g||!str(g.id,100)||!g.id||seen.has(g.id)||!str(g.title,200)||!g.title.trim()||!str(g.platform,100)||(g.coverUrl!==undefined&&(!str(g.coverUrl,2000)||g.coverUrl!==''&&!/^https:\/\/[^\s]+$/.test(g.coverUrl)))||!date(g.completedDate)||!str(g.detail,5000)||(g.rating!==null&&(!Number.isInteger(g.rating)||g.rating<1||g.rating>10)))return false;seen.add(g.id);return true;}))return false;
  }
  if(w.vocabulary!==undefined){

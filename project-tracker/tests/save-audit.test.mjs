@@ -1,6 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import worker from '../worker.mjs';
+import {validWorkspace} from '../worker.mjs';
+test('entertainment records validate four types and remain compatible with legacy games',()=>{
+ const g={id:'g',title:'记录',platform:'',completedDate:'2026-10-11',rating:null,detail:''};
+ for(const mediaType of [undefined,'game','movie','tv','anime'])assert.equal(validWorkspace({tasks:[],notes:[],events:[],completedGames:[{...g,...(mediaType?{mediaType}:{})}]}),true);
+ assert.equal(validWorkspace({tasks:[],notes:[],events:[],completedGames:[{...g,mediaType:'unknown'}]}),false);
+});
 function setup(workspaceVersions){
  let payload=JSON.stringify({data:[],archive:[],priorities:{},projects:[],workspaceVersions}),version=1;
  return {TRACKER_USER:'u',TRACKER_PASSWORD:'p',DB:{prepare(){let args;return {bind(...v){args=v;return this;},async first(){return {payload,version};},async run(){if(args[1]!==version)return {meta:{changes:0}};payload=args[0];version++;return {meta:{changes:1}};}};}}};
