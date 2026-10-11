@@ -1,4 +1,5 @@
 import {findGameCover} from './game-covers.mjs';
+import {getGameReleases} from './game-releases.mjs';
 import {HTML,WORKBENCH,LANDING,FAVICON} from './pages.mjs';
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 async function authorized(request,env){
@@ -76,6 +77,11 @@ export default {
   if(!await authorized(request,env))return new Response('需要登录',{status:401,headers:{'WWW-Authenticate':'Basic realm="Project Tracker", charset="UTF-8"','Cache-Control':'no-store'}});
   const url=new URL(request.url);
   try{
+   if(url.pathname==='/api/game-releases'&&request.method==='GET'){
+    const mode=url.searchParams.get('mode')||'upcoming';
+    if(!['upcoming','released'].includes(mode))return json({error:'Invalid mode'},400);
+    try{return json(await getGameReleases(mode));}catch{return json({error:'Steam 游戏榜暂时无法读取，请稍后重试。'},502);}
+   }
    if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
    if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET'){
     const embedded=url.pathname==='/projects'&&url.searchParams.get('embedded')==='1';
