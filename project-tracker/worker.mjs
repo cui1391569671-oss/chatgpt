@@ -1,3 +1,4 @@
+import {findGameCover} from './game-covers.mjs';
 import {HTML,WORKBENCH,LANDING,FAVICON} from './pages.mjs';
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 async function authorized(request,env){
@@ -48,6 +49,10 @@ function validWorkspace(w){
   if(!Array.isArray(w.driveLinks)||w.driveLinks.length>500)return false;
   const seen=new Set();if(!w.driveLinks.every(x=>{if(!x||!str(x.id,100)||!x.id||seen.has(x.id)||!str(x.title,200)||!x.title.trim()||!str(x.description,1000)||!str(x.url,2000))return false;seen.add(x.id);try{const u=new URL(x.url);return u.protocol==='https:'&&['drive.google.com','docs.google.com'].includes(u.hostname)&&!u.username&&!u.password&&!u.port;}catch{return false;}}))return false;
  }
+ if(w.completedGames!==undefined){
+  if(!Array.isArray(w.completedGames)||w.completedGames.length>2000)return false;
+  const seen=new Set();if(!w.completedGames.every(g=>{if(!g||!str(g.id,100)||!g.id||seen.has(g.id)||!str(g.title,200)||!g.title.trim()||!str(g.platform,100)||(g.coverUrl!==undefined&&(!str(g.coverUrl,2000)||g.coverUrl!==''&&!/^https:\/\/[^\s]+$/.test(g.coverUrl)))||!date(g.completedDate)||!str(g.detail,5000)||(g.rating!==null&&(!Number.isInteger(g.rating)||g.rating<1||g.rating>10)))return false;seen.add(g.id);return true;}))return false;
+ }
  if(w.vocabulary!==undefined){
   if(!Array.isArray(w.vocabulary)||w.vocabulary.length>5000)return false;
   const wordIds=new Set();const fields={lesson:100,word:200,phonetic:500,partOfSpeech:100,meaning:2000,example:5000,mastery:100,firstLearned:40,lastReviewed:40,reviewCount:20,note:5000};
@@ -88,6 +93,10 @@ export default {
     await env.DB.prepare('CREATE TABLE IF NOT EXISTS wardrobe_images (id TEXT PRIMARY KEY, bytes BLOB NOT NULL)').run();
     const item=await env.DB.prepare('SELECT bytes FROM wardrobe_images WHERE id=?').bind(url.pathname.split('/').at(-1)).first();if(!item)return new Response('Not found',{status:404});
     return new Response(new Uint8Array(item.bytes),{headers:{'Content-Type':'image/jpeg','Cache-Control':'private, max-age=86400','X-Content-Type-Options':'nosniff'}});
+   }
+   if(url.pathname==='/api/game-cover'&&request.method==='GET'){
+    const title=(url.searchParams.get('title')||'').trim();if(!title||title.length>200)return json({error:'Invalid game title'},400);
+    return json(await findGameCover(title));
    }
    if(url.pathname==='/api/workspace'){
     const scope=url.searchParams.get('scope')||'personal';

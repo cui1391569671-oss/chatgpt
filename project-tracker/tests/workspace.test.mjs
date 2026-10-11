@@ -116,3 +116,17 @@ test('personal vocabulary persists and survives work and project updates',async(
  assert.deepEqual((await (await worker.fetch(request('/api/workspace?scope=personal'),e)).json()).workspace.vocabulary,personal.vocabulary);
  const invalid=structuredClone(personal);invalid.vocabulary[0].meaning='x'.repeat(2001);assert.equal(validWorkspace(invalid),false);
 });
+
+test('completed games persist in personal workspace and preserve work data',async()=>{
+ const e=env(),personal=structuredClone(workspace);
+ personal.completedGames=[{id:'game-1',title:'测试游戏',platform:'PC',completedDate:'2026-10-11',rating:9,detail:'通关感想'}];
+ assert.equal(validWorkspace(personal),true);
+ assert.equal((await worker.fetch(request('/api/workspace?scope=personal',{workspace:personal,version:1}),e)).status,200);
+ assert.deepEqual((await (await worker.fetch(request('/api/workspace?scope=personal'),e)).json()).workspace.completedGames,personal.completedGames);
+ assert.equal((await worker.fetch(request('/api/workspace?scope=work',{workspace,version:1}),e)).status,200);
+ const project=await (await worker.fetch(request('/api/state'),e)).json();project.projects.push('新项目');
+ assert.equal((await worker.fetch(request('/api/state',project),e)).status,200);
+ assert.deepEqual((await (await worker.fetch(request('/api/workspace?scope=personal'),e)).json()).workspace.completedGames,personal.completedGames);
+ for(const patch of [{rating:11},{rating:1.5},{completedDate:'2026-02-30'},{title:' '},{detail:'x'.repeat(5001)}]){const invalid=structuredClone(personal);Object.assign(invalid.completedGames[0],patch);assert.equal(validWorkspace(invalid),false);}
+ const duplicate=structuredClone(personal);duplicate.completedGames.push({...duplicate.completedGames[0]});assert.equal(validWorkspace(duplicate),false);
+});
