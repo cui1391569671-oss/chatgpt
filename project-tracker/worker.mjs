@@ -12,6 +12,7 @@ async function authorized(request,env){
   return text.slice(0,p)===env.TRACKER_USER && text.slice(p+1)===env.TRACKER_PASSWORD;
  }catch{return false;}
 }
+function normalizedWorkspaceVersions(value){return Object.fromEntries(['personal','work'].map(scope=>[scope,Number.isSafeInteger(value?.[scope])&&value[scope]>0?value[scope]:1]));}
 async function readState(db){
  const row=await db.prepare('SELECT payload,version FROM tracker_state WHERE id=1').first();
  if(!row)throw new Error('Database not initialized');
@@ -108,7 +109,7 @@ export default {
     const scope=url.searchParams.get('scope')||'personal';
     if(!['personal','work'].includes(scope))return json({error:'Invalid scope'},400);
     const key=scope==='work'?'workWorkspace':'workspace';
-    if(request.method==='GET'){const s=await readState(env.DB);return json({workspace:s[key]||{tasks:[],notes:[],events:[]},version:s.workspaceVersions?.[scope]||1});}
+    if(request.method==='GET'){const s=await readState(env.DB);return json({workspace:s[key]||{tasks:[],notes:[],events:[]},version:normalizedWorkspaceVersions(s.workspaceVersions)[scope]});}
     if(request.method==='POST'){
      if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
      if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
@@ -116,7 +117,7 @@ export default {
      let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
      if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace))return json({error:'Invalid workspace'},400);
      for(let attempt=0;attempt<3;attempt++){
-      const s=await readState(env.DB),versions={personal:1,work:1,...s.workspaceVersions};
+      const s=await readState(env.DB),versions=normalizedWorkspaceVersions(s.workspaceVersions);
       if(versions[scope]!==input.version)return json({error:'Version conflict'},409);
       s[key]=input.workspace;versions[scope]++;s.workspaceVersions=versions;
       if(await writeState(env.DB,s))return json({ok:true,version:versions[scope]});
