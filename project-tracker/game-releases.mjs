@@ -24,8 +24,7 @@ export function mergeReleaseGames(steam,ps,mode){
   else result.push({...g,platformReleases:[{platform:g.platform,releaseDate:g.releaseDate,releaseLabel:g.releaseLabel,url:g.url}]});
  }
  result.sort((a,b)=>mode==='released'?b.releaseDate.localeCompare(a.releaseDate):(a.releaseDate||'9999').localeCompare(b.releaseDate||'9999'));
- if(mode!=='upcoming')return result;
- const selected=result.slice(0,5);if(ps.length&&!selected.some(g=>g.platform.includes('PS5'))){const firstPS=result.find(g=>g.platform.includes('PS5'));if(firstPS)selected.splice(Math.min(4,selected.length),1,firstPS);}return selected;
+ return result;
 }
 export function parseSteamGames(html){
  return [...html.matchAll(/<a\b[^>]*data-ds-appid="(\d+)"[\s\S]*?<\/a>/g)].map(([row,id])=>{
@@ -42,7 +41,7 @@ export async function getSteamReleases(mode,fetcher=fetch,now=new Date()){
  const today=now.toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'}),year=Number(today.slice(0,4)),key=mode+today;
  const upcoming=mode==='upcoming',items=new Map();let complete=false;
  for(let page=0;page<(upcoming?1:10);page++){
-  const params=new URLSearchParams({start:String(page*100),count:upcoming?'20':'100',filter:upcoming?'popularcomingsoon':'popularnew',category1:'998',infinite:'1',l:'english'});
+  const params=new URLSearchParams({start:String(page*100),count:'100',filter:upcoming?'popularcomingsoon':'popularnew',category1:'998',infinite:'1',l:'english'});
   if(!upcoming)params.set('sort_by','Released_DESC');
   const r=await fetcher('https://store.steampowered.com/search/results/?'+params,{signal:AbortSignal.timeout(12000),cf:{cacheTtl:3600,cacheEverything:true}});
   if(!r.ok)throw Error('Steam 游戏榜暂时无法读取');
