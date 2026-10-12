@@ -25,6 +25,9 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:white;border-radius:10px;padding:12px 18px;font-size:14px;z-index:2000;max-width:calc(100% - 32px);display:none;align-items:center;gap:8px}.toast.show{display:flex}.toast.success{background:var(--text)}.toast.error{background:var(--danger)}.toast svg{flex-shrink:0;stroke:currentColor}
 @media(max-width:760px){.container{padding:20px 16px}.header h1{font-size:25px}.toolbar{padding:16px}.toolbar-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.toolbar-row>*{width:100%;min-width:0}.toolbar-row>select{width:100%;height:44px;flex:none}.toolbar-row>.btn:last-child{grid-column:1/-1}.btn,select{font-size:13px;padding:10px 12px;min-height:44px}.table-wrapper{border-radius:16px}table{min-width:1050px}.modal{padding:24px 20px}.modal-actions{flex-wrap:wrap}.table-actions .btn{flex:1}.date-cell input{min-height:40px}.legend{padding:14px 16px;gap:12px}}
 @media(prefers-reduced-motion:reduce){.btn-sync.syncing .spin{animation:none}}
+/* Compact table: equal filters, smaller gutters, touch targets retained. */
+.container{max-width:none;padding:20px 24px}.header{margin-bottom:14px}.header h1{font-size:25px}.toolbar{padding:12px;border-radius:12px;margin-bottom:12px;gap:8px}.toolbar-row>select{height:36px;min-height:36px;padding:6px 10px}.btn{min-height:36px;padding:7px 12px}.table-wrapper{border-radius:12px;margin-bottom:12px}thead th,tbody td{padding:10px 12px}thead th:first-child,tbody td:first-child{padding-left:12px}.status-cell-wrap,.proj-cell-wrap{gap:4px}.legend{gap:12px;padding:8px 12px}.modal{padding:20px;border-radius:14px}.modal label{margin:12px 0 4px}.modal-actions{margin-top:16px}.search-box input{min-height:36px;padding:7px 12px 7px 36px}.search-box::before{top:10px;left:12px}.search-box::after{top:23px;left:25px}
+@media(max-width:760px){.container{padding:12px}.toolbar{padding:10px}.toolbar-row>select,.btn,.search-box input{min-height:44px;height:44px}.toolbar-row>.btn:last-child{grid-column:auto}.search-box::before{top:14px}.search-box::after{top:27px}.modal{padding:16px}.legend{gap:10px}.date-cell input{min-height:44px}.status-badge,.priority-badge{min-height:44px;display:inline-flex;align-items:center}}
 </style>
 </head>
 <body>
@@ -59,6 +62,7 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
         <option value="none">无标记</option>
       </select>
       <button class="btn btn-add" onclick="showAddModal()" title="添加新问题" id="btnAdd"></button>
+      <button class="btn btn-outline" id="btnSave" type="button" onmousedown="event.preventDefault()" onclick="manualSave()" title="将当前修改保存到云端">保存</button>
       <button class="btn btn-del" onclick="deleteCompleted()" title="删除所有已完成的问题" id="btnDel"></button>
     </div>
   </div>
@@ -350,6 +354,15 @@ function saveData() {
   pendingState={base:structuredClone(cloudBase),data:structuredClone(data),priorities:structuredClone(projectPriorities),archive:structuredClone(archive),projects:structuredClone(projects),deletedProjects:structuredClone(deletedProjects)};
   return flushSave();
 }
+async function manualSave(){
+  if(!ready){showToast('云端尚未连接，请稍后重试','error');return false;}
+  const editor=document.activeElement?.closest('[contenteditable="true"]');
+  if(editor)editor.blur(); // Commit the focused cell before taking the snapshot.
+  if(unresolvedPending){reviewPending();return false;}
+  const ok=await (saving||saveData());
+  if(ok)showToast('已保存至云端','success');
+  return ok;
+}
 function useCloudTracker(s){data=s.data;archive=s.archive;projects=s.projects;deletedProjects=s.deletedProjects;projectPriorities=s.priorities;cloudVersion=s.version;cloudBase=structuredClone(currentTracker());}
 async function flushSave(){
  if(saving)return saving;
@@ -382,7 +395,7 @@ function deleteCompleted() {
   data=data.filter(x=>!x.done);saveData();renderTable();updateStats();
 }
 
-// 页面关闭前用 sendBeacon 可靠保存，防止数据丢失
+// 修改通过 saveData 自动写入云端；未保存时关闭页面会提示。
 
 
 function formatDate(d) {
@@ -633,14 +646,20 @@ function renderTable() {
 
   if (filtered.length === 0) {
     const emptyTr = document.createElement('tr');
-    emptyTr.innerHTML = '<td colspan="9" style="text-align:center;padding:40px;color:var(--text-light)">无匹配数据</td>';
+    emptyTr.innerHTML = '<td colspan="9" style="text-align:center;padding:24px;color:var(--text-light)">无匹配数据</td>';
     tbody.appendChild(emptyTr);
   }
 }
 
+document.getElementById('tableBody').addEventListener('input',e=>{
+ if(!e.target.closest('[contenteditable="true"]'))return;
+ dataDirty=true;
+ const button=document.getElementById('btnSave');if(button){button.textContent='保存';button.title='当前单元格编辑完成后自动保存，也可点击保存';}
+});
 function handleCellEdit(e) {
   const idx=Number(e.target.dataset.idx),field=e.target.dataset.field,val=e.target.textContent.trim();
   if(!ready || conflicted || !data[idx])return;
+  if(val===(data[idx][field]||'')){if(!pendingState&&!saving)dataDirty=!sameTracker(currentTracker(),cloudBase);return;}
   if(field==='project'){
     if(!val){renderTable();showToast('项目名称不能为空','error');return;}
     const old=data[idx].project;
@@ -864,7 +883,11 @@ async function openPendingReview(){
  button('保留云端数据',async()=>{if(!confirm('确认保留云端数据，并丢弃这份本地未同步副本？'))return;localStorage.removeItem(PENDING_KEY);unresolvedPending=null;pendingState=null;conflicted=false;dataDirty=false;await loadData();renderTable();updateStats();document.getElementById('pendingNotice').style.display='none';lockPendingEditing(false);overlay.remove();});
  button('稍后处理',()=>overlay.remove());panel.appendChild(actions);overlay.appendChild(panel);document.body.appendChild(overlay);
 }
-function setSync(msg){if(/失败|暂停|未同步|仍保留/.test(msg))showToast(msg,'error');}
+function setSync(msg){
+ const button=document.getElementById('btnSave');
+ if(button){button.textContent=msg==='正在保存…'?'保存中…':msg==='已保存至云端'?'已保存':'保存';button.title=msg;}
+ if(/失败|暂停|未同步|仍保留|尚未保存/.test(msg))showToast(msg,'error');
+}
 function viewArchive(){
  const overlay=document.createElement('div');overlay.className='modal-overlay active';
  const panel=document.createElement('div');panel.className='modal';
