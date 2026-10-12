@@ -35,7 +35,9 @@ function valid(s){
 async function writeState(db,s){
  const payload=JSON.stringify({data:s.data,priorities:s.priorities,archive:s.archive,projects:s.projects||[...new Set([...s.data.map(x=>x.project),...s.archive.map(x=>x.project)])],deletedProjects:s.deletedProjects||[],workspace:s.workspace||{tasks:[],notes:[],events:[]},workWorkspace:s.workWorkspace||{tasks:[],notes:[],events:[]},workspaceVersions:s.workspaceVersions||{personal:1,work:1}});
  const result=await db.prepare('UPDATE tracker_state SET payload=?, version=version+1 WHERE id=1 AND version=?').bind(payload,s.version).run();
- return result.meta.changes===1;
+ // D1 reports SQLite total changes, including trigger side effects.
+ // The WHERE clause already limits the matched state row to id=1.
+ return Number.isInteger(result.meta?.changes)&&result.meta.changes>0;
 }
 
 function projectCalendarItems(s){return (s.data||[]).filter(x=>!x.done&&x.status!=='已完成'&&/^\d{4}-\d{2}-\d{2}$/.test(x.plannedDate)&&!Number.isNaN(Date.parse(x.plannedDate))&&new Date(x.plannedDate).toISOString().slice(0,10)===x.plannedDate).map(x=>({project:x.project,title:x.task,date:x.plannedDate,status:x.status,reason:x.reason,note:x.note}));}
