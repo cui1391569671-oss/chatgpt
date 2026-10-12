@@ -27,12 +27,13 @@ test('atomic project save retries workspace race and retains the winning workspa
 });
 
 import {readFileSync} from 'node:fs';import vm from 'node:vm';
+import {ensureProjectIds,recordChanges,applyRecordChanges,PROJECT_COLLECTIONS} from '../cloud-records.mjs';
 const indexHtml=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-test('queued project edits advance their base after the first save instead of self-conflicting',async()=>{
- const base={data:[{task:'原值'}],priorities:{},archive:[],projects:[],deletedProjects:[]},first=structuredClone(base),second=structuredClone(base);first.data[0].task='第一次';second.data[0].task='第二次';
- const writes=[],context=vm.createContext({structuredClone,JSON,Error,pendingState:{...first,base},conflicted:false,saving:null,cloudVersion:1,cloudBase:base,dataDirty:true,trackerSnapshot:x=>({data:x.data,priorities:x.priorities,archive:x.archive,projects:x.projects,deletedProjects:x.deletedProjects}),setSync:()=>{},localStorage:{setItem(){},removeItem(){}},PENDING_KEY:'pending',window:{parent:null},fetch:async(_,opts)=>{writes.push(JSON.parse(opts.body));if(writes.length===1)context.pendingState={...second,base};return {ok:true,status:200,json:async()=>({version:1+writes.length})};}});context.window.parent=context.window;
- vm.runInContext(indexHtml.slice(indexHtml.indexOf('async function flushSave()'),indexHtml.indexOf('function deleteCompleted()')),context);
- assert.equal(await context.flushSave(),true);assert.equal(writes.length,2);assert.equal(writes[1].version,2);assert.equal(writes[1].base.data[0].task,'第一次');assert.equal(writes[1].data[0].task,'第二次');
+test('queued project edits submit only changes against the acknowledged cloud state',async()=>{
+ const base={data:[{id:'a',task:'原值'}],priorities:{},archive:[],projects:[],deletedProjects:[]},first=structuredClone(base),second=structuredClone(base);first.data[0].task='第一次';second.data[0].task='第二次';
+ let server=structuredClone(base);const writes=[];const c=vm.createContext({structuredClone,JSON,Error,ensureProjectIds,recordChanges,applyRecordChanges,PROJECT_COLLECTIONS,pendingState:{...first,base},conflicted:false,saving:null,cloudVersion:1,cloudBase:base,data:base.data,archive:[],projects:[],deletedProjects:[],projectPriorities:{},dataDirty:true,legacyPendingRaw:null,unresolvedPending:null,lockPendingEditing:()=>{},renderTable:()=>{},updateStats:()=>{},currentTracker:()=>({data:c.data,archive:c.archive,projects:c.projects,deletedProjects:c.deletedProjects,priorities:c.projectPriorities}),trackerSnapshot:x=>({data:x.data,priorities:x.priorities,archive:x.archive,projects:x.projects,deletedProjects:x.deletedProjects}),setSync:()=>{},window:{parent:null},fetch:async(_,opts)=>{const payload=JSON.parse(opts.body);writes.push(payload);server=applyRecordChanges(server,payload.operations,PROJECT_COLLECTIONS);if(writes.length===1)c.pendingState={...second,base};return {ok:true,json:async()=>({state:{...server,version:1+writes.length}})};}});c.window.parent=c.window;
+ vm.runInContext(indexHtml.slice(indexHtml.indexOf('function useCloudTracker('),indexHtml.indexOf('function deleteCompleted()')),c);
+ assert.equal(await c.flushSave(),true);assert.equal(writes.length,2);assert.equal(writes[1].operations[0].changes.task.before.value,'第一次');assert.equal(server.data[0].task,'第二次');
 });
 const workHtml=readFileSync(new URL('../workbench.html',import.meta.url),'utf8');
 test('workspace background refresh updates data but ignores responses racing a local save',async()=>{
