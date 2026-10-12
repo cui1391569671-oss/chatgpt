@@ -40,7 +40,7 @@ const cache=new Map();
 export async function getSteamReleases(mode,fetcher=fetch,now=new Date()){
  const today=now.toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'}),year=Number(today.slice(0,4)),key=mode+today;
  const upcoming=mode==='upcoming',items=new Map();let complete=false;
- for(let page=0;page<(upcoming?1:10);page++){
+ for(let page=0;page<10;page++){
   const params=new URLSearchParams({start:String(page*100),count:'100',filter:upcoming?'popularcomingsoon':'popularnew',category1:'998',infinite:'1',l:'english'});
   if(!upcoming)params.set('sort_by','Released_DESC');
   const r=await fetcher('https://store.steampowered.com/search/results/?'+params,{signal:AbortSignal.timeout(12000),cf:{cacheTtl:3600,cacheEverything:true}});
@@ -53,7 +53,7 @@ export async function getSteamReleases(mode,fetcher=fetch,now=new Date()){
   }catch{/* Keep original titles if localization is temporarily unavailable. */}
   if(!games.length&&Number(data.total_count)>page*100)throw Error('Steam 游戏榜格式已变化');
   for(const g of games)if(upcoming?(!g.releaseDate||g.releaseDate>=today):(g.releaseDate>=year+'-01-01'&&g.releaseDate<=today))items.set(g.id,g);
-  if(upcoming||(page+1)*100>=Number(data.total_count)||!games.length){complete=true;break;}
+  if((page+1)*100>=Number(data.total_count)||!games.length){complete=true;break;}
  }
  const list=[...items.values()];if(!upcoming)list.sort((a,b)=>b.releaseDate.localeCompare(a.releaseDate));
  return {items:list,year,complete,updatedAt:now.toISOString(),source:'Steam '+(upcoming?'热门即将推出':'热门新品'),sourceUrl:'https://store.steampowered.com/search/?filter='+(upcoming?'popularcomingsoon':'popularnew')};

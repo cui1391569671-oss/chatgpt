@@ -127,7 +127,7 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
 
 <script>
 /* CLOUD_RECORDS_START */
-const WORKSPACE_COLLECTIONS=['tasks','notes','events','maintenance','vocabulary','completedGames','driveLinks','wardrobe','outfits'];
+const WORKSPACE_COLLECTIONS=['tasks','notes','events','maintenance','dailyRoutines','vocabulary','completedGames','driveLinks','wardrobe','outfits'];
 const PROJECT_COLLECTIONS=['data','archive','deletedProjects','projects','priorities'];
 function canonical(value){if(Array.isArray(value))return value.map(canonical);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])]));return value;}
 function equalRecord(a,b){return JSON.stringify(canonical(a))===JSON.stringify(canonical(b));}

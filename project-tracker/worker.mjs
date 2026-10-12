@@ -51,6 +51,7 @@ function validWorkspace(w){
  const date=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
  const time=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)&&date(s.slice(0,10))&&Number(s.slice(11,13))<24&&Number(s.slice(14,16))<60;
  if(!w||typeof w!=='object'||!['tasks','notes','events'].every(k=>Array.isArray(w[k])&&w[k].length<=2000))return false;
+ if(w.dailyRoutines!==undefined){if(!Array.isArray(w.dailyRoutines)||w.dailyRoutines.length>500)return false;const seen=new Set();if(!w.dailyRoutines.every(x=>x&&str(x.id,100)&&x.id&&!seen.has(x.id)&&(seen.add(x.id),true)&&str(x.title,200)&&x.title.trim()&&str(x.detail,5000)&&(x.completedOn===''||date(x.completedOn))))return false;}
  if(w.maintenance!==undefined){if(!Array.isArray(w.maintenance)||w.maintenance.length>2000)return false;const seen=new Set();if(!w.maintenance.every(x=>x&&str(x.id,100)&&x.id&&!seen.has(x.id)&&(seen.add(x.id),true)&&str(x.title,200)&&x.title.trim()&&str(x.location,500)&&str(x.detail,5000)&&date(x.nextDate)&&(x.lastDate===''||date(x.lastDate)&&x.lastDate<=x.nextDate)))return false;}
  if(w.driveLinks!==undefined){
   if(!Array.isArray(w.driveLinks)||w.driveLinks.length>500)return false;
