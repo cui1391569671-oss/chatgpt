@@ -41,3 +41,9 @@ test('successful state writes with trigger side effects are not mistaken for CAS
  const response=await worker.fetch(req('/api/state/patch',{operations:[{collection:'data',id,action:'update',changes:{note:{before:{exists:true,value:''},after:{exists:true,value:'成功保存'}}}}]}),env);
  assert.equal(response.status,200);assert.equal(writes,1);assert.equal((await get(env,'/api/state')).data[0].note,'成功保存');
 });
+test('maintenance create edit delete persist through cloud patches and keep work data isolated',async()=>{
+ const {env}=setup(),path='/api/workspace?scope=personal',endpoint='/api/workspace/patch?scope=personal';let base=(await get(env,path)).workspace;
+ const item={id:'device-1',title:'空调',location:'客厅',lastDate:'2026-10-01',nextDate:'2026-11-01',detail:'清洁滤网'};
+ for(const records of [[item],[{...item,nextDate:'2026-12-01'}],[]]){const next={...base,maintenance:records};const r=await patch(env,endpoint,recordChanges(base,next,WORKSPACE_COLLECTIONS));assert.equal(r.status,200);base=(await get(env,path)).workspace;assert.deepEqual(base.maintenance,records);assert.equal((await get(env,'/api/workspace?scope=work')).workspace.maintenance,undefined);}
+ const bad={...item,nextDate:'2026-02-30'};assert.equal((await patch(env,endpoint,recordChanges(base,{...base,maintenance:[bad]},WORKSPACE_COLLECTIONS))).status,400);
+});
