@@ -113,6 +113,26 @@ export default {
     const title=(url.searchParams.get('title')||'').trim();if(!title||title.length>200)return json({error:'Invalid game title'},400);
     return json(await findGameCover(title));
    }
+   if(url.pathname==='/api/state/archive'&&request.method==='POST'){
+    if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
+    if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
+    const text=await request.text();if(new TextEncoder().encode(text).length>1500000)return json({error:'Too large'},413);
+    let input;try{input=JSON.parse(text);}catch{return json({error:'Invalid JSON'},400);}
+    if(!Array.isArray(input?.ids)||!input.ids.length||input.ids.length>10000||input.ids.some(id=>typeof id!=='string'||!id||id.length>200)||new Set(input.ids).size!==input.ids.length)return json({error:'Invalid records'},400);
+    const ids=new Set(input.ids);
+    for(let attempt=0;attempt<5;attempt++){
+     const current=await readState(env.DB),selected=current.data.filter(x=>ids.has(x.id));
+     if(selected.some(x=>!x.done))return json({error:'部分问题已恢复为未完成，请查看最新状态后重试'},409);
+     const archivedIds=new Set(current.archive.map(x=>x.id));
+     const additions=selected.filter(x=>!archivedIds.has(x.id));
+     current.archive.push(...additions.map(x=>({...x,archivedAt:new Date().toISOString()})));
+     current.data=current.data.filter(x=>!ids.has(x.id));
+     if(selected.length&&!await writeState(env.DB,current))continue;
+     const {workspace,workWorkspace,workspaceVersions,...tracker}=current;
+     return json({ok:true,count:additions.length,state:{...tracker,version:current.version+(selected.length?1:0)}});
+    }
+    return json({error:'云端正在更新，请重试'},503);
+   }
    if(['/api/workspace/patch','/api/state/patch'].includes(url.pathname)&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);

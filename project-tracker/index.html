@@ -387,12 +387,33 @@ async function flushSave(){
 }
 
 function deleteCompleted() {
-  if(!ready || conflicted)return;
-  const done=data.filter(x=>x.done);
-  if(!done.length){showToast('没有已完成的问题','info');return;}
-  if(!confirm('将 '+done.length+' 条已完成问题移入归档？历史记录会保留。'))return;
-  archive.push(...done.map(x=>({...x,archivedAt:new Date().toISOString()})));
-  data=data.filter(x=>!x.done);saveData();renderTable();updateStats();
+ if(!ready||conflicted||unresolvedPending){showToast('请先恢复云端连接并处理未保存修改','error');return;}
+ if(saving){showToast('正在保存，请稍后归档','info');return;}
+ const done=data.filter(x=>x.done);
+ if(!done.length){showToast('没有已完成的问题','info');return;}
+ const overlay=document.createElement('div');overlay.className='modal-overlay active';
+ const panel=document.createElement('div');panel.className='modal';
+ const title=document.createElement('h3');title.textContent='归档已完成问题';panel.appendChild(title);
+ const help=document.createElement('p');help.textContent='将 '+done.length+' 条已完成问题移入归档，可在“查看已完成记录”中查看。';panel.appendChild(help);
+ const error=document.createElement('p');error.setAttribute('role','alert');error.style.color='var(--danger)';panel.appendChild(error);
+ const actions=document.createElement('div');actions.className='modal-actions';
+ const cancel=document.createElement('button');cancel.className='btn';cancel.textContent='取消';cancel.onclick=()=>overlay.remove();
+ const confirmButton=document.createElement('button');confirmButton.className='btn btn-primary';confirmButton.textContent='确认归档';
+ confirmButton.onclick=async()=>{
+  confirmButton.disabled=true;cancel.disabled=true;confirmButton.textContent='归档中…';error.textContent='';lockPendingEditing(true);
+  try{
+   if(pendingState&&!await flushSave())throw Error('请先保存当前修改，再归档');
+   const r=await fetch('/api/state/archive',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ids:done.map(x=>x.id)})});const result=await r.json();
+   if(!r.ok)throw Error(result.error||'归档失败，请重试');
+   useCloudTracker(result.state);renderTable();updateStats();setSync('已保存至云端');overlay.remove();
+   showToast(result.count?'已归档 '+result.count+' 条问题':'这些问题已被归档或移除，已更新列表','success');
+   if(window.parent!==window)window.parent.postMessage({type:'project-saved'},location.origin);
+  }catch(e){error.textContent=e.message;showToast(e.message,'error');}
+  finally{if(!conflicted&&!unresolvedPending)lockPendingEditing(false);confirmButton.disabled=false;cancel.disabled=false;confirmButton.textContent='确认归档';}
+ };
+ actions.append(cancel,confirmButton);panel.appendChild(actions);overlay.appendChild(panel);document.body.appendChild(overlay);confirmButton.focus();
+ overlay.onclick=e=>{if(e.target===overlay&&!confirmButton.disabled)overlay.remove();};
+ overlay.onkeydown=e=>{if(e.key==='Escape'&&!confirmButton.disabled)overlay.remove();};
 }
 
 // 修改通过 saveData 自动写入云端；未保存时关闭页面会提示。

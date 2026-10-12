@@ -50,3 +50,17 @@ test('all workspace collections survive round trips and concurrent project saves
  assert.deepEqual((await read(env,'/api/workspace?scope=personal')).workspace,personal);assert.deepEqual((await read(env,'/api/workspace?scope=work')).workspace,{tasks:[],notes:[],events:[]});
  await worker.scheduled({},env,{waitUntil:async p=>await p});assert.deepEqual((await read(env,'/api/workspace?scope=personal')).workspace,personal);
 });
+
+test('cloud archive preserves latest record and workspace changes; repeated request adds no duplicate',async()=>{
+ const {env,race}=setup();const initial=await read(env);initial.data[0].done=true;initial.data[0].status='已完成';await worker.fetch(request('/api/state',initial),env);
+ const id=(await read(env)).data[0].id;
+ race(s=>{s.data[0].note='另一电脑的新备注';s.workWorkspace.tasks.push(task('preserved'));});
+ const response=await worker.fetch(request('/api/state/archive',{ids:[id]}),env);assert.equal(response.status,200);const result=await response.json();assert.equal(result.count,1);assert.equal(result.state.data.length,0);assert.equal(result.state.archive[0].note,'另一电脑的新备注');
+ const again=await worker.fetch(request('/api/state/archive',{ids:[id]}),env);assert.equal(again.status,200);assert.equal((await again.json()).count,0);assert.equal((await read(env)).archive.length,1);assert.equal((await read(env,'/api/workspace?scope=work')).workspace.tasks[0].id,'preserved');
+});
+test('archive does not remove a task reopened by another device and enforces origin and valid IDs',async()=>{
+ const {env}=setup();const initial=await read(env),id=initial.data[0].id;
+ assert.equal((await worker.fetch(request('/api/state/archive',{ids:[id]}),env)).status,409);assert.equal((await read(env)).data.length,1);assert.equal((await read(env)).archive.length,0);
+ assert.equal((await worker.fetch(request('/api/state/archive',{ids:[]}),env)).status,400);
+ const foreign=request('/api/state/archive',{ids:[id]});foreign.headers.set('Origin','https://foreign.local');assert.equal((await worker.fetch(foreign,env)).status,403);
+});
