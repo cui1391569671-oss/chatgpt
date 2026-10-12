@@ -33,3 +33,11 @@ test('create, archive, project priorities and membership are applied atomically'
 test('business data is never written to browser storage; existing pending copy remains a migration read',async()=>{
  const {readFileSync}=await import('node:fs');const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');assert.doesNotMatch(html,/localStorage\.setItem/);assert.match(html,/localStorage\.getItem\(PENDING_KEY\)/);
 });
+
+test('successful state writes with trigger side effects are not mistaken for CAS conflicts',async()=>{
+ const {env}=setup();const prepare=env.DB.prepare.bind(env.DB);let writes=0;
+ env.DB.prepare=(...args)=>{const stmt=prepare(...args),run=stmt.run.bind(stmt);stmt.run=async()=>{const result=await run();writes++;if(result.meta.changes===1)result.meta.changes=2;return result;};return stmt;};
+ const base=await get(env,'/api/state');const id=base.data[0].id;
+ const response=await worker.fetch(req('/api/state/patch',{operations:[{collection:'data',id,action:'update',changes:{note:{before:{exists:true,value:''},after:{exists:true,value:'成功保存'}}}}]}),env);
+ assert.equal(response.status,200);assert.equal(writes,1);assert.equal((await get(env,'/api/state')).data[0].note,'成功保存');
+});
