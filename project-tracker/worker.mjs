@@ -1,3 +1,4 @@
+import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
 import {sessionValid,authRoute,loginPage} from './auth.mjs';
 import {findGameCover} from './game-covers.mjs';
 import {getGameReleases} from './game-releases.mjs';
@@ -17,7 +18,7 @@ function normalizedWorkspaceVersions(value){return Object.fromEntries(['personal
 async function readState(db){
  const row=await db.prepare('SELECT payload,version FROM tracker_state WHERE id=1').first();
  if(!row)throw new Error('Database not initialized');
- const s=JSON.parse(row.payload);return {...s,projects:s.projects||[...new Set([...s.data.map(x=>x.project),...s.archive.map(x=>x.project)])],deletedProjects:s.deletedProjects||[],version:row.version};
+ const s=ensureProjectIds(JSON.parse(row.payload));return {...s,projects:s.projects||[...new Set([...s.data.map(x=>x.project),...s.archive.map(x=>x.project)])],deletedProjects:s.deletedProjects||[],version:row.version};
 }
 function valid(s){
  return s && (!s.projects || (Array.isArray(s.projects) && s.projects.length<=1000 && s.projects.every(x=>typeof x==='string' && x.trim() && x.length<=120) && new Set(s.projects).size===s.projects.length)) && (!s.deletedProjects || (Array.isArray(s.deletedProjects) && s.deletedProjects.length<=1000 && s.deletedProjects.every(p=>p && typeof p.name==='string' && Array.isArray(p.data) && Array.isArray(p.archive)))) && Number.isSafeInteger(s.version) && s.version>0 &&
@@ -111,6 +112,25 @@ export default {
    if(url.pathname==='/api/game-cover'&&request.method==='GET'){
     const title=(url.searchParams.get('title')||'').trim();if(!title||title.length>200)return json({error:'Invalid game title'},400);
     return json(await findGameCover(title));
+   }
+   if(['/api/workspace/patch','/api/state/patch'].includes(url.pathname)&&request.method==='POST'){
+    if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
+    if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
+    const text=await request.text();if(new TextEncoder().encode(text).length>1500000)return json({error:'Too large'},413);
+    let input;try{input=JSON.parse(text);}catch{return json({error:'Invalid JSON'},400);}
+    const workspace=url.pathname==='/api/workspace/patch',scope=url.searchParams.get('scope');if(workspace&&!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);
+    const key=scope==='work'?'workWorkspace':'workspace';
+    for(let attempt=0;attempt<5;attempt++){
+     const current=await readState(env.DB);let updated;
+     try{updated=applyRecordChanges(workspace?current[key]||{tasks:[],notes:[],events:[]}:current,input?.operations,workspace?WORKSPACE_COLLECTIONS:PROJECT_COLLECTIONS);}catch(e){return json({error:e.message},e instanceof RecordConflict?409:400);}
+     if(workspace){if(!validWorkspace(updated))return json({error:'Invalid workspace'},400);current[key]=updated;const versions=normalizedWorkspaceVersions(current.workspaceVersions);versions[scope]++;current.workspaceVersions=versions;}
+     else{if(!valid(updated))return json({error:'Invalid state'},400);Object.assign(current,updated);}
+     if(await writeState(env.DB,current)){
+      if(workspace)return json({ok:true,workspace:updated,version:current.workspaceVersions[scope]});
+      const {workspace:personalData,workWorkspace,workspaceVersions,...tracker}=current;return json({ok:true,state:{...tracker,version:current.version+1}});
+     }
+    }
+    return json({error:'云端正在更新，请重试'},503);
    }
    if(url.pathname==='/api/workspace'){
     const scope=url.searchParams.get('scope')||'personal';

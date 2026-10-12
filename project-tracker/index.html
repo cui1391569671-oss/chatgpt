@@ -122,6 +122,45 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
 <div class="toast" id="toast"></div>
 
 <script>
+/* CLOUD_RECORDS_START */
+const WORKSPACE_COLLECTIONS=['tasks','notes','events','vocabulary','completedGames','driveLinks','wardrobe','outfits'];
+const PROJECT_COLLECTIONS=['data','archive','deletedProjects','projects','priorities'];
+function canonical(value){if(Array.isArray(value))return value.map(canonical);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])]));return value;}
+function equalRecord(a,b){return JSON.stringify(canonical(a))===JSON.stringify(canonical(b));}
+function ensureProjectIds(source){
+ const out=structuredClone(source);for(const collection of ['data','archive','deletedProjects']){const used=new Set();for(const row of out[collection]||[]){if(!row.id){const text=JSON.stringify(canonical(row));let a=2166136261,b=5381;for(const c of text){a=Math.imul(a^c.charCodeAt(0),16777619);b=Math.imul(b,33)^c.charCodeAt(0);}const prefix='legacy-'+(a>>>0).toString(16)+(b>>>0).toString(16);let id=prefix,n=0;while(used.has(id))id=prefix+'-'+(++n);row.id=id;}if(used.has(row.id))throw Error('记录编号重复');used.add(row.id);}}return out;
+}
+const property=(obj,key)=>Object.hasOwn(obj,key)?{exists:true,value:obj[key]}:{exists:false};
+function recordChanges(base,next,collections){
+ const operations=[];
+ for(const collection of collections){
+  if(collection==='priorities'){const b=base[collection]||{},n=next[collection]||{};for(const id of new Set([...Object.keys(b),...Object.keys(n)]))if(!equalRecord(property(b,id),property(n,id)))operations.push({collection,id,action:'value',before:property(b,id),after:property(n,id)});continue;}
+  if(collection==='projects'){const b=new Set(base.projects||[]),n=new Set(next.projects||[]);for(const id of new Set([...b,...n]))if(b.has(id)!==n.has(id))operations.push({collection,id,action:'membership',present:n.has(id)});continue;}
+  const b=new Map((base[collection]||[]).map(x=>[x.id,x])),n=new Map((next[collection]||[]).map(x=>[x.id,x]));
+  for(const id of new Set([...b.keys(),...n.keys()])){const old=b.get(id),row=n.get(id);if(equalRecord(old,row))continue;if(!old){operations.push({collection,id,action:'create',record:row});continue;}if(!row){operations.push({collection,id,action:'delete',before:old});continue;}
+   const changes={};for(const field of new Set([...Object.keys(old),...Object.keys(row)]))if(field!=='id'&&!equalRecord(property(old,field),property(row,field)))changes[field]={before:property(old,field),after:property(row,field)};
+   operations.push({collection,id,action:'update',changes});
+  }
+ }
+ return operations;
+}
+class RecordConflict extends Error{}
+function applyRecordChanges(source,operations,collections){
+ if(!Array.isArray(operations)||operations.length>10000)throw Error('无效变更');const result=structuredClone(source),unsafe=new Set(['__proto__','prototype','constructor']);
+ const set=(obj,key,value)=>{if(unsafe.has(key))throw Error('无效字段');if(!value||typeof value.exists!=='boolean')throw Error('无效字段值');if(value.exists)obj[key]=structuredClone(value.value);else delete obj[key];};
+ for(const op of operations){if(!op||!collections.includes(op.collection)||typeof op.id!=='string'||!op.id||op.id.length>200||unsafe.has(op.id))throw Error('无效记录');
+  if(op.collection==='priorities'){if(op.action!=='value')throw Error('无效变更');const map=result.priorities??={};const current=property(map,op.id);if(!equalRecord(current,op.before)&&!equalRecord(current,op.after))throw new RecordConflict('该项目优先级已更新');set(map,op.id,op.after);continue;}
+  if(op.collection==='projects'){if(op.action!=='membership'||typeof op.present!=='boolean')throw Error('无效变更');const list=result.projects??=[];if(op.present&&!list.includes(op.id))list.push(op.id);if(!op.present)result.projects=list.filter(x=>x!==op.id);continue;}
+  const list=result[op.collection]??=[];const index=list.findIndex(x=>x.id===op.id),current=list[index];
+  if(op.action==='create'){if(!op.record||op.record.id!==op.id)throw Error('无效新增');if(current&&!equalRecord(current,op.record))throw new RecordConflict('该记录已存在');if(!current)list.push(structuredClone(op.record));}
+  else if(op.action==='delete'){if(current&&!equalRecord(current,op.before))throw new RecordConflict('该记录已被修改，请核对后删除');if(current)list.splice(index,1);}
+  else if(op.action==='update'){if(!current)throw new RecordConflict('该记录已删除');if(!op.changes||typeof op.changes!=='object')throw Error('无效修改');for(const [field,change] of Object.entries(op.changes)){if(field==='id'||unsafe.has(field))throw Error('无效字段');const actual=property(current,field);if(!equalRecord(actual,change.before)&&!equalRecord(actual,change.after))throw new RecordConflict('同一字段已被其他页面修改：'+field);set(current,field,change.after);}}
+  else throw Error('无效操作');
+ }
+ return result;
+}
+
+/* CLOUD_RECORDS_END */
 const DEFAULT_DATA = [];
 
 const ALL_PROJECTS = [];
@@ -282,7 +321,7 @@ async function loadData() {
     if(!r.ok) throw new Error('读取失败 '+r.status);
     const s=await r.json();
     data=s.data; projectPriorities=s.priorities; archive=s.archive; projects=s.projects||[...new Set([...data.map(x=>x.project),...archive.map(x=>x.project)])]; deletedProjects=s.deletedProjects||[]; cloudVersion=s.version;
-    cloudBase=structuredClone(currentTracker());ready=true; localStorage.setItem(STORAGE_KEY,JSON.stringify(data)); setSync('云端已连接');
+    cloudBase=structuredClone(currentTracker());ready=true; setSync('云端已连接');
     inspectPending();
   } catch(e) {
     ready=false; data=[]; setSync('云端读取失败，请刷新重试。已停止编辑，避免覆盖数据');
@@ -309,27 +348,29 @@ function saveData() {
   if(!ready || conflicted) {showToast('同步已暂停，本地副本已保留，请核对云端数据','error'); return Promise.resolve(false);}
   dataDirty=true;
   pendingState={base:structuredClone(cloudBase),data:structuredClone(data),priorities:structuredClone(projectPriorities),archive:structuredClone(archive),projects:structuredClone(projects),deletedProjects:structuredClone(deletedProjects)};
-  try {localStorage.setItem(PENDING_KEY,JSON.stringify(pendingState));} catch(e) {setSync('本地保存失败，请保持页面打开并检查浏览器存储空间');}
   return flushSave();
 }
-async function flushSave() {
-  if(saving) return saving;
-  saving=(async()=>{
-    while(pendingState && !conflicted) {
-      const snapshot=pendingState; pendingState=null; setSync('正在保存…');
-      try {
-        const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...snapshot,version:cloudVersion})});
-        if(r.status===409) {conflicted=true; throw new Error('问题表已被其他页面或归档任务修改，同步已暂停，请核对本地副本');}
-        if(!r.ok) throw new Error('保存失败 '+r.status);
-        cloudVersion=(await r.json()).version;cloudBase=structuredClone(trackerSnapshot(snapshot));if(pendingState){pendingState.base=structuredClone(cloudBase);try{localStorage.setItem(PENDING_KEY,JSON.stringify(pendingState));}catch{}}if(window.parent!==window)window.parent.postMessage({type:'project-saved'},location.origin);
-        if(!pendingState) {dataDirty=false;localStorage.removeItem(PENDING_KEY);setSync('已保存至云端');}
-      } catch(e) {
-        pendingState=pendingState || snapshot;if(conflicted){unresolvedPending=structuredClone(pendingState);pendingCloud=structuredClone(cloudBase);document.getElementById('pendingMessage').textContent='问题表存在同步冲突，请查看本地副本并核对云端内容。';document.getElementById('pendingNotice').style.display='block';lockPendingEditing(true);}setSync(e.message+'；本地修改仍保留');return false;
-      }
-    }
-    return !conflicted;
-  })();
-  try {return await saving;} finally {saving=null;}
+function useCloudTracker(s){data=s.data;archive=s.archive;projects=s.projects;deletedProjects=s.deletedProjects;projectPriorities=s.priorities;cloudVersion=s.version;cloudBase=structuredClone(currentTracker());}
+async function flushSave(){
+ if(saving)return saving;
+ lockPendingEditing(true);
+ saving=(async()=>{
+  while(pendingState&&!conflicted){
+   const snapshot=pendingState;pendingState=null;setSync('正在保存…');
+   try{
+    const local=ensureProjectIds(snapshot),operations=recordChanges(snapshot.base||cloudBase,local,PROJECT_COLLECTIONS);
+    const r=await fetch('/api/state/patch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({operations})});const saved=await r.json();
+    if(!r.ok){if(r.status===409)conflicted=true;throw Error(saved.error||'云端保存失败');}
+    const cloud=trackerSnapshot(saved.state);
+    if(pendingState){
+     const queued=ensureProjectIds(pendingState),queuedOps=recordChanges(local,queued,PROJECT_COLLECTIONS);
+     const merged=applyRecordChanges(cloud,queuedOps,PROJECT_COLLECTIONS);useCloudTracker({...merged,version:saved.state.version});cloudBase=structuredClone(cloud);pendingState={...merged,base:structuredClone(cloud)};
+    }else{useCloudTracker(saved.state);dataDirty=false;if(legacyPendingRaw&&localStorage.getItem(PENDING_KEY)===legacyPendingRaw){localStorage.removeItem(PENDING_KEY);legacyPendingRaw=null;}renderTable();updateStats();setSync('已保存至云端');}
+    if(window.parent!==window)window.parent.postMessage({type:'project-saved'},location.origin);
+   }catch(e){pendingState=pendingState||snapshot;dataDirty=true;if(conflicted){unresolvedPending=structuredClone(pendingState);pendingCloud=structuredClone(cloudBase);document.getElementById('pendingMessage').textContent='同一记录有冲突，当前未保存输入仅保留在此页面，请核对后重试。';document.getElementById('pendingNotice').style.display='block';lockPendingEditing(true);}setSync(e.message+'；修改尚未保存，请保持页面打开并重试');return false;}
+  }
+  return !conflicted;
+ })();try{return await saving;}finally{saving=null;if(!conflicted&&!unresolvedPending)lockPendingEditing(false);}
 }
 
 function deleteCompleted() {
@@ -659,6 +700,7 @@ function populateProjectSelect(){
  if(projectNames().includes(selected))projSel.value=selected;
 }
 function showAddModal() {
+  delete document.getElementById('addModal').dataset.draftId;
   const modal = document.getElementById('addModal');
   const projSel = document.getElementById('addProject');
   populateProjectSelect();
@@ -720,7 +762,7 @@ function cancelNewProject() {
   document.getElementById('addProject').value = document.getElementById('addProject').options[0]?.value || '';
 }
 
-function addIssue() {
+async function addIssue() {
   const project = document.getElementById('addProject').value;
   if (project === '__new__' || !project) { alert('请选择或新建项目'); return; }
   const task = document.getElementById('addTask').value.trim();
@@ -734,6 +776,7 @@ function addIssue() {
   }
 
   const newItem = {
+    id:document.getElementById('addModal').dataset.draftId||crypto.randomUUID(),
     project: project,
     task: task,
     reason: reason,
@@ -743,12 +786,9 @@ function addIssue() {
     done: false
   };
 
-  data.push(newItem);
-  saveData();
-  console.log("[init] data length:", data.length); renderTable();
-  updateStats();
-  closeAddModal();
-  showToast('问题已添加！', 'success');
+  document.getElementById('addModal').dataset.draftId=newItem.id;
+  const existing=data.findIndex(x=>x.id===newItem.id);if(existing>=0)data[existing]=newItem;else data.push(newItem);
+  if(await saveData()){closeAddModal();delete document.getElementById('addModal').dataset.draftId;showToast('问题已保存到云端', 'success');}
 }
 
 // ========== 工具函数 ==========
@@ -786,10 +826,10 @@ document.getElementById('addModal').addEventListener('click', function(e) {
 });
 
 
-let projects=[],deletedProjects=[],archive=[],cloudVersion=0,ready=false,conflicted=false,pendingState=null,saving=null,unresolvedPending=null,pendingCloud=null,cloudBase=null;
+let projects=[],deletedProjects=[],archive=[],cloudVersion=0,ready=false,conflicted=false,pendingState=null,saving=null,unresolvedPending=null,pendingCloud=null,cloudBase=null,legacyPendingRaw=null;
 const PENDING_KEY='project_tracker_pending_v3';
 // PENDING_HELPERS_START
-function stableValue(value){if(Array.isArray(value))return value.map(stableValue);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(k=>[k,stableValue(value[k])]));return value;}
+function stableValue(value){if(Array.isArray(value))return value.map(stableValue);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).filter(k=>k!=='id').sort().map(k=>[k,stableValue(value[k])]));return value;}
 function trackerSnapshot(s){return {data:s.data,priorities:s.priorities||{},archive:s.archive||[],projects:s.projects||[],deletedProjects:s.deletedProjects||[]};}
 function sameTracker(a,b){return JSON.stringify(stableValue(trackerSnapshot(a)))===JSON.stringify(stableValue(trackerSnapshot(b)));}
 function validPending(s){return !!s&&Array.isArray(s.data)&&Array.isArray(s.archive)&&Array.isArray(s.projects)&&Array.isArray(s.deletedProjects)&&s.priorities&&typeof s.priorities==='object'&&!Array.isArray(s.priorities);}
@@ -797,7 +837,8 @@ function validPending(s){return !!s&&Array.isArray(s.data)&&Array.isArray(s.arch
 function currentTracker(){return trackerSnapshot({data,priorities:projectPriorities,archive,projects,deletedProjects});}
 function lockPendingEditing(locked){document.querySelectorAll('.toolbar button').forEach(b=>b.disabled=locked);document.getElementById('tableBody').style.pointerEvents=locked?'none':'';document.getElementById('tableBody').inert=locked;}
 function inspectPending(){
- const raw=localStorage.getItem(PENDING_KEY);if(!raw)return;
+ try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(PRIORITY_STORAGE_KEY);}catch{}
+ const raw=localStorage.getItem(PENDING_KEY);if(!raw)return;legacyPendingRaw=raw;
  let saved;try{saved=JSON.parse(raw);}catch{}
  if(validPending(saved)&&sameTracker(saved,currentTracker())){localStorage.removeItem(PENDING_KEY);return;}
  unresolvedPending=validPending(saved)?saved:{invalid:true,raw};pendingCloud=currentTracker();
