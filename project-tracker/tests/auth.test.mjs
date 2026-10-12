@@ -17,3 +17,11 @@ test('login attempts are limited and logout clears persistent cookie',async()=>{
  const e=env();for(let i=0;i<10;i++)await authRoute(login('bad'),e);assert.equal((await authRoute(login(),e)).status,429);
  const r=await authRoute(new Request('https://site.test/auth/logout',{method:'POST',headers:{Origin:'https://site.test'}}),e);assert.match(r.headers.get('Set-Cookie'),/Max-Age=0/);
 });
+test('Safari missing or null Origin logs in with matching page token, cross-site and missing token stay blocked',async()=>{
+ const e=env();
+ for(const origin of [null,'null']){
+  const page=await authRoute(new Request('https://site.test/login'),e);assert.equal(page.headers.get('Referrer-Policy'),'strict-origin-when-cross-origin');const cookie=page.headers.get('Set-Cookie').split(';')[0],token=cookie.split('=')[1];
+  const make=(source,csrf=token)=>new Request('https://site.test/auth/login',{method:'POST',headers:{...(source!==null?{Origin:source}:{}),Cookie:cookie,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({username:'user',password:'secret',csrf,next:'/work'})});
+  assert.equal((await authRoute(make(origin),e)).status,303);assert.equal((await authRoute(make(origin,'wrong'),e)).status,403);assert.equal((await authRoute(make('https://evil.test'),e)).status,403);
+ }
+});

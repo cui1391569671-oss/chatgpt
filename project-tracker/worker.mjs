@@ -1,5 +1,5 @@
 import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
-import {sessionValid,authRoute,loginPage} from './auth.mjs';
+import {sessionValid,authRoute,loginResponse} from './auth.mjs';
 import {findGameCover} from './game-covers.mjs';
 import {getGameReleases} from './game-releases.mjs';
 import {HTML,WORKBENCH,LANDING,FAVICON} from './pages.mjs';
@@ -82,7 +82,7 @@ export default {
   const auth=await authRoute(request,env);if(auth)return auth;
   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600'}});
   if(!await authorized(request,env)){
-   if(['/', '/work', '/personal', '/projects'].includes(url.pathname)&&request.method==='GET')return new Response(loginPage(url.pathname),{status:401,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer'}});
+   if(['/', '/work', '/personal', '/projects'].includes(url.pathname)&&request.method==='GET')return loginResponse(url.pathname,'',401);
    return json({error:'需要登录'},401);
   }
   try{
@@ -95,7 +95,7 @@ export default {
    if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET'){
     const embedded=url.pathname==='/projects'&&url.searchParams.get('embedded')==='1';
     const projectHtml=embedded?HTML.replace('</head>','<style>.header,.footer{display:none}.container{padding:8px;max-width:none}</style></head>'):HTML;
-    return new Response(url.pathname==='/'?LANDING:url.pathname==='/projects'?projectHtml:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':embedded?'SAMEORIGIN':'DENY','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff'}});
+    return new Response(url.pathname==='/'?LANDING:url.pathname==='/projects'?projectHtml:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':embedded?'SAMEORIGIN':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Content-Type-Options':'nosniff'}});
    }
    if(url.pathname==='/api/wardrobe-images'&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
