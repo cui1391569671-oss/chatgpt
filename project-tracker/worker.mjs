@@ -1,3 +1,4 @@
+import {sessionValid,authRoute,loginPage} from './auth.mjs';
 import {findGameCover} from './game-covers.mjs';
 import {getGameReleases} from './game-releases.mjs';
 import {HTML,WORKBENCH,LANDING,FAVICON} from './pages.mjs';
@@ -5,7 +6,7 @@ const json=(value,status=200)=>new Response(JSON.stringify(value),{status,header
 async function authorized(request,env){
  if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return false;
  const header=request.headers.get('Authorization')||'';
- if(!header.startsWith('Basic '))return false;
+ if(!header.startsWith('Basic '))return sessionValid(request,env);
  try{
   const bytes=Uint8Array.from(atob(header.slice(6)),c=>c.charCodeAt(0));
   const text=new TextDecoder().decode(bytes),p=text.indexOf(':');
@@ -76,8 +77,13 @@ function validWorkspace(w){
 export default {
  async fetch(request,env){
   if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
-  if(!await authorized(request,env))return new Response('需要登录',{status:401,headers:{'WWW-Authenticate':'Basic realm="Project Tracker", charset="UTF-8"','Cache-Control':'no-store'}});
   const url=new URL(request.url);
+  const auth=await authRoute(request,env);if(auth)return auth;
+  if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600'}});
+  if(!await authorized(request,env)){
+   if(['/', '/work', '/personal', '/projects'].includes(url.pathname)&&request.method==='GET')return new Response(loginPage(url.pathname),{status:401,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer'}});
+   return json({error:'需要登录'},401);
+  }
   try{
    if(url.pathname==='/api/game-releases'&&request.method==='GET'){
     const mode=url.searchParams.get('mode')||'upcoming';
