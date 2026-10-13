@@ -64,3 +64,14 @@ test('work daily routines and maintenance persist independently of private recor
  assert.equal((await get(env,'/api/workspace?scope=personal')).workspace.dailyRoutines[0].completedOn,'2026-10-13');
  assert.equal((await get(env,'/api/workspace?scope=work')).workspace.dailyRoutines[0].completedOn,'');
 });
+
+test('project expenses persist, edit and delete without changing private records; invalid money is rejected',async()=>{
+ const {env}=setup();const endpoint='/api/workspace/patch?scope=work',record={id:'expense-1',title:'采购工具',project:'P003',category:'项目采购',date:'2026-10-13',amountCents:12345,currency:'CNY',status:'pending',detail:'现场工具'};
+ assert.equal((await patch(env,endpoint,[{collection:'expenses',id:record.id,action:'create',record}])).status,200);
+ assert.equal((await get(env,'/api/workspace?scope=work')).workspace.expenses[0].amountCents,12345);
+ assert.equal((await get(env,'/api/workspace?scope=personal')).workspace.expenses,undefined);
+ assert.equal((await patch(env,endpoint,[{collection:'expenses',id:record.id,action:'update',changes:{status:{before:{exists:true,value:'pending'},after:{exists:true,value:'paid'}}}}])).status,200);
+ assert.equal((await patch(env,endpoint,[{collection:'expenses',id:'bad',action:'create',record:{...record,id:'bad',amountCents:-1}}])).status,400);
+ assert.equal((await patch(env,endpoint,[{collection:'expenses',id:record.id,action:'delete',before:{...record,status:'paid'}}])).status,200);
+ assert.equal((await get(env,'/api/workspace?scope=work')).workspace.expenses.length,0);
+});
