@@ -31,6 +31,9 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
 
 .project-priority{border:1px solid transparent;gap:5px;min-height:30px;padding:4px 8px}.project-priority::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor}.issue-status{width:110px;min-height:36px;padding:6px 8px;font-size:13px;background:var(--card);color:var(--accent)}.issue-status[data-status="暂停"]{color:#8e6413}.issue-status[data-status="已完成"]{color:#277856}
 @media(max-width:760px){.project-priority,.issue-status{min-height:44px}}
+
+/* Keep controls outside the table's scroll area and freeze column headers. */
+.container{height:100dvh;display:flex;flex-direction:column;min-height:0}.container>.header,.container>.toolbar,.container>.table-actions,#pendingNotice{flex-shrink:0}.toolbar{position:relative;z-index:100}.table-wrapper{flex:1;min-height:120px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}thead th{position:sticky;top:0;z-index:50;background:#f8f9fc;box-shadow:0 1px 0 var(--border)}
 </style>
 </head>
 <body>
