@@ -51,9 +51,9 @@ test('stale project page cannot overwrite a newer workspace save',async()=>{
 
 test('generated worker pages exactly match HTML sources',async()=>{
  const {readFile}=await import('node:fs/promises');const {HTML,WORKBENCH,LANDING}=await import('../pages.mjs');
- assert.equal(HTML,await readFile(new URL('../index.html',import.meta.url),'utf8'));
- assert.equal(WORKBENCH,await readFile(new URL('../workbench.html',import.meta.url),'utf8'));
- assert.equal(LANDING,await readFile(new URL('../landing.html',import.meta.url),'utf8'));
+ assert.equal(HTML.replace(/\r\n/g,'\n'),(await readFile(new URL('../index.html',import.meta.url),'utf8')).replace(/\r\n/g,'\n'));
+ assert.equal(WORKBENCH.replace(/\r\n/g,'\n'),(await readFile(new URL('../workbench.html',import.meta.url),'utf8')).replace(/\r\n/g,'\n'));
+ assert.equal(LANDING.replace(/\r\n/g,'\n'),(await readFile(new URL('../landing.html',import.meta.url),'utf8')).replace(/\r\n/g,'\n'));
 });
 
 

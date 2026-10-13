@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {parseSteamGames,getGameReleases,getSteamReleases,parsePlayStationGames,mergeReleaseGames,PS_SOURCE} from '../game-releases.mjs';
+import {parseSteamGames,getGameReleases as getRawGameReleases,MEDIA_SOURCES,parseMediaTitles,filterMediaGames,getSteamReleases,parsePlayStationGames,mergeReleaseGames,PS_SOURCE} from '../game-releases.mjs';
+const getGameReleases=(mode,fetcher,now)=>getRawGameReleases(mode,async url=>MEDIA_SOURCES.some(x=>x.url===url)?new Response('<div id="article-body"><ul><li>A &amp; B (PC) – October 20</li><li>PS Only (PS5) – October 20</li></ul></div>'):fetcher(url),now);
 const row=(id,date,name='A &amp; B')=>`<a data-ds-appid="${id}"><img src="https://shared.fastly.steamstatic.com/store_item_assets/test.jpg"><span class="title">${name}</span><span class="platform_img win"></span><div class="search_released responsive_secondrow">${date}</div></a>`;
 test('Steam parsing preserves calendar dates without local timezone shifts and uncertain dates',()=>{
  const [game,tbd]=parseSteamGames(row(1,'1 Jan, 2026')+row(2,'Q4 2026'));
@@ -33,3 +34,5 @@ test('upcoming retains the full popular catalog and upstream failure is reported
  const d=await getGameReleases('upcoming',async()=>Response.json({success:1,total_count:20,results_html:Array.from({length:8},(_,i)=>row(i+1,'Coming soon')).join('')}));assert.equal(d.items.length,8);
  await assert.rejects(getGameReleases('upcoming',async()=>new Response('',{status:503})));
 });
+
+test('media matching requires two distinct source lists and excludes incidental prose',()=>{const html='<div id="article-body"><p>Minor Game is mentioned here</p><li>Major Game (PC, PS5) – October 20</li></div>';const titles=parseMediaTitles(html);const games=[{title:'Major Game'},{title:'Minor Game'}];assert.equal(filterMediaGames(games,[{name:'A',url:'a',titles}]).length,0);const chosen=filterMediaGames(games,[{name:'A',url:'a',titles},{name:'B',url:'b',titles}]);assert.equal(chosen.length,1);assert.equal(chosen[0].mediaSources.length,2);});

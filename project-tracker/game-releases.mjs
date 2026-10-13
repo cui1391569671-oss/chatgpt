@@ -1,3 +1,7 @@
+export const MEDIA_SOURCES=[{name:'GamesRadar+',url:'https://www.gamesradar.com/video-game-release-dates/'},{name:'PC Gamer',url:'https://www.pcgamer.com/games/new-pc-games-2026/'}];
+export function parseMediaTitles(html){const article=html.match(/<[^>]+id=["']article-body["'][^>]*>([\s\S]*)/i)?.[1]||html;const names=[];for(const [row] of article.matchAll(/<(?:li|tr)\b[^>]*>[\s\S]*?<\/(?:li|tr)>/gi)){let text=decode(row);if(!/January|February|March|April|May|June|July|August|September|October|November|December/i.test(text))continue;const cells=[...row.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)];const title=cells.length>1?decode(cells[1][1]).replace(/\s*\(.*$/,''):text.split(/\s+\((?:PC|PS|XS|NS|Xbox|Switch)/)[0];if(title&&title!==text||cells.length>1)names.push(canonical(title));}return new Set(names);}
+export function filterMediaGames(games,evidence){return games.flatMap(g=>{const aliases=[g.originalTitle,g.title].filter(Boolean).map(canonical),sources=evidence.filter(x=>aliases.some(t=>x.titles.has(t))).map(({name,url})=>({name,url}));return sources.length>=2?[{...g,mediaSources:sources}]:[];});}
+async function mediaEvidence(fetcher){return Promise.all(MEDIA_SOURCES.map(async source=>{const r=await fetcher(source.url,{signal:AbortSignal.timeout(12000),cf:{cacheTtl:3600,cacheEverything:true}});if(!r.ok)throw Error('媒体精选暂时无法读取');const titles=parseMediaTitles(await r.text());if(!titles.size)throw Error('媒体精选页面格式已变化');return {...source,titles};}));}
 const decode=s=>s.replace(/<[^>]*>/g,' ').replace(/&#x([a-f\d]+);/gi,(_,n)=>String.fromCodePoint(parseInt(n,16))).replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();
 export const PS_SOURCE='https://www.playstation.com/zh-hans-hk/ps5/games/';
 const chinese=s=>/[\u3400-\u9fff]/.test(s);
@@ -65,6 +69,8 @@ export async function getGameReleases(mode,fetcher=fetch,now=new Date()){
  if(steamResult.status==='rejected'&&psResult.status==='rejected')throw Error('游戏榜暂时无法读取');
  const steam=steamResult.status==='fulfilled'?steamResult.value:null,ps=psResult.status==='fulfilled'?psResult.value:[];
  const warnings=[];if(!steam)warnings.push('Steam 数据暂不可用');if(psResult.status==='rejected')warnings.push('PlayStation 数据暂不可用');
+ const evidence=mode==='upcoming'?await mediaEvidence(fetcher):null;
  const data={items:mergeReleaseGames(steam?.items||[],ps,mode),year,complete:!!steam?.complete&&psResult.status==='fulfilled',updatedAt:now.toISOString(),warnings,source:'Steam 热门榜 + PlayStation 官方精选',sourceUrl:steam?.sourceUrl||PS_SOURCE,psSourceUrl:PS_SOURCE};
+ if(evidence){data.items=filterMediaGames(data.items,evidence);data.mediaSources=MEDIA_SOURCES;data.source='两家媒体共同收录的重点新作';}
  if(fetcher===fetch&&!warnings.length){for(const [k,v] of cache)if(v.expires<=Date.now())cache.delete(k);cache.set(key,{data,expires:Date.now()+3600000});}return data;
 }
