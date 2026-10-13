@@ -82,8 +82,12 @@ function validWorkspace(w){
 
 export default {
  async fetch(request,env){
-  if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
   const url=new URL(request.url);
+  if(url.pathname==='/robots.txt'&&request.method==='GET')return new Response('User-agent: *\nAllow: /$\nDisallow: /work\nDisallow: /personal\nDisallow: /projects\nDisallow: /api/\nDisallow: /auth/\nDisallow: /login\nSitemap: '+url.origin+'/sitemap.xml\n',{headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'public, max-age=3600'}});
+  if(url.pathname==='/sitemap.xml'&&request.method==='GET')return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>'+url.origin+'/</loc></url></urlset>',{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
+  if(url.pathname==='/'&&['GET','HEAD'].includes(request.method))return new Response(request.method==='HEAD'?null:LANDING,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'public, max-age=300','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'"}});
+  if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
+  if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
   const auth=await authRoute(request,env);if(auth)return auth;
   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600'}});
   if(!await authorized(request,env)){
