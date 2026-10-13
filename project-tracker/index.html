@@ -34,6 +34,11 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
 
 /* Keep controls outside the table's scroll area and freeze column headers. */
 .container{height:100dvh;display:flex;flex-direction:column;min-height:0}.container>.header,.container>.toolbar,.container>.table-actions,#pendingNotice{flex-shrink:0}.toolbar{position:relative;z-index:100}.table-wrapper{flex:1;min-height:120px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}thead th{position:sticky;top:0;z-index:50;background:#f8f9fc;box-shadow:0 1px 0 var(--border)}
+
+@media(min-width:1000px){.toolbar{flex-direction:row;align-items:center;gap:8px}.search-box{flex:1;min-width:160px;width:auto}.toolbar-row{flex-wrap:nowrap;flex-shrink:0}.toolbar-row>select{width:125px;flex-basis:125px}.toolbar-row .btn{padding:7px 10px}}
+
+.toolbar .search-box input,.toolbar-row>select,.toolbar-row>.btn{height:40px;min-height:40px;border-radius:8px;font-size:14px;line-height:20px;padding-top:9px;padding-bottom:9px}.toolbar-row>select,.toolbar-row>.btn{width:120px;flex:0 0 120px;padding-left:10px;padding-right:10px}.toolbar .search-box::before{top:12px}.toolbar .search-box::after{top:25px}
+@media(max-width:760px){.toolbar .search-box input,.toolbar-row>select,.toolbar-row>.btn{height:44px;min-height:44px}.toolbar-row>select,.toolbar-row>.btn{width:100%;flex:none}.toolbar .search-box::before{top:14px}.toolbar .search-box::after{top:27px}}
 </style>
 </head>
 <body>
