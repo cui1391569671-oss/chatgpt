@@ -48,3 +48,19 @@ test('maintenance create edit delete persist through cloud patches and keep work
  const bad={...item,nextDate:'2026-02-30'};assert.equal((await patch(env,endpoint,recordChanges(base,{...base,maintenance:[bad]},WORKSPACE_COLLECTIONS))).status,400);
 });
 test('daily routines persist daily completion independently from tasks',async()=>{const {env}=setup(),path='/api/workspace?scope=personal',endpoint='/api/workspace/patch?scope=personal';let base=(await get(env,path)).workspace;for(const completedOn of ['', '2026-10-12','']){const next={...base,dailyRoutines:[{id:'daily-1',title:'阅读',detail:'20分钟',completedOn}]};const r=await patch(env,endpoint,recordChanges(base,next,WORKSPACE_COLLECTIONS));assert.equal(r.status,200);base=(await get(env,path)).workspace;assert.equal(base.dailyRoutines[0].completedOn,completedOn);assert.equal(base.tasks.length,0);}const bad={...base,dailyRoutines:[{...base.dailyRoutines[0],completedOn:'invalid'}]};assert.equal((await patch(env,endpoint,recordChanges(base,bad,WORKSPACE_COLLECTIONS))).status,400);});
+
+test('work daily routines and maintenance persist independently of private records',async()=>{
+ const {env}=setup();const collections={dailyRoutines:{id:'routine',title:'检查项目进度',detail:'',completedOn:'2026-10-13'},maintenance:{id:'equipment',title:'工作电脑',location:'办公室',detail:'检查设备',lastDate:'2026-10-01',nextDate:'2026-11-01'}};
+ for(const scope of ['personal','work']){
+  const operations=Object.entries(collections).map(([collection,record])=>({collection,id:record.id,action:'create',record:{...record,title:scope+' '+record.title}}));
+  assert.equal((await patch(env,'/api/workspace/patch?scope='+scope,operations)).status,200);
+ }
+ for(const scope of ['personal','work']){
+  const stored=(await get(env,'/api/workspace?scope='+scope)).workspace;
+  assert.equal(stored.dailyRoutines[0].title,scope+' 检查项目进度');assert.equal(stored.maintenance[0].title,scope+' 工作电脑');
+ }
+ const operations=[{collection:'dailyRoutines',id:'routine',action:'update',changes:{completedOn:{before:{exists:true,value:'2026-10-13'},after:{exists:true,value:''}}}}];
+ assert.equal((await patch(env,'/api/workspace/patch?scope=work',operations)).status,200);
+ assert.equal((await get(env,'/api/workspace?scope=personal')).workspace.dailyRoutines[0].completedOn,'2026-10-13');
+ assert.equal((await get(env,'/api/workspace?scope=work')).workspace.dailyRoutines[0].completedOn,'');
+});
