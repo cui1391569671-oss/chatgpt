@@ -22,5 +22,17 @@ export async function findMediaCover(title,fetcher=fetch){
 
 export async function findAnimeCover(title,fetcher=fetch){
  const normalize=s=>String(s||'').normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
- try{const r=await fetcher('https://api.bgm.tv/v0/search/subjects?limit=20',{method:'POST',headers:{'Content-Type':'application/json','User-Agent':'Workbench/1.0 (https://github.com/cui1391569671-oss/chatgpt)'},body:JSON.stringify({keyword:title.trim(),filter:{type:[2]}}),signal:AbortSignal.timeout(8000)});if(!r.ok)throw Error();const data=await r.json();const exact=(data.data||[]).filter(x=>x.type===2&&[x.name,x.name_cn].some(n=>normalize(n)===normalize(title)));if(exact.length!==1)return {coverUrl:'',matchedTitle:'',sourceUrl:'',reason:exact.length>1?'ambiguous':'not_found'};const anime=exact[0],cover=anime.images?.large||anime.images?.common||'';if(!/^https:\/\/lain\.bgm\.tv\//.test(cover))throw Error();return {coverUrl:cover,matchedTitle:anime.name_cn||anime.name,sourceUrl:'https://bgm.tv/subject/'+anime.id};}catch{return {coverUrl:'',matchedTitle:'',sourceUrl:'',reason:'unavailable'};}
+ const keyword=title.trim().replace(/\s*(?:第[一二三四五六七八九十百\d]+[季期部]|season\s*\d+)\s*$/i,'').trim()||title.trim();
+ const subjects=new Map();let truncated=false;
+ try{
+  for(let offset=0;offset<200;offset+=50){
+   const r=await fetcher('https://api.bgm.tv/v0/search/subjects?limit=50&offset='+offset,{method:'POST',headers:{'Content-Type':'application/json','User-Agent':'Workbench/1.0 (https://github.com/cui1391569671-oss/chatgpt)'},body:JSON.stringify({keyword,filter:{type:[2]}}),signal:AbortSignal.timeout(8000)});
+   if(!r.ok)throw Error();const data=await r.json(),rows=data.data||[];
+   for(const x of rows){const coverUrl=x.images?.large||x.images?.common||'';if(x.type===2&&[x.name,x.name_cn].some(n=>normalize(n).startsWith(normalize(keyword)))&&/^https:\/\/lain\.bgm\.tv\//.test(coverUrl))subjects.set(x.id,{id:x.id,matchedTitle:x.name_cn||x.name,originalTitle:x.name||'',coverUrl,date:x.date||'',sourceUrl:'https://bgm.tv/subject/'+x.id});}
+   truncated=Number(data.total)>offset+rows.length;if(!truncated||rows.length<50)break;
+  }
+  const candidates=[...subjects.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.matchedTitle.localeCompare(b.matchedTitle));
+  const exact=candidates.filter(x=>[x.matchedTitle,x.originalTitle].some(n=>normalize(n)===normalize(title)));
+  return {...(exact.length===1?exact[0]:{coverUrl:'',matchedTitle:'',sourceUrl:'',reason:exact.length>1?'ambiguous':'not_found'}),candidates,truncated};
+ }catch{return {coverUrl:'',matchedTitle:'',sourceUrl:'',candidates:[],reason:'unavailable'};}
 }
