@@ -26,3 +26,5 @@ body{-webkit-font-smoothing:antialiased;scrollbar-color:#b8b8bf transparent;scro
 
 .shared-workspace .cover-platform{color:#fff;font-size:14px;font-weight:700;letter-spacing:.3px;text-shadow:0 1px 2px #000,0 -1px 2px #000,1px 0 2px #000,-1px 0 2px #000,0 0 6px #000;line-height:1.5}
 .shared-workspace .cover-rating{background:transparent;color:#fff;font-weight:600;text-shadow:0 1px 2px #000,0 0 5px #000;padding:0}
+
+.shared-workspace .completed-game-grid .record-cover{margin-bottom:0}
