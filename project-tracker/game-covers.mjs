@@ -15,6 +15,21 @@ export async function findGameCover(title,fetcher=fetch){
  if(candidates.size===1){const game=[...candidates.values()][0];return {coverUrl:await getSteamPortrait(game.id,fetcher),matchedTitle:game.title,sourceUrl:game.url};}
  return {coverUrl:'',matchedTitle:'',sourceUrl:'',reason:candidates.size>1?'ambiguous':'not_found'};
 }
+export async function findMovieCovers(title,fetcher=fetch){
+ const candidates=new Map();let available=false;
+ await Promise.all(['zh','en'].map(async lang=>{try{
+  const params=new URLSearchParams({action:'query',format:'json',formatversion:'2',generator:'search',gsrsearch:'intitle:'+JSON.stringify(title.trim())+' '+(lang==='zh'?'电影':'film'),gsrlimit:'30',prop:'pageimages|extracts|categories',piprop:'thumbnail',pithumbsize:'600',pilicense:'any',pilimit:'50',exintro:'1',explaintext:'1',exsentences:'2',exlimit:'max',cllimit:'30'});
+  const r=await fetcher('https://'+lang+'.wikipedia.org/w/api.php?'+params,{signal:AbortSignal.timeout(8000)});if(!r.ok)return;available=true;
+  const found=(await r.json()).query?.pages||[];const exactParams=new URLSearchParams({action:'query',format:'json',formatversion:'2',redirects:'1',titles:title.trim(),prop:'pageimages|extracts|categories',piprop:'thumbnail',pithumbsize:'600',pilicense:'any',exintro:'1',explaintext:'1',exsentences:'2',cllimit:'30'});try{const exact=await fetcher('https://'+lang+'.wikipedia.org/w/api.php?'+exactParams,{signal:AbortSignal.timeout(7000)});if(exact.ok)found.unshift(...((await exact.json()).query?.pages||[]));}catch{}
+  for(const p of found){const description=p.extract||'',categories=(p.categories||[]).map(x=>x.title).join(' '),coverUrl=p.thumbnail?.source||'';
+   if(!/^https:\/\/upload\.wikimedia\.org\//.test(coverUrl)||!(/(电影|電影|\bfilms?\b)/i.test(categories+' '+p.title)||/(?:是|为|為).{0,80}(?:电影|電影)|(?:is|was) (?:a|an) .{0,100}film\b/i.test(description)))continue;
+   if(p.thumbnail.width&&p.thumbnail.height&&p.thumbnail.width>=p.thumbnail.height)continue;
+   candidates.set(coverUrl,{matchedTitle:p.title,coverUrl,date:(description.match(/(?:19|20)\d{2}/)||p.title.match(/(?:19|20)\d{2}/)||[])[0]||'',sourceUrl:'https://'+lang+'.wikipedia.org/wiki/'+encodeURIComponent(p.title),index:p.index||0});
+  }
+ }catch{}}));
+ const results=[...candidates.values()].sort((a,b)=>a.index-b.index);
+ return {coverUrl:'',matchedTitle:'',sourceUrl:'',candidates:results,reason:results.length?'selection_required':available?'not_found':'unavailable'};
+}
 export async function findMediaCover(title,fetcher=fetch){
  for(const lang of ['zh','en']){try{const params=new URLSearchParams({action:'query',format:'json',formatversion:'2',redirects:'1',prop:'pageimages',piprop:'thumbnail',pithumbsize:'600',pilicense:'any',titles:title});const r=await fetcher('https://'+lang+'.wikipedia.org/w/api.php?'+params,{signal:AbortSignal.timeout(7000)});if(!r.ok)continue;const data=await r.json(),page=(data.query?.pages||[]).find(p=>p.thumbnail?.source&&!p.missing);if(page&&/^https:\/\/upload\.wikimedia\.org\//.test(page.thumbnail.source))return {coverUrl:page.thumbnail.source,matchedTitle:page.title,sourceUrl:'https://'+lang+'.wikipedia.org/wiki/'+encodeURIComponent(page.title)};}catch{}}
  return {coverUrl:'',matchedTitle:'',sourceUrl:''};

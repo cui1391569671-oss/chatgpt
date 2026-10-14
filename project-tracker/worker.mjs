@@ -1,7 +1,7 @@
 import {getSteamReview} from './steam-reviews.mjs';
 import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
 import {sessionValid,authRoute,loginResponse} from './auth.mjs';
-import {findGameCover,findMediaCover,findAnimeCover} from './game-covers.mjs';
+import {findGameCover,findMediaCover,findAnimeCover,findMovieCovers} from './game-covers.mjs';
 import {getGameReleases} from './game-releases.mjs';
 import {HTML,WORKBENCH,LANDING,FAVICON} from './pages.mjs';
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
@@ -122,7 +122,7 @@ export default {
    if(url.pathname==='/api/steam-review'&&request.method==='GET'){const appid=url.searchParams.get('appid'),title=(url.searchParams.get('title')||'').trim();if(appid&&!/^\d{1,10}$/.test(appid)||!appid&&(!title||title.length>200))return json({error:'Invalid game'},400);return json(await getSteamReview({appid,title}));}
    if(url.pathname==='/api/game-cover'&&request.method==='GET'){
     const title=(url.searchParams.get('title')||'').trim();if(!title||title.length>200)return json({error:'Invalid game title'},400);
-    return json(await (url.searchParams.get('type')==='anime'?findAnimeCover(title):url.searchParams.get('type')==='media'?findMediaCover(title):findGameCover(title)));
+    return json(await (url.searchParams.get('type')==='anime'?findAnimeCover(title):url.searchParams.get('type')==='movie'?findMovieCovers(title):url.searchParams.get('type')==='media'?findMediaCover(title):findGameCover(title)));
    }
    if(url.pathname==='/api/state/archive'&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
