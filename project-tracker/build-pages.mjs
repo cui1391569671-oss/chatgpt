@@ -1,6 +1,6 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 const load=name=>readFileSync(new URL(name,import.meta.url),'utf8').replace(/\r\n/g,'\n');
-for(const name of ['index.html','workbench.html']){let html=load(name).replace(/<!-- PRODUCT_DESIGN_START -->[\s\S]*?<!-- PRODUCT_DESIGN_END -->/g,'');html=html.replace('</head>','<!-- PRODUCT_DESIGN_START --><style>'+load('workspace-design.css')+'</style><!-- PRODUCT_DESIGN_END --></head>');writeFileSync(new URL(name,import.meta.url),html);}
+for(const name of ['index.html','workbench.html']){let html=load(name).replace(/<!-- PRODUCT_DESIGN_START -->[\s\S]*?<!-- PRODUCT_DESIGN_END -->/g,'');html=html.replace('</head>','<!-- PRODUCT_DESIGN_START --><style>'+load('workspace-design.css')+'\n'+load('modern-workspace.css')+'</style><!-- PRODUCT_DESIGN_END --></head>');writeFileSync(new URL(name,import.meta.url),html);}
 const shared=load('cloud-records.mjs').replace(/export /g,'');
 for(const name of ['index.html','workbench.html']){let html=load(name);const block='/* CLOUD_RECORDS_START */\n'+shared+'\n/* CLOUD_RECORDS_END */';html=html.includes('/* CLOUD_RECORDS_START */')?html.replace(/\/\* CLOUD_RECORDS_START \*\/[\s\S]*?\/\* CLOUD_RECORDS_END \*\//,block):html.replace('<script>','<script>\n'+block);writeFileSync(new URL(name,import.meta.url),html);}
 const workbench=load('workbench.html').replace(/\/\* HOLIDAYS_START \*\/[\s\S]*?\/\* HOLIDAYS_END \*\//,`/* HOLIDAYS_START */\nconst CHINA_HOLIDAYS=${JSON.stringify(JSON.parse(load('holidays.json')))};\n/* HOLIDAYS_END */`);
