@@ -99,6 +99,12 @@ body.modern-work.project-view .shell{height:100dvh;min-height:0}.modern-work.pro
 
 .modern-project .project-empty-row td{padding-top:22px;padding-bottom:22px}.modern-project .project-empty-row td[colspan]{color:var(--muted)}.project-empty-row .btn{margin-left:16px}
 .project-dialog{width:min(460px,calc(100% - 32px));max-height:90dvh;overflow:auto;padding:24px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);box-shadow:0 12px 40px #20232918}.project-dialog::backdrop{background:#20232940}.project-dialog h2{font-size:24px;margin:0 0 20px}.project-dialog label{display:block;font-size:15px;margin:16px 0 8px}.project-dialog input{width:100%;min-height:48px;border:1px solid var(--line);border-radius:5px;padding:10px;font:inherit;color:var(--text);background:var(--surface)}.project-dialog .form-error{min-height:24px;color:#b42318;font-size:14px}.project-dialog .muted{font-size:14px;line-height:1.7}.project-dialog :focus-visible{outline:3px solid var(--accent);outline-offset:3px}.add-choice-options{display:grid;gap:12px}.add-choice-options .btn{align-items:flex-start;flex-direction:column;padding:16px;white-space:normal;text-align:left;gap:5px}.add-choice-options strong{font-size:16px}.add-choice-options span{font-size:14px;color:var(--muted)}
+
+/* Compact project controls and project urgency */
+.modern-project .project-search-toggle{width:44px;min-width:44px;height:44px;padding:0;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.modern-project .project-search-box{flex:1;min-width:180px;width:auto}.modern-project .project-search-box[hidden]{display:none}.modern-project .project-search-box::before,.modern-project .project-search-box::after{display:none}.modern-project .project-search-box input{padding:10px 12px}
+.modern-project tbody .project-merged[data-priority=urgent]{background:#fff0ef;color:#a52b25}.modern-project tbody .project-merged[data-priority=high]{background:#fff5e8;color:#965719}.modern-project tbody .project-merged[data-priority=medium]{background:#edf3ff;color:#345aa7}.modern-project tbody .project-merged[data-priority=low]{background:#f1f3f6;color:#596273}.modern-project .project-merged[data-priority] small{color:inherit;opacity:.8}
+@media(max-width:760px){.modern-project .toolbar-row{display:flex;flex-wrap:wrap}.modern-project .toolbar-row>.btn{width:auto;flex:none}.modern-project .project-search-box{order:5;flex-basis:100%;width:100%}}
 </style><!-- PRODUCT_DESIGN_END --></head>
 <body class="modern-project">
 <div class="container">
@@ -108,30 +114,11 @@ body.modern-work.project-view .shell{height:100dvh;min-height:0}.modern-work.pro
   </div>
 
 <div id="pendingNotice" role="status" style="display:none;margin-bottom:16px;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--soft)"><span id="pendingMessage"></span> <button class="btn btn-outline" onclick="reviewPending()">查看本地副本</button></div>
-<div class="issue-quick-tabs" aria-label="问题快捷筛选"><button type="button" data-quick="all" aria-pressed="true">全部问题</button><button type="button" data-quick="overdue" aria-pressed="false">已逾期</button><button type="button" data-quick="today" aria-pressed="false">今天到期</button></div>
+<div class="issue-quick-tabs" aria-label="问题快捷筛选"><button type="button" data-quick="all" aria-pressed="true">全部问题</button></div>
 <div class="toolbar">
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="搜索问题 / 原因 / 备注 / 项目…">
-    </div>
     <div class="toolbar-row">
-      <select id="filterStatus">
-        <option value="">全部状态</option>
-        <option value="未完成">未完成</option>
-        <option value="已完成">已完成</option>
-      </select>
-      <select id="filterOverdue">
-        <option value="">全部超期</option>
-        <option value="7">超7天（黄）</option>
-        <option value="14">超14天（红）</option>
-      </select>
-      <select id="filterPriority">
-        <option value="">全部优先级</option>
-        <option value="urgent">🔴 紧急</option>
-        <option value="high">🟠 高</option>
-        <option value="medium">🔵 中</option>
-        <option value="low">⚪ 低</option>
-        <option value="none">无标记</option>
-      </select>
+      <button type="button" class="btn btn-outline project-search-toggle" id="projectSearchToggle" aria-label="搜索项目问题" title="搜索" aria-expanded="false" aria-controls="projectSearchBox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></button>
+      <div class="search-box project-search-box" id="projectSearchBox" hidden><input type="search" id="searchInput" aria-label="搜索项目问题" placeholder="搜索问题 / 原因 / 备注 / 项目…"></div>
       <button class="btn btn-add" onclick="showAddChoice()" title="添加项目或问题" id="btnAdd"></button>
       <button class="btn btn-outline" id="btnSave" type="button" onmousedown="event.preventDefault()" onclick="manualSave()" title="将当前修改保存到云端">保存</button>
       <button class="btn btn-del" onclick="deleteCompleted()" title="删除所有已完成的问题" id="btnDel"></button>
@@ -376,9 +363,6 @@ async function init() {
   console.log("[init] data length:", data.length); renderTable();
   updateStats();
   document.getElementById('searchInput').addEventListener('input', debounce(renderTable, 300));
-  document.getElementById('filterStatus').addEventListener('change', renderTable);
-  document.getElementById('filterOverdue').addEventListener('change', renderTable);
-  document.getElementById('filterPriority').addEventListener('change', renderTable);
 }
 
 async function loadData() {
@@ -497,9 +481,9 @@ function getOverdueDays(dateStr) {
 
 function getFilteredData() {
   const search = document.getElementById('searchInput').value.toLowerCase().trim();
-  const statusFilter = document.getElementById('filterStatus').value;
-  const overdueFilter = document.getElementById('filterOverdue').value;
-  const priorityFilter = document.getElementById('filterPriority').value;
+  const statusFilter = (document.getElementById('filterStatus')?.value||'');
+  const overdueFilter = (document.getElementById('filterOverdue')?.value||'');
+  const priorityFilter = (document.getElementById('filterPriority')?.value||'');
 
   return data.map((item, idx) => ({...item, _idx: idx})).filter(item => {
     if (statusFilter === '未完成' && item.done) return false;
@@ -527,12 +511,12 @@ function getFilteredData() {
 
 let quickIssueFilter='all',issueEditingId=null,issueBaseline=null,issueSubmitting=false;
 function emptyProjectNames(){
- if(quickIssueFilter!=='all'||document.getElementById('filterStatus').value||document.getElementById('filterOverdue').value)return [];
- const q=document.getElementById('searchInput').value.trim().toLowerCase(),pri=document.getElementById('filterPriority').value;
+ if(quickIssueFilter!=='all'||(document.getElementById('filterStatus')?.value||'')||(document.getElementById('filterOverdue')?.value||''))return [];
+ const q=document.getElementById('searchInput').value.trim().toLowerCase(),pri=(document.getElementById('filterPriority')?.value||'');
  return projectNames().filter(name=>!data.some(x=>x.project===name)&&(!q||name.toLowerCase().includes(q))&&(!pri||(pri==='none'?!getPriority(name):getPriority(name)===pri)));
 }
 function projectPriorityCell(name){const cell=document.createElement('td'),button=document.createElement('button'),info=getPriorityInfo(getPriority(name));button.type='button';button.className='priority-badge project-priority '+info.cls;button.textContent=info.label;button.setAttribute('aria-label','项目紧急程度：'+name+'，'+info.label);button.onclick=()=>showPriorityDropdown(name,button);cell.append(button);return cell;}
-function emptyProjectRow(name){const row=document.createElement('tr');row.className='project-empty-row project-group-start';const project=document.createElement('td');project.className='issue-project-name project-merged';project.textContent=name;const count=document.createElement('small');count.textContent='0 项问题';project.append(count);const empty=document.createElement('td');empty.colSpan=3;const label=document.createElement('span');label.textContent='暂未添加问题';const add=document.createElement('button');add.type='button';add.className='btn btn-outline';add.textContent='添加问题';add.setAttribute('aria-label','为'+name+'添加问题');add.onclick=()=>showAddModal(name);empty.append(label,add);const complete=document.createElement('td');complete.textContent='—';row.append(project,empty,projectPriorityCell(name),complete);return row;}
+function emptyProjectRow(name){const row=document.createElement('tr');row.className='project-empty-row project-group-start';const project=document.createElement('td');project.className='issue-project-name project-merged';project.dataset.priority=getPriority(name);project.setAttribute('aria-label',name+'，'+getPriorityInfo(getPriority(name)).label);project.textContent=name;const count=document.createElement('small');count.textContent='0 项问题';project.append(count);const empty=document.createElement('td');empty.colSpan=3;const label=document.createElement('span');label.textContent='暂未添加问题';const add=document.createElement('button');add.type='button';add.className='btn btn-outline';add.textContent='添加问题';add.setAttribute('aria-label','为'+name+'添加问题');add.onclick=()=>showAddModal(name);empty.append(label,add);const complete=document.createElement('td');complete.textContent='—';row.append(project,empty,projectPriorityCell(name),complete);return row;}
 function renderTable(){
  const tbody=document.getElementById('tableBody');tbody.replaceChildren();const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'});
  const filtered=getFilteredData().filter(x=>quickIssueFilter==='all'||!x.done&&(quickIssueFilter==='overdue'?x.plannedDate&&x.plannedDate<today:x.plannedDate===today));
@@ -540,7 +524,7 @@ function renderTable(){
  for(const [projectName,rows] of [...grouped].sort(([a],[b])=>a.localeCompare(b,'zh-CN',{numeric:true}))){
  if(!rows.length){tbody.append(emptyProjectRow(projectName));continue;}
  for(const item of rows){const status=item.done?'已完成':item.status;const row=document.createElement('tr');row.className='compact-issue';
- if(item===rows[0]){row.classList.add('project-group-start');const project=document.createElement('td');project.className='issue-project-name project-merged';project.rowSpan=rows.length;project.textContent=projectName;const count=document.createElement('small');count.textContent=rows.length+' 项问题';project.append(count);row.append(project);}
+ if(item===rows[0]){row.classList.add('project-group-start');const project=document.createElement('td');project.className='issue-project-name project-merged';project.dataset.priority=getPriority(projectName);project.setAttribute('aria-label',projectName+'，'+getPriorityInfo(getPriority(projectName)).label);project.rowSpan=rows.length;project.textContent=projectName;const count=document.createElement('small');count.textContent=rows.length+' 项问题';project.append(count);row.append(project);}
  const task=document.createElement('td'),open=document.createElement('button');open.type='button';open.className='issue-open';open.setAttribute('aria-label','查看问题：'+item.task);const dot=document.createElement('span');dot.className='issue-status-dot '+(item.done?'completed':status==='暂停'?'paused':'');dot.setAttribute('aria-hidden','true');const title=document.createElement('span');title.textContent=item.task||'未命名问题';open.append(dot,title);open.onclick=()=>openIssueDetails(item.id);task.append(open);row.append(task);
  const stateCell=document.createElement('td'),stateButton=document.createElement('button');stateButton.type='button';stateButton.className='issue-state-pill '+(status==='暂停'?'paused':item.done?'completed':'');stateButton.textContent=status;stateButton.setAttribute('aria-label','查看状态与详情：'+item.task);stateButton.onclick=()=>openIssueDetails(item.id);stateCell.append(stateButton);row.append(stateCell);
  const date=document.createElement('td');date.className='issue-date'+(!item.done&&getOverdueDays(item.plannedDate)?' overdue':'');date.textContent=item.plannedDate||'未设置';if(!item.done&&getOverdueDays(item.plannedDate))date.title='已逾期 '+getOverdueDays(item.plannedDate)+' 天';row.append(date);
@@ -556,6 +540,10 @@ document.getElementById('issueDetailsForm').onsubmit=async e=>{e.preventDefault(
  issueSubmitting=true;document.querySelectorAll('#issueDetails button,#issueDetails input,#issueDetails select,#issueDetails textarea').forEach(x=>x.disabled=true);error.textContent='';const item={...data[idx],task:title};for(const k of fields.filter(k=>k!=='task'))item[k]=document.getElementById('issue-'+k).value;item.done=item.status==='已完成';data[idx]=item;
  try{if(await saveData()){document.getElementById('issueDetails').close();renderTable();updateStats();}else {issueBaseline=structuredClone(data.find(x=>x.id===issueEditingId));error.textContent='保存未成功，输入仍保留。请按页面提示核对或重试。';}}catch(err){error.textContent=err.message;}finally{issueSubmitting=false;document.querySelectorAll('#issueDetails button,#issueDetails input,#issueDetails select,#issueDetails textarea').forEach(x=>x.disabled=false);}
 };
+const searchToggle=document.getElementById('projectSearchToggle'),searchBox=document.getElementById('projectSearchBox'),projectSearch=document.getElementById('searchInput');
+function closeProjectSearch(){projectSearch.value='';searchBox.hidden=true;searchToggle.setAttribute('aria-expanded','false');renderTable();searchToggle.focus();}
+searchToggle.onclick=()=>{if(!searchBox.hidden){closeProjectSearch();return;}searchBox.hidden=false;searchToggle.setAttribute('aria-expanded','true');projectSearch.focus();};
+projectSearch.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeProjectSearch();}});
 document.querySelector('.issue-quick-tabs').onclick=e=>{const button=e.target.closest('[data-quick]');if(!button)return;quickIssueFilter=button.dataset.quick;document.querySelectorAll('[data-quick]').forEach(x=>x.setAttribute('aria-pressed',String(x===button)));renderTable();};
 
 document.getElementById('tableBody').addEventListener('input',e=>{
