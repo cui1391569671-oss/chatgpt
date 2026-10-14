@@ -15,7 +15,7 @@ test('product homepage is public and does not access private storage',async()=>{
 
 test('public product homepage does not make workspace routes or APIs public',async()=>{
  const env={TRACKER_USER:'user',TRACKER_PASSWORD:'secret',DB:{prepare(){throw new Error('Unauthenticated requests must not reach storage');}}};
- for(const path of ['/work','/personal','/projects','/api/workspace?scope=personal','/api/state','/api/project-calendar','/api/reminders?scope=work']){
+ for(const path of ['/work','/personal','/projects','/api/workspace?scope=personal','/api/state','/api/steam-review?appid=2358720','/api/project-calendar','/api/reminders?scope=work']){
   const response=await worker.fetch(new Request('https://site.test'+path),env);assert.equal(response.status,401,path);
   assert.doesNotMatch(await response.text(),/把工作推进/);
  }

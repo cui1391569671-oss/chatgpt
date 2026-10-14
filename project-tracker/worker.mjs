@@ -1,3 +1,4 @@
+import {getSteamReview} from './steam-reviews.mjs';
 import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
 import {sessionValid,authRoute,loginResponse} from './auth.mjs';
 import {findGameCover,findMediaCover} from './game-covers.mjs';
@@ -118,6 +119,7 @@ export default {
     const item=await env.DB.prepare('SELECT bytes FROM wardrobe_images WHERE id=?').bind(url.pathname.split('/').at(-1)).first();if(!item)return new Response('Not found',{status:404});
     return new Response(new Uint8Array(item.bytes),{headers:{'Content-Type':'image/jpeg','Cache-Control':'private, max-age=86400','X-Content-Type-Options':'nosniff'}});
    }
+   if(url.pathname==='/api/steam-review'&&request.method==='GET'){const appid=url.searchParams.get('appid'),title=(url.searchParams.get('title')||'').trim();if(appid&&!/^\d{1,10}$/.test(appid)||!appid&&(!title||title.length>200))return json({error:'Invalid game'},400);return json(await getSteamReview({appid,title}));}
    if(url.pathname==='/api/game-cover'&&request.method==='GET'){
     const title=(url.searchParams.get('title')||'').trim();if(!title||title.length>200)return json({error:'Invalid game title'},400);
     return json(await (url.searchParams.get('type')==='media'?findMediaCover(title):findGameCover(title)));
