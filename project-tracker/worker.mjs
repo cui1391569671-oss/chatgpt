@@ -1,3 +1,4 @@
+import {projectCoreInfoRoute} from './project-core-info.mjs';
 import {getSteamReview} from './steam-reviews.mjs';
 import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
 import {sessionValid,authRoute,loginResponse} from './auth.mjs';
@@ -96,6 +97,7 @@ export default {
    return json({error:'需要登录'},401);
   }
   try{
+   if(url.pathname==='/api/project-core-information')return await projectCoreInfoRoute(request,env);
    if(url.pathname==='/api/game-releases'&&request.method==='GET'){
     const mode=url.searchParams.get('mode')||'upcoming';
     if(!['upcoming','released'].includes(mode))return json({error:'Invalid mode'},400);

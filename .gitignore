@@ -2,3 +2,6 @@
 private-data/
 preview/
 
+
+# Local source-backed business snapshots; never commit project data.
+.private/
