@@ -1,6 +1,8 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 const load=name=>readFileSync(new URL(name,import.meta.url),'utf8').replace(/\r\n/g,'\n');
 for(const name of ['index.html','workbench.html']){let html=load(name).replace(/<!-- PRODUCT_DESIGN_START -->[\s\S]*?<!-- PRODUCT_DESIGN_END -->/g,'');html=html.replace('</head>','<!-- PRODUCT_DESIGN_START --><style>'+load('workspace-design.css')+'\n'+load('modern-workspace.css')+'</style><!-- PRODUCT_DESIGN_END --></head>');writeFileSync(new URL(name,import.meta.url),html);}
+const recurrence=load('event-recurrence.mjs').replace(/export /g,'');
+{let html=load('workbench.html');const block='/* EVENT_RECURRENCE_START */\n'+recurrence+'\n/* EVENT_RECURRENCE_END */';html=html.includes('/* EVENT_RECURRENCE_START */')?html.replace(/\/\* EVENT_RECURRENCE_START \*\/[\s\S]*?\/\* EVENT_RECURRENCE_END \*\//,block):html.replace('<script>','<script>\n'+block);writeFileSync(new URL('workbench.html',import.meta.url),html);}
 const projectLabels=load('project-labels.mjs').replace(/export /g,'');
 for(const name of ['index.html','workbench.html']){let html=load(name);const block='/* PROJECT_LABELS_START */\n'+projectLabels+'\n/* PROJECT_LABELS_END */';html=html.includes('/* PROJECT_LABELS_START */')?html.replace(/\/\* PROJECT_LABELS_START \*\/[\s\S]*?\/\* PROJECT_LABELS_END \*\//,block):html.replace('<script>','<script>\n'+block);writeFileSync(new URL(name,import.meta.url),html);}
 const shared=load('cloud-records.mjs').replace(/export /g,'');
