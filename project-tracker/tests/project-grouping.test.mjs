@@ -11,8 +11,8 @@ test('interleaved projects stay together even when their issue statuses differ',
  const rows=table([item('i1','P10 后续项目','进行中'),item('i2','P2 当前项目','暂停'),item('i3','P10 后续项目','进行中',true),item('i4','P2 当前项目','进行中')]);
  const merged=rows.flatMap(x=>x.children).filter(x=>x.className==='issue-project-name project-merged');assert.deepEqual(merged.map(x=>x.textContent),['P2 当前项目','P10 后续项目']);assert.deepEqual(merged.map(x=>x.rowSpan),[2,2]);assert.deepEqual(merged.map(x=>x.children[0].textContent),['2 项问题','2 项问题']);
  const issues=rows.filter(x=>x.className.includes('compact-issue'));
- assert.equal(issues.length,4);assert.deepEqual(issues.map(x=>x.children.length),[6,5,6,5]);
- assert.deepEqual(issues.map(x=>x.children[x.children.length===6?2:1].children[0].textContent),['暂停','进行中','进行中','已完成']);
+ assert.equal(issues.length,4);assert.deepEqual(issues.map(x=>x.children.length),[7,6,7,6]);
+ assert.deepEqual(issues.map(x=>x.children[x.children.length===7?2:1].children[0].textContent),['暂停','进行中','进行中','已完成']);
  assert.deepEqual(issues.map(x=>x.children.at(-1).children[0].dataset.idx),[2,4,1,3]);
 });
 test('project group counts use visible records and no-result state has no empty groups',()=>{
@@ -25,4 +25,9 @@ test('a project with zero active issues is visible without a fabricated issue an
  for(const values of [{filterStatus:'未完成'},{filterOverdue:'7'},{quick:'overdue'},{searchInput:'其他项目'}])assert.equal(table([],{names,values})[0].children[0].className,'issue-empty');
  assert.equal(table([],{names,values:{searchInput:'空项目'}})[0].children[0].textContent,names[0]);
  const active=item('i1','P1 有问题项目','暂停');const mixed=table([],{names:['P1 有问题项目',...names],all:[active]});assert.equal(mixed.length,1);assert.equal(mixed[0].children[0].textContent,names[0]);
+});
+
+test('project notes appear as text with accessible edit and add actions',()=>{
+ const rows=table([{...item('i1','P1 项目','进行中'),note:'等待物流单号\n次日跟进'},item('i2','P1 项目','暂停')]);
+ const note=rows[0].children[5].children[0];assert.equal(note.textContent,'等待物流单号\n次日跟进');assert.equal(note.type,'button');assert.equal(note.className,'issue-note-button');assert.equal(rows[1].children[4].children[0].textContent,'添加备注');
 });
