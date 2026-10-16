@@ -1,0 +1,314 @@
+[
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/work?view=home",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/work?view=projects",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/work?view=tasks",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/work?view=drive",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/work?view=notes",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/personal?view=home",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/personal?view=tasks",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/personal?view=notes",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/personal?view=vocabulary",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/personal?view=completedGames",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/personal?view=wardrobe",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 1280,
+    "over": [],
+    "route": "/personal?view=maintenance",
+    "sidebar": "floating",
+    "width": 1280
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/work?view=home",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/work?view=projects",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/work?view=tasks",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/work?view=drive",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/work?view=notes",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/personal?view=home",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/personal?view=tasks",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/personal?view=notes",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/personal?view=vocabulary",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/personal?view=completedGames",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/personal?view=wardrobe",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 768,
+    "over": [],
+    "route": "/personal?view=maintenance",
+    "sidebar": "floating",
+    "width": 768
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/work?view=home",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/work?view=projects",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/work?view=tasks",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/work?view=drive",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/work?view=notes",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/personal?view=home",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/personal?view=tasks",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/personal?view=notes",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/personal?view=vocabulary",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/personal?view=completedGames",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/personal?view=wardrobe",
+    "width": 390
+  },
+  {
+    "doc": 390,
+    "over": [],
+    "route": "/personal?view=maintenance",
+    "width": 390
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/work?view=home",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/work?view=projects",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/work?view=tasks",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/work?view=drive",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/work?view=notes",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/personal?view=home",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/personal?view=tasks",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/personal?view=notes",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/personal?view=vocabulary",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/personal?view=completedGames",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/personal?view=wardrobe",
+    "width": 320
+  },
+  {
+    "doc": 320,
+    "over": [],
+    "route": "/personal?view=maintenance",
+    "width": 320
+  }
+]
