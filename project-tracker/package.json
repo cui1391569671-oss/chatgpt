@@ -6,7 +6,8 @@
     "build": "node build-pages.mjs && node configure.mjs",
     "deploy": "node build-pages.mjs && wrangler deploy --keep-vars",
     "build:pages": "node build-pages.mjs",
-    "test": "node --test"
+    "test": "node --test",
+    "build:calendar": "npm --prefix calendar-ui ci --no-audit --no-fund && npm --prefix calendar-ui run build"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

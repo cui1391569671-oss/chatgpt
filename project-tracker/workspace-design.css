@@ -37,3 +37,5 @@ body{-webkit-font-smoothing:antialiased;scrollbar-color:#b8b8bf transparent;scro
 .anime-cover-choice[aria-pressed=true],.anime-cover-choice:focus-visible{outline:2px solid #0066cc;outline-offset:1px}
 
 .repeat-weekdays{display:flex;flex-wrap:wrap;gap:8px}.repeat-weekdays label{display:flex;align-items:center;gap:6px;min-height:44px;margin:0;padding:6px 10px;border:1px solid var(--line);border-radius:5px}.repeat-weekdays input{width:18px!important;min-height:18px!important;height:18px;margin:0}#repeatWeekdays{margin:16px 0;border:1px solid var(--line);border-radius:5px;padding:12px}#repeatWeekdays[hidden],#repeatUntilFields[hidden]{display:none}
+/* Canonical workbench tokens feed the scoped ilamy theme and its Radix portals. */
+#workspaceCalendar{--ilamy-brand:var(--accent);--ilamy-bg:var(--surface);--ilamy-ink:var(--text);--ilamy-line:var(--line);min-width:0}.calendar-full-surface{min-width:0}

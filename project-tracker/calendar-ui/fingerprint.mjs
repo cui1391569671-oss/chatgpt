@@ -1,0 +1,2 @@
+import {createHash} from 'node:crypto';import {readFileSync} from 'node:fs';
+export function calendarSourceHash(){const hash=createHash('sha256');for(const file of ['package.json','package-lock.json','fingerprint.mjs','build.mjs','ILAMY-LICENSE.txt','src/main.jsx','src/style.css','src/records.js','src/recurrence-core.js'])hash.update(file+'\n'+readFileSync(new URL(file,import.meta.url),'utf8').replace(/\r\n/g,'\n')+'\n');return hash.digest('hex');}

@@ -1,0 +1,1 @@
+{"name":"workbench-ilamy-calendar","private":true,"type":"module","scripts":{"build":"node build.mjs"},"dependencies":{"@ilamy/calendar":"3.2.1","dayjs":"1.11.23","react":"19.2.0","react-dom":"19.2.0","rrule":"2.8.1","tailwindcss":"4.2.2","tailwindcss-animate":"1.0.7"},"devDependencies":{"@tailwindcss/cli":"4.2.2","esbuild":"0.25.12","postcss":"8.5.6"}}

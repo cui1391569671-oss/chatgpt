@@ -1,3 +1,4 @@
+import {ILAMY_JS,ILAMY_CSS,ILAMY_LICENSE} from './ilamy-assets.mjs';
 import {validEventRecurrence} from './event-recurrence.mjs';
 import {projectCoreInfoRoute} from './project-core-info.mjs';
 import {getSteamReview} from './steam-reviews.mjs';
@@ -98,6 +99,7 @@ export default {
    return json({error:'需要登录'},401);
   }
   try{
+   if(['/assets/ilamy-3.2.1.js','/assets/ilamy-3.2.1.css','/assets/calendar.js.LEGAL.txt'].includes(url.pathname)&&request.method==='GET')return new Response(url.pathname.endsWith('.js')?ILAMY_JS:url.pathname.endsWith('.css')?ILAMY_CSS:ILAMY_LICENSE,{headers:{'Content-Type':url.pathname.endsWith('.js')?'text/javascript; charset=utf-8':url.pathname.endsWith('.css')?'text/css; charset=utf-8':'text/plain; charset=utf-8','Cache-Control':'private, max-age=0, must-revalidate','X-Content-Type-Options':'nosniff'}});
    if(url.pathname==='/api/project-core-information')return await projectCoreInfoRoute(request,env);
    if(url.pathname==='/api/game-releases'&&request.method==='GET'){
     const mode=url.searchParams.get('mode')||'upcoming';
