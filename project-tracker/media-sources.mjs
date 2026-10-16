@@ -1,5 +1,5 @@
 import {validMediaIdentity} from './media-tracking.mjs';
-import {findAnimeCover,findGameCover} from './game-covers.mjs';
+import {findAnimeCover,findGameCover,gameSearchTerms} from './game-covers.mjs';
 import {getSteamPortrait} from './steam-artwork.mjs';
 const tokenCache=new Map(),responseCache=new Map();
 const numeric=id=>/^\d{1,12}$/.test(String(id));
@@ -39,8 +39,9 @@ export async function searchMediaSources(type,title,env,fetcher=fetch){
  const candidates=[],warnings=[];const task=async(name,enabled,fn)=>{if(!enabled){warnings.push(name+' 尚未配置');return;}try{candidates.push(...await fn());}catch{warnings.push(name+' 暂时不可用');}};
  if(['movie','tv'].includes(type))await task('TMDB',!!tmdbToken(env),async()=>((await tmdb('search/'+type,{query:title,include_adult:'false'},env,fetcher)).results||[]).slice(0,20).map(x=>tmdbCandidate(x,type)));
  if(type==='game'){
-  await task('IGDB',!!igdbId(env)&&!!(env.IGDB_CLIENT_SECRET||env.IGDB_SECRET),async()=>(await igdb(igdbFields+' search '+JSON.stringify(title)+'; limit 20;',env,fetcher)).map(igdbCandidate));
-  if(!candidates.length)await task('Steam',true,async()=>{const x=steamCandidate(await findGameCover(title,fetcher));return x?[x]:[];});
+  const terms=gameSearchTerms(title);
+  await task('IGDB',!!igdbId(env)&&!!(env.IGDB_CLIENT_SECRET||env.IGDB_SECRET),async()=>{for(const term of terms.slice(0,3)){const rows=await igdb(igdbFields+' search '+JSON.stringify(term)+'; limit 20;',env,fetcher);if(rows.length)return rows.map(igdbCandidate);}return [];});
+  if(!candidates.some(x=>x.coverUrl))await task('Steam',true,async()=>{for(const term of [...new Set([title,...terms])].slice(0,4)){const x=steamCandidate(await findGameCover(term,fetcher));if(x?.coverUrl)return [x];}return [];});
  }
  if(type==='anime')await Promise.all([
   task('Bangumi',true,async()=>{const result=await findAnimeCover(title,fetcher);if(result.reason==='unavailable')throw Error();return (result.candidates||[]).map(bangumiCandidate);}),

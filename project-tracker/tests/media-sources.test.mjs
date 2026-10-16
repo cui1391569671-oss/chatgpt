@@ -3,7 +3,15 @@ import assert from 'node:assert/strict';
 import worker from '../worker.mjs';
 import {searchMediaSources,mediaSourceDetails} from '../media-sources.mjs';
 import {validMediaIdentity} from '../media-tracking.mjs';
+import {gameSearchTerms} from '../game-covers.mjs';
 const json=data=>Response.json(data);
+test('Chinese Final Fantasy searches use canonical Roman titles and keep editions as distinct choices',async()=>{
+ assert.equal(gameSearchTerms('最终幻想7')[0],'Final Fantasy VII');assert.equal(gameSearchTerms('最终幻想16')[0],'Final Fantasy XVI');assert.equal(gameSearchTerms('最終幻想７重製版')[0],'Final Fantasy VII Remake');assert.equal(gameSearchTerms('最终幻想7重生')[0],'Final Fantasy VII Rebirth');
+ for(const [query,expected] of [['最终幻想7','Final Fantasy VII'],['最终幻想16','Final Fantasy XVI']]){
+  const bodies=[],env={IGDB_CLIENT_ID:'ff-client-'+query,IGDB_CLIENT_SECRET:'test-secret'},fetcher=async(url,options)=>{if(url.includes('oauth2/token'))return json({access_token:'test-token',expires_in:3600});bodies.push(options.body);return json([{id:1,name:expected,cover:{image_id:'co1'}},{id:2,name:expected+' Remake',cover:{image_id:'co2'}}]);};
+  const result=await searchMediaSources('game',query,env,fetcher);assert.ok(bodies[0].includes('search '+JSON.stringify(expected)));assert.equal(result.candidates.length,2);assert.notEqual(result.candidates[0].sourceId,result.candidates[1].sourceId);assert.ok(result.candidates.every(x=>x.coverUrl));
+ }
+});
 test('TMDB separates movies and TV, retains duplicate titles by ID, and loads season posters by stable ID',async()=>{
  const calls=[],fetcher=async(url,options)=>{calls.push({url,options});if(url.includes('/search/'))return json({results:[{id:10,title:'同名电影',poster_path:'/a.jpg',release_date:'2000-01-01'},{id:20,title:'同名电影',poster_path:'/b.jpg',release_date:'2020-01-01'}]});if(url.includes('/season/'))return json({id:99,poster_path:'/season2.jpg',episodes:[{},{}]});return json({id:10,name:'电视剧',poster_path:'/series.jpg',number_of_episodes:30});};
  const result=await searchMediaSources('movie','同名电影',{TMDB_API_TOKEN:'test-token'},fetcher);assert.equal(result.candidates.length,2);assert.deepEqual(result.candidates.map(x=>x.sourceId),['10','20']);assert.ok(calls[0].url.includes('/search/movie?'));assert.equal(calls[0].options.headers.Authorization,'Bearer test-token');assert.ok(!JSON.stringify(result).includes('test-token'));
