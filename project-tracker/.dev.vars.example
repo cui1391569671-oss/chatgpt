@@ -1,0 +1,5 @@
+# Copy to .dev.vars and fill locally. Never commit real credentials.
+TMDB_API_TOKEN=
+IGDB_CLIENT_ID=
+IGDB_CLIENT_SECRET=
+MAL_CLIENT_ID=

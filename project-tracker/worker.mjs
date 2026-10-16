@@ -4,6 +4,7 @@ import {validEventRecurrence} from './event-recurrence.mjs';
 import {projectCoreInfoRoute} from './project-core-info.mjs';
 import {personalVaultRoute} from './personal-vault.mjs';
 import {validMediaTracking} from './media-tracking.mjs';
+import {mediaSourcesRoute} from './media-sources.mjs';
 import {getSteamReview} from './steam-reviews.mjs';
 import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
 import {sessionValid,authRoute,loginResponse} from './auth.mjs';
@@ -106,6 +107,7 @@ export default {
    if(['/assets/ilamy-3.2.1.js','/assets/ilamy-3.2.1.css','/assets/calendar.js.LEGAL.txt'].includes(url.pathname)&&request.method==='GET')return new Response(url.pathname.endsWith('.js')?ILAMY_JS:url.pathname.endsWith('.css')?ILAMY_CSS:ILAMY_LICENSE,{headers:{'Content-Type':url.pathname.endsWith('.js')?'text/javascript; charset=utf-8':url.pathname.endsWith('.css')?'text/css; charset=utf-8':'text/plain; charset=utf-8','Cache-Control':'private, max-age=0, must-revalidate','X-Content-Type-Options':'nosniff'}});
    if(url.pathname==='/api/project-core-information')return await projectCoreInfoRoute(request,env);
    if(url.pathname==='/api/account/vault')return await personalVaultRoute(request,env);
+   if(['/api/media/search','/api/media/details'].includes(url.pathname))return await mediaSourcesRoute(request,env);
    if(url.pathname==='/api/game-releases'&&request.method==='GET'){
     const mode=url.searchParams.get('mode')||'upcoming';
     if(!['upcoming','released'].includes(mode))return json({error:'Invalid mode'},400);

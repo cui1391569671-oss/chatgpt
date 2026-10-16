@@ -1,8 +1,15 @@
+export function validMediaIdentity(item){
+ if(![undefined,'','manual','source'].includes(item.coverMode))return false;
+ if(item.steamAppId!==undefined&&item.steamAppId!==''&&!/^\d{1,10}$/.test(item.steamAppId))return false;
+ if(!item.mediaSource&&!item.mediaSourceId)return item.coverMode!=='source';
+ return typeof item.mediaSourceId==='string'&&/^\d{1,12}$/.test(item.mediaSourceId)&&({tmdb:['movie','tv'],igdb:['game'],steam:['game'],bangumi:['anime'],mal:['anime']}[item.mediaSource]||[]).includes(item.mediaType||'game');
+}
 // Yamtrack-inspired tracking concepts, implemented for the existing workspace record API.
 export const MEDIA_STATUSES={planned:'想看 / 想玩',in_progress:'进行中',on_hold:'已暂停',completed:'已完成',dropped:'已弃坑'};
 export function mediaTrackingStatus(item){return item.trackingStatus||'completed';}
 export function mediaProgressUnit(item){return ['anime','tv'].includes(item.mediaType)?'集':(item.mediaType||'game')==='game'?'小时':'分钟';}
 export function validMediaTracking(item){
+ if(!validMediaIdentity(item))return false;
  const date=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value))&&new Date(value).toISOString().slice(0,10)===value;
  const count=value=>Number.isSafeInteger(value)&&value>=0&&value<=100000;
  const status=mediaTrackingStatus(item);
