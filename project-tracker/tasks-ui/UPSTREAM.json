@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/satnaing/shadcn-admin",
+  "commit": "e16c87f213a5ba5e45964e9b67c792105ec74d26",
+  "license": "MIT",
+  "adapted": [
+    "TasksTable: local state and workspace columns",
+    "TasksMutateDrawer: workspace fields and real persistence",
+    "shadcn UI primitives: scoped styling and Chinese labels",
+    "AppSidebar, NavGroup, TeamSwitcher, Header: Chinese workspace navigation and existing business bridge",
+    "Sidebar, DropdownMenu, Tooltip, Separator, Skeleton and use-mobile: scoped styles and mobile Sheet"
+  ]
+}

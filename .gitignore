@@ -9,3 +9,6 @@ preview/
 # Calendar dependency/runtime build cache
 project-tracker/calendar-ui/node_modules/
 project-tracker/calendar-ui/dist/
+
+project-tracker/tasks-ui/node_modules/
+project-tracker/tasks-ui/dist/

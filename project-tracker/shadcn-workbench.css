@@ -1,0 +1,29 @@
+/* shadcn-admin layout migration. Runtime product tokens remain shared. */
+body.shadcn-workbench{--bg:#fff;--surface:#fff;--text:#18181b;--muted:#71717a;--line:#e4e4e7;--accent:#4464d9;--soft:#f4f4f5;--wb-sidebar-width:16rem;background:var(--bg);color:var(--text)}
+body.shadcn-workbench[data-sidebar=collapsed]{--wb-sidebar-width:4rem}
+body.shadcn-workbench.shared-workspace .shell{display:block;min-height:100dvh;height:auto}
+.shadcn-workbench .shell>aside[data-legacy-navigation]{display:none!important}
+body.shadcn-workbench.shared-workspace main{max-width:1600px;width:calc(100% - var(--wb-sidebar-width));margin:0 0 0 var(--wb-sidebar-width);padding:28px 32px 40px;transition:margin-left 180ms ease,width 180ms ease}
+body.shadcn-workbench.shared-workspace main>header{margin:0 0 24px;min-height:54px;gap:16px}
+body.shadcn-workbench.shared-workspace .header-title{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+body.shadcn-workbench.shared-workspace .header-title h1{order:0;font-size:27px;line-height:1.4;font-weight:650;letter-spacing:-.5px}
+body.shadcn-workbench .header-title .eyebrow{display:none}
+body.shadcn-workbench.shared-workspace .card{border-radius:8px;border-color:var(--line);box-shadow:none;padding:20px}
+body.shadcn-workbench.shared-workspace h2{font-size:19px;letter-spacing:0}
+body.shadcn-workbench.shared-workspace .btn{border-radius:6px;min-height:40px;font-size:15px;font-weight:500;box-shadow:none}
+body.shadcn-workbench.shared-workspace .primary{border-radius:6px;padding:8px 14px;background:var(--accent);border-color:var(--accent)}
+body.shadcn-workbench.shared-workspace .view-tabs{background:transparent;gap:20px;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0;margin-bottom:24px;overflow:visible}
+body.shadcn-workbench.shared-workspace .view-tabs button{font-size:15px;background:transparent;border-radius:0;border-bottom:2px solid transparent;color:var(--muted);padding:8px 0;min-height:44px}
+body.shadcn-workbench.shared-workspace .view-tabs button[aria-pressed=true]{color:var(--text);border-bottom-color:var(--text);background:transparent}
+body.shadcn-workbench.shared-workspace .page-footer{margin-left:var(--wb-sidebar-width);padding:12px 32px;color:var(--muted);text-align:left;border-top:1px solid var(--line)}
+#workbenchShell{position:relative;z-index:40}#workbenchTopbar{margin-left:var(--wb-sidebar-width);position:sticky;top:0;z-index:35;background:var(--surface);border-bottom:1px solid var(--line)}
+body.shadcn-workbench.project-view main{display:block;overflow:visible;min-height:0}
+body.shadcn-workbench.project-view #projectPanel:not(.hidden){display:block}
+body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 230px)!important;min-height:600px!important;width:100%;border:0!important;border-radius:8px!important}
+body.shadcn-workbench :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(min-width:1900px){body.shadcn-workbench.shared-workspace main{margin-right:auto}}
+@media(max-width:767px){body.shadcn-workbench{--wb-sidebar-width:0px!important}body.shadcn-workbench.shared-workspace main{width:100%;margin:0;padding:22px 16px 32px}body.shadcn-workbench.shared-workspace main>header{gap:12px;align-items:center;margin-bottom:20px}body.shadcn-workbench.shared-workspace .header-title h1{font-size:24px}body.shadcn-workbench.shared-workspace .header-actions{flex-shrink:0}body.shadcn-workbench.shared-workspace .btn{min-height:44px}#workbenchTopbar{margin:0}body.shadcn-workbench.shared-workspace .page-footer{margin:0;padding:12px 16px}body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 220px)!important;min-height:600px!important}body.shadcn-workbench.shared-workspace .card{padding:16px}}
+@media(prefers-reduced-motion:reduce){body.shadcn-workbench *,body.shadcn-workbench *::before,body.shadcn-workbench *::after{animation:none!important;transition:none!important}}
+@media(min-width:768px){body.shadcn-workbench #workbenchShell [data-slot=sidebar]{display:block!important}body.shadcn-workbench #workbenchShell [data-slot=sidebar-container]{display:flex!important}}
+/* Calendar and tasks now have dedicated sidebar entries. */
+body.shadcn-workbench:has(#workspaceCalendar) .view-tabs,body.shadcn-workbench:has(#workspaceTasks) .view-tabs{display:none!important}

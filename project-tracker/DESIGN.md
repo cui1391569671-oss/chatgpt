@@ -60,3 +60,12 @@ node --test；桌面与 390px 手机预览。页面生成时统一 LF，跨系�
 沿用共享浅色视觉。workspace-design.css 的 --accent/--surface/--text/--line 经 --ilamy-* 映射到 calendar-ui/src/style.css 的 scoped shadcn 变量。Radix 门户复制相同映射，Tailwind 样式限定组件与其门户，不改变其他页面。颜色名称保留组件默认英文，主要界面为中文。
 
 构建输出随 Worker 提供，不依赖运行时 CDN。业务数据继续存于 D1；原日程在展示时适配，未编辑前不改写。旧“月底夹取”重复规则转换为等价 RRULE；新规则、例外日期、单次覆盖及系列拆分一并保存，提醒与统计通过共享 recurrence runtime 展开。时间为北京时间，全天结束采用组件的排他结束时间。私人与工作仍按原 scope 分开。
+
+## shadcn-admin 工作台替换（2026-10-16）
+用户确认采用 satnaing/shadcn-admin 完整工作台作为界面基础，替代此前 Linear 导航。使用该项目固定提交 e16c87f213a5ba5e45964e9b67c792105ec74d26（MIT）的 Sidebar/SidebarProvider、TeamSwitcher、NavGroup 和 Header 结构；复用现有 tasks-ui React 构建，保持 ilamy 日历与项目表业务组件。
+
+统一工作与私人空间的应用框架：256px 浅灰侧栏，64px 顶部栏，28–32px 内容留白，图标折叠为64px；小于768px采用有焦点管理的 Radix Sheet 抽屉，入口、Escape和遮罩关闭可用。侧栏按空间与业务分组，顶部面包屑、真实日期与提醒，底部账号入口。工作和私人数据范围保持独立。原导航仅作为无组件加载时的降级入口，成功挂载后隐藏。
+
+运行时映射：`shadcn-workbench.css` 是应用框架 token 来源（白色 #fff、文字 #18181b、次级文字 #71717a、边框 #e4e4e7、操作蓝 #4464d9）；由 `build-pages.mjs` 在现有样式之后嵌入。`tasks-ui/src/style.css` 的 data-shell-root/data-shell-portal 为 shadcn 的隔离适配，使用相同角色值；布局宽度由 SidebarProvider 和 body[data-sidebar] 对应。沿用系统中英文字体，无远程字体依赖；正文15px，标题27px，工具信息12–14px。圆角6–8px，静态内容不增加阴影。应用产品界面与公开介绍页分开，官网不随此迁移改变。
+
+导航、表单及云端保存状态不因换框架改写。支持直接 ?view=tasks 访问和待办独立导航。宽表只在其容器滚动，项目 iframe 保留独立滚动；其他页面自然文档滚动。折叠偏好只写 UI cookie，不保存业务数据。此次仅本地替换和验证，生产发布单独授权。
