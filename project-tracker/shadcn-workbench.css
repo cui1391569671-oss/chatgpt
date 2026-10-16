@@ -1,29 +1,64 @@
-/* shadcn-admin layout migration. Runtime product tokens remain shared. */
-body.shadcn-workbench{--bg:#fff;--surface:#fff;--text:#18181b;--muted:#71717a;--line:#e4e4e7;--accent:#4464d9;--soft:#f4f4f5;--wb-sidebar-width:16rem;background:var(--bg);color:var(--text)}
+/* shadcn-admin: upstream inset shell + legacy business DOM adapter. */
+body.shadcn-workbench,body.modern-project.shadcn-controls{--bg:var(--admin-background);--surface:var(--admin-card);--text:var(--admin-foreground);--muted:var(--admin-muted-foreground);--line:var(--admin-border);--accent:var(--admin-primary);--soft:var(--admin-secondary);--radius:var(--admin-radius);font-family:var(--admin-font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body.shadcn-workbench{--wb-sidebar-width:16rem;background:var(--admin-sidebar)}
 body.shadcn-workbench[data-sidebar=collapsed]{--wb-sidebar-width:4rem}
 body.shadcn-workbench.shared-workspace .shell{display:block;min-height:100dvh;height:auto}
 .shadcn-workbench .shell>aside[data-legacy-navigation]{display:none!important}
-body.shadcn-workbench.shared-workspace main{max-width:1600px;width:calc(100% - var(--wb-sidebar-width));margin:0 0 0 var(--wb-sidebar-width);padding:28px 32px 40px;transition:margin-left 180ms ease,width 180ms ease}
-body.shadcn-workbench.shared-workspace main>header{margin:0 0 24px;min-height:54px;gap:16px}
-body.shadcn-workbench.shared-workspace .header-title{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
-body.shadcn-workbench.shared-workspace .header-title h1{order:0;font-size:27px;line-height:1.4;font-weight:650;letter-spacing:-.5px}
+#workbenchShell{position:relative;z-index:40}
+#workbenchTopbar{margin:8px 8px 0 var(--wb-sidebar-width);position:sticky;top:8px;z-index:35;background:var(--admin-background);border:1px solid var(--admin-border);border-bottom:0;border-radius:12px 12px 0 0}
+body.shadcn-workbench.shared-workspace main{max-width:none;width:calc(100% - var(--wb-sidebar-width) - 8px);margin:0 8px 8px var(--wb-sidebar-width);padding:24px 16px;min-height:calc(100dvh - 80px);background:var(--admin-background);border:1px solid var(--admin-border);border-top:0;border-radius:0 0 12px 12px}
+body.shadcn-workbench.shared-workspace main>header{margin:0 0 24px;min-height:0;gap:16px;align-items:flex-end;flex-wrap:wrap}
+body.shadcn-workbench.shared-workspace .header-title{display:block;min-width:0}
+body.shadcn-workbench.shared-workspace .header-title h1{font-size:24px;line-height:32px;font-weight:700;letter-spacing:-.6px;margin:0}
 body.shadcn-workbench .header-title .eyebrow{display:none}
-body.shadcn-workbench.shared-workspace .card{border-radius:8px;border-color:var(--line);box-shadow:none;padding:20px}
-body.shadcn-workbench.shared-workspace h2{font-size:19px;letter-spacing:0}
-body.shadcn-workbench.shared-workspace .btn{border-radius:6px;min-height:40px;font-size:15px;font-weight:500;box-shadow:none}
-body.shadcn-workbench.shared-workspace .primary{border-radius:6px;padding:8px 14px;background:var(--accent);border-color:var(--accent)}
-body.shadcn-workbench.shared-workspace .view-tabs{background:transparent;gap:20px;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0;margin-bottom:24px;overflow:visible}
-body.shadcn-workbench.shared-workspace .view-tabs button{font-size:15px;background:transparent;border-radius:0;border-bottom:2px solid transparent;color:var(--muted);padding:8px 0;min-height:44px}
-body.shadcn-workbench.shared-workspace .view-tabs button[aria-pressed=true]{color:var(--text);border-bottom-color:var(--text);background:transparent}
-body.shadcn-workbench.shared-workspace .page-footer{margin-left:var(--wb-sidebar-width);padding:12px 32px;color:var(--muted);text-align:left;border-top:1px solid var(--line)}
-#workbenchShell{position:relative;z-index:40}#workbenchTopbar{margin-left:var(--wb-sidebar-width);position:sticky;top:0;z-index:35;background:var(--surface);border-bottom:1px solid var(--line)}
-body.shadcn-workbench.project-view main{display:block;overflow:visible;min-height:0}
-body.shadcn-workbench.project-view #projectPanel:not(.hidden){display:block}
-body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 230px)!important;min-height:600px!important;width:100%;border:0!important;border-radius:8px!important}
-body.shadcn-workbench :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-@media(min-width:1900px){body.shadcn-workbench.shared-workspace main{margin-right:auto}}
-@media(max-width:767px){body.shadcn-workbench{--wb-sidebar-width:0px!important}body.shadcn-workbench.shared-workspace main{width:100%;margin:0;padding:22px 16px 32px}body.shadcn-workbench.shared-workspace main>header{gap:12px;align-items:center;margin-bottom:20px}body.shadcn-workbench.shared-workspace .header-title h1{font-size:24px}body.shadcn-workbench.shared-workspace .header-actions{flex-shrink:0}body.shadcn-workbench.shared-workspace .btn{min-height:44px}#workbenchTopbar{margin:0}body.shadcn-workbench.shared-workspace .page-footer{margin:0;padding:12px 16px}body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 220px)!important;min-height:600px!important}body.shadcn-workbench.shared-workspace .card{padding:16px}}
-@media(prefers-reduced-motion:reduce){body.shadcn-workbench *,body.shadcn-workbench *::before,body.shadcn-workbench *::after{animation:none!important;transition:none!important}}
-@media(min-width:768px){body.shadcn-workbench #workbenchShell [data-slot=sidebar]{display:block!important}body.shadcn-workbench #workbenchShell [data-slot=sidebar-container]{display:flex!important}}
-/* Calendar and tasks now have dedicated sidebar entries. */
+.wb-page-description{font-size:16px;line-height:24px;margin:2px 0 0;color:var(--admin-muted-foreground)}
+body.shadcn-workbench.shared-workspace .card{border:1px solid var(--admin-border);border-radius:14px;padding:24px;background:var(--admin-card);box-shadow:0 1px 3px #0000000d}
+body.shadcn-workbench.shared-workspace h2{font-size:18px;font-weight:600;line-height:28px;letter-spacing:-.3px}
+body.shadcn-workbench.shared-workspace .btn{border-radius:6px;min-height:36px;padding:8px 12px;font-size:14px;font-weight:500;box-shadow:0 1px 2px #0000000d}
+body.shadcn-workbench.shared-workspace .primary{border-radius:6px;background:var(--admin-primary);border-color:var(--admin-primary);color:var(--admin-primary-foreground)}
+body.shadcn-workbench.shared-workspace .primary:hover{background:var(--admin-primary);filter:brightness(1.18)}
+body.shadcn-workbench.shared-workspace .page-footer{display:none}
+body.shadcn-workbench.shared-workspace .view-tabs{display:flex;gap:4px;background:var(--admin-muted);border:0;border-radius:8px;padding:4px;margin:0 0 16px;width:fit-content}
+body.shadcn-workbench.shared-workspace .view-tabs button{font-size:14px;font-weight:500;background:transparent;border:0;border-radius:6px;min-height:28px;padding:4px 12px;color:var(--admin-muted-foreground)}
+body.shadcn-workbench.shared-workspace .view-tabs button[aria-pressed=true]{background:var(--admin-background);color:var(--admin-foreground);box-shadow:0 1px 3px #0000001a}
 body.shadcn-workbench:has(#workspaceCalendar) .view-tabs,body.shadcn-workbench:has(#workspaceTasks) .view-tabs{display:none!important}
+body.shadcn-workbench.project-view main{display:block;overflow:visible;min-height:calc(100dvh - 80px)}
+body.shadcn-workbench.project-view #projectPanel:not(.hidden){display:block}
+body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 220px)!important;min-height:600px!important;width:100%;border:0!important;border-radius:8px!important}
+body.shadcn-workbench :focus-visible{outline:2px solid var(--admin-ring);outline-offset:2px}
+body.modern-project.shadcn-controls .header h1{font-size:24px;font-weight:700;letter-spacing:-.6px}
+body.modern-project.shadcn-controls .table-wrapper,body.modern-project.shadcn-controls .toolbar{border-color:var(--admin-border)}
+@media(min-width:768px){body.shadcn-workbench #workbenchShell [data-slot=sidebar]{display:block!important}body.shadcn-workbench #workbenchShell [data-slot=sidebar-container]{display:flex!important}}
+@media(max-width:767px){body.shadcn-workbench{--wb-sidebar-width:0px!important}#workbenchTopbar{margin:0;top:0;border-radius:0;border:0;border-bottom:1px solid var(--admin-border)}body.shadcn-workbench.shared-workspace main{width:100%;margin:0;border:0;border-radius:0;padding:24px 16px;min-height:calc(100dvh - 64px)}body.shadcn-workbench.shared-workspace main>header{gap:12px;align-items:flex-start}.wb-page-description{font-size:14px;line-height:22px}body.shadcn-workbench.shared-workspace .card{padding:20px}body.shadcn-workbench.shared-workspace .btn{min-height:44px}body.shadcn-workbench.shared-workspace .view-tabs button{min-height:40px}}
+@media(prefers-reduced-motion:reduce){body.shadcn-workbench *,body.shadcn-workbench *::before,body.shadcn-workbench *::after{animation:none!important;transition:none!important}}
+/* Existing business DOM adopts the shared shadcn/ui control contract. */
+.shadcn-controls select[data-ui-native]{display:none!important}
+body.shadcn-controls dialog[data-ui-dialog]{display:none}
+body.shadcn-controls [data-ui-portal] dialog[data-ui-dialog][open]{display:block!important;position:static!important;inset:auto!important;margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;min-width:0!important;height:auto!important;max-height:none!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;animation:none!important;transform:none!important}
+body.shadcn-controls [data-ui-portal] dialog[data-ui-dialog] h2{font-size:18px;line-height:28px;margin:0 0 16px;letter-spacing:0}
+body.shadcn-controls [data-ui-portal] dialog[data-ui-dialog] .card-head h2{margin:0}
+body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-control=textarea]{border:1px solid var(--admin-border);border-radius:6px;box-shadow:0 1px 2px #18181b06;background:var(--admin-background);color:var(--admin-foreground);font:inherit;font-size:14px;min-height:36px;padding:9px 12px}
+body.shadcn-controls [data-ui-control=textarea]{resize:none;min-height:140px;line-height:1.7}
+body.shadcn-controls [data-ui-control=button]{border-radius:6px;min-height:36px;padding:8px 14px;border:1px solid var(--admin-border);background:var(--admin-background);color:var(--admin-foreground);font-size:14px;font-weight:500;box-shadow:0 1px 2px #18181b06}
+body.shadcn-controls [data-ui-control=button]:hover{background:var(--admin-muted)}
+body.shadcn-controls [data-ui-control=button].primary{background:var(--admin-primary);color:var(--admin-background);border-color:var(--admin-primary)}
+body.shadcn-controls [data-ui-control=button].primary:hover{background:var(--admin-primary)}
+body.shadcn-controls [data-ui-control=button].danger{color:#b42318;border-color:var(--admin-border);background:var(--admin-background)}
+body.shadcn-controls [data-ui-control=button].danger:hover{background:#fef2f2;border-color:#f5c3bf}
+body.shadcn-controls [data-ui-control]:focus-visible{outline:2px solid var(--admin-ring);outline-offset:2px}
+body.shadcn-controls .filters>.ui-select-mount{min-width:140px}
+@media(max-width:767px){body.shadcn-controls [data-ui-control]{min-height:44px}body.shadcn-controls .filters>.ui-select-mount{flex:1}}
+body.shadcn-controls [data-ui-portal] [hidden]{display:none!important}
+body.shadcn-controls [data-ui-control][aria-invalid=true]{border-color:#b42318}
+body.shadcn-controls [data-ui-control=button].btn-primary,body.shadcn-controls [data-ui-control=button].btn-add,body.shadcn-controls [data-ui-control=button].btn-success{background:var(--admin-primary);border-color:var(--admin-primary);color:var(--admin-background)}
+body.shadcn-controls #issueDetails [data-ui-control=input],body.shadcn-controls #issueDetails [data-ui-control=textarea]{border:1px solid var(--admin-border);border-radius:6px;font-size:14px;padding:8px 12px;min-height:36px;background:var(--admin-background);color:var(--admin-foreground)}
+body.shadcn-controls #issueDetails [data-ui-control=textarea]{min-height:140px;resize:none}
+/* Legacy form text uses --muted as foreground; shadcn uses it as a surface. */
+body.shadcn-controls [data-ui-portal] dialog[data-ui-dialog]{--muted:var(--admin-muted-foreground);--accent:var(--admin-primary);--text:var(--admin-foreground);--line:var(--admin-border);color:var(--admin-foreground)}
+body.shadcn-workbench.shared-workspace .row-title{font-size:14px;line-height:20px;font-weight:500}
+body.shadcn-workbench.shared-workspace .row-meta{font-size:14px;line-height:20px}
+body.shadcn-workbench.shared-workspace .tag{font-size:12px;border-radius:6px}
+body.shadcn-workbench.shared-workspace .notes .card h3{font-size:16px;font-weight:600}
+body.shadcn-workbench.shared-workspace .filters input{min-height:36px;font-size:14px;border-radius:6px}
+body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-control=textarea]{font-family:var(--admin-font);font-size:14px}
+@media(max-width:767px){body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-control=textarea]{font-size:16px;min-height:44px}body.shadcn-workbench.shared-workspace .filters input{min-height:44px;font-size:16px}}

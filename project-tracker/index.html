@@ -42,7 +42,46 @@ td[contenteditable=true],.proj-name{outline-offset:2px;cursor:text}td[contentedi
 @media(max-width:760px){.btn,.toolbar-row>select,.search-box input,.date-cell input{min-height:44px;height:auto}}
 :root{--motion-fast:140ms;--motion-enter:180ms;--motion-ease:cubic-bezier(.2,.7,.2,1)}.btn,input,select,textarea{transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,color var(--motion-fast) ease,opacity var(--motion-fast) ease}.modal{animation:project-modal-enter var(--motion-enter) var(--motion-ease)}@keyframes project-modal-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
-<!-- PRODUCT_DESIGN_START --><style>/* Product surfaces share the public site's typography, palette and controls. */
+<link rel="stylesheet" href="/assets/tasks.css"><script src="/assets/tasks.js"></script><!-- PRODUCT_DESIGN_START --><style>/* Light theme from satnaing/shadcn-admin e16c87f (MIT). Canonical UI tokens. */
+:root {
+  --admin-radius: 0.625rem;
+  --admin-background: oklch(1 0 0);
+  --admin-foreground: oklch(0.129 0.042 264.695);
+  --admin-card: oklch(1 0 0);
+  --admin-card-foreground: oklch(0.129 0.042 264.695);
+  --admin-popover: oklch(1 0 0);
+  --admin-popover-foreground: oklch(0.129 0.042 264.695);
+  --admin-primary: oklch(0.208 0.042 265.755);
+  --admin-primary-foreground: oklch(0.984 0.003 247.858);
+  --admin-secondary: oklch(0.968 0.007 247.896);
+  --admin-secondary-foreground: oklch(0.208 0.042 265.755);
+  --admin-muted: oklch(0.968 0.007 247.896);
+  --admin-muted-foreground: oklch(0.554 0.046 257.417);
+  --admin-accent: oklch(0.968 0.007 247.896);
+  --admin-accent-foreground: oklch(0.208 0.042 265.755);
+  --admin-destructive: oklch(0.577 0.245 27.325);
+  --admin-border: oklch(0.929 0.013 255.508);
+  --admin-input: oklch(0.929 0.013 255.508);
+  --admin-ring: oklch(0.704 0.04 256.788);
+  --admin-chart-1: oklch(0.646 0.222 41.116);
+  --admin-chart-2: oklch(0.6 0.118 184.704);
+  --admin-chart-3: oklch(0.398 0.07 227.392);
+  --admin-chart-4: oklch(0.828 0.189 84.429);
+  --admin-chart-5: oklch(0.769 0.188 70.08);
+
+  --admin-sidebar: var(--admin-background);
+  --admin-sidebar-foreground: var(--admin-foreground);
+  --admin-sidebar-primary: var(--admin-primary);
+  --admin-sidebar-primary-foreground: var(--admin-primary-foreground);
+  --admin-sidebar-accent: var(--admin-accent);
+  --admin-sidebar-accent-foreground: var(--admin-accent-foreground);
+  --admin-sidebar-border: var(--admin-border);
+  --admin-sidebar-ring: var(--admin-ring);
+}
+
+:root{--admin-font:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+
+/* Product surfaces share the public site's typography, palette and controls. */
 :root{--bg:#f5f5f7;--surface:#fff;--card:#fff;--text:#1d1d1f;--muted:#68686d;--text-light:#68686d;--line:#e1e1e6;--border:#e1e1e6;--accent:#0066cc;--soft:#edf4fb;--primary:#1d1d1f;--radius:16px}
 body{-webkit-font-smoothing:antialiased;scrollbar-color:#b8b8bf transparent;scrollbar-width:thin}
 .shared-workspace aside{background:#fffffff2;backdrop-filter:blur(16px);padding:10px 24px;border-color:var(--line)}.shared-workspace .brand{font-weight:600;font-size:19px;letter-spacing:-.5px}.shared-workspace aside nav{justify-content:center;gap:8px}.shared-workspace nav>button,.shared-workspace .nav-group>summary{font-size:16px;font-weight:400;border-radius:8px;padding:10px 14px;color:var(--muted)}.shared-workspace nav .active,.shared-workspace .nav-group.group-active>summary{color:var(--accent);background:var(--soft);box-shadow:none;font-weight:500}.shared-workspace .nav-submenu{border-radius:14px;box-shadow:0 15px 40px #1d1d1f12;padding:8px;border-color:var(--line)}.shared-workspace main{max-width:1440px;margin:auto;padding:36px 36px 48px}.shared-workspace header{margin-bottom:28px;align-items:center}.shared-workspace h1{font-size:34px;line-height:1.25;font-weight:600;letter-spacing:-1px}.shared-workspace .header-title{gap:18px}.shared-workspace .eyebrow{font-size:14px;font-weight:400;color:var(--muted);letter-spacing:0}.shared-workspace h2{font-weight:600;font-size:20px;letter-spacing:-.4px}.shared-workspace .card{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--surface);box-shadow:none}.shared-workspace .card-head{margin-bottom:18px}.shared-workspace .card-head button{color:var(--accent);min-height:44px;padding:8px 10px}.shared-workspace .grid,.shared-workspace .notes,.shared-workspace .maintenance-list{gap:20px}.shared-workspace .row{padding:18px 2px;gap:14px}.shared-workspace .row-title{font-weight:500;font-size:17px}.shared-workspace .row-meta{font-size:15px;line-height:1.7}.shared-workspace .actions button{min-height:44px;padding:9px 11px;border-radius:9px}.shared-workspace .empty{padding:30px 6px;font-size:16px}.shared-workspace .empty strong{font-weight:500;font-size:16px}.shared-workspace .btn{min-height:44px;padding:9px 16px;border-radius:11px;font-size:16px}.shared-workspace .primary{border-radius:24px;background:var(--accent);border-color:var(--accent);padding:10px 20px}.shared-workspace .primary:hover{filter:brightness(.92);background:var(--accent)}.shared-workspace .filters{margin-bottom:20px;gap:10px}.shared-workspace .filters input,.shared-workspace .filters select{min-height:46px;padding:10px 14px;border-radius:12px;background:var(--surface);border-color:var(--line);color:var(--text)}.shared-workspace input::placeholder{color:var(--muted)}.shared-workspace .tag{border-radius:6px;padding:3px 8px}.shared-workspace .calendar-layout{grid-template-columns:minmax(0,1.4fr) minmax(280px,1fr);gap:24px;align-items:start}.shared-workspace .calendar-toolbar{margin-bottom:24px}.shared-workspace .calendar-toolbar h2{font-size:25px;font-weight:500}.shared-workspace .calendar-controls .btn{min-width:44px;padding:8px 13px}.shared-workspace .weekdays{margin-bottom:12px;color:var(--muted);font-size:14px}.shared-workspace .calendar-day{background:var(--surface);border-radius:10px;border:1px solid var(--line);min-height:76px;padding:10px;color:var(--text)}.shared-workspace .calendar-day.selected{border:1px solid var(--accent);background:var(--soft);padding:10px;box-shadow:inset 0 0 0 1px var(--accent)}.shared-workspace .calendar-day.today .day-number{border-radius:50%;background:var(--accent);color:#fff}.shared-workspace .calendar-day.outside{background:var(--bg);color:var(--muted)}.shared-workspace .calendar-day::before{animation:none;mask:none;-webkit-mask:none;height:3px;width:100%;opacity:.5}.shared-workspace .calendar-hint{font-size:14px;margin-top:20px;line-height:1.8}.shared-workspace .agenda .empty{text-align:left;padding:30px 0}.shared-workspace .agenda h2{font-size:20px}.personal-dashboard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:24px;margin-top:24px}.personal-dashboard .daily-vocabulary{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.personal-dashboard .daily-word{border-radius:10px;padding:15px;background:var(--bg);border-color:var(--line)}.personal-dashboard .daily-word:last-child{grid-column:1/-1}.shared-workspace .daily-word h3{font-size:17px}.shared-workspace .word-title-audio{color:var(--accent)}.shared-workspace .completed-game-grid{gap:18px}.shared-workspace .completed-game-grid .card{padding:12px;border-radius:14px}.shared-workspace .record-cover{border-radius:9px}.shared-workspace .release-item{border-radius:14px}.shared-workspace .release-item div{padding:16px}.shared-workspace .status{border-radius:12px;padding:14px 18px}.shared-workspace dialog{border:1px solid var(--line);border-radius:22px;padding:30px;background:var(--surface);box-shadow:0 24px 90px #1d1d1f25;color:var(--text)}.shared-workspace dialog::backdrop{background:#25253066;backdrop-filter:blur(4px)}.shared-workspace dialog h2{font-size:27px;margin-bottom:22px}.shared-workspace dialog label{font-size:15px;font-weight:500;margin-top:18px}.shared-workspace dialog input,.shared-workspace dialog select,.shared-workspace dialog textarea{min-height:46px;border-radius:11px;border:1px solid var(--line);padding:12px 14px;background:var(--surface);color:var(--text)}.shared-workspace dialog .actions{gap:10px;margin-top:26px}.shared-workspace .notification-item{padding:18px}.shared-workspace .btn:focus-visible,.shared-workspace input:focus-visible,.shared-workspace select:focus-visible,.shared-workspace textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.shared-workspace .page-footer{color:var(--muted);padding:30px 12px 20px}.shared-workspace .clothing{border-radius:14px}.shared-workspace .notes .note-body{line-height:1.8}
@@ -132,35 +171,70 @@ body.modern-work.project-view .shell{height:100dvh;min-height:0}.modern-work.pro
 /* Project core information is the single content surface on Materials. */
 .project-core-panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}.project-core-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid var(--line)}.project-core-heading h2{margin:0;font-size:20px}.project-core-actions{display:flex;align-items:center;gap:12px}.project-core-actions .muted{font-size:13px}.project-core-scroll{overflow:auto;scrollbar-gutter:stable}.project-core-table{width:100%;min-width:960px;border-collapse:collapse;table-layout:fixed;text-align:left}.project-core-table th,.project-core-table td{padding:18px 16px;vertical-align:top;border-bottom:1px solid var(--line);font-size:14px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}.project-core-table thead th{background:#f8f9fc;color:var(--muted);font-weight:500}.project-core-table th:first-child{width:17%}.project-core-table th:nth-child(2){width:31%}.project-core-table th:nth-child(3){width:19%}.project-core-table th:nth-child(4){width:16%}.project-core-table th:nth-child(5){width:17%}.project-core-table tbody th{font-weight:500}.project-core-code{display:block;color:var(--accent);font-weight:600;margin-bottom:6px}.project-core-table tr:last-child>*{border-bottom:0}.project-core-panel>.form-error{padding:12px 20px}.project-core-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}@media(max-width:760px){.project-core-heading{padding:14px;align-items:flex-start;flex-wrap:wrap}.project-core-table th,.project-core-table td{padding:14px 12px}.project-core-actions{flex-wrap:wrap}}
 
-/* shadcn-admin layout migration. Runtime product tokens remain shared. */
-body.shadcn-workbench{--bg:#fff;--surface:#fff;--text:#18181b;--muted:#71717a;--line:#e4e4e7;--accent:#4464d9;--soft:#f4f4f5;--wb-sidebar-width:16rem;background:var(--bg);color:var(--text)}
+/* shadcn-admin: upstream inset shell + legacy business DOM adapter. */
+body.shadcn-workbench,body.modern-project.shadcn-controls{--bg:var(--admin-background);--surface:var(--admin-card);--text:var(--admin-foreground);--muted:var(--admin-muted-foreground);--line:var(--admin-border);--accent:var(--admin-primary);--soft:var(--admin-secondary);--radius:var(--admin-radius);font-family:var(--admin-font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body.shadcn-workbench{--wb-sidebar-width:16rem;background:var(--admin-sidebar)}
 body.shadcn-workbench[data-sidebar=collapsed]{--wb-sidebar-width:4rem}
 body.shadcn-workbench.shared-workspace .shell{display:block;min-height:100dvh;height:auto}
 .shadcn-workbench .shell>aside[data-legacy-navigation]{display:none!important}
-body.shadcn-workbench.shared-workspace main{max-width:1600px;width:calc(100% - var(--wb-sidebar-width));margin:0 0 0 var(--wb-sidebar-width);padding:28px 32px 40px;transition:margin-left 180ms ease,width 180ms ease}
-body.shadcn-workbench.shared-workspace main>header{margin:0 0 24px;min-height:54px;gap:16px}
-body.shadcn-workbench.shared-workspace .header-title{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
-body.shadcn-workbench.shared-workspace .header-title h1{order:0;font-size:27px;line-height:1.4;font-weight:650;letter-spacing:-.5px}
+#workbenchShell{position:relative;z-index:40}
+#workbenchTopbar{margin:8px 8px 0 var(--wb-sidebar-width);position:sticky;top:8px;z-index:35;background:var(--admin-background);border:1px solid var(--admin-border);border-bottom:0;border-radius:12px 12px 0 0}
+body.shadcn-workbench.shared-workspace main{max-width:none;width:calc(100% - var(--wb-sidebar-width) - 8px);margin:0 8px 8px var(--wb-sidebar-width);padding:24px 16px;min-height:calc(100dvh - 80px);background:var(--admin-background);border:1px solid var(--admin-border);border-top:0;border-radius:0 0 12px 12px}
+body.shadcn-workbench.shared-workspace main>header{margin:0 0 24px;min-height:0;gap:16px;align-items:flex-end;flex-wrap:wrap}
+body.shadcn-workbench.shared-workspace .header-title{display:block;min-width:0}
+body.shadcn-workbench.shared-workspace .header-title h1{font-size:24px;line-height:32px;font-weight:700;letter-spacing:-.6px;margin:0}
 body.shadcn-workbench .header-title .eyebrow{display:none}
-body.shadcn-workbench.shared-workspace .card{border-radius:8px;border-color:var(--line);box-shadow:none;padding:20px}
-body.shadcn-workbench.shared-workspace h2{font-size:19px;letter-spacing:0}
-body.shadcn-workbench.shared-workspace .btn{border-radius:6px;min-height:40px;font-size:15px;font-weight:500;box-shadow:none}
-body.shadcn-workbench.shared-workspace .primary{border-radius:6px;padding:8px 14px;background:var(--accent);border-color:var(--accent)}
-body.shadcn-workbench.shared-workspace .view-tabs{background:transparent;gap:20px;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0;margin-bottom:24px;overflow:visible}
-body.shadcn-workbench.shared-workspace .view-tabs button{font-size:15px;background:transparent;border-radius:0;border-bottom:2px solid transparent;color:var(--muted);padding:8px 0;min-height:44px}
-body.shadcn-workbench.shared-workspace .view-tabs button[aria-pressed=true]{color:var(--text);border-bottom-color:var(--text);background:transparent}
-body.shadcn-workbench.shared-workspace .page-footer{margin-left:var(--wb-sidebar-width);padding:12px 32px;color:var(--muted);text-align:left;border-top:1px solid var(--line)}
-#workbenchShell{position:relative;z-index:40}#workbenchTopbar{margin-left:var(--wb-sidebar-width);position:sticky;top:0;z-index:35;background:var(--surface);border-bottom:1px solid var(--line)}
-body.shadcn-workbench.project-view main{display:block;overflow:visible;min-height:0}
-body.shadcn-workbench.project-view #projectPanel:not(.hidden){display:block}
-body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 230px)!important;min-height:600px!important;width:100%;border:0!important;border-radius:8px!important}
-body.shadcn-workbench :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-@media(min-width:1900px){body.shadcn-workbench.shared-workspace main{margin-right:auto}}
-@media(max-width:767px){body.shadcn-workbench{--wb-sidebar-width:0px!important}body.shadcn-workbench.shared-workspace main{width:100%;margin:0;padding:22px 16px 32px}body.shadcn-workbench.shared-workspace main>header{gap:12px;align-items:center;margin-bottom:20px}body.shadcn-workbench.shared-workspace .header-title h1{font-size:24px}body.shadcn-workbench.shared-workspace .header-actions{flex-shrink:0}body.shadcn-workbench.shared-workspace .btn{min-height:44px}#workbenchTopbar{margin:0}body.shadcn-workbench.shared-workspace .page-footer{margin:0;padding:12px 16px}body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 220px)!important;min-height:600px!important}body.shadcn-workbench.shared-workspace .card{padding:16px}}
-@media(prefers-reduced-motion:reduce){body.shadcn-workbench *,body.shadcn-workbench *::before,body.shadcn-workbench *::after{animation:none!important;transition:none!important}}
-@media(min-width:768px){body.shadcn-workbench #workbenchShell [data-slot=sidebar]{display:block!important}body.shadcn-workbench #workbenchShell [data-slot=sidebar-container]{display:flex!important}}
-/* Calendar and tasks now have dedicated sidebar entries. */
+.wb-page-description{font-size:16px;line-height:24px;margin:2px 0 0;color:var(--admin-muted-foreground)}
+body.shadcn-workbench.shared-workspace .card{border:1px solid var(--admin-border);border-radius:14px;padding:24px;background:var(--admin-card);box-shadow:0 1px 3px #0000000d}
+body.shadcn-workbench.shared-workspace h2{font-size:18px;font-weight:600;line-height:28px;letter-spacing:-.3px}
+body.shadcn-workbench.shared-workspace .btn{border-radius:6px;min-height:36px;padding:8px 12px;font-size:14px;font-weight:500;box-shadow:0 1px 2px #0000000d}
+body.shadcn-workbench.shared-workspace .primary{border-radius:6px;background:var(--admin-primary);border-color:var(--admin-primary);color:var(--admin-primary-foreground)}
+body.shadcn-workbench.shared-workspace .primary:hover{background:var(--admin-primary);filter:brightness(1.18)}
+body.shadcn-workbench.shared-workspace .page-footer{display:none}
+body.shadcn-workbench.shared-workspace .view-tabs{display:flex;gap:4px;background:var(--admin-muted);border:0;border-radius:8px;padding:4px;margin:0 0 16px;width:fit-content}
+body.shadcn-workbench.shared-workspace .view-tabs button{font-size:14px;font-weight:500;background:transparent;border:0;border-radius:6px;min-height:28px;padding:4px 12px;color:var(--admin-muted-foreground)}
+body.shadcn-workbench.shared-workspace .view-tabs button[aria-pressed=true]{background:var(--admin-background);color:var(--admin-foreground);box-shadow:0 1px 3px #0000001a}
 body.shadcn-workbench:has(#workspaceCalendar) .view-tabs,body.shadcn-workbench:has(#workspaceTasks) .view-tabs{display:none!important}
+body.shadcn-workbench.project-view main{display:block;overflow:visible;min-height:calc(100dvh - 80px)}
+body.shadcn-workbench.project-view #projectPanel:not(.hidden){display:block}
+body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 220px)!important;min-height:600px!important;width:100%;border:0!important;border-radius:8px!important}
+body.shadcn-workbench :focus-visible{outline:2px solid var(--admin-ring);outline-offset:2px}
+body.modern-project.shadcn-controls .header h1{font-size:24px;font-weight:700;letter-spacing:-.6px}
+body.modern-project.shadcn-controls .table-wrapper,body.modern-project.shadcn-controls .toolbar{border-color:var(--admin-border)}
+@media(min-width:768px){body.shadcn-workbench #workbenchShell [data-slot=sidebar]{display:block!important}body.shadcn-workbench #workbenchShell [data-slot=sidebar-container]{display:flex!important}}
+@media(max-width:767px){body.shadcn-workbench{--wb-sidebar-width:0px!important}#workbenchTopbar{margin:0;top:0;border-radius:0;border:0;border-bottom:1px solid var(--admin-border)}body.shadcn-workbench.shared-workspace main{width:100%;margin:0;border:0;border-radius:0;padding:24px 16px;min-height:calc(100dvh - 64px)}body.shadcn-workbench.shared-workspace main>header{gap:12px;align-items:flex-start}.wb-page-description{font-size:14px;line-height:22px}body.shadcn-workbench.shared-workspace .card{padding:20px}body.shadcn-workbench.shared-workspace .btn{min-height:44px}body.shadcn-workbench.shared-workspace .view-tabs button{min-height:40px}}
+@media(prefers-reduced-motion:reduce){body.shadcn-workbench *,body.shadcn-workbench *::before,body.shadcn-workbench *::after{animation:none!important;transition:none!important}}
+/* Existing business DOM adopts the shared shadcn/ui control contract. */
+.shadcn-controls select[data-ui-native]{display:none!important}
+body.shadcn-controls dialog[data-ui-dialog]{display:none}
+body.shadcn-controls [data-ui-portal] dialog[data-ui-dialog][open]{display:block!important;position:static!important;inset:auto!important;margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;min-width:0!important;height:auto!important;max-height:none!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;animation:none!important;transform:none!important}
+body.shadcn-controls [data-ui-portal] dialog[data-ui-dialog] h2{font-size:18px;line-height:28px;margin:0 0 16px;letter-spacing:0}
+body.shadcn-controls [data-ui-portal] dialog[data-ui-dialog] .card-head h2{margin:0}
+body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-control=textarea]{border:1px solid var(--admin-border);border-radius:6px;box-shadow:0 1px 2px #18181b06;background:var(--admin-background);color:var(--admin-foreground);font:inherit;font-size:14px;min-height:36px;padding:9px 12px}
+body.shadcn-controls [data-ui-control=textarea]{resize:none;min-height:140px;line-height:1.7}
+body.shadcn-controls [data-ui-control=button]{border-radius:6px;min-height:36px;padding:8px 14px;border:1px solid var(--admin-border);background:var(--admin-background);color:var(--admin-foreground);font-size:14px;font-weight:500;box-shadow:0 1px 2px #18181b06}
+body.shadcn-controls [data-ui-control=button]:hover{background:var(--admin-muted)}
+body.shadcn-controls [data-ui-control=button].primary{background:var(--admin-primary);color:var(--admin-background);border-color:var(--admin-primary)}
+body.shadcn-controls [data-ui-control=button].primary:hover{background:var(--admin-primary)}
+body.shadcn-controls [data-ui-control=button].danger{color:#b42318;border-color:var(--admin-border);background:var(--admin-background)}
+body.shadcn-controls [data-ui-control=button].danger:hover{background:#fef2f2;border-color:#f5c3bf}
+body.shadcn-controls [data-ui-control]:focus-visible{outline:2px solid var(--admin-ring);outline-offset:2px}
+body.shadcn-controls .filters>.ui-select-mount{min-width:140px}
+@media(max-width:767px){body.shadcn-controls [data-ui-control]{min-height:44px}body.shadcn-controls .filters>.ui-select-mount{flex:1}}
+body.shadcn-controls [data-ui-portal] [hidden]{display:none!important}
+body.shadcn-controls [data-ui-control][aria-invalid=true]{border-color:#b42318}
+body.shadcn-controls [data-ui-control=button].btn-primary,body.shadcn-controls [data-ui-control=button].btn-add,body.shadcn-controls [data-ui-control=button].btn-success{background:var(--admin-primary);border-color:var(--admin-primary);color:var(--admin-background)}
+body.shadcn-controls #issueDetails [data-ui-control=input],body.shadcn-controls #issueDetails [data-ui-control=textarea]{border:1px solid var(--admin-border);border-radius:6px;font-size:14px;padding:8px 12px;min-height:36px;background:var(--admin-background);color:var(--admin-foreground)}
+body.shadcn-controls #issueDetails [data-ui-control=textarea]{min-height:140px;resize:none}
+/* Legacy form text uses --muted as foreground; shadcn uses it as a surface. */
+body.shadcn-controls [data-ui-portal] dialog[data-ui-dialog]{--muted:var(--admin-muted-foreground);--accent:var(--admin-primary);--text:var(--admin-foreground);--line:var(--admin-border);color:var(--admin-foreground)}
+body.shadcn-workbench.shared-workspace .row-title{font-size:14px;line-height:20px;font-weight:500}
+body.shadcn-workbench.shared-workspace .row-meta{font-size:14px;line-height:20px}
+body.shadcn-workbench.shared-workspace .tag{font-size:12px;border-radius:6px}
+body.shadcn-workbench.shared-workspace .notes .card h3{font-size:16px;font-weight:600}
+body.shadcn-workbench.shared-workspace .filters input{min-height:36px;font-size:14px;border-radius:6px}
+body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-control=textarea]{font-family:var(--admin-font);font-size:14px}
+@media(max-width:767px){body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-control=textarea]{font-size:16px;min-height:44px}body.shadcn-workbench.shared-workspace .filters input{min-height:44px;font-size:16px}}
 </style><!-- PRODUCT_DESIGN_END --></head>
 <body class="modern-project">
 <div class="container">
@@ -920,6 +994,7 @@ function manageProjects(){
 }
 
 document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded',()=>window.WorkspacePrimitives?.install());
 </script>
 </body>
 </html>

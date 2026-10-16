@@ -7,6 +7,20 @@
     "TasksMutateDrawer: workspace fields and real persistence",
     "shadcn UI primitives: scoped styling and Chinese labels",
     "AppSidebar, NavGroup, TeamSwitcher, Header: Chinese workspace navigation and existing business bridge",
-    "Sidebar, DropdownMenu, Tooltip, Separator, Skeleton and use-mobile: scoped styles and mobile Sheet"
-  ]
+    "Sidebar, DropdownMenu, Tooltip, Separator, Skeleton and use-mobile: scoped styles and mobile Sheet",
+    "shadcn/ui Dialog, Select, Textarea from the same pinned upstream; shared legacy form and modal adapters",
+    "Original light theme, inset sidebar density, Header Search/TopNav, Main spacing and Task title actions"
+  ],
+  "theme": {
+    "source": "src/styles/theme.css",
+    "local": "../admin-theme.css",
+    "prefix": "--admin-",
+    "mode": "light"
+  },
+  "font": {
+    "family": "Inter",
+    "package": "5.3.0",
+    "license": "SIL OFL 1.1",
+    "delivery": "embedded woff2"
+  }
 }
