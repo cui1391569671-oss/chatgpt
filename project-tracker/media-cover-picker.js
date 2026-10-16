@@ -8,7 +8,7 @@ function setupMediaCoverPicker(){
  const preview=()=>{const url=$('coverUrl').value.trim(),valid=/^https:\/\//.test(url);$('gameCoverPreview').classList.toggle('hidden',!valid);if(valid)$('gameCoverPreview').src=url;};
  const binding=()=>{const source=$('mediaSource').value;$('refreshMediaSource').classList.toggle('hidden',!source);$('clearMediaSource').classList.toggle('hidden',!source);$('selectedMediaSource').textContent=source?'已关联 '+mediaSourceNames[source]+' 作品'+($('coverMode').value==='manual'?' · 使用自定义封面':''):'';};
  const clearBinding=()=>{for(const id of ['mediaSource','mediaSourceId','steamAppId'])$(id).value='';$('coverMode').value='manual';binding();};
- const invalidate=()=>{clearTimeout(timer);controller?.abort();++gameCoverSequence;$('matchGameCover').disabled=false;$('refreshMediaSource').disabled=false;$('animeCoverChoices').replaceChildren();$('animeCoverChoices').classList.add('hidden');};
+ const invalidate=()=>{clearTimeout(timer);controller?.abort();++gameCoverSequence;$('matchGameCover').disabled=false;$('refreshMediaSource').disabled=false;autocomplete.clear();};
  const request=async(url,seq)=>{controller=new AbortController();const response=await fetch(url,{signal:controller.signal});const data=await response.json();if(!response.ok)throw Error(data.error||'作品资料暂不可用');if(!active(seq))return null;return data;};
  const setIdentity=item=>{for(const [id,value] of Object.entries({mediaSource:item.source,mediaSourceId:item.sourceId,steamAppId:item.steamAppId||'',coverMode:'source'}))$(id).value=value;binding();};
  const applyDetails=(item,replaceTitle=false)=>{if(replaceTitle&&item.matchedTitle)$('title').value=item.matchedTitle;if(item.coverUrl)$('coverUrl').value=item.coverUrl;if(item.platforms&&!$('platform').value)$('platform').value=item.platforms.slice(0,100);if(item.total>0&&!Number($('total').value)&&['anime','tv'].includes($('mediaType').value))$('total').value=item.total;if(item.steamAppId)$('steamAppId').value=item.steamAppId;preview();binding();};
@@ -21,10 +21,12 @@ function setupMediaCoverPicker(){
  const search=async()=>{
   const title=$('title').value.trim(),type=$('mediaType').value;if(!title)return;invalidate();const seq=gameCoverSequence;$('matchGameCover').disabled=true;$('gameCoverStatus').textContent='正在搜索作品…';
   try{const data=await request('/api/media/search?'+new URLSearchParams({q:title,type}),seq);if(!data||$('title').value.trim()!==title||$('mediaType').value!==type)return;const candidates=data.candidates||[],choices=$('animeCoverChoices');
-   choices.innerHTML=candidates.map((x,i)=>'<button type="button" class="anime-cover-choice" data-choice="'+i+'" aria-label="选择 '+esc(x.matchedTitle)+' · '+esc(mediaSourceNames[x.source])+' · '+esc(x.date||'日期未知')+'">'+(x.coverUrl?'<img src="'+esc(x.coverUrl)+'" alt="'+esc(x.matchedTitle)+'封面" loading="lazy" referrerpolicy="no-referrer">':'<span>暂无封面</span>')+'<span>'+esc(x.matchedTitle)+'</span><small>'+esc(x.originalTitle&&x.originalTitle!==x.matchedTitle?x.originalTitle:'')+'</small><small>'+esc(x.date||'日期未知')+' · '+esc(mediaSourceNames[x.source])+'</small>'+(x.platforms?'<small>'+esc(x.platforms)+'</small>':'')+'</button>').join('');choices.classList.toggle('hidden',!candidates.length);choices.onclick=e=>{const button=e.target.closest('[data-choice]');if(button&&!busy)choose(candidates[Number(button.dataset.choice)],button);};
+   autocomplete.set(candidates,candidates.map((x,i)=>'<button type="button" class="media-name-option" data-choice="'+i+'" aria-label="选择 '+esc(x.matchedTitle)+' · '+esc(mediaSourceNames[x.source])+' · '+esc(x.date||'日期未知')+'">'+(x.coverUrl?'<img src="'+esc(x.coverUrl)+'" alt="'+esc(x.matchedTitle)+'封面" loading="lazy" referrerpolicy="no-referrer">':'<span>暂无封面</span>')+'<span>'+esc(x.matchedTitle)+'</span><small>'+esc(x.originalTitle&&x.originalTitle!==x.matchedTitle?x.originalTitle:'')+'</small><small>'+esc(x.date||'日期未知')+' · '+esc(mediaSourceNames[x.source])+'</small>'+(x.platforms?'<small>'+esc(x.platforms)+'</small>':'')+'</button>').join(''));
    $('gameCoverStatus').textContent=(candidates.length?'找到 '+candidates.length+' 部作品，请按名称、年份和平台选择。':'没有找到作品，可调整关键词或填写封面链接。')+(data.warnings?.length?' '+data.warnings.join('；')+'。':'');
   }catch(e){if(active(seq)&&e.name!=='AbortError')$('gameCoverStatus').textContent='作品搜索暂不可用，现有封面与输入已保留，可稍后重试。';}finally{if(active(seq))$('matchGameCover').disabled=false;}
  };
+ const autocomplete=enhanceWorkspaceAutocomplete($('title'),$('animeCoverChoices'),item=>{if(!busy)choose(item);},()=>search());
+ $('title').setAttribute('aria-describedby','gameCoverStatus');$('title').closest('.workspace-autocomplete').after($('gameCoverStatus'));
  const changed=()=>{invalidate();const wasBound=!!$('mediaSource').value;if(wasBound&&$('coverMode').value==='source')$('coverUrl').value='';clearBinding();preview();$('gameCoverStatus').textContent='输入作品名称，选择对应年份、版本或季度。';if($('title').value.trim()&&!composition)timer=setTimeout(search,400);};
  $('coverUrl').oninput=()=>{invalidate();$('coverMode').value='manual';preview();binding();};
  $('title').oninput=e=>{if(!e.isComposing&&!composition)changed();};$('title').oncompositionstart=()=>{composition=true;invalidate();};$('title').oncompositionend=()=>{composition=false;changed();};
@@ -32,7 +34,7 @@ function setupMediaCoverPicker(){
  $('matchGameCover').onclick=search;$('refreshMediaSource').onclick=refresh;$('clearMediaSource').onclick=()=>{invalidate();clearBinding();$('gameCoverStatus').textContent='已解除关联，保留当前自定义封面。';};
  $('gameCoverPreview').onerror=()=>{$('gameCoverPreview').classList.add('hidden');$('gameCoverStatus').textContent='图片暂时无法加载，可刷新已选作品或填写其他封面链接。';};
  preview();binding();$('gameCoverStatus').textContent=$('mediaSource').value?'已保留所选作品。可按作品 ID 刷新资料。':'输入名称后搜索，点击候选作品以关联封面。';
- $('editor').addEventListener('close',()=>{clearTimeout(timer);controller?.abort();if(gameCoverSequence>=session)++gameCoverSequence;},{once:true});
+ $('editor').addEventListener('close',()=>{autocomplete.destroy();clearTimeout(timer);controller?.abort();if(gameCoverSequence>=session)++gameCoverSequence;},{once:true});
 }
 async function resolveMediaSourceCovers(){
  for(const item of state.completedGames||[]){

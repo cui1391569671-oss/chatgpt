@@ -1920,6 +1920,13 @@ body.shadcn-workbench {
   min-height: 0;
   overflow: hidden;
 }
+.workspace-autocomplete{position:relative;min-width:0}
+.workspace-autocomplete-list{position:absolute;top:100%;left:0;right:0;z-index:10030;max-height:280px;overflow:auto;background:var(--admin-background);border:1px solid var(--admin-border);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:4px}
+.workspace-autocomplete-list [role=option]{display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 12px;align-items:center;min-height:64px;width:100%;padding:8px;text-align:left;border:0;background:transparent;color:var(--admin-foreground);cursor:pointer}
+.workspace-autocomplete-list [role=option]:hover,.workspace-autocomplete-list [aria-selected=true]{background:var(--admin-accent)}
+.workspace-autocomplete-list img{grid-row:span 4;width:40px;height:56px;object-fit:cover;border-radius:4px}
+.workspace-autocomplete-list span,.workspace-autocomplete-list small{overflow-wrap:anywhere}
+.workspace-autocomplete-list[hidden]{display:none}
 body.shadcn-workbench.shared-workspace .shell {
   display: flex;
   min-height: 0;

@@ -4,6 +4,8 @@
 工作与私人数据隔离；来源WORKBENCH-PLAN.md、CLOUD-STORAGE.md及服务端API。保留记录级保存、冲突恢复、失败保留输入与防重复提交。UI统一不改变云端权限、数据格式或同步协议。
 
 ## Canonical UI map
+
+名称联想由 `workspace-autocomplete.js` 维护 DOM combobox/listbox 适配器，视觉归属 `workspace.css`。娱乐名称输入400ms后显示来源候选；方向键导航、Enter确认、Escape只收起列表、Tab或点击外部关闭。中文组合输入不请求，过时结果取消。候选不自动选择；确认时填写名称、封面与来源ID，随后按ID读取详细信息。原始输入节点、字段ID和保存协议保留。
 | Capability | Owner | Contract |
 |---|---|---|
 | Navigation | workspace-shell.tsx / workbench-shell.js | URL记录视图；保留原导航桥接；编辑期间沿用离开限制 |
