@@ -2166,6 +2166,31 @@ dialog[open]::backdrop {
 .motion-paused .calendar-day::before {
   animation-play-state: paused;
 }
+
+/* Personal information uses shared materials and controls; only business layout lives here. */
+.personal-info{min-width:0;display:flex;flex-direction:column;gap:16px}
+.personal-toolbar,.personal-actions,.personal-record-type{display:flex;align-items:center;gap:12px}
+.personal-toolbar{justify-content:space-between;flex-wrap:wrap}
+.personal-toolbar h2,.personal-toolbar p,.personal-records h3{margin:0}
+.personal-actions{flex-wrap:wrap}
+.personal-gate{width:100%;max-width:480px;align-self:center;display:flex;flex-direction:column;gap:16px}
+.personal-gate h3,.personal-gate p{margin:0}
+.personal-field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.personal-field label{margin:0}
+.personal-gate form,.personal-fields{display:flex;flex-direction:column;gap:16px}
+.personal-secret{display:flex;gap:8px;align-items:center}
+.personal-secret input{min-width:0;flex:1}
+.personal-secret button{flex:none}
+.personal-records{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.personal-records .card{display:flex;flex-direction:column;align-items:flex-start;gap:16px;min-width:0;overflow-wrap:anywhere}
+.personal-number{font-variant-numeric:tabular-nums;letter-spacing:2px;margin:0}
+.personal-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+.personal-editor{grid-template-rows:auto minmax(0,1fr)}
+.personal-editor .personal-form{display:flex;flex-direction:column;gap:16px;min-height:0;overflow:hidden}
+.personal-editor .personal-fields{flex:1;min-height:0;overflow:auto;padding:4px}
+.personal-editor [data-slot=dialog-footer]{flex-shrink:0}
+.personal-editor .form-error{margin:0;min-height:20px}
+@media(max-width:767px){.personal-actions{width:100%}.personal-actions button{flex:1}.personal-gate{max-width:none}}
 .calendar-day:hover::before,.calendar-day:focus-visible::before {
   animation-play-state: paused;
 }

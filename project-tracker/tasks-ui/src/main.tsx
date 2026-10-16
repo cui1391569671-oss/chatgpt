@@ -2,6 +2,7 @@ import './workspace-feedback';
 import {WorkspaceSearch} from '@/components/workspace-search';
 import './workspace-shell';
 import './workspace-primitives';
+import './personal-info';
 import {WorkspaceSelect} from '@/components/workspace-select';
 import {Textarea} from '@/components/ui/textarea';
 import {Dialog,DialogContent,DialogTitle,DialogDescription,DialogHeader,DialogFooter} from '@/components/ui/dialog';
