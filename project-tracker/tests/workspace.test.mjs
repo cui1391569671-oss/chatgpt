@@ -30,7 +30,7 @@ test('validation and access control reject bad writes',async()=>{
  const cross=request('/api/workspace',{workspace,version:1});cross.headers.set('Origin','https://other.local');assert.equal((await worker.fetch(cross,e)).status,403);
  assert.equal((await worker.fetch(request('/api/workspace',{workspace:null,version:1}),e)).status,400);
 });
-test('home and project routes serve their own pages',async()=>{const e=env();const home=await (await worker.fetch(request('/'),e)).text(),project=await (await worker.fetch(request('/projects'),e)).text();assert.match(home,/把工作推进/);assert.match(home,/href="\/work"/);assert.match(home,/href="\/personal"/);assert.match(project,/<title>项目问题跟进表/);assert.match(project,/返回工作工作台/);});
+test('home and project routes serve their own pages',async()=>{const e=env();const home=await worker.fetch(request('/'),e),project=await (await worker.fetch(request('/projects'),e)).text();assert.equal(home.status,302);assert.equal(home.headers.get('Location'),'/work');assert.match(project,/<title>项目问题跟进表/);assert.match(project,/返回工作工作台/);});
 
 test('workspace editing and deletion persist without changing projects',async()=>{
  const e=env();await worker.fetch(request('/api/workspace',{workspace,version:1}),e);

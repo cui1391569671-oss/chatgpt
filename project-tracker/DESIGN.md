@@ -1,6 +1,8 @@
 # Workbench design
 
 ## Direction
+
+公开产品介绍首页已停用；访问 `/` 直接跳转 `/work`，未登录沿用工作台登录页面。搜索引擎不索引应用页面。账号个人信息与现有工作、私人空间保留。
 中文项目管理与私人工作台，采用 floating 布局和浅色玻璃材质，优先保证表格、日历和长文本可读。沿用 shadcn-glass-ui Light 预设；不逐页配色，不增加装饰性统计或演示内容。
 
 ## Canonical sources

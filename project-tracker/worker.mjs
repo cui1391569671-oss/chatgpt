@@ -8,7 +8,7 @@ import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordCh
 import {sessionValid,authRoute,loginResponse} from './auth.mjs';
 import {findGameCover,findMediaCover,findAnimeCover,findMovieCovers} from './game-covers.mjs';
 import {getGameReleases} from './game-releases.mjs';
-import {HTML,WORKBENCH,LANDING,FAVICON} from './pages.mjs';
+import {HTML,WORKBENCH,FAVICON} from './pages.mjs';
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 async function authorized(request,env){
  if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return false;
@@ -89,9 +89,9 @@ function validWorkspace(w){
 export default {
  async fetch(request,env){
   const url=new URL(request.url);
-  if(url.pathname==='/robots.txt'&&request.method==='GET')return new Response('User-agent: *\nAllow: /$\nDisallow: /work\nDisallow: /personal\nDisallow: /projects\nDisallow: /api/\nDisallow: /auth/\nDisallow: /login\nSitemap: '+url.origin+'/sitemap.xml\n',{headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'public, max-age=3600'}});
-  if(url.pathname==='/sitemap.xml'&&request.method==='GET')return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>'+url.origin+'/</loc></url></urlset>',{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
-  if(url.pathname==='/'&&['GET','HEAD'].includes(request.method))return new Response(request.method==='HEAD'?null:LANDING,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'public, max-age=300','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'"}});
+  if(url.pathname==='/robots.txt'&&request.method==='GET')return new Response('User-agent: *\nDisallow: /\n',{headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'}});
+  if(url.pathname==='/sitemap.xml'&&request.method==='GET')return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>',{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow'}});
+  if(url.pathname==='/'&&['GET','HEAD'].includes(request.method))return new Response(null,{status:302,headers:{Location:'/work','Cache-Control':'no-store'}});
   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
   if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
   const auth=await authRoute(request,env);if(auth)return auth;
@@ -114,7 +114,7 @@ export default {
    if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET'){
     const embedded=url.pathname==='/projects'&&url.searchParams.get('embedded')==='1';
     const projectHtml=embedded?HTML.replace('</head>','<style>.header,.footer{display:none}.container{padding:8px;max-width:none}</style></head>'):HTML;
-    return new Response(url.pathname==='/'?LANDING:url.pathname==='/projects'?projectHtml:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':embedded?'SAMEORIGIN':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Content-Type-Options':'nosniff'}});
+    return new Response(url.pathname==='/projects'?projectHtml:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':embedded?'SAMEORIGIN':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Content-Type-Options':'nosniff'}});
    }
    if(url.pathname==='/api/wardrobe-images'&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
