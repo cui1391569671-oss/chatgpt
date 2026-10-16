@@ -2169,6 +2169,20 @@ dialog[open]::backdrop {
 
 /* Personal information uses shared materials and controls; only business layout lives here. */
 .personal-info{min-width:0;display:flex;flex-direction:column;gap:16px}
+.media-library-toolbar{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.media-library-toolbar label{display:grid;gap:8px;min-width:150px;margin:0}
+.media-record-info{display:flex;flex-direction:column;gap:8px;min-width:0;margin-top:12px;overflow-wrap:anywhere}
+.media-record-info h3,.media-record-info p{margin:0}
+.media-record-info .tag{align-self:flex-start}
+.media-record-actions,.media-pagination{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.media-pagination{justify-content:center;margin-top:20px}
+.media-record-note{white-space:pre-wrap;max-height:100px;overflow:auto}
+.media-library-list{display:grid;gap:12px}
+.media-library-list article{display:grid;grid-template-columns:120px minmax(0,1fr);gap:20px;min-width:0}
+.media-library-list .record-cover{align-self:start}
+.media-progress-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.media-history ol{padding-left:20px;line-height:1.8}
+@media(max-width:600px){.media-library-toolbar label{flex:1;min-width:120px}.media-library-list article{grid-template-columns:85px minmax(0,1fr);gap:12px}.media-record-actions button{width:100%}}
 .personal-toolbar,.personal-actions,.personal-record-type{display:flex;align-items:center;gap:12px}
 .personal-toolbar{justify-content:space-between;flex-wrap:wrap}
 .personal-toolbar h2,.personal-toolbar p,.personal-records h3{margin:0}
