@@ -48,3 +48,5 @@
 - 待办“新建”通过React Portal放入页面标题操作区，保留原本的保存与失败恢复。
 - 表单适配器写属性、标题说明同步都必须幂等；不能因MutationObserver互相触发而反复更新。
 - 只采用浅色原版主题，不添加无法使用的主题/配置按钮或虚假演示数据。
+
+侧栏外观补充：WorkspaceSidebar 采用上游 floating variant；桌面边框与圆角由 Sidebar 内置样式维护，手机继续 Sheet。
