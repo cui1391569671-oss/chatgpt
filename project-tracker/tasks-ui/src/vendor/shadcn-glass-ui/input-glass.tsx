@@ -284,10 +284,12 @@ export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputE
       <input
         ref={ref}
         data-slot="input"
-        className={cn(inputVariants({ size: 'md' }), className)}
+        className={cn('workspace-input', className)}
         style={{
           background: 'var(--input-bg)',
           border: '1px solid var(--input-border)',
+          borderRadius: 'var(--control-radius)',
+          minHeight: 'var(--control-height)',
           color: 'var(--input-text)',
         }}
         {...props}

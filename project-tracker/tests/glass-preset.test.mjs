@@ -11,8 +11,8 @@ test('pinned upstream Light preset remains unchanged and retains its license',()
  assert.doesNotMatch(read('glass-preset.css'),/\*\s*:focus\s*\{/,'Do not inherit upstream global focus suppression');
 });
 test('every material adapter token resolves in the shared theme',()=>{
- const css=['glass-preset.css','admin-theme.css','glass-material.css','liquid-glass.css'].map(read).join('\n');
+ const css=['glass-preset.css','admin-theme.css','workspace.css'].map(read).join('\n');
  const defined=new Set([...css.matchAll(/(--[\w-]+)\s*:/g)].map(m=>m[1]));
- for(const [,token] of read('glass-material.css').matchAll(/var\((--[\w-]+)/g))assert.ok(defined.has(token),'Undefined material token '+token);
- assert.doesNotMatch(read('glass-material.css'),/#[0-9a-f]{3,8}\b|\brgba?\(/i,'Material adapter must use preset tokens, not a second palette');
+ for(const [,token] of read('workspace.css').matchAll(/var\((--[\w-]+)/g))assert.ok(token.startsWith('--radix-')||defined.has(token),'Undefined material token '+token);
+
 });

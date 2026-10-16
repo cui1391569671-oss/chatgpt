@@ -1,0 +1,245 @@
+{
+  "desktop": [
+    {
+      "name": "工作概览",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "项目问题",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "待办事项",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "项目资料",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "工作笔记",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "生活计划",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "待办事项",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "我的笔记",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "英语学习",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "娱乐记录",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "我的衣橱",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    },
+    {
+      "name": "设备维保",
+      "h": 720,
+      "nativeVisible": 0,
+      "sh": 720,
+      "sw": 1280,
+      "w": 1280
+    }
+  ],
+  "narrow": [
+    {
+      "route": "/work?view=home",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/work?view=projects",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/work?view=tasks",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/work?view=drive",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/work?view=notes",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/personal?view=home",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/personal?view=tasks",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/personal?view=notes",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/personal?view=vocabulary",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/personal?view=completedGames",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/personal?view=wardrobe",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    },
+    {
+      "route": "/personal?view=maintenance",
+      "documentHeight": 568,
+      "documentWidth": 320,
+      "height": 568,
+      "mainWidth": 296,
+      "mainX": 12,
+      "right": 308,
+      "width": 320
+    }
+  ],
+  "wide": [
+    {
+      "documentWidth": 768,
+      "mainWidth": 456,
+      "mainX": 292,
+      "right": 748,
+      "width": 768
+    },
+    {
+      "documentWidth": 390,
+      "mainWidth": 366,
+      "mainX": 12,
+      "right": 378,
+      "width": 390
+    },
+    {
+      "documentWidth": 1280,
+      "mainWidth": 968,
+      "mainX": 292,
+      "right": 1260,
+      "width": 1280
+    }
+  ]
+}

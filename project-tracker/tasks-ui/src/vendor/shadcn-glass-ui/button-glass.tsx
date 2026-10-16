@@ -304,6 +304,8 @@ export const ButtonGlass = forwardRef<HTMLButtonElement, ButtonGlassProps>(
         style={{
           ...getVariantStyles(variant, isHovered && !isDisabled, isFocusVisible && !isDisabled),
           outline: 'none',
+          borderRadius: 'var(--control-radius)',
+          minHeight: size === 'icon' ? undefined : 'var(--control-height)',
         }}
         type={asChild ? undefined : 'button'}
         disabled={isDisabled}

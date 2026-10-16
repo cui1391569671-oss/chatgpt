@@ -16,7 +16,8 @@
   "adaptations": [
     "Import paths localized; global CSS import replaced by shared preset stylesheet",
     "Input uses upstream simple shadcn-compatible Input export",
-    "Existing Radix navigation/dialog/select behavior retained and mapped to the same preset"
+    "Existing Radix navigation/dialog/select behavior retained and mapped to the same preset",
+    "Shared Input and Button metrics reference workspace control tokens; stable workspace field classes survive Radix FormControl slot attributes"
   ],
   "presetHashes": {
     "tokens/primitives.css": "a7b70ec46f305675e5da986fd2d0a9dfde6b9eff6b547b5951d3dc2f1592f741",
