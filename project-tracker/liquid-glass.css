@@ -1,34 +1,23 @@
-/* Shared glass material; layout remains owned by shadcn Sidebar and business components. */
-body.shadcn-workbench{--wb-sidebar-width:18rem;background:var(--glass-background);background-attachment:fixed}
+/* Geometry and scroll ownership only. Materials: glass-material.css; colors: upstream Light preset. */
+body.shadcn-workbench{--wb-sidebar-width:18rem}
 body.shadcn-workbench[data-sidebar=collapsed]{--wb-sidebar-width:5rem}
 .shadcn-workbench #workbenchShell [data-slot=sidebar]{--sidebar-width:18rem;--sidebar-width-icon:3rem}
 .shadcn-workbench #workbenchShell [data-slot=sidebar-container]{padding:16px 12px 16px 16px}
-.shadcn-workbench #workbenchShell [data-slot=sidebar-inner]{background:rgba(255,255,255,.55);border:1px solid var(--glass-border);border-radius:24px;box-shadow:var(--glass-shadow);backdrop-filter:blur(28px) saturate(155%);-webkit-backdrop-filter:blur(28px) saturate(155%)}
+.shadcn-workbench #workbenchShell [data-slot=sidebar-inner]{border-radius:24px}
 .shadcn-workbench #workbenchShell [data-slot=sidebar-header],.shadcn-workbench #workbenchShell [data-slot=sidebar-footer]{padding:12px}
 .shadcn-workbench #workbenchShell [data-slot=sidebar-group]{padding:12px}
 .shadcn-workbench #workbenchShell [data-slot=sidebar-menu-button]{border-radius:12px;min-height:38px;transition:background-color 180ms ease,box-shadow 180ms ease}
-.shadcn-workbench #workbenchShell [data-slot=sidebar-menu-button][data-active=true]{background:#ffffffb8;box-shadow:0 2px 8px #24374c0a,inset 0 1px 0 #fff}
-.shadcn-workbench #workbenchShell [data-slot=sidebar-menu-button]:hover{background:#ffffff85}
-.shadcn-workbench #workbenchTopbar{margin:16px 20px 0 calc(var(--wb-sidebar-width) + 4px);top:16px;border:1px solid var(--glass-border);border-radius:20px;background:#ffffff85;box-shadow:var(--glass-shadow);backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%)}
-.shadcn-workbench .wb-topbar{height:64px;padding:0 18px;background:transparent}
-.shadcn-workbench .wb-search-trigger{background:#ffffff65!important;border-color:#ffffffb8!important;border-radius:12px!important;box-shadow:inset 0 1px 0 #fff!important}
-.shadcn-workbench .wb-header-avatar{background:#ffffff8c!important;box-shadow:inset 0 1px 0 #fff}
-body.shadcn-workbench.shared-workspace main{width:calc(100% - var(--wb-sidebar-width) - 24px);margin:0 20px 20px calc(var(--wb-sidebar-width) + 4px);padding:32px 8px 8px;background:transparent;border:0;border-radius:0;min-height:calc(100dvh - 100px)}
+.shadcn-workbench #workbenchTopbar{margin:16px 20px 0 calc(var(--wb-sidebar-width) + 4px);top:16px;border-radius:20px}
+.shadcn-workbench .wb-topbar{height:64px;padding:0 18px}
+.shadcn-workbench .wb-search-trigger{border-radius:12px!important}
+body.shadcn-workbench.shared-workspace main{width:calc(100% - var(--wb-sidebar-width) - 24px);margin:0 20px 20px calc(var(--wb-sidebar-width) + 4px);padding:32px 8px 8px;border-radius:0;min-height:calc(100dvh - 100px)}
 body.shadcn-workbench.shared-workspace main>header{margin:0 8px 24px}
 body.shadcn-workbench.shared-workspace .header-title h1{font-size:26px;line-height:34px;letter-spacing:-.7px}
-body.shadcn-workbench.shared-workspace .card{background:#ffffffde;border:1px solid #ffffffeb;border-radius:22px;box-shadow:0 8px 32px #23364d0a,inset 0 1px 0 white;padding:24px}
-body.shadcn-workbench.shared-workspace .primary{background:linear-gradient(160deg,#293549,#111c30);border:1px solid #182337;border-radius:12px;box-shadow:inset 0 1px 0 #ffffff30,0 3px 7px #17243815;min-height:40px}
-body.shadcn-workbench #workspaceCalendar{--border:#e0e6ed;--muted:#edf1f6;--background:#ffffff;--card:#ffffff;--popover:#ffffffed;--radius:.8rem}
+body.shadcn-workbench.shared-workspace .card{border-radius:22px;padding:24px}
+body.shadcn-workbench.shared-workspace .primary{border-radius:12px;min-height:40px}
 body.shadcn-workbench #workspaceCalendar button{border-radius:10px}
-body.shadcn-workbench [data-shell-portal]{--popover:#f5f8fbeF}
-body.shadcn-workbench [data-shell-portal] [role=menu]{background:#f5f8fbed;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid #fff;box-shadow:var(--glass-shadow);border-radius:16px}
-@supports not (backdrop-filter:blur(1px)){body.shadcn-workbench #workbenchTopbar,.shadcn-workbench #workbenchShell [data-slot=sidebar-inner]{background:#f7f9fc}}
-@media(prefers-reduced-transparency:reduce){body.shadcn-workbench #workbenchTopbar,.shadcn-workbench #workbenchShell [data-slot=sidebar-inner]{background:#f7f9fc;backdrop-filter:none;-webkit-backdrop-filter:none}}
+body.shadcn-workbench [data-shell-portal] [role=menu]{border-radius:16px}
 @media(max-width:767px){body.shadcn-workbench{--wb-sidebar-width:0px!important}.shadcn-workbench #workbenchTopbar{margin:12px 12px 0;top:12px;border-radius:18px}.shadcn-workbench .wb-topbar{padding:0 12px}body.shadcn-workbench.shared-workspace main{width:auto;margin:0 12px 12px;padding:24px 0 0}body.shadcn-workbench.shared-workspace main>header{margin:0 4px 20px}body.shadcn-workbench.shared-workspace .card{padding:12px;border-radius:18px}body.shadcn-workbench.shared-workspace .header-title h1{font-size:24px}.shadcn-workbench #workbenchShell [data-slot=sidebar-menu-button]{min-height:44px}}
-/* Shared material tokens, also available to portals and the standalone project page. */
-:root{--glass-border:rgba(255,255,255,.82);--glass-panel:rgba(255,255,255,.62);--glass-content:rgba(255,255,255,.9);--glass-shadow:0 12px 40px #23364d10,0 2px 6px #23364d08,inset 0 1px 0 #ffffffed;--glass-background:radial-gradient(ellipse at 8% 15%,#dbe9f0b3,transparent 42%),radial-gradient(ellipse at 88% 65%,#e5e2f1a6,transparent 48%),linear-gradient(140deg,#edf1f5,#e7edf1 55%,#f0eef3)}
-body.shadcn-workbench,body.modern-project{background:var(--glass-background);background-attachment:fixed}
-/* Box sizing and shrinkable tracks prevent content from widening the application. */
 body.shadcn-workbench :is(main,#content,#projectPanel,.grid,.card,.row-content,.header-title,.filters,.calendar-layout,.calendar-full-surface,.project-core-panel,.notes,.maintenance-list,.tasks-app),body.modern-project :is(.container,.toolbar,.toolbar-row,.table-wrapper){min-width:0;max-width:100%;box-sizing:border-box}
 body.shadcn-workbench :is(.grid,.notes,.completed-game-grid,.clothes-grid,.wardrobe-grid)>*,body.shadcn-workbench .calendar-layout>*{min-width:0}
 body.shadcn-workbench :is(.row-title,.row-meta,.note-body,.card h3,.form-error,.notification-list,.release-card,.word-card),body.modern-project :is(.modal,.issue-details-head){overflow-wrap:anywhere}
@@ -37,11 +26,11 @@ body.shadcn-workbench :is(input,textarea,select,.ui-select-mount),body.modern-pr
 body.shadcn-workbench :is(img,iframe,video){max-width:100%}
 body.shadcn-workbench .view-tabs{max-width:100%;flex-wrap:wrap}
 body.shadcn-workbench :is(.project-core-scroll,.tasks-table-scroll),body.modern-project .table-wrapper{min-width:0;width:100%;max-width:100%;overflow:auto;overscroll-behavior:contain}
-body.shadcn-workbench .tasks-table-scroll{background:var(--glass-content);border:1px solid var(--glass-border);border-radius:18px;box-shadow:0 8px 32px #23364d0a}
-body.shadcn-workbench .tasks-toolbar{padding:12px;background:var(--glass-panel);border:1px solid var(--glass-border);border-radius:16px}
+body.shadcn-workbench .tasks-table-scroll{border-radius:18px}
+body.shadcn-workbench .tasks-toolbar{padding:12px;border-radius:16px}
 body.shadcn-workbench .tasks-toolbar>.ui-select-mount{max-width:100%}
 body.shadcn-workbench :is(.tasks-pagination,.tasks-bulk){flex-wrap:wrap;min-width:0;max-width:100%}
-body.shadcn-workbench .project-core-panel{border:1px solid var(--glass-border);border-radius:22px;background:var(--glass-content);box-shadow:var(--glass-shadow)}
+body.shadcn-workbench .project-core-panel{border-radius:22px}
 body.shadcn-workbench .project-core-heading{flex-wrap:wrap}
 body.shadcn-workbench .project-core-actions{flex-wrap:wrap;min-width:0}
 body.shadcn-workbench .project-core-table{table-layout:fixed}
@@ -52,19 +41,18 @@ body.shadcn-workbench .wb-search-trigger>span{overflow:hidden;text-overflow:elli
 body.shadcn-workbench .wb-topbar-actions{flex-shrink:0}
 @media(min-width:768px){body.shadcn-workbench #workbenchShell [data-collapsible=icon] [data-slot=sidebar-container]{width:80px}body.shadcn-workbench #workbenchShell [data-collapsible=icon] :is([data-sidebar=header],[data-sidebar=footer]){padding:10px}body.shadcn-workbench #workbenchShell [data-collapsible=icon] [data-sidebar=group]{padding:10px}}
 @media(min-width:768px) and (max-width:1040px){body.shadcn-workbench .wb-topnav{gap:12px}body.shadcn-workbench .wb-search-trigger{width:40px;padding:8px;flex-shrink:0}body.shadcn-workbench .wb-search-trigger :is(span,kbd){display:none}body.shadcn-workbench #workbenchTopbar{margin-right:12px}body.shadcn-workbench.shared-workspace main{width:calc(100% - var(--wb-sidebar-width) - 16px);margin-right:12px}body.shadcn-workbench .grid{grid-template-columns:minmax(0,1fr)}}
-/* Keep all overlays inside the visual viewport, with their own vertical scrolling. */
-body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal])[role=dialog],body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal]) [role=dialog]{box-sizing:border-box;max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain;background:rgba(248,250,253,.96);border:1px solid var(--glass-border);box-shadow:var(--glass-shadow);backdrop-filter:blur(24px) saturate(140%);-webkit-backdrop-filter:blur(24px) saturate(140%)}
+body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal])[role=dialog],body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal]) [role=dialog]{box-sizing:border-box;max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain}
 body .ui-dialog-body{min-width:0;max-width:100%;overflow-wrap:anywhere}
 body :is(.ui-business-dialog,.wb-command-dialog){border-radius:22px}
 body :is(.tasks-drawer,.tasks-confirm,.ui-project-drawer){border-radius:20px 0 0 20px}
 body [data-ui-portal] :is(.actions,.card-head,.drive-preview-tools),body [data-tasks-portal] [data-slot=sheet-footer]{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
 body :is([data-ui-portal],[data-tasks-portal],[data-ilamy-portal]) :is(input,textarea,select){min-width:0;max-width:100%;box-sizing:border-box}
-body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal])[data-slot=select-content],body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal])[role=menu]{max-width:calc(100vw - 24px);max-height:var(--radix-popper-available-height,calc(100dvh - 24px));background:rgba(248,250,253,.97);border:1px solid var(--glass-border);border-radius:14px;box-shadow:var(--glass-shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
-body [data-shell-portal][data-slot=sidebar]{inset:12px auto 12px 12px;height:calc(100dvh - 24px);max-width:calc(100vw - 36px);border-radius:22px;background:rgba(246,249,252,.95)}
+body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal])[data-slot=select-content],body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal])[role=menu]{max-width:calc(100vw - 24px);max-height:var(--radix-popper-available-height,calc(100dvh - 24px));border-radius:14px}
+body [data-shell-portal][data-slot=sidebar]{inset:12px auto 12px 12px;height:calc(100dvh - 24px);max-width:calc(100vw - 36px);border-radius:22px}
 body [data-shell-portal][data-slot=sidebar]>div{min-height:0}
 body [data-ui-portal] [data-slot=select-item-text]{white-space:normal;overflow-wrap:anywhere}
 body.modern-project .container{padding:16px;gap:0}
-body.modern-project :is(.toolbar,.table-wrapper,.modal){background:var(--glass-content);border:1px solid var(--glass-border);box-shadow:var(--glass-shadow);border-radius:18px}
+body.modern-project :is(.toolbar,.table-wrapper,.modal){border-radius:18px}
 body.modern-project .toolbar{flex-wrap:wrap}
 body.modern-project .toolbar-row{flex-wrap:wrap;flex-shrink:1;gap:8px}
 body.modern-project .toolbar-row>.btn{width:auto;flex:0 1 auto;white-space:normal;height:auto}
@@ -73,19 +61,14 @@ body.modern-project .modal-actions{flex-wrap:wrap}
 body.modern-project .table-actions{flex-wrap:wrap;gap:8px;max-width:100%}
 body.modern-project .btn{max-width:100%;white-space:normal;overflow-wrap:anywhere}
 body.modern-project .legend{flex-wrap:wrap}
-body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 238px)!important;min-height:420px!important;border-radius:18px!important;background:transparent!important}
+body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 238px)!important;min-height:420px!important;border-radius:18px!important}
 body.shadcn-workbench :is(.calendar-full-surface,.ilamy-surface,.ilamy-calendar-box,#workspaceCalendar){min-width:0;max-width:100%}
 body.shadcn-workbench .ilamy-calendar-box{overflow:auto;overscroll-behavior:contain}
 body.shadcn-workbench :is(.daily-vocabulary,.daily-word,.release-card,.upcoming-hero,.game-info,.clothing){min-width:0;max-width:100%;overflow-wrap:anywhere}
 body.shadcn-workbench :is(.row,.word-row){flex-wrap:wrap}
 @media(max-width:767px){body.shadcn-workbench :is(.grid,.calendar-layout,.notes){grid-template-columns:minmax(0,1fr)}body.shadcn-workbench .header-actions{max-width:100%;flex-shrink:1}body.shadcn-workbench .filters>*{max-width:100%;min-width:0}body.shadcn-workbench .filters>input{flex:1 1 100%}body.shadcn-workbench .tasks-toolbar>*{min-width:0;max-width:100%}body.shadcn-workbench .tasks-pagination label{flex-wrap:wrap}body.shadcn-workbench .wb-topbar{gap:6px}body.shadcn-workbench .wb-search-trigger{width:44px;height:44px;min-height:44px;padding:10px;flex-shrink:0}body.shadcn-workbench .wb-search-trigger :is(span,kbd){display:none}body.shadcn-workbench .wb-topnav{gap:12px}body.shadcn-workbench .wb-topnav button{min-height:44px}body.shadcn-workbench .wb-header-divider{display:none}body.modern-project .container{padding:8px}body.modern-project .toolbar-row{display:flex;width:100%}body.modern-project .toolbar-row>.btn{flex:1 1 120px}body.modern-project .toolbar-row .ui-select-mount{flex:1 1 120px;min-width:0}body.shadcn-workbench.project-view #projectFrame{height:calc(100dvh - 240px)!important;min-height:420px!important}}
 @media(max-width:420px){body.shadcn-workbench .wb-topnav{gap:8px}body.shadcn-workbench .wb-topnav button{font-size:12px}body.shadcn-workbench .wb-topbar{padding:0 8px}body.shadcn-workbench .wb-topbar-actions{gap:0}}
-@supports not (backdrop-filter:blur(1px)){body :is([role=dialog],[role=menu],[data-slot=select-content]){background:#f7f9fc}}
-@media(prefers-reduced-transparency:reduce){body :is([role=dialog],[role=menu],[data-slot=select-content]){background:#f7f9fc;backdrop-filter:none;-webkit-backdrop-filter:none}}
-/* Public entry points retain their content and authentication behavior. */
-body.glass-public,body.glass-login{background:var(--glass-background);background-attachment:fixed;overflow-wrap:anywhere}
-body.glass-public :is(.nav,.feature-board,.life-board,.browser-window,.privacy-card),body.glass-login .card{background:var(--glass-content);border:1px solid var(--glass-border);box-shadow:var(--glass-shadow);backdrop-filter:blur(24px) saturate(145%);-webkit-backdrop-filter:blur(24px) saturate(145%)}
-body.glass-public :is(.feature,.personal-feature,.privacy){background:transparent}
+body.glass-public,body.glass-login{overflow-wrap:anywhere}
 body.glass-public :is(.feature-layout,.feature-copy,.feature-board,.life-board,.hero,.privacy-grid)>*{min-width:0;max-width:100%}
 body.glass-public :is(.hero-actions,.nav-links,.footer-inner){flex-wrap:wrap}
 body.glass-public .browser-window{max-width:100%;min-width:0;border-radius:24px}
@@ -93,13 +76,11 @@ body.glass-login{padding:20px;box-sizing:border-box}
 body.glass-login .card{width:100%;max-width:440px;box-sizing:border-box;border-radius:24px}
 body.glass-login :is(input,button){max-width:100%;min-width:0;box-sizing:border-box}
 @media(max-width:420px){body.glass-login .card{padding:24px}body.glass-public .nav-inner{padding-inline:16px}}
-/* Radix positions nested calendar popovers in independent portal wrappers. */
 body [data-radix-popper-content-wrapper][data-ilamy-portal]{z-index:90!important;max-width:calc(100vw - 16px)}
 body [data-ilamy-portal] [role=grid]{min-width:0;max-width:100%;table-layout:fixed}
 @media(max-width:767px){body [data-ilamy-portal][role=dialog]>div{min-width:0;max-width:100%}}
-body.modern-project :is(.priority-dropdown,.status-dropdown){background:rgba(248,250,253,.97);border:1px solid var(--glass-border);border-radius:14px;box-shadow:var(--glass-shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+body.modern-project :is(.priority-dropdown,.status-dropdown){border-radius:14px}
 body.modern-project :is(.priority-dropdown,.status-dropdown) button{white-space:normal;overflow-wrap:anywhere;max-width:100%}
-/* Compact viewport layout: page titles live in navigation; content scrolls inside panels. */
 body.shadcn-workbench{height:100dvh;min-height:0;overflow:hidden}
 body.shadcn-workbench.shared-workspace .shell{display:flex;flex-direction:column;height:100dvh;min-height:0;overflow:visible}
 body.shadcn-workbench #workbenchShell{flex:none;height:0}
@@ -135,47 +116,21 @@ body.modern-project .issue-quick-tabs{display:none}
 body.modern-project .toolbar{border-radius:18px}
 body.modern-project .table-wrapper{min-height:0;flex:1}
 @media(max-width:767px){body.shadcn-workbench.shared-workspace main{padding:12px 0 0;min-height:0;height:auto;flex:1}body.shadcn-workbench .home-calendar{height:calc(100dvh - 112px);min-height:0}body.shadcn-workbench.shared-workspace .calendar-full-surface{padding:10px}body.shadcn-workbench .tasks-toolbar{gap:6px;padding:8px;margin-bottom:8px}body.shadcn-workbench .tasks-pagination{gap:6px;font-size:12px}body.shadcn-workbench .tasks-pagination>span:first-child{width:auto;flex:1 1 100%}}
-/* One surface color for controls, panels and calendar cells. State colors remain semantic. */
-:root{--glass-panel:rgba(244,248,252,.58);--glass-content:var(--glass-panel);--glass-overlay:rgba(237,243,249,.97)}
-body.shadcn-workbench :is(#workbenchTopbar,.calendar-full-surface,.card,.tasks-toolbar,.tasks-table-scroll,.project-core-panel),body.shadcn-workbench #workbenchShell [data-slot=sidebar-inner],body.modern-project :is(.toolbar,.table-wrapper,.modal){background:var(--glass-panel)}
-body.shadcn-workbench :is(.ilamy-surface,#workspaceCalendar),[data-ilamy-portal]{--background:transparent;--card:transparent;--muted:transparent;--secondary:var(--glass-panel);--accent:var(--glass-panel);--popover:var(--glass-overlay);--primary:var(--admin-foreground);--primary-foreground:var(--admin-primary-foreground)}
-body.shadcn-workbench :is([data-tasks-root],[data-shell-root],[data-ui-root]),body :is([data-tasks-portal],[data-ui-portal],[data-shell-portal]){--background:var(--glass-panel);--card:var(--glass-panel);--secondary:var(--glass-panel);--popover:var(--glass-overlay);--accent:var(--glass-panel)}
-body.shadcn-controls :is([data-ui-control=input],[data-ui-control=textarea],[data-ui-control=button]),body.shadcn-workbench :is(.ui-select,.tasks-create-button,.btn,.wb-search-trigger),body.modern-project :is(.ui-select,.btn,.issue-status){background:var(--glass-panel)!important;color:var(--admin-foreground);box-shadow:inset 0 1px 0 #ffffffb3,0 1px 3px #23364d0a;border-color:var(--admin-border)}
-body.shadcn-workbench :is([data-tasks-root],[data-tasks-portal]) :is(input,textarea,select){background:var(--glass-panel)}
-body.shadcn-workbench :is(.primary,.tasks-create-button),body.modern-project :is(.btn-primary,.btn-add,.btn-success){color:var(--admin-foreground)!important;background:var(--glass-panel)!important;border:1px solid var(--admin-border)}
-body.shadcn-workbench .ilamy-surface :is(.bg-background,.bg-card,.bg-white){background:transparent!important}
-body.shadcn-workbench .ilamy-surface :is(.bg-primary,.bg-blue-600){background:var(--glass-panel)!important;color:var(--admin-foreground)!important;border:1px solid var(--admin-border)}
-body.shadcn-workbench .ilamy-surface button:not(.ilamy-source-event){background-color:var(--glass-panel)}
-body.shadcn-workbench .ilamy-surface [role=radiogroup]{background:var(--glass-panel)}
-body.modern-project :is(thead th,.date-cell input,.legend),body.shadcn-workbench :is(.project-core-table thead th,.tasks-table-scroll th){background:var(--glass-panel)}
-body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal])[role=dialog],body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal]) [role=dialog],body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal])[role=menu],body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal])[data-slot=select-content]{background:var(--glass-overlay)}
-body [data-shell-portal][data-slot=sidebar]{background:var(--glass-overlay)}
-@media(prefers-reduced-transparency:reduce){:root{--glass-panel:#edf3f9;--glass-content:#edf3f9;--glass-overlay:#edf3f9}}
 
 body.shadcn-workbench.shared-workspace main>header{display:none}
 body.shadcn-workbench .filters>#add{margin-left:auto;flex:none}
 body.shadcn-workbench[data-workspace-view=drive] .project-core-panel{height:100%;display:flex;flex-direction:column;min-height:0}
 body.shadcn-workbench[data-workspace-view=drive] .project-core-heading{flex:none}
 body.shadcn-workbench[data-workspace-view=drive] .project-core-scroll{flex:1;min-height:0}
-body.shadcn-controls #issueDetails :is([data-ui-control=input],[data-ui-control=textarea]){background:var(--glass-panel)}
-body.shadcn-workbench :is(.wb-search-trigger,.wb-trigger){background:var(--glass-panel)!important}
-body.shadcn-workbench .tasks-toolbar :is(.ui-select,input){background:var(--glass-panel)!important}
-body.shadcn-workbench :is([data-tasks-root],[data-shell-root],[data-ui-root]),body :is([data-tasks-portal],[data-ui-portal],[data-shell-portal],[data-ilamy-portal]){--primary:var(--glass-panel);--primary-foreground:var(--admin-foreground)}
-body.shadcn-controls [data-ui-control=button].danger{color:#b42318}
-/* Separate header islands; only the page links share a floating surface. */
-body.shadcn-workbench #workbenchTopbar{background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:0}
-body.shadcn-workbench .wb-topbar{background:transparent;padding:0 8px;gap:12px}
+body.shadcn-workbench #workbenchTopbar{border-radius:0}
+body.shadcn-workbench .wb-topbar{padding:0 8px;gap:12px}
 body.shadcn-workbench .wb-header-divider{display:none}
-body.shadcn-workbench .wb-topnav{background:var(--glass-panel);border:1px solid var(--glass-border);border-radius:16px;padding:4px;gap:2px;box-shadow:var(--glass-shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);margin-right:auto}
+body.shadcn-workbench .wb-topnav{border-radius:16px;padding:4px;gap:2px;margin-right:auto}
 body.shadcn-workbench .wb-topnav button{padding:6px 10px;min-height:32px;border-radius:11px}
-body.shadcn-workbench .wb-topnav button.active{background:rgba(255,255,255,.35)}
-body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button{width:40px!important;height:40px!important;min-height:40px!important;flex:none;padding:10px;border:1px solid var(--glass-border);border-radius:13px;background:var(--glass-panel)!important;box-shadow:var(--glass-shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
-body.shadcn-workbench .wb-search-trigger{height:40px;min-height:40px;border:1px solid var(--glass-border)!important;border-radius:14px!important;box-shadow:var(--glass-shadow)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button{width:40px!important;height:40px!important;min-height:40px!important;flex:none;padding:10px;border-radius:13px}
+body.shadcn-workbench .wb-search-trigger{height:40px;min-height:40px;border-radius:14px!important}
 body.shadcn-workbench .wb-topbar-actions{margin-left:0}
-/* bg-border was intended as a 1px grid gap, not a full calendar surface. */
-body.shadcn-workbench .ilamy-calendar-box .bg-border{background:transparent!important;gap:0}
-body.shadcn-workbench .ilamy-calendar-box .droppable-cell{background:transparent!important;border:0;border-right:1px solid color-mix(in srgb,var(--admin-border) 75%,transparent);border-bottom:1px solid color-mix(in srgb,var(--admin-border) 75%,transparent)}
-body.shadcn-workbench .ilamy-calendar-box .droppable-cell:hover{background:rgba(255,255,255,.18)!important}
-body.shadcn-workbench .ilamy-calendar-box .droppable-cell.pointer-events-none{background:transparent!important}
+body.shadcn-workbench .ilamy-calendar-box .bg-border{gap:0}
+body.shadcn-workbench .ilamy-calendar-box .droppable-cell{border-right:1px solid color-mix(in srgb,var(--admin-border) 75%,transparent);border-bottom:1px solid color-mix(in srgb,var(--admin-border) 75%,transparent)}
 @media(max-width:1040px){body.shadcn-workbench .wb-topnav{gap:0}body.shadcn-workbench .wb-topnav button{padding:6px 8px}}
 @media(max-width:767px){body.shadcn-workbench .wb-topbar{gap:8px;padding:0 2px}body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button,body.shadcn-workbench .wb-search-trigger{width:44px!important;height:44px!important;min-height:44px!important}body.shadcn-workbench .wb-search-trigger{flex:none;margin-left:auto}}

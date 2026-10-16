@@ -1,0 +1,27 @@
+{
+  "repository": "https://github.com/artyhoo/shadcn-glass-ui-library",
+  "commit": "32d762578b6b9997851ed8ee930ab10a418b1bf9",
+  "packageVersion": "2.11.3",
+  "theme": "light",
+  "license": "Apache-2.0 (LICENSE file at pinned commit; package metadata says MIT)",
+  "sourceFiles": [
+    "components/glass/ui/button-glass.tsx",
+    "components/glass/ui/input-glass.tsx",
+    "components/glass/primitives/form-field-wrapper.tsx",
+    "lib/hooks/use-hover.ts",
+    "lib/hooks/use-focus.ts",
+    "lib/variants/button-glass-variants.ts",
+    "lib/variants/input-glass-variants.ts"
+  ],
+  "adaptations": [
+    "Import paths localized; global CSS import replaced by shared preset stylesheet",
+    "Input uses upstream simple shadcn-compatible Input export",
+    "Existing Radix navigation/dialog/select behavior retained and mapped to the same preset"
+  ],
+  "presetHashes": {
+    "tokens/primitives.css": "a7b70ec46f305675e5da986fd2d0a9dfde6b9eff6b547b5951d3dc2f1592f741",
+    "tokens/oklch-primitives.css": "fe4433aa517207019e112c3b816de4ec2066514500a6610bbb8350d20a3b0bb3",
+    "tokens/animations.css": "8f5f66c0ef928bfa096084e4217e484c61d51dddcf59eeb8281f37a8ce7c5efb",
+    "themes/light.css": "d7f1768713273f115b1cfff9707eeb1147c7fbadccf1eb2ce0bf8d369d0109f7"
+  }
+}

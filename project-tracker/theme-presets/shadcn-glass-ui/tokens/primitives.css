@@ -1,0 +1,132 @@
+/* ========================================
+   PRIMITIVE TOKENS
+   Design scales for spacing, blur, radius, opacity, and transitions
+
+   Architecture for Tailwind v4:
+   - ALL values in :root (to override Tailwind defaults)
+   - @theme only for registering custom utilities
+
+   Tailwind v4 generates default --radius-*, --blur-* etc.
+   in @layer theme. To override them, we MUST define our
+   values in :root which has higher specificity.
+   ======================================== */
+
+/* ========================================
+   ALL CSS VARIABLES
+   Defined in :root to ensure they override Tailwind defaults.
+
+   To customize, edit the base values:
+   - --radius: 0.5rem (8px - compact)
+   - --radius: 0.75rem (12px - balanced, default)
+   - --radius: 1rem (16px - Apple-style)
+   - --radius: 1.25rem (20px - extra rounded)
+   ======================================== */
+:root {
+  /* ========================================
+     RADIUS SCALE
+     ======================================== */
+  --radius: 1rem; /* Base value - 16px, Apple-style liquid glass */
+  --radius-sm: calc(var(--radius) - 4px); /* badges, small chips */
+  --radius-md: calc(var(--radius) - 2px); /* buttons, inputs */
+  --radius-lg: var(--radius); /* cards, dropdowns (matches base) */
+  --radius-xl: calc(var(--radius) + 4px); /* modals, glass panels */
+  --radius-2xl: calc(var(--radius) + 8px); /* hero cards, features */
+  --radius-full: 9999px; /* Always circular */
+
+  /* ========================================
+     BLUR SCALE (per UI_DESIGN.md)
+     ======================================== */
+  --blur: 16px; /* Base value - medium glass effect */
+  --blur-sm: calc(var(--blur) * 0.5); /* 8px - subtle glass effect */
+  --blur-md: var(--blur); /* 16px - standard cards/panels */
+  --blur-lg: calc(var(--blur) * 1.5); /* 24px - overlays/modals */
+  --blur-xl: calc(var(--blur) * 2); /* 32px - heavy background treatment */
+  --blur-glass: var(--blur-lg); /* Default for glass components */
+
+  /* ========================================
+     TRANSITION DURATIONS
+     ======================================== */
+  --duration: 200ms; /* Base value - balanced animation speed */
+  --duration-fast: calc(var(--duration) * 0.75); /* 150ms */
+  --duration-base: var(--duration); /* 200ms */
+  --duration-slow: calc(var(--duration) * 1.5); /* 300ms */
+
+  /* Backward compatibility aliases */
+  --transition-fast: var(--duration-fast);
+  --transition-base: var(--duration-base);
+  --transition-slow: var(--duration-slow);
+
+  /* ========================================
+     GLOW INTENSITY SCALE
+     ======================================== */
+  --glow: 16px; /* Base value - medium glow intensity */
+  --glow-sm: calc(var(--glow) * 0.5); /* 8px */
+  --glow-md: var(--glow); /* 16px */
+  --glow-lg: calc(var(--glow) * 1.5); /* 24px */
+  --glow-xl: calc(var(--glow) * 2.5); /* 40px */
+
+  /* ========================================
+     OPACITY SCALE
+     Per glassmorphism best practices 2025: minimum 5% opacity
+     ======================================== */
+  --opacity: 0.08; /* Base value - medium glass transparency */
+  --opacity-subtle: calc(var(--opacity) * 0.625); /* ~0.05 (minimum) */
+  --opacity-light: calc(var(--opacity) * 0.875); /* ~0.07 */
+  --opacity-medium: var(--opacity); /* 0.08 */
+  --opacity-strong: calc(var(--opacity) * 1.875); /* ~0.15 */
+  --opacity-solid: calc(var(--opacity) * 3.125); /* ~0.25 */
+
+  /* ========================================
+     FONT SIZE SCALE
+     ======================================== */
+  --font-size: 0.875rem; /* Base value - 14px standard body text */
+  --font-size-2xs: calc(var(--font-size) * 0.714); /* ~10px - compact labels */
+  --font-size-xs: calc(var(--font-size) * 0.857); /* ~12px - small text */
+  --font-size-sm: var(--font-size); /* 14px - default body */
+  --font-size-base: calc(var(--font-size) * 1.143); /* ~16px - larger body */
+  --font-size-lg: calc(var(--font-size) * 1.286); /* ~18px - headings */
+  --font-size-xl: calc(var(--font-size) * 1.429); /* ~20px - large headings */
+
+  /* ========================================
+     TEXT SHADOW FOR GLASS
+     Improves text readability on glass surfaces
+     ======================================== */
+  --text-shadow-glass: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   @theme REGISTRATION
+   Register custom utilities with Tailwind.
+   Values are inherited from :root above.
+   ======================================== */
+@theme {
+  /* Blur utilities */
+  --blur-sm: var(--blur-sm);
+  --blur-md: var(--blur-md);
+  --blur-lg: var(--blur-lg);
+  --blur-xl: var(--blur-xl);
+  --blur-glass: var(--blur-glass);
+
+  /* Radius utilities - reference :root values */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-full: var(--radius-full);
+
+  /* Shadow aliases */
+  --shadow-glass-sm: var(--shadow-sm);
+  --shadow-glass: var(--shadow);
+  --shadow-glass-md: var(--shadow-md);
+  --shadow-glass-lg: var(--shadow-lg);
+  --shadow-glass-xl: var(--shadow-xl);
+  --shadow-glow-primary: var(--glow-primary);
+  --shadow-glow-secondary: var(--glow-secondary);
+  --shadow-glow-success: var(--glow-success);
+  --shadow-glow-warning: var(--glow-warning);
+  --shadow-glow-error: var(--glow-error);
+
+  /* Text shadow */
+  --text-shadow-glass: var(--text-shadow-glass);
+}

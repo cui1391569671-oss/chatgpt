@@ -116,3 +116,8 @@ node --test；桌面与 390px 手机预览。页面生成时统一 LF，跨系�
 用户批注明确：顶栏不再作为横贯一整排的面板；仅概览/项目/资料/笔记保持同组，侧栏按钮、搜索、通知分别独立悬浮。#workbenchTopbar无背景/边框/阴影，各功能入口复用玻璃材质。手机版保留既有收纳行为，不引入不可见入口。
 
 日历bg-border原为间隙底色，日期格透明后会露出整片灰色。liquid-glass.css统一将日历该底层及跨月日期底色设为透明，以日期格细右/下边线保留网格结构；跨月日期通过弱化文字区分，不再铺灰块。保留日程语义色、日期选择和内部滚动。
+
+## shadcn-glass-ui Light 预设（2026-10-16，取代前述手动配色）
+用户选择第一个方案：采用 artyhoo/shadcn-glass-ui-library 的 Light 预设，固定提交32d762578b6b9997851ed8ee930ab10a418b1bf9。完整原始色板、Light语义/组件变量和动画保存在theme-presets/shadcn-glass-ui；构建生成glass-preset.css。admin-theme.css只做语义别名，glass-material.css将既有业务组件绑定到预设，liquid-glass.css只管理布局与滚动。后续不在各页另配颜色。
+
+Button/Input使用上游组件源码，Radix弹层与导航和ilamy日历保留原行为并映射同套token。使用上游浅白/slate玻璃层与紫色强调，日程来源/优先级继续保留语义颜色。避免导入上游全局focus清除；保留键盘焦点、减少动画和透明度降级。来源、适配范围、原始哈希及实际Apache-2.0许可证均随源码保存。本次发布采用此预设。

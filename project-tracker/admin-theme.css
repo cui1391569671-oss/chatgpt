@@ -1,38 +1,36 @@
-/* Light theme from satnaing/shadcn-admin e16c87f (MIT). Canonical UI tokens. */
-:root {
-  --admin-radius: 0.625rem;
-  --admin-background: oklch(1 0 0);
-  --admin-foreground: oklch(0.129 0.042 264.695);
-  --admin-card: oklch(1 0 0);
-  --admin-card-foreground: oklch(0.129 0.042 264.695);
-  --admin-popover: oklch(1 0 0);
-  --admin-popover-foreground: oklch(0.129 0.042 264.695);
-  --admin-primary: oklch(0.208 0.042 265.755);
-  --admin-primary-foreground: oklch(0.984 0.003 247.858);
-  --admin-secondary: oklch(0.968 0.007 247.896);
-  --admin-secondary-foreground: oklch(0.208 0.042 265.755);
-  --admin-muted: oklch(0.968 0.007 247.896);
-  --admin-muted-foreground: oklch(0.554 0.046 257.417);
-  --admin-accent: oklch(0.968 0.007 247.896);
-  --admin-accent-foreground: oklch(0.208 0.042 265.755);
-  --admin-destructive: oklch(0.577 0.245 27.325);
-  --admin-border: oklch(0.929 0.013 255.508);
-  --admin-input: oklch(0.929 0.013 255.508);
-  --admin-ring: oklch(0.704 0.04 256.788);
-  --admin-chart-1: oklch(0.646 0.222 41.116);
-  --admin-chart-2: oklch(0.6 0.118 184.704);
-  --admin-chart-3: oklch(0.398 0.07 227.392);
-  --admin-chart-4: oklch(0.828 0.189 84.429);
-  --admin-chart-5: oklch(0.769 0.188 70.08);
-
-  --admin-sidebar: var(--admin-background);
-  --admin-sidebar-foreground: var(--admin-foreground);
-  --admin-sidebar-primary: var(--admin-primary);
-  --admin-sidebar-primary-foreground: var(--admin-primary-foreground);
-  --admin-sidebar-accent: var(--admin-accent);
-  --admin-sidebar-accent-foreground: var(--admin-accent-foreground);
-  --admin-sidebar-border: var(--admin-border);
-  --admin-sidebar-ring: var(--admin-ring);
+/* Role adapter only. Values come from the pinned shadcn-glass-ui Light preset. */
+:root{
+ --admin-radius:var(--radius);
+ --admin-background:var(--semantic-surface-strong);
+ --admin-foreground:var(--semantic-text);
+ --admin-card:var(--card-bg);
+ --admin-card-foreground:var(--semantic-text);
+ --admin-popover:var(--dropdown-bg);
+ --admin-popover-foreground:var(--semantic-text);
+ --admin-primary:var(--semantic-primary);
+ --admin-primary-foreground:var(--semantic-text-inverse);
+ --admin-secondary:var(--semantic-surface-muted);
+ --admin-secondary-foreground:var(--semantic-text);
+ --admin-muted:var(--semantic-surface-muted);
+ --admin-muted-foreground:var(--semantic-text-muted);
+ --admin-accent:var(--semantic-primary-subtle);
+ --admin-accent-foreground:var(--semantic-primary-text);
+ --admin-destructive:var(--semantic-error);
+ --admin-border:var(--semantic-border);
+ --admin-input:var(--input-border);
+ --admin-ring:var(--semantic-primary);
+ --admin-sidebar:var(--sidebar-bg);
+ --admin-sidebar-foreground:var(--semantic-text);
+ --admin-sidebar-primary:var(--semantic-primary);
+ --admin-sidebar-primary-foreground:var(--semantic-text-inverse);
+ --admin-sidebar-accent:var(--sidebar-accent);
+ --admin-sidebar-accent-foreground:var(--semantic-text);
+ --admin-sidebar-border:var(--semantic-border);
+ --admin-sidebar-ring:var(--semantic-primary-muted);
+ --admin-chart-1:var(--semantic-primary);
+ --admin-chart-2:var(--semantic-info);
+ --admin-chart-3:var(--semantic-success);
+ --admin-chart-4:var(--semantic-warning);
+ --admin-chart-5:var(--semantic-error);
+ --admin-font:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
 }
-
-:root{--admin-font:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}

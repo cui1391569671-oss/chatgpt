@@ -1,0 +1,85 @@
+/* shadcn-glass-ui Light: bind upstream semantic/component tokens to existing business owners.
+   No local palette values. Native DOM compatibility and ilamy use the same preset as ButtonGlass. */
+body.shadcn-workbench,body.modern-project,body.glass-public,body.glass-login{
+ --glass-panel:var(--glass-bg);
+ --glass-content:var(--card-bg);
+ --glass-overlay:var(--modal-bg);
+ --glass-shadow:var(--shadow);
+ --glass-background:linear-gradient(135deg,var(--bg-from),var(--bg-via),var(--bg-to));
+ background:var(--glass-background);color:var(--semantic-text);background-attachment:fixed;
+}
+body.shadcn-workbench,body.modern-project{--bg:var(--semantic-surface);--surface:var(--card-bg);--text:var(--semantic-text);--muted:var(--semantic-text-muted);--line:var(--semantic-border);--accent:var(--semantic-primary);--soft:var(--semantic-primary-subtle);--border:var(--semantic-border);--card:var(--card-bg)}
+body.shadcn-workbench :is([data-shell-root],[data-tasks-root],[data-ui-root]),body :is([data-shell-portal],[data-tasks-portal],[data-ui-portal]),body .ilamy-surface,body [data-ilamy-portal]{
+ --background:var(--semantic-surface-strong);--foreground:var(--semantic-text);--card:var(--card-bg);--card-foreground:var(--semantic-text);--popover:var(--dropdown-bg);--popover-foreground:var(--semantic-text);--primary:var(--semantic-primary);--primary-foreground:var(--semantic-text-inverse);--secondary:var(--semantic-surface-muted);--secondary-foreground:var(--semantic-text);--muted:var(--semantic-surface-muted);--muted-foreground:var(--semantic-text-muted);--accent:var(--semantic-primary-subtle);--accent-foreground:var(--semantic-primary-text);--destructive:var(--semantic-error);--border:var(--semantic-border);--input:var(--input-border);--ring:var(--semantic-primary);font-family:var(--admin-font);color:var(--semantic-text);
+}
+/* Panels follow CardGlass and SidebarGlass material tokens. */
+body.shadcn-workbench #workbenchShell [data-slot=sidebar-inner]{background:var(--sidebar-bg);border:1px solid var(--sidebar-border);border-radius:var(--radius-2xl);box-shadow:var(--sidebar-glow);backdrop-filter:blur(var(--sidebar-backdrop-blur));-webkit-backdrop-filter:blur(var(--sidebar-backdrop-blur))}
+body.shadcn-workbench #workbenchShell [data-sidebar=menu-button]{border-radius:var(--radius-md);color:var(--semantic-text);transition:background var(--duration-fast),color var(--duration-fast)}
+body.shadcn-workbench #workbenchShell [data-sidebar=menu-button]:hover{background:var(--semantic-surface-elevated)}
+body.shadcn-workbench #workbenchShell [data-sidebar=menu-button][data-active=true]{background:var(--semantic-primary-subtle);color:var(--semantic-primary-text);box-shadow:none}
+body.shadcn-workbench .wb-space-logo{background:var(--btn-primary-bg);color:var(--btn-primary-text);border-radius:var(--radius-md)}
+body.shadcn-workbench .wb-avatar{background:var(--semantic-surface);color:var(--semantic-text)}
+body.shadcn-workbench #workbenchTopbar{background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.shadcn-workbench .wb-topbar{background:transparent}
+body.shadcn-workbench :is(.wb-topnav,.wb-icon-button){background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);backdrop-filter:blur(var(--blur-md));-webkit-backdrop-filter:blur(var(--blur-md))}
+body.shadcn-workbench .wb-topnav button{color:var(--semantic-text-muted);border-radius:var(--radius-sm)}
+body.shadcn-workbench .wb-topnav button:hover,body.shadcn-workbench .wb-topnav button.active{background:var(--tab-active-bg);color:var(--tab-active-text)}
+body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-search-trigger{border-radius:var(--radius-lg)!important;box-shadow:var(--shadow-sm);min-height:44px!important}
+body.shadcn-workbench .wb-notification-dot{background:var(--semantic-error);border-color:var(--semantic-surface-strong)}
+body.shadcn-workbench.shared-workspace .card,body.shadcn-workbench :is(.tasks-table-scroll,.tasks-toolbar,.project-core-panel),body.modern-project :is(.toolbar,.table-wrapper,.modal){background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);backdrop-filter:blur(var(--blur-md));-webkit-backdrop-filter:blur(var(--blur-md))}
+body.shadcn-workbench :is(.tasks-toolbar,.filters){color:var(--semantic-text)}
+body.shadcn-workbench .tasks-table-scroll tr[data-state=selected]{background:var(--semantic-primary-subtle)}
+body.shadcn-workbench :is(.row-meta,.muted,.ilamy-help),body.modern-project :is(.muted,.legend){color:var(--semantic-text-muted)}
+body.shadcn-workbench :is(.tasks-table-scroll th,.project-core-table thead th),body.modern-project thead th{background:var(--semantic-surface);color:var(--semantic-text-muted);border-color:var(--semantic-border)}
+body.shadcn-workbench .tasks-table-scroll :is(th,td),body.shadcn-workbench .project-core-table :is(th,td),body.modern-project :is(th,td){border-color:var(--semantic-border)}
+/* Legacy controls share the upstream ButtonGlass variant recipes, without changing handlers. */
+body.shadcn-controls [data-ui-control=button],body.modern-project .btn{background:var(--btn-secondary-bg);color:var(--btn-secondary-text);border:1px solid var(--btn-secondary-border);border-radius:var(--radius-md);box-shadow:none;transition:background var(--duration-fast),box-shadow var(--duration-fast);min-height:44px}
+body.shadcn-controls [data-ui-control=button]:hover,body.modern-project .btn:hover{background:var(--btn-secondary-hover-bg);box-shadow:var(--btn-secondary-glow)}
+body.shadcn-controls [data-ui-control=button]:is(.primary,.btn-primary,.btn-add,.btn-success),body.modern-project :is(.btn-primary,.btn-add,.btn-success){background:var(--btn-primary-bg);color:var(--btn-primary-text);border-color:transparent;box-shadow:var(--btn-primary-shadow)}
+body.shadcn-controls [data-ui-control=button]:is(.primary,.btn-primary,.btn-add,.btn-success):hover{background:var(--btn-primary-hover-bg);box-shadow:var(--btn-primary-glow)}
+body.shadcn-controls [data-ui-control=button].danger{background:var(--alert-destructive-bg);border-color:var(--alert-destructive-border);color:var(--alert-destructive-text)}
+body :is([data-slot=input],[data-slot=textarea]),body.shadcn-controls :is([data-ui-control=input],[data-ui-control=textarea]),body.shadcn-controls #issueDetails :is([data-ui-control=input],[data-ui-control=textarea]),body.modern-project .date-cell input{background:var(--input-bg);color:var(--input-text);border:1px solid var(--input-border);border-radius:var(--radius-md);box-shadow:none}
+body :is([data-slot=input],[data-slot=textarea])::placeholder,body.shadcn-controls :is([data-ui-control=input],[data-ui-control=textarea])::placeholder{color:var(--input-placeholder)}
+body :is([data-slot=input],[data-slot=textarea]):focus-visible,body.shadcn-controls :is([data-ui-control=input],[data-ui-control=textarea]):focus{border-color:var(--input-focus-border);box-shadow:var(--focus-glow);outline:2px solid var(--semantic-primary);outline-offset:2px}
+body .ui-select{background:var(--input-bg);color:var(--input-text);border:1px solid var(--input-border);border-radius:var(--radius-md);min-height:44px!important;height:44px!important}
+body .ui-select:hover{border-color:var(--semantic-border-strong)}
+body .ui-select:focus-visible{box-shadow:var(--focus-glow);outline:2px solid var(--semantic-primary);outline-offset:2px}
+/* Dialog, Sheet and authored selectors retain their tested Radix behavior. */
+body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal])[role=dialog],body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal]) [role=dialog]{background:var(--modal-bg);color:var(--semantic-text);border:1px solid var(--modal-border);box-shadow:var(--modal-glow);border-radius:var(--radius-xl);backdrop-filter:blur(var(--blur-lg));-webkit-backdrop-filter:blur(var(--blur-lg))}
+body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal],[data-ilamy-portal])[role=menu],body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal],[data-ilamy-portal])[data-slot=select-content],body.modern-project :is(.priority-dropdown,.status-dropdown){background:var(--dropdown-bg);color:var(--dropdown-item-text);border:1px solid var(--dropdown-border);border-radius:var(--radius-lg);box-shadow:var(--dropdown-glow);backdrop-filter:blur(var(--blur-lg));-webkit-backdrop-filter:blur(var(--blur-lg))}
+body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal],[data-ilamy-portal]) :is([role=option],[role=menuitem]):is(:hover,[data-highlighted]){background:var(--dropdown-item-hover)}
+body [data-shell-portal][data-slot=sidebar]{background:var(--sidebar-bg);border:1px solid var(--sidebar-border);border-radius:var(--radius-xl);backdrop-filter:blur(var(--blur-lg));-webkit-backdrop-filter:blur(var(--blur-lg))}
+body :is(.tasks-drawer,.tasks-confirm,.ui-project-drawer){border-radius:var(--radius-xl) 0 0 var(--radius-xl)}
+body.shadcn-controls [data-ui-portal] dialog[data-ui-dialog]{--muted:var(--semantic-text-muted);color:var(--semantic-text)}
+body :is([data-slot=sheet-overlay],[data-slot=dialog-overlay]){background:var(--modal-overlay)}
+body :is([data-slot=checkbox]){border-color:var(--checkbox-border);background:var(--checkbox-bg)}
+body :is([data-slot=checkbox])[data-state=checked]{background:var(--checkbox-checked-bg);color:var(--semantic-text-inverse)}
+/* Calendar uses one transparent grid surface; status/event colors keep their meaning. */
+body.shadcn-workbench #workspaceCalendar{--ilamy-brand:var(--semantic-primary);--ilamy-bg:transparent;--ilamy-ink:var(--semantic-text);--ilamy-line:var(--semantic-border)}
+body.shadcn-workbench .ilamy-surface :is(.bg-border,.bg-background,.bg-card),body.shadcn-workbench .ilamy-surface .droppable-cell{background:transparent!important}
+body.shadcn-workbench .ilamy-surface .bg-border{gap:0}
+body.shadcn-workbench .ilamy-surface .droppable-cell{border-right:1px solid var(--semantic-border-muted);border-bottom:1px solid var(--semantic-border-muted)}
+body.shadcn-workbench .ilamy-surface .droppable-cell:hover{background:var(--semantic-surface-muted)!important}
+body.shadcn-workbench .ilamy-surface .droppable-cell.pointer-events-none{color:var(--semantic-text-disabled)}
+body.shadcn-workbench .ilamy-surface .bg-primary{background:var(--semantic-primary)!important;color:var(--semantic-text-inverse)!important}
+body.shadcn-workbench .ilamy-surface button:not(.ilamy-source-event){border-radius:var(--radius-md)}
+body.shadcn-workbench .ilamy-surface button.bg-primary{background:var(--btn-primary-bg)!important;color:var(--btn-primary-text)!important}
+body.shadcn-workbench .ilamy-surface button.bg-background{background:var(--btn-secondary-bg)!important;color:var(--btn-secondary-text);border-color:var(--btn-secondary-border)}
+body .ilamy-help{color:var(--semantic-text-muted)}
+/* Public entry points share the selected preset; content and auth remain unchanged. */
+body.glass-public :is(.nav,.feature-board,.life-board,.browser-window,.privacy-card),body.glass-login .card{background:var(--card-bg);border:1px solid var(--card-border);box-shadow:var(--shadow);backdrop-filter:blur(var(--blur-md));-webkit-backdrop-filter:blur(var(--blur-md))}
+body.glass-public :is(.feature,.personal-feature,.privacy){background:transparent}
+body.glass-login button{background:var(--btn-primary-bg);color:var(--btn-primary-text);border-color:transparent;box-shadow:var(--btn-primary-shadow)}
+body.glass-login input:not([type=checkbox]){background:var(--input-bg);color:var(--input-text);border-color:var(--input-border)}
+body :is(.form-error,.tasks-error,.ilamy-validation){color:var(--semantic-error-text)}
+body :focus-visible{outline:2px solid var(--semantic-primary);outline-offset:3px}
+@supports not (backdrop-filter:blur(1px)){body.shadcn-workbench #workbenchShell [data-slot=sidebar-inner],body.shadcn-workbench .card,body [role=dialog]{background:var(--semantic-surface-strong)}}
+@media(prefers-reduced-transparency:reduce){body.shadcn-workbench #workbenchShell [data-slot=sidebar-inner],body.shadcn-workbench .card,body [role=dialog],body .wb-topnav{background:var(--semantic-surface-strong);backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){body *,body *::before,body *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+body :is([data-slot=input],[data-slot=textarea]){min-height:44px}
+body.shadcn-workbench .tasks-search>svg{top:14px}
+body.shadcn-workbench .tasks-create-button{height:auto;min-height:44px}
+body.shadcn-controls [data-ui-control][aria-invalid=true]{border-color:var(--semantic-error);box-shadow:0 0 0 2px var(--semantic-error-muted)}
+body.shadcn-workbench .ilamy-failure{background:var(--alert-destructive-bg);color:var(--alert-destructive-text);border-color:var(--alert-destructive-border)}
+/* The app shell owns spacing; only its floating children own a material. */
+body.shadcn-workbench.shared-workspace main{background:transparent;border:0;box-shadow:none}
