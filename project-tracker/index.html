@@ -337,6 +337,86 @@ body [data-ilamy-portal] [role=grid]{min-width:0;max-width:100%;table-layout:fix
 @media(max-width:767px){body [data-ilamy-portal][role=dialog]>div{min-width:0;max-width:100%}}
 body.modern-project :is(.priority-dropdown,.status-dropdown){background:rgba(248,250,253,.97);border:1px solid var(--glass-border);border-radius:14px;box-shadow:var(--glass-shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
 body.modern-project :is(.priority-dropdown,.status-dropdown) button{white-space:normal;overflow-wrap:anywhere;max-width:100%}
+/* Compact viewport layout: page titles live in navigation; content scrolls inside panels. */
+body.shadcn-workbench{height:100dvh;min-height:0;overflow:hidden}
+body.shadcn-workbench.shared-workspace .shell{display:flex;flex-direction:column;height:100dvh;min-height:0;overflow:visible}
+body.shadcn-workbench #workbenchShell{flex:none;height:0}
+body.shadcn-workbench #workbenchTopbar{flex:none;position:relative;top:auto}
+body.shadcn-workbench.shared-workspace main{flex:1;display:flex;flex-direction:column;min-height:0;height:auto;overflow:hidden;padding:16px 8px 0}
+body.shadcn-workbench main>.header-title,body.shadcn-workbench main>header .header-title{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+body.shadcn-workbench.shared-workspace main>header{min-height:0;flex:none;margin:0 0 12px;padding:0;justify-content:flex-end}
+body.shadcn-workbench main>header:has(.header-actions>#add.hidden),body.shadcn-workbench[data-workspace-view=home] main>header{display:none}
+body.shadcn-workbench #content{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 2px 4px;scrollbar-gutter:stable}
+body.shadcn-workbench #content:empty{display:none}
+body.shadcn-workbench #status{flex:none}
+body.shadcn-workbench #projectPanel:not(.hidden){display:flex;flex:1;min-height:0;overflow:hidden}
+body.shadcn-workbench.project-view #projectFrame{flex:1;width:100%;height:100%!important;min-height:0!important;max-height:100%;border-radius:18px!important}
+body.shadcn-workbench .home-calendar{height:calc(100dvh - 124px);min-height:200px;max-height:100%;min-width:0;overflow:hidden}
+body.shadcn-workbench #homeCalendar{height:100%;display:flex;flex-direction:column;min-height:0}
+body.shadcn-workbench #homeCalendar>.form-error{flex:none}
+body.shadcn-workbench.shared-workspace .calendar-full-surface{flex:1;display:flex;flex-direction:column;min-height:0;height:auto;margin:0;padding:16px;overflow:hidden}
+body.shadcn-workbench #workspaceCalendar{flex:1;min-height:0;display:flex;flex-direction:column}
+body.shadcn-workbench .ilamy-surface{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+body.shadcn-workbench .ilamy-calendar-box{flex:1;min-height:0;height:auto;max-height:100%;overflow:auto}
+body.shadcn-workbench .ilamy-help{flex:none;margin-top:8px}
+body.shadcn-workbench .personal-dashboard{margin-top:16px}
+body.shadcn-workbench[data-workspace-view=tasks] #content{display:flex;flex-direction:column;overflow:hidden}
+body.shadcn-workbench #workspaceTasks,body.shadcn-workbench .tasks-app{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+body.shadcn-workbench .tasks-toolbar,body.shadcn-workbench .tasks-pagination,body.shadcn-workbench .tasks-bulk{flex:none}
+body.shadcn-workbench .tasks-table-scroll{flex:1;min-height:0;overflow:auto}
+body.shadcn-workbench .tasks-create-button{margin-left:auto}
+body.shadcn-workbench .tasks-pagination{margin-top:8px}
+body.modern-project{height:100dvh;overflow:hidden}
+body.modern-project .container{height:100dvh;min-height:0;overflow:hidden}
+body.modern-project .container>.header h1{display:none}
+body.modern-project .issue-quick-tabs{display:none}
+body.modern-project .toolbar{border-radius:18px}
+body.modern-project .table-wrapper{min-height:0;flex:1}
+@media(max-width:767px){body.shadcn-workbench.shared-workspace main{padding:12px 0 0;min-height:0;height:auto;flex:1}body.shadcn-workbench .home-calendar{height:calc(100dvh - 112px);min-height:0}body.shadcn-workbench.shared-workspace .calendar-full-surface{padding:10px}body.shadcn-workbench .tasks-toolbar{gap:6px;padding:8px;margin-bottom:8px}body.shadcn-workbench .tasks-pagination{gap:6px;font-size:12px}body.shadcn-workbench .tasks-pagination>span:first-child{width:auto;flex:1 1 100%}}
+/* One surface color for controls, panels and calendar cells. State colors remain semantic. */
+:root{--glass-panel:rgba(244,248,252,.58);--glass-content:var(--glass-panel);--glass-overlay:rgba(237,243,249,.97)}
+body.shadcn-workbench :is(#workbenchTopbar,.calendar-full-surface,.card,.tasks-toolbar,.tasks-table-scroll,.project-core-panel),body.shadcn-workbench #workbenchShell [data-slot=sidebar-inner],body.modern-project :is(.toolbar,.table-wrapper,.modal){background:var(--glass-panel)}
+body.shadcn-workbench :is(.ilamy-surface,#workspaceCalendar),[data-ilamy-portal]{--background:transparent;--card:transparent;--muted:transparent;--secondary:var(--glass-panel);--accent:var(--glass-panel);--popover:var(--glass-overlay);--primary:var(--admin-foreground);--primary-foreground:var(--admin-primary-foreground)}
+body.shadcn-workbench :is([data-tasks-root],[data-shell-root],[data-ui-root]),body :is([data-tasks-portal],[data-ui-portal],[data-shell-portal]){--background:var(--glass-panel);--card:var(--glass-panel);--secondary:var(--glass-panel);--popover:var(--glass-overlay);--accent:var(--glass-panel)}
+body.shadcn-controls :is([data-ui-control=input],[data-ui-control=textarea],[data-ui-control=button]),body.shadcn-workbench :is(.ui-select,.tasks-create-button,.btn,.wb-search-trigger),body.modern-project :is(.ui-select,.btn,.issue-status){background:var(--glass-panel)!important;color:var(--admin-foreground);box-shadow:inset 0 1px 0 #ffffffb3,0 1px 3px #23364d0a;border-color:var(--admin-border)}
+body.shadcn-workbench :is([data-tasks-root],[data-tasks-portal]) :is(input,textarea,select){background:var(--glass-panel)}
+body.shadcn-workbench :is(.primary,.tasks-create-button),body.modern-project :is(.btn-primary,.btn-add,.btn-success){color:var(--admin-foreground)!important;background:var(--glass-panel)!important;border:1px solid var(--admin-border)}
+body.shadcn-workbench .ilamy-surface :is(.bg-background,.bg-card,.bg-white){background:transparent!important}
+body.shadcn-workbench .ilamy-surface :is(.bg-primary,.bg-blue-600){background:var(--glass-panel)!important;color:var(--admin-foreground)!important;border:1px solid var(--admin-border)}
+body.shadcn-workbench .ilamy-surface button:not(.ilamy-source-event){background-color:var(--glass-panel)}
+body.shadcn-workbench .ilamy-surface [role=radiogroup]{background:var(--glass-panel)}
+body.modern-project :is(thead th,.date-cell input,.legend),body.shadcn-workbench :is(.project-core-table thead th,.tasks-table-scroll th){background:var(--glass-panel)}
+body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal])[role=dialog],body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal]) [role=dialog],body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal])[role=menu],body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal])[data-slot=select-content]{background:var(--glass-overlay)}
+body [data-shell-portal][data-slot=sidebar]{background:var(--glass-overlay)}
+@media(prefers-reduced-transparency:reduce){:root{--glass-panel:#edf3f9;--glass-content:#edf3f9;--glass-overlay:#edf3f9}}
+
+body.shadcn-workbench.shared-workspace main>header{display:none}
+body.shadcn-workbench .filters>#add{margin-left:auto;flex:none}
+body.shadcn-workbench[data-workspace-view=drive] .project-core-panel{height:100%;display:flex;flex-direction:column;min-height:0}
+body.shadcn-workbench[data-workspace-view=drive] .project-core-heading{flex:none}
+body.shadcn-workbench[data-workspace-view=drive] .project-core-scroll{flex:1;min-height:0}
+body.shadcn-controls #issueDetails :is([data-ui-control=input],[data-ui-control=textarea]){background:var(--glass-panel)}
+body.shadcn-workbench :is(.wb-search-trigger,.wb-trigger){background:var(--glass-panel)!important}
+body.shadcn-workbench .tasks-toolbar :is(.ui-select,input){background:var(--glass-panel)!important}
+body.shadcn-workbench :is([data-tasks-root],[data-shell-root],[data-ui-root]),body :is([data-tasks-portal],[data-ui-portal],[data-shell-portal],[data-ilamy-portal]){--primary:var(--glass-panel);--primary-foreground:var(--admin-foreground)}
+body.shadcn-controls [data-ui-control=button].danger{color:#b42318}
+/* Separate header islands; only the page links share a floating surface. */
+body.shadcn-workbench #workbenchTopbar{background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:0}
+body.shadcn-workbench .wb-topbar{background:transparent;padding:0 8px;gap:12px}
+body.shadcn-workbench .wb-header-divider{display:none}
+body.shadcn-workbench .wb-topnav{background:var(--glass-panel);border:1px solid var(--glass-border);border-radius:16px;padding:4px;gap:2px;box-shadow:var(--glass-shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);margin-right:auto}
+body.shadcn-workbench .wb-topnav button{padding:6px 10px;min-height:32px;border-radius:11px}
+body.shadcn-workbench .wb-topnav button.active{background:rgba(255,255,255,.35)}
+body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button{width:40px!important;height:40px!important;min-height:40px!important;flex:none;padding:10px;border:1px solid var(--glass-border);border-radius:13px;background:var(--glass-panel)!important;box-shadow:var(--glass-shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+body.shadcn-workbench .wb-search-trigger{height:40px;min-height:40px;border:1px solid var(--glass-border)!important;border-radius:14px!important;box-shadow:var(--glass-shadow)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+body.shadcn-workbench .wb-topbar-actions{margin-left:0}
+/* bg-border was intended as a 1px grid gap, not a full calendar surface. */
+body.shadcn-workbench .ilamy-calendar-box .bg-border{background:transparent!important;gap:0}
+body.shadcn-workbench .ilamy-calendar-box .droppable-cell{background:transparent!important;border:0;border-right:1px solid color-mix(in srgb,var(--admin-border) 75%,transparent);border-bottom:1px solid color-mix(in srgb,var(--admin-border) 75%,transparent)}
+body.shadcn-workbench .ilamy-calendar-box .droppable-cell:hover{background:rgba(255,255,255,.18)!important}
+body.shadcn-workbench .ilamy-calendar-box .droppable-cell.pointer-events-none{background:transparent!important}
+@media(max-width:1040px){body.shadcn-workbench .wb-topnav{gap:0}body.shadcn-workbench .wb-topnav button{padding:6px 8px}}
+@media(max-width:767px){body.shadcn-workbench .wb-topbar{gap:8px;padding:0 2px}body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button,body.shadcn-workbench .wb-search-trigger{width:44px!important;height:44px!important;min-height:44px!important}body.shadcn-workbench .wb-search-trigger{flex:none;margin-left:auto}}
 </style><!-- PRODUCT_DESIGN_END --></head>
 <body class="modern-project">
 <div class="container">
@@ -346,7 +426,7 @@ body.modern-project :is(.priority-dropdown,.status-dropdown) button{white-space:
   </div>
 
 <div id="pendingNotice" role="status" style="display:none;margin-bottom:16px;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--soft)"><span id="pendingMessage"></span> <button class="btn btn-outline" onclick="reviewPending()">查看本地副本</button></div>
-<div class="issue-quick-tabs" aria-label="问题快捷筛选"><button type="button" data-quick="all" aria-pressed="true">全部问题</button></div>
+
 <div class="toolbar">
     <div class="toolbar-row">
       <button type="button" class="btn btn-outline project-search-toggle" id="projectSearchToggle" aria-label="搜索项目问题" title="搜索" aria-expanded="false" aria-controls="projectSearchBox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></button>
@@ -795,7 +875,7 @@ const searchToggle=document.getElementById('projectSearchToggle'),searchBox=docu
 function closeProjectSearch(){projectSearch.value='';searchBox.hidden=true;searchToggle.setAttribute('aria-expanded','false');renderTable();searchToggle.focus();}
 searchToggle.onclick=()=>{if(!searchBox.hidden){closeProjectSearch();return;}searchBox.hidden=false;searchToggle.setAttribute('aria-expanded','true');projectSearch.focus();};
 projectSearch.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeProjectSearch();}});
-document.querySelector('.issue-quick-tabs').onclick=e=>{const button=e.target.closest('[data-quick]');if(!button)return;quickIssueFilter=button.dataset.quick;document.querySelectorAll('[data-quick]').forEach(x=>x.setAttribute('aria-pressed',String(x===button)));renderTable();};
+
 
 document.getElementById('tableBody').addEventListener('input',e=>{
  if(!e.target.closest('[contenteditable="true"]'))return;

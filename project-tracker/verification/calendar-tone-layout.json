@@ -1,0 +1,434 @@
+[
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/work?view=home",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/work?view=projects",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/work?view=tasks",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/work?view=drive",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/work?view=notes",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/personal?view=home",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/personal?view=tasks",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/personal?view=notes",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/personal?view=vocabulary",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/personal?view=completedGames",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/personal?view=wardrobe",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 827,
+    "docWidth": 1171,
+    "height": 827,
+    "outside": [],
+    "path": "/personal?view=maintenance",
+    "width": 1171
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=home",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=projects",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=tasks",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=drive",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=notes",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=home",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=tasks",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=notes",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=vocabulary",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=completedGames",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=wardrobe",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 768,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=maintenance",
+    "width": 768
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=home",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=projects",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=tasks",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=drive",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/work?view=notes",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=home",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=tasks",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=notes",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=vocabulary",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=completedGames",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=wardrobe",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 600,
+    "docWidth": 390,
+    "height": 600,
+    "outside": [],
+    "path": "/personal?view=maintenance",
+    "width": 390
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/work?view=home",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/work?view=projects",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/work?view=tasks",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/work?view=drive",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/work?view=notes",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/personal?view=home",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/personal?view=tasks",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/personal?view=notes",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/personal?view=vocabulary",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/personal?view=completedGames",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/personal?view=wardrobe",
+    "width": 320
+  },
+  {
+    "barBg": "rgba(0, 0, 0, 0)",
+    "docHeight": 568,
+    "docWidth": 320,
+    "height": 568,
+    "outside": [],
+    "path": "/personal?view=maintenance",
+    "width": 320
+  }
+]
