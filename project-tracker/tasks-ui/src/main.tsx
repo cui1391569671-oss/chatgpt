@@ -1,3 +1,4 @@
+import './fitness';
 import './workspace-feedback';
 import {WorkspaceSearch} from '@/components/workspace-search';
 import './workspace-shell';

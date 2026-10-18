@@ -1,0 +1,27 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {validFitnessSession,HOME_EXERCISES,validFitnessProfile,FITNESS_PROFILE_DEFAULTS,fitnessPlanForProfile} from '../fitness.mjs';
+import worker,{validWorkspace} from '../worker.mjs';
+import {recordChanges,applyRecordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
+test('exercise GIFs and static posters are authenticated, typed and missing files return 404',async()=>{
+ const env={TRACKER_USER:'u',TRACKER_PASSWORD:'p'},headers={Authorization:'Basic '+btoa('u:p')};
+ assert.equal((await worker.fetch(new Request('https://test.local/assets/fitness/Plank.gif'),env)).status,401);
+ for(const exercise of HOME_EXERCISES){const r=await worker.fetch(new Request('https://test.local/assets/fitness/'+exercise.id+'.gif',{headers}),env);assert.equal(r.status,200);assert.equal(r.headers.get('Content-Type'),'image/gif');const bytes=new Uint8Array(await r.arrayBuffer());assert.equal(new TextDecoder().decode(bytes.slice(0,6)),'GIF89a');const poster=await worker.fetch(new Request('https://test.local/assets/fitness/'+exercise.id+'.png',{headers}),env);assert.equal(poster.headers.get('Content-Type'),'image/png');}
+ assert.equal((await worker.fetch(new Request('https://test.local/assets/fitness/missing.gif',{headers}),env)).status,404);
+});
+const session={id:'fitness-1',completedOn:'2026-10-18',startedAt:'2026-10-18T09:00:00Z',completedAt:'2026-10-18T09:10:00Z',durationSeconds:600,exercises:[{exerciseId:HOME_EXERCISES[0].id,sets:[8,8]}]};
+test('fitness accepts actual completed sets and rejects corrupt, duplicate and out-of-range input',()=>{
+ assert.ok(validFitnessSession(session));for(const fields of [{exercises:[]},{exercises:[null]},{exercises:[{exerciseId:'unknown',sets:[10]}]},{exercises:[{exerciseId:HOME_EXERCISES[0].id,sets:[0]}]},{exercises:[session.exercises[0],session.exercises[0]]},{durationSeconds:-1},{completedOn:'2026-02-30'}])assert.equal(validFitnessSession({...session,...fields}),false);
+ assert.ok(validWorkspace({tasks:[],notes:[],events:[],fitnessSessions:[session]}));assert.equal(validWorkspace({tasks:[],notes:[],events:[],fitnessSessions:[session,session]}),false);
+});
+test('fitness session retry is idempotent and preserves simultaneous records from other devices',()=>{
+ const base={tasks:[],notes:[],events:[]},ops=recordChanges(base,{...base,fitnessSessions:[session]},WORKSPACE_COLLECTIONS),cloud={...base,fitnessSessions:[{...session,id:'other'}]},merged=applyRecordChanges(cloud,ops,WORKSPACE_COLLECTIONS);
+ assert.equal(merged.fitnessSessions.length,2);assert.deepEqual(applyRecordChanges(merged,ops,WORKSPACE_COLLECTIONS),merged);
+});
+
+test('fitness records reject unauthenticated and work-space writes',async()=>{const body={operations:[{collection:'fitnessSessions',id:session.id,action:'create',record:session}]};const make=auth=>new Request('https://test.local/api/workspace/patch?scope=work',{method:'POST',headers:{Origin:'https://test.local','Content-Type':'application/json',...(auth?{Authorization:'Basic '+btoa('u:p')}:{})},body:JSON.stringify(body)});const env={TRACKER_USER:'u',TRACKER_PASSWORD:'p'};assert.equal((await worker.fetch(make(false),env)).status,401);assert.equal((await worker.fetch(make(true),env)).status,400);});
+
+const profile={...FITNESS_PROFILE_DEFAULTS,updatedAt:'2026-10-18T10:00:00Z'};
+test('fitness profile validates optional measurements and restrictive fields',()=>{assert.ok(validFitnessProfile(profile));assert.ok(validWorkspace({tasks:[],notes:[],events:[],fitnessProfiles:[profile]}));for(const fields of [{age:17},{weightKg:'70'},{heightCm:Infinity},{minutes:0},{weeklyDays:8},{id:'other'},{excludedExercises:['unknown']},{excludedExercises:['Plank','Plank']}])assert.equal(validFitnessProfile({...profile,...fields}),false);assert.equal(validWorkspace({tasks:[],notes:[],events:[],fitnessProfiles:[profile,profile]}),false);});
+test('updated profile regenerates budgeted plans without overriding restrictions or scaling by body size',()=>{const beginner=fitnessPlanForProfile(profile),regular=fitnessPlanForProfile({...profile,experience:'regular',minutes:30});assert.ok(regular.rows.filter(x=>x.selected).every(x=>x.sets==='2'));assert.ok(beginner.rows.filter(x=>x.selected).every(x=>x.sets==='1'));assert.ok(fitnessPlanForProfile({...profile,minutes:5}).estimatedMinutes<=5);assert.equal(fitnessPlanForProfile({...profile,floorAllowed:false}).rows.filter(x=>x.selected).map(x=>x.id).join(),'Bodyweight_Squat');assert.ok(!fitnessPlanForProfile({...profile,excludedExercises:['Pushups']}).rows.find(x=>x.id==='Pushups').selected);assert.ok(!fitnessPlanForProfile({...profile,excludedExercises:HOME_EXERCISES.map(x=>x.id)}).rows.some(x=>x.selected));assert.deepEqual(fitnessPlanForProfile({...profile,age:70,heightCm:190,weightKg:120}).rows,beginner.rows);assert.equal(fitnessPlanForProfile({...profile,weeklyDays:7}).days.length,3);assert.deepEqual(fitnessPlanForProfile(null).rows,[]);});
+test('fitness profile write is blocked in work space',async()=>{const request=new Request('https://test.local/api/workspace/patch?scope=work',{method:'POST',headers:{Authorization:'Basic '+btoa('u:p'),Origin:'https://test.local','Content-Type':'application/json'},body:JSON.stringify({operations:[{collection:'fitnessProfiles',id:'main',action:'create',record:profile}]})});assert.equal((await worker.fetch(request,{TRACKER_USER:'u',TRACKER_PASSWORD:'p'})).status,400);});

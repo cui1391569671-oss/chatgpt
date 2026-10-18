@@ -50,3 +50,6 @@
 英语词库保留原卡片与导入，单词练习参考 Qwerty Learner 的跟打/默写流程，在工作台独立实现；未复制或整体嵌入上游源码、词库或音效。练习使用原 vocabulary 集合，默认未掌握词且优先未复习，10/20/50词一轮。英语学习默认直接展示练习页（view=vocabulary），词汇库独立为 view=vocabularyLibrary，页面提供双向入口；共享 Select、Input、Feedback 及退出确认管理交互，workbench-page.css 归属布局；逐字正误用语义色和下划线表达，成功切换轻动效尊重减少动态偏好。
 
 Practice completion uses the existing summary surface and semantic status text. Today’s completion state and the ten most recent rounds appear on the practice page; no independent palette, modal, or dashboard is introduced.
+
+## Home fitness
+Private fitness uses the existing glass surfaces, shared Button/Input/Checkbox/Search and semantic feedback. A two-column plan/guidance layout collapses to one column below 850px; a guidance jump link keeps instructions reachable on mobile. No new palette or motion system.
