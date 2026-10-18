@@ -1,4 +1,5 @@
 import {vocabularySyncStatus,vocabularyPushRoute} from './vocabulary-sheet.mjs';
+import {validPracticeSession} from './word-practice.mjs';
 import {validAnnualPlans} from './annual-plans.mjs';
 import {TASKS_JS,TASKS_CSS,TASKS_LICENSE} from './tasks-assets.mjs';
 import {ILAMY_JS,ILAMY_CSS,ILAMY_LICENSE} from './ilamy-assets.mjs';
@@ -62,6 +63,7 @@ function validWorkspace(w){
  const time=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)&&date(s.slice(0,10))&&Number(s.slice(11,13))<24&&Number(s.slice(14,16))<60;
  if(!w||typeof w!=='object'||!['tasks','notes','events'].every(k=>Array.isArray(w[k])&&w[k].length<=2000))return false;
  if(w.annualPlans!==undefined&&!validAnnualPlans(w.annualPlans))return false;
+ if(w.wordPracticeSessions!==undefined){if(!Array.isArray(w.wordPracticeSessions)||w.wordPracticeSessions.length>10000)return false;const ids=new Set();if(!w.wordPracticeSessions.every(s=>validPracticeSession(s)&&!ids.has(s.id)&&(ids.add(s.id),true)))return false;}
  if(w.dailyRoutines!==undefined){if(!Array.isArray(w.dailyRoutines)||w.dailyRoutines.length>500)return false;const seen=new Set();if(!w.dailyRoutines.every(x=>x&&str(x.id,100)&&x.id&&!seen.has(x.id)&&(seen.add(x.id),true)&&str(x.title,200)&&x.title.trim()&&str(x.detail,5000)&&(x.completedOn===''||date(x.completedOn))))return false;}
  if(w.expenses!==undefined){if(!Array.isArray(w.expenses)||w.expenses.length>5000)return false;const seen=new Set();if(!w.expenses.every(x=>x&&str(x.id,100)&&x.id&&!seen.has(x.id)&&(seen.add(x.id),true)&&str(x.title,200)&&x.title.trim()&&str(x.project,120)&&x.project.trim()&&str(x.category,100)&&x.category.trim()&&str(x.detail,5000)&&date(x.date)&&Number.isSafeInteger(x.amountCents)&&x.amountCents>0&&x.amountCents<=10000000000&&['CNY','USD','EUR','JPY','KRW','THB','MYR','TWD'].includes(x.currency)&&['pending','submitted','paid'].includes(x.status)))return false;}
  if(w.maintenance!==undefined){if(!Array.isArray(w.maintenance)||w.maintenance.length>2000)return false;const seen=new Set();if(!w.maintenance.every(x=>x&&str(x.id,100)&&x.id&&!seen.has(x.id)&&(seen.add(x.id),true)&&str(x.title,200)&&x.title.trim()&&str(x.location,500)&&str(x.detail,5000)&&date(x.nextDate)&&(x.lastDate===''||date(x.lastDate)&&x.lastDate<=x.nextDate)))return false;}
@@ -172,7 +174,7 @@ export default {
     const text=await request.text();if(new TextEncoder().encode(text).length>1500000)return json({error:'Too large'},413);
     let input;try{input=JSON.parse(text);}catch{return json({error:'Invalid JSON'},400);}
     const workspace=url.pathname==='/api/workspace/patch',scope=url.searchParams.get('scope');if(workspace&&!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);
-    if(workspace&&scope==='work'&&input?.operations?.some(op=>op.collection==='annualPlans'))return json({error:'年度计划仅限私人空间'},400);
+    if(workspace&&scope==='work'&&input?.operations?.some(op=>['annualPlans','wordPracticeSessions'].includes(op.collection)))return json({error:'学习记录和年度计划仅限私人空间'},400);
     const key=scope==='work'?'workWorkspace':'workspace';
     for(let attempt=0;attempt<5;attempt++){
      const current=await readState(env.DB);let updated;
@@ -196,7 +198,7 @@ export default {
      if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
      const body=await request.text();if(new TextEncoder().encode(body).length>1500000)return json({error:'Too large'},413);
      let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
-     if(scope==='work'&&input?.workspace?.annualPlans!==undefined)return json({error:'年度计划仅限私人空间'},400);
+    if(scope==='work'&&(input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
      if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace))return json({error:'Invalid workspace'},400);
      for(let attempt=0;attempt<3;attempt++){
       const s=await readState(env.DB),versions=normalizedWorkspaceVersions(s.workspaceVersions);

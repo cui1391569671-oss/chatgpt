@@ -4882,7 +4882,7 @@ async function loadProjectLabels(){try{const response=await fetch('/api/project-
 
 /* PROJECT_LABELS_END */
 /* CLOUD_RECORDS_START */
-const WORKSPACE_COLLECTIONS=['tasks','notes','events','expenses','maintenance','dailyRoutines','annualPlans','vocabulary','completedGames','driveLinks','wardrobe','outfits'];
+const WORKSPACE_COLLECTIONS=['tasks','notes','events','expenses','maintenance','dailyRoutines','annualPlans','vocabulary','wordPracticeSessions','completedGames','driveLinks','wardrobe','outfits'];
 const PROJECT_COLLECTIONS=['data','archive','deletedProjects','projects','priorities'];
 function canonical(value){if(Array.isArray(value))return value.map(canonical);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])]));return value;}
 function equalRecord(a,b){return JSON.stringify(canonical(a))===JSON.stringify(canonical(b));}

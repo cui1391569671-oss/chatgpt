@@ -6397,7 +6397,7 @@ async function loadProjectLabels(){try{const response=await fetch('/api/project-
 
 /* PROJECT_LABELS_END */
 /* CLOUD_RECORDS_START */
-const WORKSPACE_COLLECTIONS=['tasks','notes','events','expenses','maintenance','dailyRoutines','annualPlans','vocabulary','completedGames','driveLinks','wardrobe','outfits'];
+const WORKSPACE_COLLECTIONS=['tasks','notes','events','expenses','maintenance','dailyRoutines','annualPlans','vocabulary','wordPracticeSessions','completedGames','driveLinks','wardrobe','outfits'];
 const PROJECT_COLLECTIONS=['data','archive','deletedProjects','projects','priorities'];
 function canonical(value){if(Array.isArray(value))return value.map(canonical);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])]));return value;}
 function equalRecord(a,b){return JSON.stringify(canonical(a))===JSON.stringify(canonical(b));}
@@ -6899,6 +6899,7 @@ function spellingKey(value){return String(value||'').normalize('NFKC').trim().to
 function spellingMatches(answer,word){return spellingKey(answer)===spellingKey(word);}
 function practiceQueue(words,scope='all',limit=20){return [...words].filter(w=>w?.word?.trim()&&(scope!=='unknown'||!String(w.mastery||'').includes('掌握'))).sort((a,b)=>String(a.lastReviewed||'').localeCompare(String(b.lastReviewed||''))||String(a.word).localeCompare(String(b.word),'en')).slice(0,Math.max(1,Math.min(100,Number(limit)||20))).map(w=>({...w}));}
 function reviewedWord(word,correct,date){const count=Number.parseInt(word.reviewCount||'0',10);return {...word,mastery:correct?'已掌握':'不会',reviewCount:String((Number.isFinite(count)&&count>=0?count:0)+1),firstLearned:word.firstLearned||date,lastReviewed:date};}
+function validPracticeSession(s){return !!s&&typeof s.id==='string'&&s.id.length>0&&s.id.length<=100&&['typing','dictation'].includes(s.mode)&&Number.isInteger(s.total)&&s.total>0&&s.total<=100&&Number.isInteger(s.correct)&&s.correct>=0&&s.correct<=s.total&&Number.isInteger(s.durationSeconds)&&s.durationSeconds>=0&&s.durationSeconds<=604800&&typeof s.completedOn==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s.completedOn)&&!Number.isNaN(Date.parse(s.completedOn))&&new Date(s.completedOn).toISOString().slice(0,10)===s.completedOn&&[s.startedAt,s.completedAt].every(v=>typeof v==='string'&&v.length<=40&&!Number.isNaN(Date.parse(v)))&&Date.parse(s.completedAt)>=Date.parse(s.startedAt);}
 
 let wordPracticeController=null;
 function isWordPracticing(){return !!wordPracticeController?.isEditing();}
@@ -6909,9 +6910,10 @@ function renderWordPractice(){
  disposeWorkspaceTasks();disposeWorkspaceCalendar();disposePersonalInfo();disposeAnnualPlans();stopWordAudio();
  $('content').innerHTML='<div id="workspaceWordPractice" data-ui-root data-ui-owner="word-practice"></div>';
  if(!window.WorkspaceWordPractice){$('workspaceWordPractice').textContent='单词练习组件加载失败，请刷新重试。';return;}
- wordPracticeController=window.WorkspaceWordPractice.mount($('workspaceWordPractice'),state.vocabulary||[],{close(){disposeWordPractice();view='vocabularyLibrary';query='';render();history.replaceState(null,'',location.pathname+'?view=vocabularyLibrary');},async review(id,correct){
+ wordPracticeController=window.WorkspaceWordPractice.mount($('workspaceWordPractice'),state.vocabulary||[],{sessions:()=>state.wordPracticeSessions||[],today:day,close(){disposeWordPractice();view='vocabularyLibrary';query='';render();history.replaceState(null,'',location.pathname+'?view=vocabularyLibrary');},async review(id,correct,session){
   const next=structuredClone(state),index=(next.vocabulary||[]).findIndex(w=>w.id===id);if(index<0)throw Error('这个单词已移除，请结束练习后刷新词库。');
   next.vocabulary[index]=reviewedWord(next.vocabulary[index],correct,day());
+  if(session){next.wordPracticeSessions??=[];if(!next.wordPracticeSessions.some(s=>s.id===session.id))next.wordPracticeSessions.push({...session,completedOn:day()});}
   if(!await change(next))throw Error(saveError||'学习记录未保存，请重试。');return state.vocabulary||[];
  }});
 }

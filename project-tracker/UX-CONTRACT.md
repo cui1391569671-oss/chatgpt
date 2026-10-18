@@ -44,3 +44,6 @@
 跟打显示英文，默写隐藏英文及音标直至查看答案或提交结果；输入在IME组合期间不提交。错误拼写不自动前进且允许修改；本轮拼错、查看答案或暂时不会的词记为不会，首次正确记为已掌握；每次成功提交增加一次复习次数并记录日期，首次学习日期已有时保留。每词使用原 vocabulary 记录级patch 保存，失败保留当前输入并允许重试，不前进或重复计数；成功后才能进入下一词。统计仅针对本轮，错词可单独重练；不宣称间隔重复算法。练习期间阻止外部导航和后台刷新；退出确认只影响未提交答案，已提交记录保留。朗读使用浏览器英语语音，失败明确提示并在退出时停止。
 
 单词练习直接渲染在英语学习页面，不以模态弹窗展示。词汇库独立路由 `vocabularyLibrary` 保留导入、搜索、熟练度筛选和词条；练习页右上入口和词库返回按钮双向导航。练习进行中切换词库须确认；设置与完成状态允许正常导航，跨页面卸载 React 根并停止朗读，重新进入后正确重建。词汇库路由保持英语学习侧栏的选中状态。
+
+## English practice completion records
+A completed round is saved atomically with the final word review in the private `wordPracticeSessions` collection. Each record contains a stable round ID, mode, start/completion timestamps, completion date in Asia/Shanghai, word count, first-attempt correct count, and elapsed seconds. Retry reuses the round ID; partial rounds are not recorded as completed. Failed saves preserve the final answer and allow retry. Practice displays today’s completed rounds/word count and the ten most recent rounds with accuracy and duration; refresh reads cloud records. Shared collection patches preserve concurrent sessions and unrelated vocabulary/review data. Work-space writes to this collection are rejected. Existing data needs no migration.

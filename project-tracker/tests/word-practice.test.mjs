@@ -1,6 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {spellingMatches,practiceQueue,reviewedWord} from '../word-practice.mjs';
+import {spellingMatches,practiceQueue,reviewedWord,validPracticeSession} from '../word-practice.mjs';
+import {validWorkspace} from '../worker.mjs';
+import {recordChanges,applyRecordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
+test('completed practice sessions are validated and merge without losing other devices or vocabulary updates',()=>{
+ const session={id:'round-1',mode:'dictation',total:20,correct:17,durationSeconds:80,startedAt:'2026-10-18T09:00:00Z',completedAt:'2026-10-18T09:01:20Z',completedOn:'2026-10-18'};
+ assert.ok(validPracticeSession(session));for(const bad of [{total:0},{correct:21},{durationSeconds:-1},{mode:'other'},{completedOn:'2026-02-30'},{completedAt:'2026-10-18T08:00:00Z'}])assert.equal(validPracticeSession({...session,...bad}),false);
+ const base={tasks:[],notes:[],events:[],vocabulary:[{id:'word-1',word:'apple'}]},next={...base,wordPracticeSessions:[session]};
+ const changes=recordChanges(base,next,WORKSPACE_COLLECTIONS),cloud={...base,wordPracticeSessions:[{...session,id:'other-device'}]};
+ const merged=applyRecordChanges(cloud,changes,WORKSPACE_COLLECTIONS);assert.equal(merged.wordPracticeSessions.length,2);assert.deepEqual(merged.vocabulary,base.vocabulary);assert.deepEqual(applyRecordChanges(merged,changes,WORKSPACE_COLLECTIONS),merged);assert.ok(validWorkspace(merged));assert.equal(validWorkspace({...merged,wordPracticeSessions:[session,session]}),false);
+});
 test('typing practice matches normalized spelling without accepting incomplete answers',()=>{
  assert.equal(spellingMatches(' Apple ','apple'),true);assert.equal(spellingMatches('don’t',"don't"),true);assert.equal(spellingMatches('ＡＰＰＬＥ','apple'),true);assert.equal(spellingMatches('appl','apple'),false);assert.equal(spellingMatches('apples','apple'),false);
 });

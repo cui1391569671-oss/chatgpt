@@ -55,12 +55,12 @@ function pushVocabulary_(force) {
     if (sheet.getLastRow() > 5002) throw new Error('表格行数超出限制，请先检查词汇库。');
     const rows = sheet.getRange(1, 1, sheet.getLastRow(), 11).getDisplayValues();
     const body = JSON.stringify({spreadsheetId: VOCAB_SYNC.spreadsheetId, sheetName: VOCAB_SYNC.sheetName, rows: rows});
-    const hash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, body).map(function(x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join('');
+    const hash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, body, Utilities.Charset.UTF_8).map(function(x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join('');
     if (!force && hash === properties.getProperty('LAST_SUCCESS_HASH')) return;
     const timestamp = String(Date.now());
-    const signature = Utilities.computeHmacSha256Signature(timestamp + '.' + body, secret).map(function(x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join('');
+    const signature = Utilities.computeHmacSha256Signature(timestamp + '.' + body, secret, Utilities.Charset.UTF_8).map(function(x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join('');
     const response = UrlFetchApp.fetch(VOCAB_SYNC.endpoint, {
-      method: 'post', contentType: 'application/json', payload: body,
+      method: 'post', contentType: 'application/json; charset=utf-8', payload: body,
       headers: {'X-Vocabulary-Timestamp': timestamp, 'X-Vocabulary-Signature': signature},
       followRedirects: false, muteHttpExceptions: true
     });

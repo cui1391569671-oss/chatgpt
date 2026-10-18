@@ -7,9 +7,10 @@ function renderWordPractice(){
  disposeWorkspaceTasks();disposeWorkspaceCalendar();disposePersonalInfo();disposeAnnualPlans();stopWordAudio();
  $('content').innerHTML='<div id="workspaceWordPractice" data-ui-root data-ui-owner="word-practice"></div>';
  if(!window.WorkspaceWordPractice){$('workspaceWordPractice').textContent='单词练习组件加载失败，请刷新重试。';return;}
- wordPracticeController=window.WorkspaceWordPractice.mount($('workspaceWordPractice'),state.vocabulary||[],{close(){disposeWordPractice();view='vocabularyLibrary';query='';render();history.replaceState(null,'',location.pathname+'?view=vocabularyLibrary');},async review(id,correct){
+ wordPracticeController=window.WorkspaceWordPractice.mount($('workspaceWordPractice'),state.vocabulary||[],{sessions:()=>state.wordPracticeSessions||[],today:day,close(){disposeWordPractice();view='vocabularyLibrary';query='';render();history.replaceState(null,'',location.pathname+'?view=vocabularyLibrary');},async review(id,correct,session){
   const next=structuredClone(state),index=(next.vocabulary||[]).findIndex(w=>w.id===id);if(index<0)throw Error('这个单词已移除，请结束练习后刷新词库。');
   next.vocabulary[index]=reviewedWord(next.vocabulary[index],correct,day());
+  if(session){next.wordPracticeSessions??=[];if(!next.wordPracticeSessions.some(s=>s.id===session.id))next.wordPracticeSessions.push({...session,completedOn:day()});}
   if(!await change(next))throw Error(saveError||'学习记录未保存，请重试。');return state.vocabulary||[];
  }});
 }
