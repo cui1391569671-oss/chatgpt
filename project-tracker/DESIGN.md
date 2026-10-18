@@ -42,3 +42,6 @@
 ## Development policy
 按AGENTS.md直接修改canonical owner，先删除冲突声明。禁止新增覆盖样式表、加选择器权重或复制独立颜色。生成HTML样式块及JS资源只通过构建更新。
 历史设计决策归档在verification/history，不是现行开发规范。
+
+## Annual plans
+私人工作台年度计划采用 SVAR React Gantt 2.8.1（MIT），默认2026年全年、月刻度，支持周刻度详细视图。左侧事项、右侧时间轴；手机使用纯时间轴和可键盘操作的事项入口。主题经 workspace.css 中 annual-theme 将 SVAR 变量映射至现有语义token；布局归属 workbench-page.css，依赖原样保留，侧栏编辑复用共享 Sheet、Input、日期、Select 和 Feedback。条形悬停轻微强调，侧栏沿用共享展开动效，减少动态偏好关闭过渡。

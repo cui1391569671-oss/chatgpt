@@ -1,0 +1,6 @@
+export const PLAN_CATEGORIES={learning:'学习',health:'健康',life:'生活',travel:'旅行',other:'其他'};
+export function validPlanDate(value){return typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&value>='1900-01-01'&&value<='2100-12-31'&&!Number.isNaN(Date.parse(value))&&new Date(value).toISOString().slice(0,10)===value;}
+export function validAnnualPlan(item){return !!item&&typeof item.id==='string'&&!!item.id&&item.id.length<=100&&typeof item.title==='string'&&!!item.title.trim()&&item.title.length<=200&&validPlanDate(item.startDate)&&validPlanDate(item.endDate)&&item.endDate>=item.startDate&&Object.hasOwn(PLAN_CATEGORIES,item.category)&&Number.isInteger(item.progress)&&item.progress>=0&&item.progress<=100&&typeof item.detail==='string'&&item.detail.length<=5000;}
+export function validAnnualPlans(items){return Array.isArray(items)&&items.length<=2000&&new Set(items.map(x=>x?.id)).size===items.length&&items.every(validAnnualPlan);}
+export function planIntersectsYear(item,year){return item.startDate<=year+'-12-31'&&item.endDate>=year+'-01-01';}
+export function shiftPlanDate(value,days){const date=new Date(value+'T12:00:00Z');date.setUTCDate(date.getUTCDate()+days);return date.toISOString().slice(0,10);}
