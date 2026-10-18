@@ -3424,28 +3424,33 @@ dialog[open]::backdrop {
 }
 
 /* Fitness page: layout only; shared controls and surfaces retain workspace tokens. */
-.fitness-page{display:flex;flex-direction:column;gap:24px;min-width:0;padding-bottom:24px}
-.fitness-header,.fitness-exercise-title{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.fitness-page{display:flex;flex-direction:column;gap:24px;min-width:0;max-width:100%;padding-bottom:24px;container:fitness / inline-size;overflow-wrap:anywhere}
+.fitness-header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
 .fitness-header h2,.fitness-exercise-title h3{margin:0}
 .fitness-header p{margin:8px 0 0}
-.fitness-layout{display:grid;grid-template-columns:minmax(260px,.85fr) minmax(0,1.3fr);gap:24px;align-items:start}
-.fitness-plan,.fitness-library{min-width:0}
+.fitness-layout{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr);gap:24px;align-items:start}
+.fitness-plan,.fitness-library,.fitness-profile,.fitness-history,.fitness-exercise{min-width:0;max-width:100%}
 .fitness-library{display:flex;flex-direction:column;gap:16px}
 .fitness-library>h3{margin:0}
 .fitness-plan-row{padding:16px 0;margin:0;border:0;border-bottom:1px solid var(--admin-border)}
 .fitness-plan-row legend{padding-top:16px}
 .fitness-exercise-toggle,.fitness-set-list label{display:flex;gap:10px;align-items:center;min-height:44px}
-.fitness-quantities{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.fitness-quantities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px}
 .fitness-quantities label{display:flex;flex-direction:column;gap:6px;min-width:0}
 .fitness-quantities input{width:100%;min-width:0}
 .fitness-set-list,.fitness-actions{display:flex;gap:12px;flex-wrap:wrap}
 .fitness-set-list label{padding:0 8px}
 .fitness-actions{margin-top:20px}
+.fitness-actions>button{min-width:0;max-width:100%;height:auto;white-space:normal;overflow-wrap:anywhere}
 .fitness-error{color:var(--admin-destructive)}
+.fitness-exercise-title{display:list-item;cursor:pointer;overflow-wrap:anywhere}
+.fitness-exercise-title h3{display:inline;margin-right:12px}
+.fitness-exercise-title .muted{display:inline}
+.fitness-exercise-title:focus-visible{outline:2px solid var(--admin-primary);outline-offset:4px}
 .fitness-exercise ol{margin:16px 0;padding-left:20px}
 .fitness-exercise li{margin:8px 0;line-height:1.65}
 .fitness-animation{margin:16px 0;min-width:0}
-.fitness-animation img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;border-radius:var(--admin-radius)}
+.fitness-animation img{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;border-radius:var(--admin-radius)}
 .fitness-animation figcaption{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:8px}
 .fitness-history ol{padding:0;margin:16px 0 0;list-style:none}
 .fitness-history li{display:flex;flex-direction:column;gap:6px;padding:14px 0;border-bottom:1px solid var(--admin-border);overflow-wrap:anywhere}
@@ -3457,9 +3462,9 @@ dialog[open]::backdrop {
 .fitness-profile-exclusions label{display:flex;align-items:center;gap:8px;min-height:44px}
 .fitness-profile-exclusions legend{margin-bottom:8px}
 .fitness-profile ul{padding-left:20px;line-height:1.7}
-@media(max-width:650px){.fitness-profile-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:400px){.fitness-profile-fields{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:850px){.fitness-layout{grid-template-columns:minmax(0,1fr)}.fitness-actions>button{flex:1}.fitness-header{align-items:start}}
+@container fitness (max-width:760px){.fitness-profile-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container fitness (max-width:480px){.fitness-profile-fields{grid-template-columns:minmax(0,1fr)}}
+@container fitness (max-width:760px){.fitness-layout{grid-template-columns:minmax(0,1fr)}.fitness-actions>button{flex:1 1 140px}.fitness-header{align-items:start}}
 
 /* Canonical workspace layout and materials. Edit owners here; do not append override sheets. */
 :root {

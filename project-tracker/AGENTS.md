@@ -1,5 +1,7 @@
 # Frontend style ownership
 
+- Follow the project development rules in [开发规则.md](开发规则.md) for all page changes.
+
 用户要求：后续不要采用追加覆盖样式的方式开发网站。
 
 - Shared tokens: pinned `theme-presets/shadcn-glass-ui` → generated `glass-preset.css`; aliases in `admin-theme.css`.
