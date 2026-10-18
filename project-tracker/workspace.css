@@ -2907,3 +2907,9 @@ body.shadcn-workbench {
 .annual-theme .wx-bar{transition:box-shadow 180ms ease,filter 180ms ease}
 .annual-theme .wx-bar:hover{filter:brightness(1.06);box-shadow:var(--shadow-md)}
 @media(prefers-reduced-motion:reduce){.annual-theme .wx-bar{transition:none}}
+.word-practice-letters [data-tone=correct]{color:var(--semantic-success-text)}
+.word-practice-letters [data-tone=wrong]{color:var(--semantic-error-text);text-decoration:underline}
+.word-practice-feedback[role=alert]{color:var(--semantic-error-text)}
+.word-practice-success{animation:word-practice-reveal 180ms ease-out}
+@keyframes word-practice-reveal{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.word-practice-success{animation:none}}

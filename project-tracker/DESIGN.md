@@ -45,3 +45,6 @@
 
 ## Annual plans
 私人工作台年度计划采用 SVAR React Gantt 2.8.1（MIT），默认2026年全年、月刻度，支持周刻度详细视图。左侧事项、右侧时间轴；手机使用纯时间轴和可键盘操作的事项入口。主题经 workspace.css 中 annual-theme 将 SVAR 变量映射至现有语义token；布局归属 workbench-page.css，依赖原样保留，侧栏编辑复用共享 Sheet、Input、日期、Select 和 Feedback。条形悬停轻微强调，侧栏沿用共享展开动效，减少动态偏好关闭过渡。
+
+## Word practice
+英语词库保留原卡片与导入，单词练习参考 Qwerty Learner 的跟打/默写流程，在工作台独立实现；未复制或整体嵌入上游源码、词库或音效。练习使用原 vocabulary 集合，默认未掌握词且优先未复习，10/20/50词一轮。英语学习默认直接展示练习页（view=vocabulary），词汇库独立为 view=vocabularyLibrary，页面提供双向入口；共享 Select、Input、Feedback 及退出确认管理交互，workbench-page.css 归属布局；逐字正误用语义色和下划线表达，成功切换轻动效尊重减少动态偏好。
