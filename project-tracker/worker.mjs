@@ -1,3 +1,4 @@
+import {vocabularySyncStatus,vocabularyPushRoute} from './vocabulary-sheet.mjs';
 import {validAnnualPlans} from './annual-plans.mjs';
 import {TASKS_JS,TASKS_CSS,TASKS_LICENSE} from './tasks-assets.mjs';
 import {ILAMY_JS,ILAMY_CSS,ILAMY_LICENSE} from './ilamy-assets.mjs';
@@ -97,6 +98,7 @@ export default {
   if(url.pathname==='/sitemap.xml'&&request.method==='GET')return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>',{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow'}});
   if(url.pathname==='/'&&['GET','HEAD'].includes(request.method))return new Response(null,{status:302,headers:{Location:'/work','Cache-Control':'no-store'}});
   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
+  if(url.pathname==='/api/vocabulary/push')return await vocabularyPushRoute(request,env,{readState,writeState,validWorkspace});
   if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
   const auth=await authRoute(request,env);if(auth)return auth;
   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600'}});
@@ -107,6 +109,12 @@ export default {
   try{
    if(['/assets/tasks.js','/assets/tasks.css','/assets/tasks.LICENSE.txt'].includes(url.pathname)&&request.method==='GET')return new Response(url.pathname.endsWith('.js')?TASKS_JS:url.pathname.endsWith('.css')?TASKS_CSS:TASKS_LICENSE,{headers:{'Content-Type':url.pathname.endsWith('.js')?'text/javascript; charset=utf-8':url.pathname.endsWith('.css')?'text/css; charset=utf-8':'text/plain; charset=utf-8','Cache-Control':'private, max-age=0, must-revalidate','X-Content-Type-Options':'nosniff'}});
    if(['/assets/ilamy-3.2.1.js','/assets/ilamy-3.2.1.css','/assets/calendar.js.LEGAL.txt'].includes(url.pathname)&&request.method==='GET')return new Response(url.pathname.endsWith('.js')?ILAMY_JS:url.pathname.endsWith('.css')?ILAMY_CSS:ILAMY_LICENSE,{headers:{'Content-Type':url.pathname.endsWith('.js')?'text/javascript; charset=utf-8':url.pathname.endsWith('.css')?'text/css; charset=utf-8':'text/plain; charset=utf-8','Cache-Control':'private, max-age=0, must-revalidate','X-Content-Type-Options':'nosniff'}});
+   if(url.pathname==='/api/vocabulary/sync'){
+    if(request.method==='GET')return json(await vocabularySyncStatus(env));
+    if(request.method!=='POST')return json({error:'Method not allowed'},405);
+    if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
+    return json({error:'请在 Google 表格的“工作台词库同步”菜单中推送更新'},409);
+   }
    if(url.pathname==='/api/project-core-information')return await projectCoreInfoRoute(request,env);
    if(url.pathname==='/api/account/vault')return await personalVaultRoute(request,env);
    if(['/api/media/search','/api/media/details'].includes(url.pathname))return await mediaSourcesRoute(request,env);

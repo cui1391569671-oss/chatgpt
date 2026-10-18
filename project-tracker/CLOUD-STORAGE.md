@@ -1,5 +1,7 @@
 # v1.2.0 云端数据规则
 
+Google 词汇表是词条内容来源，绑定表格的 Apps Script 编辑后签名推送，每5分钟检查补漏。词汇内容合并到私人 workspace.vocabulary；D1 仍是工作台运行时唯一持久来源。已存在词条的学习状态/次数/日期由工作台持有，表格不回写，缺失行不自动删除本地学习记录。授权及配置见 VOCABULARY-SYNC.md；同步状态存于独立 vocabulary_sheet_sync 表，不进入用户导出集合。
+
 Cloudflare D1 为业务数据的唯一持久来源。页面内存只用于展示和尚未提交的编辑；不把业务数据写入 localStorage、sessionStorage 或 IndexedDB。登录 Cookie 与侧栏折叠偏好保留。
 
 工作台通过 /api/workspace/patch?scope=work|personal 提交按记录和字段的变更；项目问题表通过 /api/state/patch 提交问题、归档、项目和优先级变更。请求不包含完整工作台快照或全局版本号。后端读取最新 D1 数据，校验被改字段的旧值，再原子写入；数据库写入竞争最多重试5次。不同记录和不同字段可独立保存，同一字段冲突返回409，删除前记录已修改也返回409。

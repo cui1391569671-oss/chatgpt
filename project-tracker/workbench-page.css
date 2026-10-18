@@ -2169,6 +2169,7 @@ dialog[open]::backdrop {
 
 /* Personal information uses shared materials and controls; only business layout lives here. */
 .personal-info{min-width:0;display:flex;flex-direction:column;gap:16px}
+.vocabulary-sync{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0;font-size:12px;color:var(--admin-muted-foreground)}
 .word-practice-page{width:100%;max-width:920px;margin:0 auto;min-width:0}
 .word-practice-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
 .word-practice-header h2{margin:0}

@@ -3,3 +3,6 @@ TMDB_API_TOKEN=
 IGDB_CLIENT_ID=
 IGDB_CLIENT_SECRET=
 MAL_CLIENT_ID=
+
+# Same value as the Apps Script SYNC_SECRET property. Production: Worker Secret.
+VOCABULARY_SYNC_SECRET=
