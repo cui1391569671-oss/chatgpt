@@ -2306,3 +2306,6 @@ dialog[open]::backdrop {
 
 /* Requirements registry business layout; controls inherit workspace primitives. */
 .requirements-intro{margin-bottom:16px}.requirements-filters{display:grid;grid-template-columns:minmax(0,1fr) auto auto}.requirement-row{display:flex;gap:20px;align-items:flex-start;padding:20px 0;border-bottom:1px solid var(--line)}.requirement-row:first-child{padding-top:0}.requirement-row:last-child{border-bottom:0;padding-bottom:0}.requirement-body{min-width:0;flex:1}.requirement-body h2{font-size:inherit;overflow-wrap:anywhere;margin:0 0 10px}.requirement-detail{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:12px}.requirement-row .actions{flex-shrink:0}@media(max-width:600px){.requirements-filters{grid-template-columns:minmax(0,1fr) auto}.requirements-filters>:first-child{grid-column:1/-1}.requirement-row{flex-direction:column;gap:12px}.requirement-row .actions{align-self:flex-end}}
+
+/* Today task aggregation business layout. */
+.today-task-group{margin-top:16px}.today-task-detail{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:8px}.today-task-date{margin:12px 0}.today-task-group .row-title{overflow-wrap:anywhere}@media(max-width:600px){.today-task-group .row{flex-wrap:wrap}.today-task-group .actions{margin-left:auto}}

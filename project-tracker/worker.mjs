@@ -1,3 +1,4 @@
+import {todayTasks} from './today-tasks.mjs';
 import {validEventImages,calendarImagesRoute} from './calendar-images.mjs';
 import {validRequirements} from './requirements.mjs';
 import {vocabularySyncStatus,vocabularyPushRoute} from './vocabulary-sheet.mjs';
@@ -225,6 +226,7 @@ export default {
     }
    }
    if(url.pathname==='/api/reminders'&&request.method==='GET'){const scope=url.searchParams.get('scope');if(!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);return json({tasks:reminderTasks(await readState(env.DB),scope)});}
+   if(url.pathname==='/api/today-tasks'&&request.method==='GET'){const scope=url.searchParams.get('scope');if(!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);return json(todayTasks(await readState(env.DB),scope));}
    if(url.pathname==='/api/project-calendar'&&request.method==='GET'){const s=await readState(env.DB),today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'}),open=s.data.filter(x=>!x.done);return json({items:projectCalendarItems(s),summary:{openIssues:open.length,overdueIssues:open.filter(x=>x.plannedDate&&x.plannedDate<today).length,activeProjects:new Set(open.map(x=>x.project)).size}});}
    if(url.pathname==='/api/state' && request.method==='GET'){
     const {workspace,workWorkspace,workspaceVersions,...tracker}=await readState(env.DB);
