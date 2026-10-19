@@ -1,3 +1,5 @@
+import {validEventImages,calendarImagesRoute} from './calendar-images.mjs';
+import {validRequirements} from './requirements.mjs';
 import {vocabularySyncStatus,vocabularyPushRoute} from './vocabulary-sheet.mjs';
 import {FITNESS_MEDIA} from './fitness-media.mjs';
 import {validFitnessSession,validFitnessProfile} from './fitness.mjs';
@@ -64,6 +66,8 @@ function validWorkspace(w){
  const date=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
  const time=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)&&date(s.slice(0,10))&&Number(s.slice(11,13))<24&&Number(s.slice(14,16))<60;
  if(!w||typeof w!=='object'||!['tasks','notes','events'].every(k=>Array.isArray(w[k])&&w[k].length<=2000))return false;
+ if(w.events.some(event=>!event||!validEventImages(event.images)))return false;
+ if(w.requirements!==undefined&&!validRequirements(w.requirements))return false;
  if(w.fitnessProfiles!==undefined&&(!Array.isArray(w.fitnessProfiles)||w.fitnessProfiles.length>1||!w.fitnessProfiles.every(validFitnessProfile)))return false;
  if(w.fitnessSessions!==undefined){if(!Array.isArray(w.fitnessSessions)||w.fitnessSessions.length>10000)return false;const ids=new Set();if(!w.fitnessSessions.every(s=>validFitnessSession(s)&&!ids.has(s.id)&&(ids.add(s.id),true)))return false;}
  if(w.annualPlans!==undefined&&!validAnnualPlans(w.annualPlans))return false;
@@ -141,6 +145,7 @@ export default {
     const projectHtml=embedded?HTML.replace('</head>','<style>.header,.footer{display:none}.container{padding:8px;max-width:none}</style></head>'):HTML;
     return new Response(url.pathname==='/projects'?projectHtml:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':embedded?'SAMEORIGIN':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Content-Type-Options':'nosniff'}});
    }
+   if(url.pathname.startsWith('/api/calendar-images/'))return await calendarImagesRoute(request,env);
    if(url.pathname==='/api/wardrobe-images'&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     if(request.headers.get('Content-Type')!=='image/jpeg')return json({error:'JPEG required'},415);
@@ -189,7 +194,7 @@ export default {
     for(let attempt=0;attempt<5;attempt++){
      const current=await readState(env.DB);let updated;
      try{updated=applyRecordChanges(workspace?current[key]||{tasks:[],notes:[],events:[]}:current,input?.operations,workspace?WORKSPACE_COLLECTIONS:PROJECT_COLLECTIONS);}catch(e){return json({error:e.message},e instanceof RecordConflict?409:400);}
-     if(workspace){if(!validWorkspace(updated))return json({error:'Invalid workspace'},400);current[key]=updated;const versions=normalizedWorkspaceVersions(current.workspaceVersions);versions[scope]++;current.workspaceVersions=versions;}
+     if(workspace){if(!validWorkspace(updated)||updated.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);current[key]=updated;const versions=normalizedWorkspaceVersions(current.workspaceVersions);versions[scope]++;current.workspaceVersions=versions;}
      else{if(!valid(updated))return json({error:'Invalid state'},400);Object.assign(current,updated);}
      if(await writeState(env.DB,current)){
       if(workspace)return json({ok:true,workspace:updated,version:current.workspaceVersions[scope]});
@@ -209,7 +214,7 @@ export default {
      const body=await request.text();if(new TextEncoder().encode(body).length>1500000)return json({error:'Too large'},413);
      let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
     if(scope==='work'&&(input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined||input?.workspace?.fitnessSessions!==undefined||input?.workspace?.fitnessProfiles!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
-     if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace))return json({error:'Invalid workspace'},400);
+     if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace)||input.workspace.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);
      for(let attempt=0;attempt<3;attempt++){
       const s=await readState(env.DB),versions=normalizedWorkspaceVersions(s.workspaceVersions);
       if(versions[scope]!==input.version)return json({error:'Version conflict'},409);

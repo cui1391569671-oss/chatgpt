@@ -8,8 +8,8 @@ import {Command,CommandInput,CommandList,CommandEmpty,CommandGroup,CommandItem} 
 import {Sidebar, SidebarProvider, SidebarContent, SidebarHeader, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar} from '@/components/ui/sidebar';
 import {DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator} from '@/components/ui/dropdown-menu';
 import {LayoutDashboard, BriefcaseBusiness, CalendarDays, CheckSquare, NotebookPen, FolderOpen, BookOpen, Dumbbell, Shirt, Wrench, Clapperboard, ChevronsUpDown, Check, Bell, UserRound, ArrowUpRight, Home, Search, Command as CommandIcon, X} from 'lucide-react';
-const workGroups=[{title:'工作空间',items:[['home','工作概览',LayoutDashboard],['projects','项目问题',BriefcaseBusiness],['tasks','待办事项',CheckSquare]]},{title:'资料与记录',items:[['drive','项目资料',FolderOpen],['notes','工作笔记',NotebookPen]]}];
-const personalGroups=[{title:'私人空间',items:[['home','生活计划',CalendarDays],['annualPlans','年度计划',CalendarDays],['tasks','待办事项',CheckSquare],['notes','我的笔记',NotebookPen]]},{title:'生活与学习',items:[['vocabulary','英语学习',BookOpen],['fitness','居家健身',Dumbbell],['completedGames','娱乐记录',Clapperboard],['wardrobe','我的衣橱',Shirt],['maintenance','设备维保',Wrench]]}];
+const workGroups=[{title:'工作空间',items:[['home','工作概览',LayoutDashboard],['projects','项目问题',BriefcaseBusiness],['tasks','待办事项',CheckSquare]]},{title:'资料与记录',items:[['drive','项目资料',FolderOpen],['requirements','需求登记',NotebookPen],['notes','工作笔记',NotebookPen]]}];
+const personalGroups=[{title:'私人空间',items:[['home','生活计划',CalendarDays],['annualPlans','年度计划',CalendarDays],['tasks','待办事项',CheckSquare],['requirements','需求登记',NotebookPen],['notes','我的笔记',NotebookPen]]},{title:'生活与学习',items:[['vocabulary','英语学习',BookOpen],['fitness','居家健身',Dumbbell],['completedGames','娱乐记录',Clapperboard],['wardrobe','我的衣橱',Shirt],['maintenance','设备维保',Wrench]]}];
 function WorkspaceSidebar({bridge,snapshot}){
  const {setOpenMobile,isMobile,state}=useSidebar();
  const navigate=id=>{if(bridge.navigate(id)!==false)setOpenMobile(false);};

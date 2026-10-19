@@ -12,6 +12,7 @@ export function eventToRecord(event,previous){
  const record={...previous,id:String(event.id),title:event.title.trim(),start,end,location:event.location||'',detail:event.description||'',done:previous?.done||false,allDay:!!event.allDay};
  if(record.location.length>500||record.detail.length>5000)throw Error('地点最多 500 字，备注最多 5000 字。');
  for(const key of ['rrule','exdates','recurrenceId','uid','color','backgroundColor']){if(event[key]!==undefined)record[key]=JSON.parse(JSON.stringify(event[key]));else delete record[key];}
+ if(event.data?.images!==undefined)record.images=[...event.data.images];
  delete record.recurrence;return record;
 }
 export function applyCalendarMutation(records,mutation){

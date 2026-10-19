@@ -10,7 +10,7 @@ function openCalendarEvent(id){
 function mountWorkspaceCalendar(items,tasks,issues){
  const host=$('workspaceCalendar');if(!host)return;
  if(!window.IlamyCalendarRuntime){host.innerHTML='<p class="form-error" role="alert">日历加载失败，请刷新页面重试。</p>';return;}
- workspaceCalendar=window.IlamyCalendarRuntime.mount(host,{events:items,tasks,issues,projectName:displayProject,holiday:holidayInfo,selectedDate,view:workspaceCalendarView,anchor:workspaceCalendarAnchor,
+ workspaceCalendar=window.IlamyCalendarRuntime.mount(host,{scope,events:items,tasks,issues,projectName:displayProject,holiday:holidayInfo,selectedDate,view:workspaceCalendarView,anchor:workspaceCalendarAnchor,
   onIdle:()=>{if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;render();}},
   openSource:(source,id)=>{if(source==='projects'){view='projects';render();}else edit('tasks',id);},
   persist:async mutation=>{if(busy||!ready)return {ok:false,error:'云端暂不可用，请稍后重试。'};try{const next=structuredClone(state);next.events=applyCalendarMutation(state.events,mutation);const ok=await change(next);return {ok,error:saveError,events:ok?state.events:undefined};}catch(error){return {ok:false,error:error.message};}}
