@@ -1824,7 +1824,7 @@ main {
   color: var(--muted);
   padding: 8px 12px 12px;
 }
-#accountCenter {
+#accountCenter:not([data-ui-dialog]) {
   width: min(380px,calc(100% - 24px));
 }
 #accountCenter .space-switch {

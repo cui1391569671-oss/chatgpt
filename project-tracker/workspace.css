@@ -868,7 +868,7 @@ body {
   padding: 12px 18px;
   background: var(--surface);
 }
-#issueDetails {
+#issueDetails:not([data-ui-dialog]) {
   position: fixed;
   inset: 0 0 0 auto;
   margin: 0;
@@ -888,7 +888,7 @@ body {
 #issueDetails::backdrop {
   background: var(--modal-overlay);
 }
-.issue-details-head {
+.issue-details-head:not([data-ui-legacy-header]) {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -907,9 +907,9 @@ body {
   cursor: pointer;
 }
 #issueDetailsForm {
-  padding: 24px;
+  padding: var(--issue-form-padding,24px);
 }
-#issueDetailsTitle {
+#issueDetailsTitle:not(.sr-only) {
   font-size: 24px;
   line-height: 1.4;
   font-weight: 600;
@@ -989,7 +989,7 @@ body {
     padding: 16px;
   }
   #issueDetailsForm {
-    padding: 20px;
+    padding: var(--issue-form-padding,20px);
   }
 }
 @media(forced-colors:active) {
@@ -2389,7 +2389,7 @@ body .ui-select:focus-visible {
 /* Dialog, Sheet and authored selectors retain their tested Radix behavior. */
 body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal])[role=dialog],body :is([data-ui-portal],[data-tasks-portal],[data-shell-portal],[data-ilamy-portal]) [role=dialog] {
   box-sizing: border-box;
-  overflow: auto;
+  overflow: var(--dialog-overflow,auto);
   overscroll-behavior: contain;
   background: var(--modal-bg);
   color: var(--semantic-text);
@@ -2812,6 +2812,15 @@ body.shadcn-workbench .row-meta,body.shadcn-workbench .task-title small,body.mod
   padding: 24px;
   overflow: auto;
 }
+.workspace-dialog.ui-wide-dialog {
+  --dialog-width: 1100px;
+}
+.workspace-dialog.ui-release-dialog {
+  --dialog-width: 1000px;
+}
+.workspace-dialog.ui-account-dialog {
+  --dialog-width: 380px;
+}
 .workspace-date-dialog {
   width: min(420px,calc(100vw - 32px));
   --dialog-width: 420px;
@@ -2845,6 +2854,11 @@ body.shadcn-workbench .row-meta,body.shadcn-workbench .task-title small,body.mod
   height: auto;
 }
 .workspace-dialog.ui-project-drawer {
+  --dialog-overflow: hidden;
+  --issue-form-padding: 0px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   top: 0;
   left: auto;
   right: 0;
@@ -2853,6 +2867,21 @@ body.shadcn-workbench .row-meta,body.shadcn-workbench .task-title small,body.mod
   width: min(480px,100vw);
   height: 100dvh;
   max-height: 100dvh;
+}
+.workspace-dialog.ui-project-drawer>[data-slot=dialog-header] {
+  flex-shrink: 0;
+  min-width: 0;
+  padding-right: 24px;
+}
+.workspace-dialog.ui-project-drawer [data-slot=dialog-title] {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.workspace-dialog.ui-project-drawer [data-slot=dialog-description] {
+  overflow-wrap: anywhere;
 }
 @media(max-width:767px) {
   .workspace-dialog {

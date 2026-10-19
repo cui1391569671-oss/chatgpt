@@ -49,7 +49,7 @@
 [data-ui-root] button,[data-ui-portal] button{font:inherit;cursor:pointer}[data-ui-root] button:disabled,[data-ui-portal] button:disabled{cursor:not-allowed;opacity:.5}
 [data-ui-root] ul,[data-ui-portal] ul{margin:0;padding:0;list-style:none}
 [data-ui-root] :focus-visible,[data-ui-portal] :focus-visible{outline:2px solid var(--ring);outline-offset:2px}
-.ui-wide-dialog{width:min(1100px,calc(100vw - 32px))}
+
 .ui-confirm-field{display:grid;gap:8px;font-size:14px}
 [data-ui-portal] [data-slot=select-item]{padding-top:8px;padding-bottom:8px;cursor:pointer}[data-ui-portal] [data-slot=select-item][data-highlighted]{background:var(--admin-muted)}
 .ui-select{min-width:100px;max-width:100%;padding:8px 12px;border:1px solid var(--input);background:var(--admin-background);justify-content:space-between;gap:12px;text-align:left;color:var(--admin-foreground);white-space:nowrap}.ui-select:hover{background:var(--admin-secondary)}
@@ -57,12 +57,12 @@
 [data-tasks-root] .ui-select,[data-tasks-portal] .ui-select{width:auto}.tasks-fields .ui-select{width:100%}
 .tasks-toolbar>.ui-select{border-style:dashed}.tasks-pagination .ui-select{min-width:64px}
 @media(max-width:767px){.tasks-toolbar>.ui-select{flex:1}.ui-confirm-dialog [data-slot=dialog-footer]{flex-direction:row;justify-content:flex-end}.ui-confirm-dialog button{min-height:44px}}
-.ui-project-drawer .ui-dialog-body{min-height:100%;padding:0}
+.ui-project-drawer .ui-dialog-body{min-height:0;flex:1;overflow:auto;padding:0}
 /* Project tables use a sticky toolbar at z=100; modal primitives own a higher layer. */
 [data-ui-portal][data-slot=dialog-overlay]{z-index:10000;background:var(--modal-overlay)}
 [data-ui-portal][data-slot=dialog-content]{border:1px solid var(--border);background:var(--background);box-shadow:var(--shadow-sm);overflow:auto}
 [data-ui-portal][data-slot=select-content]{z-index:10020;width:var(--radix-select-trigger-width);min-width:var(--radix-select-trigger-width);max-height:min(320px,var(--radix-select-content-available-height));background:var(--admin-background);border:1px solid var(--border);color:var(--foreground);box-shadow:var(--shadow-sm)}
-[data-ui-portal].ui-project-drawer{overflow:auto;box-shadow:var(--shadow-sm)}
+[data-ui-portal].ui-project-drawer{box-shadow:var(--shadow-sm)}
 
 /* Canonical shadcn-admin token adapter. */
 :is([data-tasks-root],[data-tasks-portal],[data-shell-root],[data-shell-portal],[data-ui-root],[data-ui-portal]){--background:var(--admin-background);--foreground:var(--admin-foreground);--card:var(--admin-card);--card-foreground:var(--admin-card-foreground);--popover:var(--admin-popover);--popover-foreground:var(--admin-popover-foreground);--primary:var(--admin-primary);--primary-foreground:var(--admin-primary-foreground);--secondary:var(--admin-secondary);--secondary-foreground:var(--admin-secondary-foreground);--muted:var(--admin-muted);--muted-foreground:var(--admin-muted-foreground);--accent:var(--admin-accent);--accent-foreground:var(--admin-accent-foreground);--destructive:var(--admin-destructive);--border:var(--admin-border);--input:var(--admin-input);--ring:var(--admin-ring);--sidebar:var(--admin-sidebar);--sidebar-foreground:var(--admin-sidebar-foreground);--sidebar-primary:var(--admin-sidebar-primary);--sidebar-primary-foreground:var(--admin-sidebar-primary-foreground);--sidebar-accent:var(--admin-sidebar-accent);--sidebar-accent-foreground:var(--admin-sidebar-accent-foreground);--sidebar-border:var(--admin-sidebar-border);--sidebar-ring:var(--admin-sidebar-ring);font-family:var(--admin-font);font-size:14px;line-height:1.5;color:var(--foreground)}
