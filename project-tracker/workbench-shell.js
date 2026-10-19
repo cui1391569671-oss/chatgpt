@@ -18,7 +18,7 @@ function mountWorkbenchShell(){
  const header=document.createElement('div');header.id='workbenchTopbar';header.dataset.shellRoot='';
  legacy.after(root,header);
  const canLeave=()=>{if(isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()||isPersonalInfoEditing()||document.querySelector('dialog[open]')){toast('请先关闭编辑面板或处理未保存修改。');return false;}return true;};
- const snapshot=()=>({view,heading:$('heading').textContent,count:currentReminderTasks().length,ready:!$('notificationToggle').disabled});
+ const snapshot=()=>({view,heading:$('heading').textContent,count:dueTaskNotifications(currentReminderTasks(),day()).length,ready:!$('notificationToggle').disabled});
  const syncLayout=()=>{document.body.dataset.workspaceView=view;document.querySelector('main').setAttribute('aria-label',$('heading').textContent);const add=$('add'),toolbar=$('content').querySelector('.filters');if(['requirements','notes','maintenance','completedGames'].includes(view)&&add&&toolbar&&add.parentElement!==toolbar)toolbar.append(add);};
  syncLayout();
  const controller=window.WorkspaceShell.mount(root,header,{

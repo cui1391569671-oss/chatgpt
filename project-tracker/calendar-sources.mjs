@@ -1,0 +1,2 @@
+// Shared project source for the calendar and its Today list.
+export function projectCalendarItems(s){return (s.data||[]).filter(x=>!x.done&&x.status!=='已完成'&&/^\d{4}-\d{2}-\d{2}$/.test(x.plannedDate)&&!Number.isNaN(Date.parse(x.plannedDate))&&new Date(x.plannedDate).toISOString().slice(0,10)===x.plannedDate).map(x=>({project:x.project,title:x.task,date:x.plannedDate,status:x.status,reason:x.reason,note:x.note}));}
