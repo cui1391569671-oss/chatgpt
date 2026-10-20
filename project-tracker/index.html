@@ -4850,7 +4850,7 @@ body.shadcn-workbench {
 
   <div class="table-wrapper">
     <table>
-      <thead><tr><th>所属项目</th><th>问题 / 待办事项</th><th>当前状态</th><th>计划日期</th><th>项目优先级</th><th>备注</th><th>完成</th></tr></thead>
+      <thead><tr><th>所属项目</th><th>项目问题 / 跟进事项</th><th>当前状态</th><th>计划日期</th><th>项目优先级</th><th>备注</th><th>完成</th></tr></thead>
       <tbody id="tableBody"></tbody>
     </table>
     <div class="legend">
@@ -4871,13 +4871,9 @@ body.shadcn-workbench {
     <h3 id="modalTitle">添加新问题</h3>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px"><label style="margin:0">所属项目</label><button type="button" class="btn btn-outline" onclick="manageProjects()">项目管理</button></div>
     <select id="addProject" aria-label="所属项目"></select>
-    <div id="newProjectRow" style="display:none;margin-top:6px;display:none;gap:8px;align-items:center">
-      <input type="text" id="newProjectInput" placeholder="输入新项目名，如 P016 XXX项目">
-      <button class="btn btn-primary" onclick="confirmNewProject()">确认</button>
-      <button class="btn btn-outline" onclick="cancelNewProject()">取消</button>
-    </div>
-    <label for="addTask">问题/待办事项</label>
-    <textarea class="resize-none" aria-describedby="addIssueError" id="addTask" placeholder="描述问题或待办事项…"></textarea>
+
+    <label for="addTask">项目问题 / 跟进事项</label>
+    <textarea class="resize-none" aria-describedby="addIssueError" id="addTask" placeholder="描述项目问题或跟进事项…"></textarea>
     <label for="addReason">问题原因</label>
     <input type="text" id="addReason" placeholder="原因（可选）">
     <label for="addDate">计划完成日期</label>
@@ -4897,7 +4893,7 @@ body.shadcn-workbench {
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<dialog id="issueDetails" aria-labelledby="issueDetailsTitle"><div class="issue-details-head"><span id="issueProjectName"></span><button id="issueClose" type="button" aria-label="关闭问题详情">×</button></div><form id="issueDetailsForm" novalidate><h2 id="issueDetailsTitle">问题详情</h2><label for="issue-task">问题 / 待办事项</label><input id="issue-task" maxlength="2000" required><div class="issue-field-pair"><div><label for="issue-status">当前状态</label><select id="issue-status"><option>进行中</option><option>暂停</option><option>已完成</option></select></div><div><label for="issue-plannedDate">计划日期</label><input id="issue-plannedDate" type="date"></div></div><label for="issue-reason">问题原因</label><textarea class="resize-none" id="issue-reason" maxlength="10000"></textarea><label for="issue-note">跟进备注</label><textarea class="resize-none" id="issue-note" maxlength="10000"></textarea><p id="issueDetailsError" class="form-error" role="alert"></p><div class="issue-details-actions"><button class="btn" id="issueCancel" type="button">取消</button><button class="btn btn-primary" type="submit">保存</button></div></form></dialog><script>
+<dialog id="issueDetails" aria-labelledby="issueDetailsTitle"><div class="issue-details-head"><span id="issueProjectName"></span><button id="issueClose" type="button" aria-label="关闭问题详情">×</button></div><form id="issueDetailsForm" novalidate><h2 id="issueDetailsTitle">问题详情</h2><label for="issue-task">项目问题 / 跟进事项</label><input id="issue-task" maxlength="2000" required><div class="issue-field-pair"><div><label for="issue-status">当前状态</label><select id="issue-status"><option>进行中</option><option>暂停</option><option>已完成</option></select></div><div><label for="issue-plannedDate">计划日期</label><input id="issue-plannedDate" type="date"></div></div><label for="issue-reason">问题原因</label><textarea class="resize-none" id="issue-reason" maxlength="10000"></textarea><label for="issue-note">跟进备注</label><textarea class="resize-none" id="issue-note" maxlength="10000"></textarea><p id="issueDetailsError" class="form-error" role="alert"></p><div class="issue-details-actions"><button class="btn" id="issueCancel" type="button">取消</button><button class="btn btn-primary" type="submit">保存</button></div></form></dialog><script>
 /* PROJECT_LABELS_START */
 function projectNameOnly(value){return String(value||'').replace(/^\s*(?:PM|P)\s*\d+\s*[-—:：]?\s*/i,'').trim();}
 function projectLabel(value,items=[]){
@@ -5362,12 +5358,13 @@ function populateProjectSelect(){
   projSel.appendChild(newOpt);
  if(projectNames().includes(selected))projSel.value=selected;
 }
-let creatingProject=false,projectCreatePendingName=null;
+let creatingProject=false,projectCreatePendingName=null,projectCreatedCallback=null,projectCreateFocusTarget=null;
 function showAddChoice(){if(!ready||conflicted||saving||unresolvedPending)return;document.getElementById('addChoice').showModal();}
-function showProjectCreate(){const dialog=document.getElementById('projectCreate');document.getElementById('projectCreateForm').reset();document.getElementById('projectCreateName').value=projectCreatePendingName||'';document.getElementById('projectCreateError').textContent='';document.getElementById('projectCreateName').removeAttribute('aria-invalid');dialog.showModal();document.getElementById('projectCreateName').focus();}
+function showProjectCreate(onCreated=null,returnFocus=null){projectCreateFocusTarget=returnFocus;projectCreatedCallback=typeof onCreated==='function'?onCreated:null;const dialog=document.getElementById('projectCreate');document.getElementById('projectCreateForm').reset();document.getElementById('projectCreateName').value=projectCreatePendingName||'';document.getElementById('projectCreateError').textContent='';document.getElementById('projectCreateName').removeAttribute('aria-invalid');dialog.showModal();document.getElementById('projectCreateName').focus();}
 document.getElementById('projectCreateCancel').onclick=()=>{if(!creatingProject)document.getElementById('projectCreate').close();};
 document.getElementById('projectCreate').addEventListener('cancel',e=>{if(creatingProject)e.preventDefault();});
-document.getElementById('projectCreateForm').onsubmit=async e=>{e.preventDefault();if(creatingProject||saving||!ready||conflicted)return;const input=document.getElementById('projectCreateName'),error=document.getElementById('projectCreateError'),name=input.value.trim();error.textContent='';input.removeAttribute('aria-invalid');if(!name||name.length>120||projectNames().includes(name)&&projectCreatePendingName!==name){error.textContent=!name?'请输入项目名称。':name.length>120?'项目名称不能超过120字。':'已有同名项目，请使用其他名称。';input.setAttribute('aria-invalid','true');input.focus();return;}creatingProject=true;document.querySelectorAll('#projectCreate input,#projectCreate button').forEach(x=>x.disabled=true);if(!projects.includes(name))projects.push(name);projectCreatePendingName=name;try{if(await saveData()){projectCreatePendingName=null;document.getElementById('projectCreate').close();showToast('项目已创建','success');document.getElementById('btnAdd').focus();}else error.textContent='保存未成功，项目名称仍保留，请检查连接后重试。';}catch(e){error.textContent=e.message;}finally{creatingProject=false;document.querySelectorAll('#projectCreate input,#projectCreate button').forEach(x=>x.disabled=false);}};
+document.getElementById('projectCreate').addEventListener('close',()=>{const target=projectCreateFocusTarget;projectCreateFocusTarget=null;projectCreatedCallback=null;queueMicrotask(()=>{if(target?.isConnected)target.focus();});});
+document.getElementById('projectCreateForm').onsubmit=async e=>{e.preventDefault();if(creatingProject||saving||!ready||conflicted)return;const input=document.getElementById('projectCreateName'),error=document.getElementById('projectCreateError'),name=input.value.trim();error.textContent='';input.removeAttribute('aria-invalid');if(!name||name.length>120||projectNames().includes(name)&&projectCreatePendingName!==name){error.textContent=!name?'请输入项目名称。':name.length>120?'项目名称不能超过120字。':'已有同名项目，请使用其他名称。';input.setAttribute('aria-invalid','true');input.focus();return;}creatingProject=true;document.querySelectorAll('#projectCreate input,#projectCreate button').forEach(x=>x.disabled=true);if(!projects.includes(name))projects.push(name);projectCreatePendingName=name;try{if(await saveData()){projectCreatePendingName=null;const callback=projectCreatedCallback;projectCreatedCallback=null;document.getElementById('projectCreate').close();showToast('项目已创建','success');if(callback)callback(name);else document.getElementById('btnAdd').focus();}else error.textContent='保存未成功，项目名称仍保留，请检查连接后重试。';}catch(e){error.textContent=e.message;}finally{creatingProject=false;document.querySelectorAll('#projectCreate input,#projectCreate button').forEach(x=>x.disabled=false);}};
 
 function showAddModal(projectName) {
   delete document.getElementById('addModal').dataset.draftId;
@@ -5376,17 +5373,8 @@ function showAddModal(projectName) {
   populateProjectSelect();
   if(typeof projectName==='string'&&projectNames().includes(projectName))projSel.value=projectName;
 
-  // 监听选择变化
-  projSel.onchange = function() {
-    if (this.value === '__new__') {
-      document.getElementById('newProjectRow').style.display = 'flex';
-      document.getElementById('newProjectInput').focus();
-    } else {
-      document.getElementById('newProjectRow').style.display = 'none';
-    }
-  };
-  document.getElementById('newProjectRow').style.display = 'none';
-  document.getElementById('newProjectInput').value = '';
+  let previousProject=projSel.value;
+  projSel.onchange=function(){if(this.value==='__new__'){this.value=previousProject;this.dispatchEvent(new Event('input',{bubbles:true}));showProjectCreate(name=>{populateProjectSelect();projSel.value=name;previousProject=name;projSel.dispatchEvent(new Event('change',{bubbles:true}));},document.getElementById('addProject-control')||projSel);}else previousProject=this.value;};
   document.getElementById('addTask').value = '';
   document.getElementById('addReason').value = '';
   document.getElementById('addDate').value = '';
@@ -5399,40 +5387,6 @@ function closeAddModal() {
   document.getElementById('addModal').close();
 }
 
-function confirmNewProject() {
-  const input = document.getElementById('newProjectInput');
-  const name = input.value.trim();
-  if (!name) { input.focus(); return; }
-  // 添加到 ALL_PROJECTS
-  if (!addProjectByName(name)) return;
-  // 重新填充下拉列表并选中新项目
-  const projSel = document.getElementById('addProject');
-  const existingProjects = [...new Set(data.map(r => r.project))];
-  const allProjects = projectNames();
-  projSel.innerHTML = '';
-  allProjects.forEach(p => {
-    const opt = document.createElement('option');
-    opt.value = p;
-    opt.textContent = displayProject(p);
-    projSel.appendChild(opt);
-  });
-  const newOpt = document.createElement('option');
-  newOpt.value = '__new__';
-  newOpt.textContent = '+ 新建项目...';
-  newOpt.style.color = 'var(--accent)';
-  newOpt.style.fontWeight = '600';
-  projSel.appendChild(newOpt);
-  projSel.value = name;
-  document.getElementById('newProjectRow').style.display = 'none';
-  input.value = '';
-}
-
-function cancelNewProject() {
-  document.getElementById('newProjectRow').style.display = 'none';
-  document.getElementById('newProjectInput').value = '';
-  document.getElementById('addProject').value = document.getElementById('addProject').options[0]?.value || '';
-}
-
 async function addIssue() {
   const project = document.getElementById('addProject').value;
   if(project==='__new__'||!project){document.getElementById('addIssueError').textContent='请选择或新建项目。';document.getElementById('addProject-control')?.focus();return;}
@@ -5442,7 +5396,7 @@ async function addIssue() {
   const note = document.getElementById('addNote').value.trim();
 
   if (!task) {
-    document.getElementById('addIssueError').textContent='请填写问题/待办事项。';document.getElementById('addTask').setAttribute('aria-invalid','true');document.getElementById('addTask').focus();
+    document.getElementById('addIssueError').textContent='请填写项目问题 / 跟进事项。';document.getElementById('addTask').setAttribute('aria-invalid','true');document.getElementById('addTask').focus();
     return;
   }
 
@@ -5534,13 +5488,6 @@ function viewArchive(){
 }
 window.addEventListener('beforeunload',e=>{if(dataDirty){e.preventDefault();e.returnValue='';}});
 function projectNames(){return [...new Set([...projects,...data.map(x=>x.project),...archive.map(x=>x.project)])];}
-function addProjectByName(name){
- if(!ready||conflicted)return false;
- name=name.trim();
- if(!name||name.length>120){showToast('请输入不超过120字的项目名称','error');return false;}
- if(projectNames().includes(name)){showToast('项目已存在','error');return false;}
- projects.push(name);saveData();return true;
-}
 async function removeProject(name){
  if(!ready||conflicted)return false;
  const issues=data.filter(x=>x.project===name),records=archive.filter(x=>x.project===name);
@@ -5558,12 +5505,12 @@ function manageProjects(){
  if(!ready||conflicted){showToast('请先恢复云端连接并处理同步冲突','error');return;}
  const overlay=document.createElement('dialog');overlay.className='workspace-panel';
  const panel=document.createElement('div');panel.className='workspace-panel-body';
+ const heading=document.createElement('h3');heading.textContent='项目管理';
  const draw=()=>{
   populateProjectSelect();
   panel.replaceChildren();
-  const h=document.createElement('h3');h.textContent='项目管理';panel.appendChild(h);
-  const input=document.createElement('input');input.type='text';input.placeholder='项目名称，如 新项目';input.maxLength=120;input.setAttribute('aria-label','新项目名称');panel.appendChild(input);
-  const add=document.createElement('button');add.className='btn btn-success';add.textContent='添加项目';add.onclick=()=>{if(addProjectByName(input.value))draw();};panel.appendChild(add);
+  panel.appendChild(heading);
+  const add=document.createElement('button');add.className='btn btn-success';add.textContent='新建项目';add.onclick=()=>showProjectCreate(()=>{draw();panel.querySelector('button')?.focus();},add);panel.appendChild(add);
   projectNames().sort((a,b)=>a.localeCompare(b,'zh')).forEach(name=>{
    const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--semantic-border)';
    const label=document.createElement('span');label.textContent=displayProject(name)+'（'+data.filter(x=>x.project===name).length+' 条问题）';row.appendChild(label);

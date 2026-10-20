@@ -1,3 +1,4 @@
+import {validGameTaskReference} from './game-task-links.mjs';
 import {projectCalendarItems} from './calendar-sources.mjs';
 import {todayTasks} from './today-tasks.mjs';
 import {validEventImages,calendarImagesRoute} from './calendar-images.mjs';
@@ -98,7 +99,7 @@ function validWorkspace(w){
  if(w.outfits!==undefined){if(!Array.isArray(w.outfits)||w.outfits.length>1000||!w.outfits.every(o=>o&&str(o.id,100)&&o.id&&str(o.name,100)&&o.name.trim()&&['spring','summer','autumn','winter'].includes(o.season)&&Array.isArray(o.items)&&o.items.length>0&&o.items.length<=12&&o.items.every(id=>w.wardrobe?.some(c=>c.id===id))))return false;}
  const ids=new Set();
  if(![...w.tasks,...w.notes,...w.events].every(x=>{if(!x||!str(x.id,100)||!x.id||ids.has(x.id)||!str(x.title,200)||!x.title.trim())return false;ids.add(x.id);return true;}))return false;
- return w.tasks.every(t=>(t.taskType===undefined||['task','game'].includes(t.taskType))&&(t.gamePlatform===undefined||str(t.gamePlatform,100))&&typeof t.done==='boolean'&&['high','normal','low'].includes(t.priority)&&str(t.detail,5000)&&(t.dueDate===''||date(t.dueDate)))&&
+ return w.tasks.every(t=>validGameTaskReference(t)&&(t.taskType===undefined||['task','game'].includes(t.taskType))&&(t.gamePlatform===undefined||str(t.gamePlatform,100))&&typeof t.done==='boolean'&&['high','normal','low'].includes(t.priority)&&str(t.detail,5000)&&(t.dueDate===''||date(t.dueDate)))&&
  w.notes.every(n=>str(n.body,20000)&&str(n.updatedAt,40)&&!Number.isNaN(Date.parse(n.updatedAt)))&&
  w.events.every(e=>validEventRecurrence(e)&&(e.done===undefined||typeof e.done==='boolean')&&time(e.start)&&(e.end===''||time(e.end)&&e.end>=e.start)&&str(e.location,500)&&str(e.detail,5000));
 }
@@ -113,7 +114,6 @@ export default {
   if(url.pathname==='/api/vocabulary/push')return await vocabularyPushRoute(request,env,{readState,writeState,validWorkspace});
   if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
   const auth=await authRoute(request,env);if(auth)return auth;
-  if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600'}});
   if(!await authorized(request,env)){
    if(['/', '/work', '/personal', '/projects'].includes(url.pathname)&&request.method==='GET')return loginResponse(url.pathname,'',401);
    return json({error:'需要登录'},401);
@@ -141,7 +141,6 @@ export default {
     if(!['upcoming','released'].includes(mode))return json({error:'Invalid mode'},400);
     try{return json(await getGameReleases(mode));}catch{return json({error:'Steam 游戏榜暂时无法读取，请稍后重试。'},502);}
    }
-   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
    if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET'){
     const embedded=url.pathname==='/projects'&&url.searchParams.get('embedded')==='1';
     const projectHtml=embedded?HTML.replace('</head>','<style>.header,.footer{display:none}.container{padding:8px;max-width:none}</style></head>'):HTML;
@@ -196,7 +195,7 @@ export default {
     for(let attempt=0;attempt<5;attempt++){
      const current=await readState(env.DB);let updated;
      try{updated=applyRecordChanges(workspace?current[key]||{tasks:[],notes:[],events:[]}:current,input?.operations,workspace?WORKSPACE_COLLECTIONS:PROJECT_COLLECTIONS);}catch(e){return json({error:e.message},e instanceof RecordConflict?409:400);}
-     if(workspace){if(!validWorkspace(updated)||updated.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);current[key]=updated;const versions=normalizedWorkspaceVersions(current.workspaceVersions);versions[scope]++;current.workspaceVersions=versions;}
+     if(workspace){if(!validWorkspace(updated)||scope==='work'&&updated.tasks.some(t=>!!t.mediaRecordId)||updated.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);current[key]=updated;const versions=normalizedWorkspaceVersions(current.workspaceVersions);versions[scope]++;current.workspaceVersions=versions;}
      else{if(!valid(updated))return json({error:'Invalid state'},400);Object.assign(current,updated);}
      if(await writeState(env.DB,current)){
       if(workspace)return json({ok:true,workspace:updated,version:current.workspaceVersions[scope]});
@@ -216,7 +215,7 @@ export default {
      const body=await request.text();if(new TextEncoder().encode(body).length>1500000)return json({error:'Too large'},413);
      let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
     if(scope==='work'&&(input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined||input?.workspace?.fitnessSessions!==undefined||input?.workspace?.fitnessProfiles!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
-     if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace)||input.workspace.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);
+     if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace)||scope==='work'&&input.workspace.tasks.some(t=>!!t.mediaRecordId)||input.workspace.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);
      for(let attempt=0;attempt<3;attempt++){
       const s=await readState(env.DB),versions=normalizedWorkspaceVersions(s.workspaceVersions);
       if(versions[scope]!==input.version)return json({error:'Version conflict'},409);

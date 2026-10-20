@@ -6,7 +6,7 @@ function renderAnnualPlans(){
  $('heading').textContent='年度计划';$('add').classList.add('hidden');$('projectPanel').classList.add('hidden');document.body.classList.remove('project-view');document.body.dataset.workspaceView='annualPlans';
  if(annualPlanController){annualPlanController.update(state.annualPlans||[]);return;}
  disposeWorkspaceTasks();disposeWorkspaceCalendar();disposePersonalInfo();stopWordAudio();
- $('content').innerHTML='<div id="workspaceAnnualPlans" data-ui-root data-ui-owner="annual-plans"></div>';
+ $('content').innerHTML='<p class="muted">年度目标在这里管理起止日期与进度；具体到某天的安排请在生活计划日历中记录。</p><div id="workspaceAnnualPlans" data-ui-root data-ui-owner="annual-plans"></div>';
  if(!window.WorkspaceAnnualPlans){$('workspaceAnnualPlans').textContent='年度计划组件加载失败，请刷新重试。';return;}
  annualPlanController=window.WorkspaceAnnualPlans.mount($('workspaceAnnualPlans'),{rows:state.annualPlans||[],save:async operation=>{
   if(scope!=='personal'||busy||!ready)throw Error('暂时无法保存，请稍后重试。');
