@@ -55,3 +55,5 @@ Practice completion uses the existing summary surface and semantic status text. 
 Private fitness uses the existing glass surfaces, shared Button/Input/Checkbox/Search and semantic feedback. Plan/guidance and profile columns respond to the fitness content container rather than the viewport: below 760px the plan uses one column and profile fields use two, and below 480px profile fields use one. Long content wraps within its container and actions remain reachable through the existing page scroll; a guidance jump link keeps instructions reachable on mobile. No new palette or motion system.
 
 Fitness guidance uses native keyboard-accessible disclosure cards: the first movement is expanded initially, remaining movements open on demand. This reduces the initial scroll length while preserving all instructions and media in the page scroll container.
+
+Game covers on the media wall use contain within the existing fixed 2:3 slots so PSP and other packaging ratios remain fully visible. Movie/TV/anime poster fill behavior is unchanged.
