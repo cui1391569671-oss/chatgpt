@@ -4691,6 +4691,11 @@ body {
   padding: 18px 20px;
   border-bottom: 1px solid var(--line);
 }
+.project-core-sync-status {
+  padding: 12px 20px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
 .project-core-heading h2 {
   margin: 0;
   font-size: 20px;
@@ -4709,7 +4714,7 @@ body {
 }
 .project-core-table {
   width: 100%;
-  min-width: 960px;
+  min-width: 1140px;
   border-collapse: collapse;
   table-layout: fixed;
   text-align: left;
@@ -4725,19 +4730,22 @@ body {
   color: var(--muted);
 }
 .project-core-table th:first-child {
-  width: 17%;
+  width: 15%;
 }
 .project-core-table th:nth-child(2) {
-  width: 31%;
+  width: 26%;
 }
 .project-core-table th:nth-child(3) {
-  width: 19%;
-}
-.project-core-table th:nth-child(4) {
   width: 16%;
 }
+.project-core-table th:nth-child(4) {
+  width: 13%;
+}
 .project-core-table th:nth-child(5) {
-  width: 17%;
+  width: 14%;
+}
+.project-core-table th:nth-child(6) {
+  width: 16%;
 }
 .project-core-code {
   display: block;
@@ -6733,17 +6741,24 @@ $('releaseClose').onclick=()=>$('releaseDialog').close();$('releasePlatform').on
 function validDriveUrl(value){try{const u=new URL(value);return u.protocol==='https:'&&['drive.google.com','docs.google.com'].includes(u.hostname)&&!u.username&&!u.password&&!u.port;}catch{return false;}}
 let projectCoreInfo=null,projectCoreLoading=false,projectCoreError='';
 function drivePage(){return '<section class="project-core-panel" aria-label="项目核心信息"><div id="results" aria-live="polite"></div></section>';}
-async function loadProjectCoreInfo(){if(projectCoreLoading||scope!=='work')return;projectCoreLoading=true;projectCoreError='';if(view==='drive')renderDrive();try{const response=await fetch('/api/project-core-information',{cache:'no-store'});if(!response.ok)throw Error('读取失败（'+response.status+'）');const payload=await response.json();if(!Array.isArray(payload.items))throw Error('返回格式不正确');projectCoreInfo=payload;}catch(e){projectCoreError='项目信息加载失败，请重试。';}finally{projectCoreLoading=false;if(view==='drive')renderDrive();}}
+async function loadProjectCoreInfo({quiet=false}={}){if(projectCoreLoading||scope!=='work')return;projectCoreLoading=true;const priorError=projectCoreError;projectCoreError='';if(!quiet&&view==='drive')renderDrive();let changed=false;try{const response=await fetch('/api/project-core-information',{cache:'no-store'});if(!response.ok)throw Error('读取失败（'+response.status+'）');const payload=await response.json();if(!Array.isArray(payload.items))throw Error('返回格式不正确');changed=JSON.stringify(projectCoreInfo)!==JSON.stringify(payload);projectCoreInfo=payload;}catch(e){projectCoreError='项目信息加载失败，已保留上次显示内容，请重试。';}finally{projectCoreLoading=false;if(view==='drive'&&(!quiet||changed||projectCoreError||priorError))renderDrive();}}
 function sheetPreviewUrl(value){if(!validDriveUrl(value))return null;const u=new URL(value);if(u.hostname!=='docs.google.com')return null;const published=u.pathname.match(/^\/spreadsheets\/d\/e\/([A-Za-z0-9_-]+)\/pubhtml\/?$/);const regular=u.pathname.match(/^\/spreadsheets\/(?:u\/\d+\/)?d\/([A-Za-z0-9_-]+)(?:\/|$)/);if(!published&&!regular)return null;const p=new URL(published?'https://docs.google.com/spreadsheets/d/e/'+published[1]+'/pubhtml':'https://docs.google.com/spreadsheets/d/'+regular[1]+'/preview');if(published)p.searchParams.set('widget','true');const gid=u.searchParams.get('gid')||new URLSearchParams(u.hash.slice(1)).get('gid');if(gid&&/^\d+$/.test(gid))p.searchParams.set('gid',gid);return p.href;}
 function previewSheet(id){const item=(state.driveLinks||[]).find(x=>x.id===id),src=item&&sheetPreviewUrl(item.url);if(!src)return;$('drivePreviewTitle').textContent=item.title;$('drivePreviewExternal').href=item.url;$('drivePreviewFrame').src=src;$('drivePreview').showModal();}
 $('drivePreviewClose').onclick=()=>$('drivePreview').close();$('drivePreview').addEventListener('close',()=>{$('drivePreviewFrame').removeAttribute('src');});
 $('content').addEventListener('change',async e=>{if(e.target.id!=='coreInfoImport')return;const file=e.target.files[0];if(!file||projectCoreLoading)return;projectCoreLoading=true;projectCoreError='';renderDrive();try{if(file.size>1000000)throw Error('文件过大，请使用小于1 MB的项目信息文件。');const payload=JSON.parse(await file.text());const response=await fetch('/api/project-core-information',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const saved=await response.json();if(!response.ok)throw Error(saved.error||'导入失败');projectCoreInfo=payload;toast('已更新 '+saved.count+' 个项目');}catch(error){projectCoreError=error.message||'导入失败，请重试。';}finally{projectCoreLoading=false;if(view==='drive')renderDrive();}});
 function renderDrive(){
- const items=projectCoreInfo?.items||[];
+ const items=projectCoreInfo?.items||[],scrollLeft=$('results')?.querySelector('.project-core-scroll')?.scrollLeft||0;
  if(!projectCoreInfo&&!projectCoreError){$('results').innerHTML='<p class="muted" role="status">正在加载项目核心信息…</p>';return;}
- const header='<div class="project-core-heading"><h2>项目核心信息</h2><div class="project-core-actions"><label class="btn project-core-import" for="coreInfoImport">导入更新<input id="coreInfoImport" type="file" accept="application/json,.json" class="hidden"></label>'+(projectCoreInfo?.syncedAt?'<span class="muted">更新于 '+esc(projectCoreInfo.syncedAt)+'</span>':'')+'<button class="btn" type="button" data-refresh-core '+(projectCoreLoading?'disabled':'')+'>'+(projectCoreLoading?'正在刷新…':'刷新')+'</button></div></div>';
- $('results').innerHTML=header+(projectCoreError?'<p class="form-error" role="alert">'+esc(projectCoreError)+'</p>':'')+(items.length?'<div class="project-core-scroll" role="region" aria-label="项目核心信息表，可横向滚动" tabindex="0"><table class="project-core-table"><thead><tr><th scope="col">项目</th><th scope="col">供货范围</th><th scope="col">运输方式</th><th scope="col">托盘尺寸</th><th scope="col">设备负载</th></tr></thead><tbody>'+items.map(item=>'<tr><th scope="row"><span class="project-core-code">'+esc(item.projectCode)+'</span>'+esc(item.projectName)+'</th>'+['supplyScope','transport','palletSize','equipmentLoad'].map(key=>'<td>'+esc(item[key]||'待补充')+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>':!projectCoreError?'<div class="empty">暂无项目信息，请先同步项目信息表。</div>':'');
+ const sync=projectCoreInfo?.sync;
+ const status=sync?.configured?(sync.connected?(sync.automationInstalled?'自动同步已启用：信息表编辑后推送，每5分钟补查。':'已接收信息表数据，尚待安装自动同步触发器。'):'等待信息表首次同步。'):'自动同步尚未配置，当前显示已导入资料。';
+ const lastSync=sync?.lastSyncedAt&&!Number.isNaN(Date.parse(sync.lastSyncedAt))?' 最近接收：'+new Date(sync.lastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false})+'（北京时间）':'';
+ const header='<div class="project-core-heading"><h2>项目核心信息</h2><div class="project-core-actions"><a class="btn" href="https://docs.google.com/spreadsheets/d/1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM/edit" target="_blank" rel="noopener noreferrer">打开信息表</a>'+(!sync?.configured?'<label class="btn project-core-import" for="coreInfoImport">导入更新<input id="coreInfoImport" type="file" accept="application/json,.json" class="hidden"></label>':'')+'<button class="btn" type="button" data-refresh-core '+(projectCoreLoading?'disabled':'')+'>'+(projectCoreLoading?'正在刷新…':'刷新')+'</button></div></div>';
+ $('results').innerHTML=header+'<p class="muted project-core-sync-status" role="status">'+esc(status+lastSync)+'</p>'+(projectCoreError?'<p class="form-error" role="alert">'+esc(projectCoreError)+'</p>':'')+(items.length?'<div class="project-core-scroll" role="region" aria-label="项目核心信息表，可横向滚动" tabindex="0"><table class="project-core-table"><thead><tr><th scope="col">项目</th><th scope="col">供货范围</th><th scope="col">运输方式</th><th scope="col">托盘尺寸</th><th scope="col">设备负载</th><th scope="col">效率信息</th></tr></thead><tbody>'+items.map(item=>'<tr><th scope="row"><span class="project-core-code">'+esc(item.projectCode)+'</span>'+esc(item.projectName)+'</th>'+['supplyScope','transport','palletSize','equipmentLoad','efficiency'].map(key=>'<td>'+esc(item[key]||'待补充')+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>':!projectCoreError?'<div class="empty">暂无项目信息，请先同步项目信息表。</div>':'');
+ const scroll=$('results').querySelector('.project-core-scroll');if(scroll)scroll.scrollLeft=scrollLeft;
 }
+function refreshVisibleProjectCore(){if(scope==='work'&&view==='drive'&&!document.hidden)loadProjectCoreInfo({quiet:true});}
+setInterval(refreshVisibleProjectCore,30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshVisibleProjectCore();});
 function renderResults(){if(view==='today'){renderTodayTaskResults();refreshTodayTasks();return;}if(view==='requirements'){renderRequirements();return;}if(view==='tasks'){mountWorkspaceTasks();return;}const q=query.toLowerCase();let items;if(view==='tasks'){items=state.tasks.filter(t=>(t.title+' '+t.detail+' '+(scope==='personal'?t.gamePlatform||'':'')).toLowerCase().includes(q)).filter(t=>filter==='all'||scope==='personal'&&filter==='games'&&t.taskType==='game'&&!t.done||scope==='personal'&&filter==='gamesDone'&&t.taskType==='game'&&t.done||filter==='done'&&t.done||filter==='open'&&!t.done||filter==='overdue'&&!t.done&&t.dueDate&&t.dueDate<day()).sort((a,b)=>a.done-b.done||(a.dueDate||'9999').localeCompare(b.dueDate||'9999'));$('results').innerHTML=(scope==='personal'?'<p class="muted" style="margin-bottom:16px">游戏记录 '+state.tasks.filter(t=>t.taskType==='game').length+' 款 · 想玩 '+state.tasks.filter(t=>t.taskType==='game'&&!t.done).length+' 款 · 已玩 '+state.tasks.filter(t=>t.taskType==='game'&&t.done).length+' 款</p>':'')+'<div class="card">'+(items.length?taskRows(items):empty('没有符合条件的待办','试试其他筛选条件，或新建待办。'))+'</div>';}
 if(view==='notes'){items=state.notes.filter(n=>(n.title+' '+n.body).toLowerCase().includes(q)).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt));$('results').innerHTML=items.length?noteCards(items):'<div class="card">'+empty('没有符合条件的笔记','新建笔记，开始记录。')+'</div>';}
 if(view==='maintenance')renderMaintenance();if(view==='completedGames')renderCompletedGames();if(view==='drive')renderDrive();if(view==='wardrobe')renderWardrobe();if(view==='vocabularyLibrary'){renderVocabulary();renderVocabularySync();}if(view==='calendar'||view==='home')renderCalendar();}

@@ -12,6 +12,7 @@ import {TASKS_JS,TASKS_CSS,TASKS_LICENSE} from './tasks-assets.mjs';
 import {ILAMY_JS,ILAMY_CSS,ILAMY_LICENSE} from './ilamy-assets.mjs';
 import {validEventRecurrence} from './event-recurrence.mjs';
 import {projectCoreInfoRoute} from './project-core-info.mjs';
+import {projectCorePushRoute} from './project-core-sync.mjs';
 import {personalVaultRoute} from './personal-vault.mjs';
 import {validMediaTracking} from './media-tracking.mjs';
 import {mediaSourcesRoute} from './media-sources.mjs';
@@ -111,6 +112,7 @@ export default {
   if(url.pathname==='/sitemap.xml'&&request.method==='GET')return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>',{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow'}});
   if(url.pathname==='/'&&['GET','HEAD'].includes(request.method))return new Response(null,{status:302,headers:{Location:'/work','Cache-Control':'no-store'}});
   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
+  if(url.pathname==='/api/project-core-information/push')return await projectCorePushRoute(request,env);
   if(url.pathname==='/api/vocabulary/push')return await vocabularyPushRoute(request,env,{readState,writeState,validWorkspace});
   if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
   const auth=await authRoute(request,env);if(auth)return auth;
