@@ -31,3 +31,13 @@ test('Apps Script only records successful pushes, retries failures, signs exact 
  const request=new Request('https://test.local/api/project-core-information/push',{method:'POST',headers:{'Content-Type':lastOptions.contentType,...lastOptions.headers},body:lastOptions.payload});
  const DB=database();assert.equal((await projectCorePushRoute(request,{DB,PROJECT_CORE_SYNC_SECRET:secret})).status,200);assert.equal(DB.stored.automationInstalled,true);assert(!lastOptions.payload.includes('PRIVATE CONTACT'));
 });
+
+// Installing from the script editor has no spreadsheet UI context.
+test('Apps Script installer completes without invoking spreadsheet UI',()=>{
+ const script=readFileSync(new URL('../google-apps-script/project-core-sync.gs',import.meta.url),'utf8');
+ let pushes=0,toasts=0;const created=[];
+ const spreadsheet={getId:()=>PROJECT_CORE_SOURCE_ID,toast:()=>toasts++};
+ const context={SpreadsheetApp:{getActiveSpreadsheet:()=>spreadsheet,getUi:()=>{throw Error('Cannot call SpreadsheetApp.getUi() from this context.')}},ScriptApp:{getProjectTriggers:()=>[],newTrigger:name=>{const trigger={forSpreadsheet:()=>trigger,onEdit:()=>trigger,onChange:()=>trigger,onOpen:()=>trigger,timeBased:()=>trigger,everyMinutes:()=>trigger,create:()=>{created.push(name);return trigger}};return trigger}}};
+ vm.createContext(context);vm.runInContext(script,context);context.syncProjectCoreNow=()=>pushes++;
+ context.installProjectCoreSync();assert.equal(pushes,2);assert.equal(toasts,1);assert.deepEqual(created,['projectCoreEdited','projectCoreChanged','projectCoreTimer','projectCoreOpened']);
+});

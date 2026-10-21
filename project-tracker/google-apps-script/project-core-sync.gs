@@ -19,7 +19,7 @@ function installProjectCoreSync(){
   created.push(ScriptApp.newTrigger('projectCoreOpened').forSpreadsheet(spreadsheet).onOpen().create());
  }catch(error){created.forEach(t=>ScriptApp.deleteTrigger(t));throw error;}
  old.forEach(t=>ScriptApp.deleteTrigger(t));
- syncProjectCoreNow();projectCoreOpened();spreadsheet.toast('已安装：编辑后同步，每5分钟补查。','工作台项目信息同步');
+ syncProjectCoreNow();spreadsheet.toast('已安装：编辑后同步，每5分钟补查。','工作台项目信息同步');
 }
 function uninstallProjectCoreSync(){ScriptApp.getProjectTriggers().filter(t=>PROJECT_CORE_HANDLERS.indexOf(t.getHandlerFunction())>=0).forEach(t=>ScriptApp.deleteTrigger(t));}
 function projectCoreEdited(event){if(event&&event.source&&event.source.getId()===PROJECT_CORE_SOURCE_ID)pushProjectCore_(false);}
