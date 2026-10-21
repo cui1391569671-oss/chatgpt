@@ -3109,13 +3109,18 @@ body {
 .project-core-actions .muted {
   font-size: 13px;
 }
+.project-core-import {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height,44px);
+}
 .project-core-scroll {
   overflow: auto;
   scrollbar-gutter: stable;
 }
 .project-core-table {
   width: 100%;
-  min-width: 1140px;
+  min-width: 840px;
   border-collapse: collapse;
   table-layout: fixed;
   text-align: left;
@@ -3131,22 +3136,52 @@ body {
   color: var(--muted);
 }
 .project-core-table th:first-child {
-  width: 15%;
+  width: 13%;
 }
 .project-core-table th:nth-child(2) {
-  width: 26%;
+  width: 21%;
 }
 .project-core-table th:nth-child(3) {
-  width: 16%;
+  width: 11%;
 }
 .project-core-table th:nth-child(4) {
   width: 13%;
 }
 .project-core-table th:nth-child(5) {
-  width: 14%;
+  width: 19%;
 }
 .project-core-table th:nth-child(6) {
-  width: 16%;
+  width: 23%;
+}
+.project-core-facts {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  white-space: normal;
+}
+.project-core-fact {
+  display: grid;
+  gap: 2px 8px;
+  grid-template-columns: minmax(0,.9fr) minmax(0,1.25fr);
+}
+.project-core-fact dt {
+  color: var(--muted);
+}
+.project-core-fact dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.project-core-measure {
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+.project-core-values {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  white-space: normal;
 }
 .project-core-code {
   display: block;
