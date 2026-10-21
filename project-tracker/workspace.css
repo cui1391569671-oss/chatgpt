@@ -3004,3 +3004,8 @@ body.shadcn-workbench {
 .word-practice-success{animation:word-practice-reveal 180ms ease-out}
 @keyframes word-practice-reveal{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.word-practice-success{animation:none}}
+
+/* Shared form layout: short related fields wrap with available container width. */
+.workspace-field-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:12px;min-width:0}
+.workspace-field-row>div,.workspace-field-row>label{display:grid;align-content:start;gap:6px;min-width:0}
+.workspace-field-row label{margin:0}

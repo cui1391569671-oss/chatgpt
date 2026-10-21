@@ -57,3 +57,7 @@ Private fitness uses the existing glass surfaces, shared Button/Input/Checkbox/S
 Fitness guidance uses native keyboard-accessible disclosure cards: the first movement is expanded initially, remaining movements open on demand. This reduces the initial scroll length while preserving all instructions and media in the page scroll container.
 
 Game covers on the media wall use contain within the existing fixed 2:3 slots so PSP and other packaging ratios remain fully visible. Movie/TV/anime poster fill behavior is unchanged.
+
+Entertainment density: category filters and sort/status controls share a wrapping row; poster slots use 120px minimum desktop tracks with 12px horizontal gaps and two columns on mobile. Text/pagination gaps are reduced while shared control heights and full game-cover fitting remain unchanged.
+
+Short related form fields use the canonical `.workspace-field-row` in workspace.css, with container-driven wrapping, 160px minimum tracks and 12px gaps. Native adapted forms group original nodes through WorkspacePrimitives.groupFields; React forms use the same row class. Long names, links and notes retain their natural full-row width. Tasks/annual field spacing is 16px. Audit coverage and limits are recorded in verification/form-layout-audit.md.

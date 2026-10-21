@@ -1303,7 +1303,7 @@ nav button[data-view="tasks"] {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 .release-list {
   display: grid;
@@ -2201,7 +2201,7 @@ dialog[open]::backdrop {
 .annual-form label{display:grid;gap:8px}
 .annual-editor [data-slot=sheet-footer]{flex-wrap:wrap}
 @media(max-width:600px){.annual-toolbar>*{flex:1;min-width:120px}.annual-toolbar>div:first-child{flex-basis:100%}.annual-heading h2{font-size:22px}.annual-chart{height:400px}.annual-caption{gap:8px}.annual-accessible-list{display:grid}.annual-editor [data-slot=sheet-footer]>button{flex:1}}
-.media-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:24px 16px;min-width:0}
+.media-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:16px 12px;min-width:0}
 .media-wall-item{min-width:0}
 .media-wall-cover{display:block;position:relative;isolation:isolate;width:100%;aspect-ratio:2/3;padding:0;border:0;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--text);cursor:pointer;box-shadow:var(--shadow-sm)}
 .media-wall-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:var(--media-cover-fit,cover);z-index:1}
@@ -2211,23 +2211,25 @@ dialog[open]::backdrop {
 .media-wall-status{left:8px;bottom:8px}
 .media-wall-rating{right:8px;top:8px}
 .media-wall-cover:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.media-wall-item h3{font-size:14px;line-height:1.5;margin:10px 0 4px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.media-wall-item h3{font-size:14px;line-height:1.5;margin:6px 0 2px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .media-wall-item p{margin:0;font-size:12px;overflow-wrap:anywhere}
-@media(max-width:600px){.media-wall{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}}
-.media-library-toolbar{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-.media-library-toolbar label{display:grid;gap:8px;min-width:150px;margin:0}
-.media-record-info{display:flex;flex-direction:column;gap:8px;min-width:0;margin-top:12px;overflow-wrap:anywhere}
+@media(max-width:600px){.media-wall{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}}
+.media-controls{display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;margin-bottom:8px}
+.media-library-summary{margin:8px 0 12px}
+.media-library-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0}
+.media-library-toolbar label{display:flex;align-items:center;gap:6px;min-width:0;margin:0}
+.media-record-info{display:flex;flex-direction:column;gap:6px;min-width:0;margin-top:0;overflow-wrap:anywhere}
 .media-record-info h3,.media-record-info p{margin:0}
 .media-record-info .tag{align-self:flex-start}
 .media-record-actions,.media-pagination{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.media-pagination{justify-content:center;margin-top:20px}
+.media-pagination{justify-content:center;margin-top:12px}
 .media-record-note{white-space:pre-wrap;max-height:100px;overflow:auto}
 .media-library-list{display:grid;gap:12px}
-.media-library-list article{display:grid;grid-template-columns:120px minmax(0,1fr);gap:20px;min-width:0}
+.media-library-list article{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;min-width:0}
 .media-library-list .record-cover{align-self:start}
 .media-progress-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 .media-history ol{padding-left:20px;line-height:1.8}
-.media-source-credits{margin-top:20px;overflow-wrap:anywhere}
+.media-source-credits{margin-top:12px;overflow-wrap:anywhere}
 @media(max-width:600px){.media-library-toolbar label{flex:1;min-width:120px}.media-library-list article{grid-template-columns:85px minmax(0,1fr);gap:12px}.media-record-actions button{width:100%}}
 .personal-toolbar,.personal-actions,.personal-record-type{display:flex;align-items:center;gap:12px}
 .personal-toolbar{justify-content:space-between;flex-wrap:wrap}
