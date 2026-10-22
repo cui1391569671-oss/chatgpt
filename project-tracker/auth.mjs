@@ -26,7 +26,7 @@ export function loginResponse(next='/work',error='',status=200){
  const csrf=crypto.randomUUID();return new Response(loginPage(next,error,csrf),{status,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Robots-Tag':'noindex, nofollow','Set-Cookie':'__Host-tracker_csrf='+csrf+'; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=900','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'"}});
 }
 export async function authenticationAttempt(request,env){
- const ip=request.headers.get('CF-Connecting-IP')||'unknown',bucket=Math.floor(Date.now()/600000),id=encode(new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode(ip+':'+bucket))));
+ const ip=request.headers.get('CF-Connecting-IP')||'unknown',bucket=Math.floor(Date.now()/600000),id=encode(new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode('session-upgrade-v2:'+ip+':'+bucket))));
  try{
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS login_attempts (id TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL)').run();
   await env.DB.prepare('INSERT INTO login_attempts (id,count,expires) VALUES (?,1,?) ON CONFLICT(id) DO UPDATE SET count=count+1').bind(id,(bucket+1)*600000).run();

@@ -18,3 +18,18 @@ test('Basic authentication fails closed when persistent rate limiting is unavail
  const env=environment();env.DB.prepare=()=>{throw Error('offline');};
  assert.equal((await worker.fetch(basic('secret'),env)).status,503);
 });
+
+test('legacy Basic browsers receive a session and prefer it over cached Authorization on parallel resources',async()=>{
+ const env=environment();
+ const page=await worker.fetch(basic('secret'),env);assert.equal(page.status,200);
+ const cookie=page.headers.get('Set-Cookie')?.split(';')[0];assert.ok(cookie);
+ for(let i=0;i<20;i++){
+  const request=new Request('https://site.test/work',{headers:{Cookie:cookie,Authorization:'Basic '+btoa('user:secret'),'CF-Connecting-IP':'127.0.0.1'}});
+  assert.equal((await worker.fetch(request,env)).status,200);
+ }
+ // Filling the explicit-password budget cannot interrupt an already authenticated browser session.
+ for(let i=0;i<10;i++)await worker.fetch(basic(),env);
+ assert.equal((await worker.fetch(basic('secret'),env)).status,429);
+ const request=new Request('https://site.test/work',{headers:{Cookie:cookie,Authorization:'Basic '+btoa('user:secret'),'CF-Connecting-IP':'127.0.0.1'}});
+ assert.equal((await worker.fetch(request,env)).status,200);
+});

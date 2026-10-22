@@ -20,20 +20,24 @@ import {validMediaTracking} from './media-tracking.mjs';
 import {mediaSourcesRoute} from './media-sources.mjs';
 import {getSteamReview} from './steam-reviews.mjs';
 import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
-import {sessionValid,authRoute,loginResponse,authenticationAttempt} from './auth.mjs';
+import {sessionValid,sessionCookie,authRoute,loginResponse,authenticationAttempt} from './auth.mjs';
 import {findGameCover,findMediaCover,findAnimeCover,findMovieCovers} from './game-covers.mjs';
 import {getGameReleases} from './game-releases.mjs';
 import {HTML,WORKBENCH,FAVICON} from './pages.mjs';
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
+const upgradedBasicSessions=new WeakMap();
 async function authorized(request,env){
  if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return false;
+ if(await sessionValid(request,env))return true;
  const header=request.headers.get('Authorization')||'';
- if(!header.startsWith('Basic '))return sessionValid(request,env);
+ if(!header.startsWith('Basic '))return false;
  const attempt=await authenticationAttempt(request,env);if(attempt!==200)return json({error:attempt===429?'认证尝试过多，请十分钟后再试':'认证服务暂不可用'},attempt);
  try{
   const bytes=Uint8Array.from(atob(header.slice(6)),c=>c.charCodeAt(0));
   const text=new TextDecoder().decode(bytes),p=text.indexOf(':');
-  return text.slice(0,p)===env.TRACKER_USER && text.slice(p+1)===env.TRACKER_PASSWORD;
+  const valid=text.slice(0,p)===env.TRACKER_USER && text.slice(p+1)===env.TRACKER_PASSWORD;
+  if(valid)upgradedBasicSessions.set(request,await sessionCookie(env,false));
+  return valid;
  }catch{return false;}
 }
 function normalizedWorkspaceVersions(value){return Object.fromEntries(['personal','work'].map(scope=>[scope,Number.isSafeInteger(value?.[scope])&&value[scope]>0?value[scope]:1]));}
@@ -108,8 +112,7 @@ function validWorkspace(w){
  w.events.every(e=>validEventRecurrence(e)&&(e.done===undefined||typeof e.done==='boolean')&&time(e.start)&&(e.end===''||time(e.end)&&e.end>=e.start)&&str(e.location,500)&&str(e.detail,5000));
 }
 
-export default {
- async fetch(request,env){
+async function fetchRoute(request,env){
   const url=new URL(request.url);
   if(url.pathname==='/robots.txt'&&request.method==='GET')return new Response('User-agent: *\nDisallow: /\n',{headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'}});
   if(url.pathname==='/sitemap.xml'&&request.method==='GET')return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>',{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow'}});
@@ -255,6 +258,13 @@ export default {
    }
    return json({error:'Not found'},404);
   }catch(e){if(e instanceof RequestBodyLimitError)return json({error:e.message},413);console.error(e);return json({error:'服务暂不可用，请检查 DB 绑定及初始化 SQL'},500);}
+}
+export default {
+ async fetch(request,env){
+  const response=await fetchRoute(request,env),cookie=upgradedBasicSessions.get(request);
+  if(!cookie)return response;
+  const headers=new Headers(response.headers);headers.append('Set-Cookie',cookie);
+  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
  },
  async scheduled(event,env,ctx){
   ctx.waitUntil((async()=>{

@@ -43,11 +43,16 @@ try{
  const vault=await(await call('/api/account/vault')).json();assert.deepEqual(await decryptVault(vault.envelope,key),[]);
  assert.equal((await call('/api/state/patch',{operations:[{collection:'data',id:issue.id,action:'delete',before:issue}]})).status,200);
  assert.equal((await(await call('/api/state')).json()).data.length,0);
+ const legacyHeaders={Authorization:'Basic '+btoa('audit-user:audit-local-only'),'CF-Connecting-IP':'192.0.2.3'};
+ const legacyPage=await mf.dispatchFetch(new URL('/work',url),{headers:legacyHeaders});assert.equal(legacyPage.status,200);
+ const upgradedCookie=legacyPage.headers.get('Set-Cookie')?.split(';')[0];assert.ok(upgradedCookie);
+ const upgraded=await Promise.all(Array.from({length:12},()=>mf.dispatchFetch(new URL('/work',url),{headers:{...legacyHeaders,Cookie:upgradedCookie}})));
+ assert.ok(upgraded.every(response=>response.status===200));
  const basic={Authorization:'Basic '+btoa('audit-user:wrong'),'CF-Connecting-IP':'192.0.2.2'};
  for(let i=0;i<10;i++)assert.equal((await mf.dispatchFetch(new URL('/work',url),{headers:basic})).status,401);
  assert.equal((await mf.dispatchFetch(new URL('/work',url),{headers:{...basic,Authorization:'Basic '+btoa('audit-user:audit-local-only')}})).status,429);
  assert.equal((await call('/work')).status,200);
- console.log(JSON.stringify({localD1:true,compatibilityDate:'2026-07-30',productionCompatibilityVerified:false,remoteAccess:false,login:true,scopeIsolation:true,fieldConflict:true,basicLimit:true,cookieStillWorks:true,idempotentCreate:true,mixedWritesPreserved:true,imageBlob:true,vaultRoundtrip:true,vaultConflict:true,projectDelete:true}));
+ console.log(JSON.stringify({localD1:true,compatibilityDate:'2026-07-30',productionCompatibilityVerified:false,remoteAccess:false,login:true,scopeIsolation:true,fieldConflict:true,basicLimit:true,cookieStillWorks:true,legacyBasicUpgrade:true,idempotentCreate:true,mixedWritesPreserved:true,imageBlob:true,vaultRoundtrip:true,vaultConflict:true,projectDelete:true}));
  if(process.argv.includes('--serve')){
   console.log('Preview '+url.origin+' (synthetic login: audit-user / audit-local-only; no production data)');
   await new Promise(resolve=>{process.once('SIGINT',resolve);process.once('SIGTERM',resolve);});
