@@ -6,7 +6,7 @@
 ## 一次性连接
 现有 Worker project-tracker → Settings → Builds 连接本仓库。
 生产分支 main；根目录 project-tracker。
-构建命令 npm run build；部署命令 npx wrangler deploy --keep-vars。
+构建命令 npm run build；部署前执行 npm run verify，部署命令 npx wrangler deploy --keep-vars。本地 npm run deploy 会先完整构建并验证。
 构建变量 CF_D1_DATABASE_ID 填现有 project-tracker-db 数据库 ID。
 保留运行时 TRACKER_USER、TRACKER_PASSWORD Secrets。
 可设置监听路径 project-tracker/**。
@@ -18,7 +18,7 @@
 
 ## 双工作台（仅本人使用）
 
-首页 `/` 是空间选择入口，`/work` 是工作工作台，`/personal` 是私人工作台。两边都有独立的待办、笔记和日程。
+首页 `/` 直接跳转 `/work`，`/work` 是工作工作台，`/personal` 是私人工作台。两边都有独立的待办、笔记和日程。
 原项目问题表位于 `/projects`，从工作工作台进入。
 两个工作台沿用现有 TRACKER_USER 和 TRACKER_PASSWORD 登录，适用于仅本人使用。
 日程时间按北京时间录入，不连接外部日历，也不发送系统通知。
@@ -28,13 +28,13 @@
 项目接口仅返回项目字段；项目保存与每日归档保留两边工作台的数据和版本。
 
 修改 `index.html`、`workbench.html` 或 `landing.html` 后运行 `npm run build:pages`，生成 Worker 使用的 `pages.mjs`，并将生成文件一起提交。
-Cloudflare 原构建命令 `node configure.mjs` 仍可部署提交中已生成的页面，建议改为 `npm run build` 自动生成。
+完整构建使用 `npm run build`，重建 Tasks、Calendar、页面并配置数据库绑定。不准备部署时使用 `npm run build:ui`、`npm run build:pages`。`npm run verify` 检查资源一致性并执行测试。
 运行 `npm test` 验证数据保留、空间隔离、版本冲突、归档、输入校验和页面路由。
 
 ## 日历与工作台切换
 
 工作和私人空间均提供月历，可切换月份、返回今天、按日期查看及新增日程。跨天日程在覆盖的日期内显示，搜索同步筛选月历标记与当天安排。
-导航中提供直接切换到另一工作台的按钮，也可返回工作台选择入口。
+通过左上角空间菜单切换工作与私人工作台；原工作台选择入口已停用。
 
 ## 中国节假日与调休
 
@@ -99,3 +99,12 @@ Google Sheets 常用卡片默认显示“预览表格”，在当前工作台弹
 工作/私人工作台的待办、笔记、日程、Drive链接、词汇及衣橱通过空间版本每30秒及回到前台时检查更新；打开编辑弹窗时不替换数据，保存期间或版本变化后丢弃旧读取响应。问题表也检查云端更新，编辑单元格、日期或打开弹窗时不替换页面。日历刷新中收到新的保存通知会在完成后再次读取；提醒点击待办前读取最新工作台，已删除任务不打开空白编辑器。
 
 验证覆盖工作/私人数据隔离、工作台保存后旧问题表保存、真实项目冲突保护、原子写入竞争、连续编辑基线、背景读取与保存竞争、项目完成后日历及提醒移除，以及现有衣橱、词汇、链接、笔记、日程的数据保留测试。使用本地真实Worker和模拟数据库完成浏览器问题表编辑与工作台交替保存，未连接生产数据库写入测试。
+
+## 项目维护资料
+
+- [现状、功能状态与整改台账](docs/项目现状与整改台账.md)
+- [数据模型与接口](docs/数据与接口说明.md)
+- [环境配置清单](docs/环境配置清单.md)
+- [备份恢复与发布](docs/备份恢复与发布手册.md)
+
+以上资料记录实现和运维事实；开发规范仍唯一维护在开发规则.md。

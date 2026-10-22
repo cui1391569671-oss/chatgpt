@@ -1,4 +1,4 @@
-import test from 'node:test';import assert from 'node:assert/strict';import worker from '../worker.mjs';import {calendarImagesRoute,validEventImages} from '../calendar-images.mjs';import {eventToRecord} from '../calendar-ui/src/records.js';
+import test from 'node:test';import assert from 'node:assert/strict';import worker from './helpers/session-worker.mjs';import {calendarImagesRoute,validEventImages} from '../calendar-images.mjs';import {eventToRecord} from '../calendar-ui/src/records.js';
 function database(){const rows=new Map();return {prepare(sql){let a;return {bind(...args){a=args;return this;},async first(){const row=rows.get(a[0]);return row?.scope===a[1]?row:null;},async run(){if(sql.startsWith('INSERT'))rows.set(a[0],{scope:a[1],bytes:a[2]});return {};}};}};}
 const image=new Uint8Array([255,216,255,217]);
 const post=(scope,body=image,origin='https://test.local')=>new Request('https://test.local/api/calendar-images/'+scope,{method:'POST',headers:{Origin:origin,'Content-Type':'image/jpeg'},body});

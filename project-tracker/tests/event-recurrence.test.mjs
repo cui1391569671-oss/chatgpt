@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {eventOccurrencesOn,validEventRecurrence} from '../event-recurrence.mjs';
-import {validWorkspace} from '../worker.mjs';
+import {validWorkspace} from './helpers/session-worker.mjs';
 const base={id:'repeat',title:'例会',start:'2026-01-31T09:00',end:'2026-01-31T10:00',location:'',detail:'',done:false};
 const repeat=(frequency,patch={})=>({...base,recurrence:{frequency,weekdays:[1,3],until:'',...patch}});
 test('monthly occurrences clamp to month-end and return to original day next month',()=>{

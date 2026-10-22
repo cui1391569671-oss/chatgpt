@@ -1,3 +1,4 @@
+import {readBoundedText,RequestBodyLimitError} from './request-body.mjs';
 import {GLASS_STYLE} from './glass-theme.mjs';
 const encoder=new TextEncoder();
 const COOKIE='__Host-tracker_session';
@@ -24,6 +25,18 @@ export function loginPage(next='/work',error='',csrf=''){
 export function loginResponse(next='/work',error='',status=200){
  const csrf=crypto.randomUUID();return new Response(loginPage(next,error,csrf),{status,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Robots-Tag':'noindex, nofollow','Set-Cookie':'__Host-tracker_csrf='+csrf+'; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=900','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'"}});
 }
+export async function authenticationAttempt(request,env){
+ const ip=request.headers.get('CF-Connecting-IP')||'unknown',bucket=Math.floor(Date.now()/600000),id=encode(new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode(ip+':'+bucket))));
+ try{
+  await env.DB.prepare('CREATE TABLE IF NOT EXISTS login_attempts (id TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL)').run();
+  await env.DB.prepare('INSERT INTO login_attempts (id,count,expires) VALUES (?,1,?) ON CONFLICT(id) DO UPDATE SET count=count+1').bind(id,(bucket+1)*600000).run();
+  const attempts=await env.DB.prepare('SELECT count FROM login_attempts WHERE id=?').bind(id).first();
+  if(!attempts||!Number.isSafeInteger(attempts.count))return 503;
+  if(attempts.count>10)return 429;
+  await env.DB.prepare('DELETE FROM login_attempts WHERE expires<?').bind(Date.now()-600000).run();
+  return 200;
+ }catch{return 503;}
+}
 export async function authRoute(request,env){
  const url=new URL(request.url),html=loginResponse;
  if(url.pathname==='/login'&&request.method==='GET')return html(url.searchParams.get('next'));
@@ -34,11 +47,10 @@ export async function authRoute(request,env){
  if(url.pathname==='/auth/logout'&&origin!==url.origin&&!sameReferer)return html('/work','请重新打开工作台后退出登录。',403);
  if(url.pathname==='/auth/logout')return new Response(null,{status:303,headers:{Location:'/login','Set-Cookie':COOKIE+'=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0','Cache-Control':'no-store'}});
  if(!request.headers.get('Content-Type')?.includes('application/x-www-form-urlencoded'))return new Response('Invalid form',{status:415});
- const body=await request.text();if(body.length>4096)return new Response('Too large',{status:413});const form=new URLSearchParams(body),next=safeNext(form.get('next'));
+ let body;try{body=await readBoundedText(request,4096);}catch(e){if(e instanceof RequestBodyLimitError)return new Response('Too large',{status:413});throw e;}const form=new URLSearchParams(body),next=safeNext(form.get('next'));
  if(origin!==url.origin){const token=(request.headers.get('Cookie')||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('__Host-tracker_csrf='))?.split('=')[1];if(!token||!/^[-a-f0-9]{36}$/.test(token)||token!==form.get('csrf'))return html(next,'登录页面已过期，请在此页面重新登录。',403);}
  // Database-backed attempts keep the limit effective across Worker instances.
- const ip=request.headers.get('CF-Connecting-IP')||'unknown',bucket=Math.floor(Date.now()/600000),id=encode(new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode(ip+':'+bucket))));
- try{await env.DB.prepare('CREATE TABLE IF NOT EXISTS login_attempts (id TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL)').run();await env.DB.prepare('INSERT INTO login_attempts (id,count,expires) VALUES (?,1,?) ON CONFLICT(id) DO UPDATE SET count=count+1').bind(id,(bucket+1)*600000).run();const attempts=await env.DB.prepare('SELECT count FROM login_attempts WHERE id=?').bind(id).first();if(!attempts||attempts.count>10)return html(next,'尝试次数过多，请十分钟后再试。',429);await env.DB.prepare('DELETE FROM login_attempts WHERE expires<?').bind(Date.now()-600000).run();}catch{return html(next,'登录服务暂不可用，请稍后重试。',503);}
+ const attempt=await authenticationAttempt(request,env);if(attempt!==200)return html(next,attempt===429?'尝试次数过多，请十分钟后再试。':'登录服务暂不可用，请稍后重试。',attempt);
  const entered=await crypto.subtle.digest('SHA-256',encoder.encode(JSON.stringify([form.get('username'),form.get('password')]))),expected=await crypto.subtle.digest('SHA-256',encoder.encode(JSON.stringify([env.TRACKER_USER,env.TRACKER_PASSWORD])));let diff=0;const a=new Uint8Array(entered),b=new Uint8Array(expected);for(let i=0;i<a.length;i++)diff|=a[i]^b[i];if(diff)return html(next,'账号或密码不正确。',401);
  return new Response(null,{status:303,headers:{Location:next,'Set-Cookie':await sessionCookie(env,form.get('remember')==='yes'),'Cache-Control':'no-store'}});
 }

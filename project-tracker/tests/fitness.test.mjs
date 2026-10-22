@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {validFitnessSession,HOME_EXERCISES,validFitnessProfile,FITNESS_PROFILE_DEFAULTS,fitnessPlanForProfile} from '../fitness.mjs';
-import worker,{validWorkspace} from '../worker.mjs';
+import worker,{validWorkspace} from './helpers/session-worker.mjs';
 import {recordChanges,applyRecordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
 test('exercise GIFs and static posters are authenticated, typed and missing files return 404',async()=>{
  const env={TRACKER_USER:'u',TRACKER_PASSWORD:'p'},headers={Authorization:'Basic '+btoa('u:p')};

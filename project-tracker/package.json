@@ -3,14 +3,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node build-pages.mjs && node configure.mjs",
-    "deploy": "node build-pages.mjs && wrangler deploy --keep-vars",
+    "build": "npm run build:ui && npm run build:pages && node configure.mjs",
+    "deploy": "npm run verify && wrangler deploy --keep-vars",
     "build:pages": "node build-pages.mjs",
     "test": "node --test",
     "build:calendar": "npm --prefix calendar-ui ci --no-audit --no-fund && npm --prefix calendar-ui run build",
-    "build:tasks": "npm --prefix tasks-ui ci --no-audit --no-fund && npm --prefix tasks-ui run build"
+    "build:tasks": "npm --prefix tasks-ui ci --no-audit --no-fund && npm --prefix tasks-ui run build",
+    "build:ui": "npm run build:tasks && npm run build:calendar",
+    "verify": "npm run check:assets && npm test",
+    "check:assets": "node scripts/check-assets.mjs",
+    "predeploy": "npm run build",
+    "test:d1": "node scripts/verify-local-d1.mjs"
   },
   "devDependencies": {
-    "wrangler": "^4.0.0"
+    "esbuild": "0.28.2",
+    "miniflare": "4.20260730.0",
+    "wrangler": "4.151.3"
   }
 }

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker,{validWorkspace} from '../worker.mjs';
+import worker,{validWorkspace} from './helpers/session-worker.mjs';
 import {validAnnualPlans,planIntersectsYear,shiftPlanDate} from '../annual-plans.mjs';
 import {recordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
 const plan={id:'learn',title:'英语学习',startDate:'2026-01-01',endDate:'2026-12-31',category:'learning',progress:35,detail:''};

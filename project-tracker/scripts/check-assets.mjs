@@ -1,0 +1,11 @@
+import {readFileSync} from 'node:fs';
+import {HTML,WORKBENCH,LANDING} from '../pages.mjs';
+import {TASKS_SOURCE_HASH} from '../tasks-assets.mjs';
+import {ILAMY_SOURCE_HASH} from '../ilamy-assets.mjs';
+import {tasksSourceHash} from '../tasks-ui/fingerprint.mjs';
+import {calendarSourceHash} from '../calendar-ui/fingerprint.mjs';
+const normalize=s=>s.replace(/\r\n/g,'\n');
+for(const [name,value] of [['index.html',HTML],['workbench.html',WORKBENCH],['landing.html',LANDING]])if(normalize(readFileSync(new URL('../'+name,import.meta.url),'utf8'))!==normalize(value))throw Error(name+' differs from generated pages; run npm run build:pages');
+if(TASKS_SOURCE_HASH!==tasksSourceHash())throw Error('Tasks assets are stale; run npm run build:tasks');
+if(ILAMY_SOURCE_HASH!==calendarSourceHash())throw Error('Calendar assets are stale; run npm run build:calendar');
+console.log('Page sources and Tasks/Calendar fingerprints match.');

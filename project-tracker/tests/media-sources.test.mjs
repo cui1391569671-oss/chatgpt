@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker from '../worker.mjs';
+import worker from './helpers/session-worker.mjs';
 import {searchMediaSources,mediaSourceDetails} from '../media-sources.mjs';
 import {validMediaIdentity} from '../media-tracking.mjs';
 import {gameSearchTerms} from '../game-covers.mjs';

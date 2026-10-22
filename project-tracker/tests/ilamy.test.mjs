@@ -21,7 +21,7 @@ test('invalid high frequency, excessive duration and malformed recurrence are re
 test('official ilamy default form replaces the custom form and FullCalendar dependency completely',()=>{
  const ui=readFileSync(new URL('../calendar-ui/src/main.jsx',import.meta.url),'utf8'),html=readFileSync(new URL('../workbench.html',import.meta.url),'utf8');assert.match(ui,/import \{IlamyCalendar/);assert.doesNotMatch(ui,/renderEventForm=/);assert.match(ui,/onEventsChange=/);assert.match(ui,/recurrencePlugin\(\)/);assert.match(html,/assets\/ilamy-3.2.1.js/);assert.doesNotMatch(html,/calendarEventEditor|fullcalendar-6|CALENDAR_EDITOR_START/);
 });
-import worker from '../worker.mjs';
+import worker from './helpers/session-worker.mjs';
 test('calendar assets and license remain authenticated and use explicit safe content types',async()=>{
  const env={TRACKER_USER:'user',TRACKER_PASSWORD:'pass'};
  for(const [path,type] of [['/assets/ilamy-3.2.1.js','text/javascript'],['/assets/ilamy-3.2.1.css','text/css'],['/assets/calendar.js.LEGAL.txt','text/plain']]){assert.equal((await worker.fetch(new Request('https://test.local'+path),env)).status,401);const response=await worker.fetch(new Request('https://test.local'+path,{headers:{Authorization:'Basic '+btoa('user:pass')}}),env);assert.equal(response.status,200);assert.match(response.headers.get('Content-Type'),new RegExp(type));}

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker,{projectCalendarItems} from '../worker.mjs';
+import worker,{projectCalendarItems} from './helpers/session-worker.mjs';
 const issue=(task,date,status='进行中')=>({project:'示例项目',task,plannedDate:date,status,done:status==='已完成',reason:'原因',note:'备注'});
 test('calendar projects active dated issues including paused, excludes archives and invalid dates',()=>{
  const s={data:[issue('进行中','2026-10-10'),issue('暂停','2026-10-11','暂停'),issue('完成','2026-10-10','已完成'),issue('无日期',''),issue('错误日期','2026-02-30')],archive:[issue('归档','2026-10-10')]};

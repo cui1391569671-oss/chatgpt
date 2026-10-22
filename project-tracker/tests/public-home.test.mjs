@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker from '../worker.mjs';
+import worker from './helpers/session-worker.mjs';
 
 test('retired product homepage redirects straight to work without reading private storage',async()=>{
  const env={TRACKER_USER:'user',TRACKER_PASSWORD:'secret',DB:{prepare(){throw new Error('Public homepage must not read private data');}}};

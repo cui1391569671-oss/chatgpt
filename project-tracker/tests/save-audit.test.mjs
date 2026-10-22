@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker from '../worker.mjs';
-import {validWorkspace} from '../worker.mjs';
+import worker from './helpers/session-worker.mjs';
+import {validWorkspace} from './helpers/session-worker.mjs';
 test('entertainment records validate four types and remain compatible with legacy games',()=>{
  const g={id:'g',title:'记录',platform:'',completedDate:'2026-10-11',rating:null,detail:''};
  for(const mediaType of [undefined,'game','movie','tv','anime'])assert.equal(validWorkspace({tasks:[],notes:[],events:[],completedGames:[{...g,...(mediaType?{mediaType}:{})}]}),true);

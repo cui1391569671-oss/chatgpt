@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker,{validWorkspace} from '../worker.mjs';
+import worker,{validWorkspace} from './helpers/session-worker.mjs';
 import {recordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
 import {mediaTrackingStatus,mediaTrackingHistory,mediaProgressUnit,mediaTrackingStats} from '../media-tracking.mjs';
 const base={id:'a',title:'作品',platform:'',completedDate:'2026-10-10',rating:null,detail:''};

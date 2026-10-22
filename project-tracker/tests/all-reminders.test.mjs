@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import worker,{reminderTasks} from '../worker.mjs';
+import worker,{reminderTasks} from './helpers/session-worker.mjs';
 const s={data:[{project:'项目A',task:'联调',plannedDate:'2026-10-10',status:'暂停',done:false,reason:'',note:''},{project:'项目A',task:'已完成',plannedDate:'2026-10-10',status:'已完成',done:true,reason:'',note:''}],archive:[],priorities:{},workWorkspace:{tasks:[{id:'same',title:'工作',dueDate:'2026-10-10',done:false},{id:'done',title:'完成',dueDate:'2026-10-10',done:true}]},workspace:{tasks:[{id:'same',title:'私人游戏',dueDate:'2026-10-11',done:false,taskType:'game'},{id:'none',title:'未定日期',dueDate:'',done:false}]}};
 test('work reminders include projects, personal includes games, without cross-space leakage',()=>{
  assert.deepEqual(reminderTasks(s,'work').map(t=>t.title),['工作','联调']);

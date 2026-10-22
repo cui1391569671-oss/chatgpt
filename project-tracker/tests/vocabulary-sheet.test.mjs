@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {parseVocabularyRows,mergeSheetVocabulary,vocabularyPushRoute,VOCABULARY_SHEET} from '../vocabulary-sheet.mjs';
-import worker,{validWorkspace} from '../worker.mjs';
+import worker,{validWorkspace} from './helpers/session-worker.mjs';
 const rows=[['Lesson','单词','音标','词性','中文释义','例句','熟练度','首次学习日期','最近复习','复习次数','备注'],['001','apple','/a/','n.','苹果','An apple.','不会','2026-01-01','','0','资料备注'],[],['002','book','','n.','书','','不会','','','0']];
 test('sheet updates preserve learning records, local words, IDs and are idempotent',()=>{const incoming=parseVocabularyRows(rows),existing=[{id:'old',word:'apple',meaning:'旧释义',mastery:'已掌握',firstLearned:'2026-02-01',lastReviewed:'2026-10-18',reviewCount:'8'},{id:'local',word:'private',meaning:'自定义词'}],result=mergeSheetVocabulary(existing,incoming);assert.equal(result.added,1);assert.equal(result.updated,1);assert.equal(result.vocabulary[0].meaning,'苹果');for(const f of ['id','mastery','firstLearned','lastReviewed','reviewCount'])assert.equal(result.vocabulary[0][f],existing[0][f]);assert.ok(result.vocabulary.some(x=>x.id==='local'));assert.equal(mergeSheetVocabulary(result.vocabulary,incoming).updated,0);for(const bad of [[],[['错误']],[[...rows[0]],['','apple'],['','APPLE']]])assert.throws(()=>parseVocabularyRows(bad));assert.throws(()=>parseVocabularyRows([rows[0],['','x'.repeat(201)]]));});
 const secret='local-test-secret-never-production-12345';

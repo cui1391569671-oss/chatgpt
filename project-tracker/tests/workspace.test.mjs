@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker,{validWorkspace} from '../worker.mjs';
+import worker,{validWorkspace} from './helpers/session-worker.mjs';
 export function database(){
  const initial={data:[],archive:[],priorities:{},projects:['保留项目'],deletedProjects:[]};
  let payload=JSON.stringify(initial),version=1;

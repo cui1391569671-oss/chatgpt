@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker from '../worker.mjs';
+import worker from './helpers/session-worker.mjs';
 
 test('authenticated static assets revalidate without retransmitting unchanged bundles',async()=>{
  const env={TRACKER_USER:'u',TRACKER_PASSWORD:'p'};

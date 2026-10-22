@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {parseProjectCoreSheets,PROJECT_CORE_SOURCE_ID} from '../project-core-sheet.mjs';
 import {projectCorePushRoute} from '../project-core-sync.mjs';
-import worker from '../worker.mjs';
+import worker from './helpers/session-worker.mjs';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {createHash,createHmac} from 'node:crypto';

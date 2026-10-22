@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker from '../worker.mjs';
+import worker from './helpers/session-worker.mjs';
 import {deriveVaultKey,newVaultSalt,encryptVault,decryptVault,validVaultEnvelope,validVaultRecords,personalVaultRoute} from '../personal-vault.mjs';
 const record={id:'passport-1',type:'passport',label:'旅行护照',holder:'测试用户',number:'E12345678',issuer:'测试机构',expiry:'2030-01-01',note:''};
 function environment(){const rows=new Map();return {TRACKER_USER:'owner',TRACKER_PASSWORD:'password',rows,DB:{prepare(sql){let args;return {bind(...values){args=values;return this;},async first(){return rows.get(args[0])||null;},async run(){if(sql.startsWith('CREATE'))return {};if(sql.startsWith('INSERT')){if(rows.has(args[0]))return {meta:{changes:0}};rows.set(args[0],{envelope:args[1],version:1});return {meta:{changes:1}};}if(sql.startsWith('UPDATE')){const row=rows.get(args[1]);if(!row||row.version!==args[2])return {meta:{changes:0}};rows.set(args[1],{envelope:args[0],version:row.version+1});return {meta:{changes:1}};}throw Error('Unexpected query');}};}}};}

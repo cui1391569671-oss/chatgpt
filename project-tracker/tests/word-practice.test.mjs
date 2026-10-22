@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spellingMatches,practiceQueue,reviewedWord,validPracticeSession} from '../word-practice.mjs';
-import {validWorkspace} from '../worker.mjs';
+import {validWorkspace} from './helpers/session-worker.mjs';
 import {recordChanges,applyRecordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
 test('completed practice sessions are validated and merge without losing other devices or vocabulary updates',()=>{
  const session={id:'round-1',mode:'dictation',total:20,correct:17,durationSeconds:80,startedAt:'2026-10-18T09:00:00Z',completedAt:'2026-10-18T09:01:20Z',completedOn:'2026-10-18'};

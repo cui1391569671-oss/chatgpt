@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker from '../worker.mjs';
+import worker from './helpers/session-worker.mjs';
 import {validProjectCoreInfo} from '../project-core-info.mjs';
 const snapshot={sourceSpreadsheetId:'1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM',sourceTitle:'项目信息表汇总',syncedAt:'2026-10-15',items:[{projectCode:'P001',projectName:'示例项目',supplyScope:'四向车4台',transport:'待确认',palletSize:'1200 × 1000 mm',equipmentLoad:'1000 kg',sourceSheet:'示例项目',sourceSheetId:1,sourceUpdatedAt:'2026-10-15'}]};
 test('core info validates bounded fields, source and unique project identifiers',()=>{

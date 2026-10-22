@@ -15,3 +15,8 @@ project-tracker/calendar-ui/dist/
 
 project-tracker/tasks-ui/node_modules/
 project-tracker/tasks-ui/dist/
+
+# OS files and local build/runtime caches
+.DS_Store
+project-tracker/node_modules/
+project-tracker/.wrangler/

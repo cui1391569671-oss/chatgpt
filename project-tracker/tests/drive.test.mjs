@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {validWorkspace} from '../worker.mjs';
+import {validWorkspace} from './helpers/session-worker.mjs';
 test('Drive bookmarks accept Google HTTPS links and reject unsafe destinations and duplicate IDs',()=>{
  const workspace={tasks:[],notes:[],events:[],driveLinks:[{id:'drive1',title:'项目文件',description:'',url:'https://drive.google.com/drive/folders/example'}]};
  assert.equal(validWorkspace(workspace),true);

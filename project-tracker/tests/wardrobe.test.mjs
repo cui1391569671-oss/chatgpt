@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker,{validWorkspace} from '../worker.mjs';
+import worker,{validWorkspace} from './helpers/session-worker.mjs';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const image='/api/wardrobe-images/11111111-1111-4111-8111-111111111111';

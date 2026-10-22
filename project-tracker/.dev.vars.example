@@ -6,3 +6,10 @@ MAL_CLIENT_ID=
 
 # Same value as the Apps Script SYNC_SECRET property. Production: Worker Secret.
 VOCABULARY_SYNC_SECRET=
+
+# Required runtime login credentials. Never commit real values.
+TRACKER_USER=
+TRACKER_PASSWORD=
+
+# Optional Apps Script project-information push secret (32+ characters).
+PROJECT_CORE_SYNC_SECRET=

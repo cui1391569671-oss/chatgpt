@@ -1,3 +1,4 @@
+import {readBoundedText,readBoundedBytes,RequestBodyLimitError} from './request-body.mjs';
 import {staticAssetResponse} from './static-assets.mjs';
 import {validGameTaskReference} from './game-task-links.mjs';
 import {projectCalendarItems} from './calendar-sources.mjs';
@@ -19,7 +20,7 @@ import {validMediaTracking} from './media-tracking.mjs';
 import {mediaSourcesRoute} from './media-sources.mjs';
 import {getSteamReview} from './steam-reviews.mjs';
 import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
-import {sessionValid,authRoute,loginResponse} from './auth.mjs';
+import {sessionValid,authRoute,loginResponse,authenticationAttempt} from './auth.mjs';
 import {findGameCover,findMediaCover,findAnimeCover,findMovieCovers} from './game-covers.mjs';
 import {getGameReleases} from './game-releases.mjs';
 import {HTML,WORKBENCH,FAVICON} from './pages.mjs';
@@ -28,6 +29,7 @@ async function authorized(request,env){
  if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return false;
  const header=request.headers.get('Authorization')||'';
  if(!header.startsWith('Basic '))return sessionValid(request,env);
+ const attempt=await authenticationAttempt(request,env);if(attempt!==200)return json({error:attempt===429?'认证尝试过多，请十分钟后再试':'认证服务暂不可用'},attempt);
  try{
   const bytes=Uint8Array.from(atob(header.slice(6)),c=>c.charCodeAt(0));
   const text=new TextDecoder().decode(bytes),p=text.indexOf(':');
@@ -117,7 +119,8 @@ export default {
   if(url.pathname==='/api/vocabulary/push')return await vocabularyPushRoute(request,env,{readState,writeState,validWorkspace});
   if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
   const auth=await authRoute(request,env);if(auth)return auth;
-  if(!await authorized(request,env)){
+  const authorization=await authorized(request,env);if(authorization instanceof Response)return authorization;
+  if(!authorization){
    if(['/', '/work', '/personal', '/projects'].includes(url.pathname)&&request.method==='GET')return loginResponse(url.pathname,'',401);
    return json({error:'需要登录'},401);
   }
@@ -153,7 +156,7 @@ export default {
    if(url.pathname==='/api/wardrobe-images'&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     if(request.headers.get('Content-Type')!=='image/jpeg')return json({error:'JPEG required'},415);
-    const bytes=new Uint8Array(await request.arrayBuffer());if(bytes.length>180000||bytes.length<4||bytes[0]!==255||bytes[1]!==216||bytes.at(-2)!==255||bytes.at(-1)!==217)return json({error:'Invalid image'},400);
+    const bytes=await readBoundedBytes(request,180000);if(bytes.length<4||bytes[0]!==255||bytes[1]!==216||bytes.at(-2)!==255||bytes.at(-1)!==217)return json({error:'Invalid image'},400);
     await env.DB.prepare('CREATE TABLE IF NOT EXISTS wardrobe_images (id TEXT PRIMARY KEY, bytes BLOB NOT NULL)').run();
     const id=crypto.randomUUID();await env.DB.prepare('INSERT INTO wardrobe_images (id,bytes) VALUES (?,?)').bind(id,Array.from(bytes)).run();return json({image:'/api/wardrobe-images/'+id});
    }
@@ -170,7 +173,7 @@ export default {
    if(url.pathname==='/api/state/archive'&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
-    const text=await request.text();if(new TextEncoder().encode(text).length>1500000)return json({error:'Too large'},413);
+    const text=await readBoundedText(request,1500000);
     let input;try{input=JSON.parse(text);}catch{return json({error:'Invalid JSON'},400);}
     if(!Array.isArray(input?.ids)||!input.ids.length||input.ids.length>10000||input.ids.some(id=>typeof id!=='string'||!id||id.length>200)||new Set(input.ids).size!==input.ids.length)return json({error:'Invalid records'},400);
     const ids=new Set(input.ids);
@@ -190,7 +193,7 @@ export default {
    if(['/api/workspace/patch','/api/state/patch'].includes(url.pathname)&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
-    const text=await request.text();if(new TextEncoder().encode(text).length>1500000)return json({error:'Too large'},413);
+    const text=await readBoundedText(request,1500000);
     let input;try{input=JSON.parse(text);}catch{return json({error:'Invalid JSON'},400);}
     const workspace=url.pathname==='/api/workspace/patch',scope=url.searchParams.get('scope');if(workspace&&!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);
     if(workspace&&scope==='work'&&input?.operations?.some(op=>['annualPlans','wordPracticeSessions','fitnessSessions','fitnessProfiles'].includes(op.collection)))return json({error:'此记录仅限私人空间'},400);
@@ -215,7 +218,7 @@ export default {
     if(request.method==='POST'){
      if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
      if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
-     const body=await request.text();if(new TextEncoder().encode(body).length>1500000)return json({error:'Too large'},413);
+     const body=await readBoundedText(request,1500000);
      let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
     if(scope==='work'&&(input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined||input?.workspace?.fitnessSessions!==undefined||input?.workspace?.fitnessProfiles!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
      if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace)||scope==='work'&&input.workspace.tasks.some(t=>!!t.mediaRecordId)||input.workspace.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);
@@ -238,7 +241,7 @@ export default {
    if(url.pathname==='/api/state' && request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
-    const body=await request.text();if(new TextEncoder().encode(body).length>1500000)return json({error:'Too large'},413);
+    const body=await readBoundedText(request,1500000);
     let s;try{s=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
     if(!valid(s))return json({error:'Invalid state'},400);
     if(s.base!==undefined&&!valid({...s.base,version:1}))return json({error:'Invalid base'},400);
@@ -251,7 +254,7 @@ export default {
     return json({error:'Version conflict'},409);
    }
    return json({error:'Not found'},404);
-  }catch(e){console.error(e);return json({error:'服务暂不可用，请检查 DB 绑定及初始化 SQL'},500);}
+  }catch(e){if(e instanceof RequestBodyLimitError)return json({error:e.message},413);console.error(e);return json({error:'服务暂不可用，请检查 DB 绑定及初始化 SQL'},500);}
  },
  async scheduled(event,env,ctx){
   ctx.waitUntil((async()=>{

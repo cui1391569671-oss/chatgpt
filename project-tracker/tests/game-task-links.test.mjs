@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {migrateGameTasks,gameRecords} from '../game-task-links.mjs';
-import worker,{validWorkspace,reminderTasks} from '../worker.mjs';
+import worker,{validWorkspace,reminderTasks} from './helpers/session-worker.mjs';
 import {recordChanges,WORKSPACE_COLLECTIONS,applyRecordChanges} from '../cloud-records.mjs';
 const task=(id,extra={})=>({id,title:'同名游戏',taskType:'game',gamePlatform:'PC',dueDate:'2026-10-20',priority:'high',detail:'保留说明',done:false,...extra});
 const game={id:'existing',title:'同名游戏',mediaType:'game',trackingStatus:'in_progress',platform:'PS5',completedDate:'',rating:null,detail:'现有进度',progress:12};

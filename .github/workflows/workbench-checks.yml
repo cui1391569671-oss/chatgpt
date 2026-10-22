@@ -1,0 +1,33 @@
+name: Workbench checks
+on:
+  pull_request:
+    paths: ['project-tracker/**', '.github/workflows/workbench-checks.yml']
+  push:
+    branches: [main]
+    paths: ['project-tracker/**', '.github/workflows/workbench-checks.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: project-tracker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            project-tracker/package-lock.json
+            project-tracker/tasks-ui/package-lock.json
+            project-tracker/calendar-ui/package-lock.json
+      - run: npm ci
+      - run: npm run build:ui
+      - run: npm run build:pages
+      - run: npm run verify
+      - run: npm run test:d1
+      - run: python3 scripts/rehearse-recovery.py
+      - name: Check committed generated resources
+        run: git diff --exit-code -- pages.mjs tasks-assets.mjs ilamy-assets.mjs ilamy-recurrence-runtime.mjs glass-theme.mjs glass-preset.css index.html workbench.html landing.html google-apps-script/project-core-sync.gs
