@@ -21,3 +21,6 @@ Local preview only; no production deployment or schema changes.
 
 ## Static audit interpretation
 Raw premium audit still reports32 findings:27 actionless-button detections (event-delegated/externally bound controls, including public demo buttons),3 native-select detections (hidden compatibility fields and a JSX Select component),2 native-date detections (hidden compatibility field and authored Input wrapper). The checker does not follow event listeners or runtime adapters. These are not represented as32 known runtime failures, nor is this report a full accessibility certification. Raw output retained separately; do not falsify native/authored ownership to silence the checker.
+
+
+规范文档位置更新：本记录涉及的独立设计、UX及开发规范现已统一到 [开发规则.md](../开发规则.md)，后续开发与验收以统一文件为准。
