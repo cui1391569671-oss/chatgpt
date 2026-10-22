@@ -5672,7 +5672,16 @@ body.shadcn-workbench[data-workspace-view=drive] .project-core-panel {
   flex-direction: column;
   min-height: 0;
 }
+body.shadcn-workbench[data-workspace-view=drive] .project-core-panel>#results {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
 body.shadcn-workbench[data-workspace-view=drive] .project-core-heading {
+  flex: none;
+}
+body.shadcn-workbench[data-workspace-view=drive] .project-core-sync-status {
   flex: none;
 }
 body.shadcn-workbench[data-workspace-view=drive] .project-core-scroll {
@@ -6836,7 +6845,7 @@ function previewSheet(id){const item=(state.driveLinks||[]).find(x=>x.id===id),s
 $('drivePreviewClose').onclick=()=>$('drivePreview').close();$('drivePreview').addEventListener('close',()=>{$('drivePreviewFrame').removeAttribute('src');});
 $('content').addEventListener('change',async e=>{if(e.target.id!=='coreInfoImport')return;const file=e.target.files[0];if(!file||projectCoreLoading)return;projectCoreLoading=true;projectCoreError='';renderDrive();try{if(file.size>1000000)throw Error('文件过大，请使用小于1 MB的项目信息文件。');const payload=JSON.parse(await file.text());const response=await fetch('/api/project-core-information',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const saved=await response.json();if(!response.ok)throw Error(saved.error||'导入失败');projectCoreInfo=payload;toast('已更新 '+saved.count+' 个项目');}catch(error){projectCoreError=error.message||'导入失败，请重试。';}finally{projectCoreLoading=false;if(view==='drive')renderDrive();}});
 function renderDrive(){
- const items=projectCoreInfo?.items||[],scrollLeft=$('results')?.querySelector('.project-core-scroll')?.scrollLeft||0;
+ const items=projectCoreInfo?.items||[],previousScroll=$('results')?.querySelector('.project-core-scroll'),scrollLeft=previousScroll?.scrollLeft||0,scrollTop=previousScroll?.scrollTop||0;
  if(!projectCoreInfo&&!projectCoreError){$('results').innerHTML='<p class="muted" role="status">正在加载项目核心信息…</p>';return;}
  const sync=projectCoreInfo?.sync;
  const status=sync?.configured?(sync.connected?(sync.automationInstalled?'自动同步已启用：信息表编辑后推送，每5分钟补查。':'已接收信息表数据，尚待安装自动同步触发器。'):'等待信息表首次同步。'):'自动同步尚未配置，当前显示已导入资料。';
@@ -6848,7 +6857,7 @@ function renderDrive(){
   const values=list=>list.length?'<ul class="project-core-values">'+list.map(value=>'<li>'+esc(value)+'</li>').join('')+'</ul>':'待补充';
   return '<tr><th scope="row"><span class="project-core-code">'+esc(item.projectCode)+'</span>'+esc(item.projectName)+'</th><td>'+facts(summary.supplyScope)+'</td><td>'+esc(summary.transport)+'</td><td>'+values(summary.palletSize)+'</td><td>'+facts(summary.equipmentLoad)+'</td><td>'+values(summary.efficiency)+'</td></tr>';
  }).join('')+'</tbody></table></div>':!projectCoreError?'<div class="empty">暂无项目信息，请先同步项目信息表。</div>':'');
- const scroll=$('results').querySelector('.project-core-scroll');if(scroll)scroll.scrollLeft=scrollLeft;
+ const scroll=$('results').querySelector('.project-core-scroll');if(scroll){scroll.scrollLeft=scrollLeft;scroll.scrollTop=scrollTop;}
 }
 function refreshVisibleProjectCore(){if(scope==='work'&&view==='drive'&&!document.hidden)loadProjectCoreInfo({quiet:true});}
 setInterval(refreshVisibleProjectCore,30000);

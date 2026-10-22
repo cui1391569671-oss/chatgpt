@@ -4070,7 +4070,16 @@ body.shadcn-workbench[data-workspace-view=drive] .project-core-panel {
   flex-direction: column;
   min-height: 0;
 }
+body.shadcn-workbench[data-workspace-view=drive] .project-core-panel>#results {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
 body.shadcn-workbench[data-workspace-view=drive] .project-core-heading {
+  flex: none;
+}
+body.shadcn-workbench[data-workspace-view=drive] .project-core-sync-status {
   flex: none;
 }
 body.shadcn-workbench[data-workspace-view=drive] .project-core-scroll {
@@ -4912,6 +4921,7 @@ body.shadcn-workbench {
       <button class="btn btn-add" onclick="showAddChoice()" title="添加项目或问题" id="btnAdd"></button>
       <button class="btn btn-outline" id="btnSave" type="button" onmousedown="event.preventDefault()" onclick="manualSave()" title="将当前修改保存到云端">保存</button>
       <button class="btn btn-del" onclick="deleteCompleted()" title="删除所有已完成的问题" id="btnDel"></button>
+      <button type="button" class="btn btn-outline" onclick="viewArchive()">查看已完成记录</button>
     </div>
   </div>
 
@@ -4927,8 +4937,6 @@ body.shadcn-workbench {
       <div class="legend-item"><div class="legend-dot" style="background:#dbeafe"></div>进行中/暂停</div>
     </div>
   </div>
-
-  <div class="table-actions"><button class="btn btn-outline" onclick="viewArchive()">查看已完成记录</button></div>
 
 </div>
 

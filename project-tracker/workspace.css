@@ -2184,7 +2184,16 @@ body.shadcn-workbench[data-workspace-view=drive] .project-core-panel {
   flex-direction: column;
   min-height: 0;
 }
+body.shadcn-workbench[data-workspace-view=drive] .project-core-panel>#results {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
 body.shadcn-workbench[data-workspace-view=drive] .project-core-heading {
+  flex: none;
+}
+body.shadcn-workbench[data-workspace-view=drive] .project-core-sync-status {
   flex: none;
 }
 body.shadcn-workbench[data-workspace-view=drive] .project-core-scroll {
