@@ -1,7 +1,7 @@
 // ilamy owns the calendar and its standard event form. This adapter owns only
 // workbench routing, scope isolation and the existing cloud persistence boundary.
 let workspaceCalendar=null,workspaceCalendarView='month',workspaceCalendarAnchor='',calendarDeferredRender=false;
-function isCalendarEditing(){return !!(workspaceCalendar?.editing||workspaceCalendar?.pending||workspaceCalendar?.failed);}
+function isCalendarEditing(){return !!(workspaceCalendar?.gesturing||workspaceCalendar?.gestureScopeOpen||workspaceCalendar?.editing||workspaceCalendar?.pending||workspaceCalendar?.failed);}
 function disposeWorkspaceCalendar(){if(!workspaceCalendar)return;workspaceCalendarView=workspaceCalendar.view;workspaceCalendarAnchor=workspaceCalendar.anchor;workspaceCalendar.dispose();workspaceCalendar=null;}
 function openCalendarEvent(id){
  if(!ready||busy||conflict)return;if(!workspaceCalendar){toast('日历尚未加载，请刷新后重试。');return;}
@@ -13,8 +13,8 @@ function mountWorkspaceCalendar(items,tasks,issues){
  workspaceCalendar=window.IlamyCalendarRuntime.mount(host,{scope,events:items,tasks,issues,projectName:displayProject,holiday:holidayInfo,selectedDate,view:workspaceCalendarView,anchor:workspaceCalendarAnchor,
   onIdle:()=>{if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;render();}},
   openSource:(source,id)=>{if(source==='projects'){view='projects';render();}else edit('tasks',id);},
-  persist:async mutation=>{if(busy||!ready)return {ok:false,error:'云端暂不可用，请稍后重试。'};try{const next=structuredClone(state);next.events=applyCalendarMutation(state.events,mutation);const ok=await change(next);return {ok,error:saveError,events:ok?state.events:undefined};}catch(error){return {ok:false,error:error.message};}}
+  persist:async mutation=>{if(busy||!ready)return {ok:false,error:'云端暂不可用，请稍后重试。'};try{const next=structuredClone(state);next.events=applyCalendarMutation(state.events,mutation);const ok=await change(next,{renderPage:false});if(ok){renderTaskBadge();workspaceTasks?.update?.(state.tasks);}return {ok,error:saveError,events:ok?state.events:undefined};}catch(error){return {ok:false,error:error.message};}}
  });
 }
 
-if(typeof window!=='undefined')window.addEventListener('beforeunload',event=>{if(workspaceCalendar?.pending||workspaceCalendar?.failed){event.preventDefault();event.returnValue='';}});
+if(typeof window!=='undefined')window.addEventListener('beforeunload',event=>{if(isCalendarEditing()){event.preventDefault();event.returnValue='';}});

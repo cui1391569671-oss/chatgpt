@@ -1,3 +1,4 @@
+import {useEventGesture,EventBar,GestureScope} from './event-gesture.jsx';
 import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {IlamyCalendar,useIlamyCalendarContext,defaultTranslations,dayjs} from '@ilamy/calendar';
@@ -19,7 +20,8 @@ function entries(options){
 }
 function Observer({controller,onEditing,options}){const api=useIlamyCalendarContext();useLayoutEffect(()=>{controller.api=api;onEditing(api.isEventFormOpen);queueMicrotask(()=>options.onIdle?.());for(const cell of document.querySelectorAll('[class*=ilamy-date-]')){const key=[...cell.classList].find(x=>x.startsWith('ilamy-date-'))?.slice(11),holiday=key&&options.holiday(key);if(holiday){cell.title=holiday.label;cell.dataset.holiday=holiday.name+' · '+(holiday.type==='work'?'班':holiday.type==='rest'?'休':'节');cell.dataset.holidayShort=holiday.type==='work'?'班':holiday.type==='rest'?'休':'节';}}},[api]);return null;}
 function CalendarApp({options,controller}){
- const appPlugins=useMemo(()=>[...plugins,{name:'workbench-images',renderSlot:(name,context)=>name==='event-form'?<Attachments {...context} scope={options.scope}/>:null},{name:'workbench-observer',provider:({children})=><><Observer options={options} controller={controller} onEditing={value=>{controller.editing=value;}}/>{children}</>}],[controller]);
+ const gesture=useEventGesture(controller);controller.onGestureIdle=()=>options.onIdle?.();
+ const appPlugins=useMemo(()=>[...plugins,{name:'workbench-images',renderSlot:(name,context)=>name==='event-form'?<Attachments {...context} scope={options.scope}/>:null},{name:'workbench-observer',provider:({children})=><><Observer options={options} controller={controller} onEditing={value=>{controller.editing=value;}}/>{children}{React.createElement(GestureScope,{controller})}</>}],[controller]);
  const [events,setEvents]=useState(()=>entries(options)),[pending,setPending]=useState(false),[failure,setFailure]=useState(null);const locked=useRef(false),base=useRef(events);controller.failed=!!failure;controller.pending=pending;useEffect(()=>{if(!pending&&!failure)queueMicrotask(()=>options.onIdle?.());},[pending,failure]);
  function restore(){setEvents([...base.current]);}
  async function commit(mutation){
@@ -32,12 +34,13 @@ function CalendarApp({options,controller}){
  controller.open=()=>{if(!pending&&!failure)controller.api?.openEventForm();};
  function onMutation(mutation){const normalized=mutation.action==='add'&&!mutation.scope?{...mutation,added:mutation.added.map(event=>({...event,id:crypto.randomUUID()}))}:mutation;commit(normalized);}
  return <div className="ilamy-surface">
+ {gesture.preview&&<p role="status" className="ilamy-gesture-preview">{gesture.preview.title}：{gesture.preview.start.format('YYYY-MM-DD')} 至 {gesture.preview.end.format('YYYY-MM-DD')} · 松开保存，Esc 取消</p>}
   {pending&&<p role="status" className="ilamy-status">正在保存日程…</p>}
   {failure&&<section role="alert" className="ilamy-failure"><p>{failure.error} 修改暂留本页，尚未保存：{failure.mutation.event.title}</p><button type="button" onClick={()=>commit(failure.mutation)}>重试保存</button><button type="button" onClick={()=>{setFailure(null);restore();}}>放弃本次修改</button></section>}
   <div className="ilamy-calendar-box" inert={pending||failure?true:undefined}>
-   <IlamyCalendar events={events} plugins={appPlugins} initialDate={dayjs.tz((options.anchor||options.selectedDate)+'T09:00','Asia/Shanghai')} initialView={options.view||'month'} locale="zh-cn" translations={translations} timezone="Asia/Shanghai" firstDayOfWeek="monday" timeFormat="24-hour" slotDuration={30} scrollTime="08:00" dayMaxEvents={3} onEventsChange={onMutation} onViewChange={value=>{controller.view=value;}} onDateChange={date=>{controller.anchor=date.format('YYYY-MM-DD');}} renderEvent={event=>event.data?.source?<button type="button" className={'ilamy-source-event '+(event.data?.done?'ilamy-completed-event':'')} style={{backgroundColor:event.backgroundColor,color:event.color}} onPointerDown={e=>e.stopPropagation()} onClick={e=>{e.preventDefault();e.stopPropagation();options.openSource(event.data.source,event.data.recordId);}}>{event.title}</button>:<span className={'ilamy-event-pill '+(event.data?.done?'ilamy-completed-event':'')} style={{backgroundColor:event.backgroundColor,color:eventTextColor(event.backgroundColor)}}>{event.allDay?'':event.start.tz('Asia/Shanghai').format('HH:mm')+' '}{event.title}</span>} getCellClassName={info=>{const holiday=options.holiday(info.start.format('YYYY-MM-DD'));return holiday?'ilamy-holiday-'+holiday.type+' ilamy-date-'+info.start.format('YYYY-MM-DD'):'';}}/>
+   <IlamyCalendar events={events} plugins={appPlugins} initialDate={dayjs.tz((options.anchor||options.selectedDate)+'T09:00','Asia/Shanghai')} initialView={options.view||'month'} locale="zh-cn" translations={translations} timezone="Asia/Shanghai" firstDayOfWeek="monday" timeFormat="24-hour" slotDuration={30} scrollTime="08:00" dayMaxEvents={3} onEventsChange={onMutation} onViewChange={value=>{controller.view=value;}} onDateChange={date=>{controller.anchor=date.format('YYYY-MM-DD');}} renderEvent={(event,segment)=>event.data?.source?<button type="button" className={'ilamy-source-event '+(event.data?.done?'ilamy-completed-event':'')} style={{backgroundColor:event.backgroundColor,color:event.color}} onPointerDown={e=>e.stopPropagation()} onClick={e=>{e.preventDefault();e.stopPropagation();options.openSource(event.data.source,event.data.recordId);}}>{event.title}</button>:React.createElement(EventBar,{event,segment,controller,gesture})} getCellClassName={info=>{const holiday=options.holiday(info.start.format('YYYY-MM-DD'));return holiday?'ilamy-holiday-'+holiday.type+' ilamy-date-'+info.start.format('YYYY-MM-DD'):'';}}/>
   </div>
-  <p className="ilamy-help">北京时间 · 点击或拖动空白处新建日程，点击日程编辑</p>
+  <p className="ilamy-help">北京时间 · 点击或拖动空白处新建日程，点击日程编辑；月视图拖动两端调整天数，拖到左右边缘翻月</p>
  </div>;
 }
 // Radix renders its own forms/popovers in portals. Scope the library stylesheet to
