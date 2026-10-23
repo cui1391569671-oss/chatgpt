@@ -24,6 +24,7 @@ import {mediaSourcesRoute} from './media-sources.mjs';
 import {getSteamReview} from './steam-reviews.mjs';
 import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
 import {sessionValid,sessionCookie,authRoute,loginResponse,authenticationAttempt} from './auth.mjs';
+import {mediaImageRoute} from './media-image.mjs';
 import {findGameCover,findMediaCover,findAnimeCover,findMovieCovers} from './game-covers.mjs';
 import {getGameReleases} from './game-releases.mjs';
 import {HTML,WORKBENCH,FAVICON} from './pages.mjs';
@@ -149,6 +150,7 @@ async function fetchRoute(request,env){
    }
    if(url.pathname==='/api/project-core-information')return await projectCoreInfoRoute(request,env);
    if(url.pathname==='/api/account/vault')return await personalVaultRoute(request,env);
+   if(url.pathname==='/api/media/image')return await mediaImageRoute(request);
    if(['/api/media/search','/api/media/details'].includes(url.pathname))return await mediaSourcesRoute(request,env);
    if(url.pathname==='/api/game-releases'&&request.method==='GET'){
     const mode=url.searchParams.get('mode')||'upcoming';

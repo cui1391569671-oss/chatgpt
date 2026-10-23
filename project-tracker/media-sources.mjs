@@ -61,7 +61,7 @@ export async function mediaSourceDetails(source,id,type,season,env,fetcher=fetch
  if(!result||result.sourceId!==id)throw Error('Wrong media ID');return result;
 }
 export async function mediaSourcesRoute(request,env){
- const url=new URL(request.url),type=url.searchParams.get('type'),reply=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
+ const url=new URL(request.url),type=url.searchParams.get('type'),reply=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':status===200&&url.pathname.endsWith('/details')?'private, max-age=3600':'no-store','X-Content-Type-Options':'nosniff'}});
  if(request.method!=='GET')return reply({error:'不支持的操作'},405);
  if(!['movie','tv','game','anime'].includes(type))return reply({error:'作品类型不正确'},400);
  const title=(url.searchParams.get('q')||'').trim(),source=url.searchParams.get('source'),id=url.searchParams.get('id'),season=Number(url.searchParams.get('season')||0),details=url.pathname.endsWith('/details');
