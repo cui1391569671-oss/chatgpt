@@ -2529,18 +2529,19 @@ body.shadcn-workbench #workspaceCalendar {
   --ilamy-ink: var(--semantic-text);
   --ilamy-line: var(--semantic-border);
 }
-body.shadcn-workbench .ilamy-surface :is(.bg-border,.bg-background,.bg-card),body.shadcn-workbench .ilamy-surface .droppable-cell {
+body.shadcn-workbench .ilamy-surface :is(.bg-border,.bg-background,.bg-card) {
   background: transparent;
 }
 body.shadcn-workbench .ilamy-surface .bg-border {
   gap: 0;
 }
 body.shadcn-workbench .ilamy-surface .droppable-cell {
+  background: var(--calendar-cell-background,transparent);
   border-right: 1px solid var(--semantic-border-muted);
   border-bottom: 1px solid var(--semantic-border-muted);
 }
 body.shadcn-workbench .ilamy-surface .droppable-cell:hover {
-  background: var(--semantic-surface-muted);
+  background: var(--calendar-cell-background,var(--semantic-surface-muted));
 }
 body.shadcn-workbench .ilamy-surface .droppable-cell.pointer-events-none {
   color: var(--semantic-text-disabled);
