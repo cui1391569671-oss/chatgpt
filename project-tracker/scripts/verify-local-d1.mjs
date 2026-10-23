@@ -32,10 +32,15 @@ try{
  assert.equal((await call('/api/workspace/patch?scope=personal',{operations:[{collection:'notes',id:note.id,action:'create',record:note}]})).status,200);
  const issue={id:'issue-1',project:'Synthetic project',task:'Synthetic issue',reason:'',plannedDate:'',note:'',status:'进行中',done:false};
  assert.equal((await call('/api/state/patch',{operations:[{collection:'data',id:issue.id,action:'create',record:issue}]})).status,200);
+ assert.equal((await call('/api/state/patch',{operations:[{collection:'data',id:issue.id,action:'update',changes:{plannedDate:{before:{exists:true,value:''},after:{exists:true,value:'2026-02-30'}}}}]})).status,400);
+ assert.equal((await(await call('/api/state')).json()).data[0].plannedDate,'');
+ const audit=await call('/api/maintenance/audit');assert.equal(audit.status,200);assert.equal((await audit.json()).automaticChanges,false);
  assert.equal((await(await call('/api/workspace?scope=work')).json()).workspace.tasks.length,1);
  assert.equal((await(await call('/api/workspace?scope=personal')).json()).workspace.notes[0].id,note.id);
  const upload=await mf.dispatchFetch(new URL('/api/wardrobe-images',url),{method:'POST',headers:{Origin:url.origin,Cookie:cookie,'Content-Type':'image/jpeg'},body:new Uint8Array([255,216,255,217])});assert.equal(upload.status,200);
  const imagePath=(await upload.json()).image;const image=await call(imagePath);assert.equal(image.status,200);assert.deepEqual([...new Uint8Array(await image.arrayBuffer())],[255,216,255,217]);
+ const imagePreview=await(await call('/api/maintenance/images')).json();assert.equal(imagePreview.automaticDeletion,false);assert.equal(imagePreview.totalImages,1);assert.equal((await call(imagePath)).status,200);
+ assert.equal((await mf.dispatchFetch(new URL('/api/maintenance/images',url),{method:'DELETE',headers:{Origin:url.origin,Cookie:cookie}})).status,405);
  const salt=newVaultSalt(),key=await deriveVaultKey('synthetic-vault-password',salt),envelope=await encryptVault([],key,salt);
  const putVault=body=>mf.dispatchFetch(new URL('/api/account/vault',url),{method:'PUT',headers:{Origin:url.origin,Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify(body)});
  assert.equal((await putVault({version:0,envelope})).status,200);

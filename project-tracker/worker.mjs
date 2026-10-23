@@ -1,3 +1,6 @@
+import {WORKSPACE_CSP_REPORT_ONLY,cspReportRoute} from './security-policy.mjs';
+import {maintenanceAudit} from './maintenance-audit.mjs';
+import {assertProjectChanges} from './project-validation.mjs';
 import {readBoundedText,readBoundedBytes,RequestBodyLimitError} from './request-body.mjs';
 import {staticAssetResponse} from './static-assets.mjs';
 import {validGameTaskReference} from './game-task-links.mjs';
@@ -128,6 +131,8 @@ async function fetchRoute(request,env){
    return json({error:'需要登录'},401);
   }
   try{
+   if(url.pathname==='/api/security/csp-report')return await cspReportRoute(request);
+   if(['/api/maintenance/audit','/api/maintenance/images'].includes(url.pathname))return await maintenanceAudit(request,env.DB,await readState(env.DB));
    if(url.pathname.startsWith('/assets/fitness/')){
     if(!['GET','HEAD'].includes(request.method))return json({error:'Method not allowed'},405);
     const asset=FITNESS_MEDIA[url.pathname.slice('/assets/fitness/'.length)];
@@ -205,7 +210,7 @@ async function fetchRoute(request,env){
      const current=await readState(env.DB);let updated;
      try{updated=applyRecordChanges(workspace?current[key]||{tasks:[],notes:[],events:[]}:current,input?.operations,workspace?WORKSPACE_COLLECTIONS:PROJECT_COLLECTIONS);}catch(e){return json({error:e.message},e instanceof RecordConflict?409:400);}
      if(workspace){if(!validWorkspace(updated)||scope==='work'&&updated.tasks.some(t=>!!t.mediaRecordId)||updated.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);current[key]=updated;const versions=normalizedWorkspaceVersions(current.workspaceVersions);versions[scope]++;current.workspaceVersions=versions;}
-     else{if(!valid(updated))return json({error:'Invalid state'},400);Object.assign(current,updated);}
+     else{if(!valid(updated))return json({error:'Invalid state'},400);try{assertProjectChanges(current,updated);}catch(e){return json({error:e.message},400);}Object.assign(current,updated);}
      if(await writeState(env.DB,current)){
       if(workspace)return json({ok:true,workspace:updated,version:current.workspaceVersions[scope]});
       const {workspace:personalData,workWorkspace,workspaceVersions,...tracker}=current;return json({ok:true,state:{...tracker,version:current.version+1}});
@@ -252,6 +257,7 @@ async function fetchRoute(request,env){
      const current=await readState(env.DB);
      if(current.version!==s.version&&(!s.base||!sameProjectState(s.base,current)))return json({error:'Project version conflict'},409);
      const candidate={...s,version:current.version,workspace:current.workspace,workWorkspace:current.workWorkspace,workspaceVersions:current.workspaceVersions};
+     try{assertProjectChanges(current,candidate);}catch(e){return json({error:e.message},400);}
      if(await writeState(env.DB,candidate))return json({ok:true,version:current.version+1});
     }
     return json({error:'Version conflict'},409);
@@ -262,8 +268,9 @@ async function fetchRoute(request,env){
 export default {
  async fetch(request,env){
   const response=await fetchRoute(request,env),cookie=upgradedBasicSessions.get(request);
-  if(!cookie)return response;
-  const headers=new Headers(response.headers);headers.append('Set-Cookie',cookie);
+  const headers=new Headers(response.headers);
+  if(headers.get('Content-Type')?.startsWith('text/html')&&!headers.has('Content-Security-Policy'))headers.set('Content-Security-Policy-Report-Only',WORKSPACE_CSP_REPORT_ONLY);
+  if(cookie)headers.append('Set-Cookie',cookie);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
  },
  async scheduled(event,env,ctx){

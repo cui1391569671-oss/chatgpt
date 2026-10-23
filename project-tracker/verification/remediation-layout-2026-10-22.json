@@ -1,0 +1,116 @@
+[
+  {
+    "buttons": [
+      {
+        "bottom": 230,
+        "left": 267,
+        "right": 353,
+        "text": "项目管理",
+        "top": 186
+      },
+      {
+        "bottom": 274,
+        "left": 37,
+        "right": 353,
+        "text": "Synthetic project",
+        "top": 230
+      },
+      {
+        "bottom": 528.5,
+        "left": 37,
+        "right": 143,
+        "text": "选择日期",
+        "top": 484.5
+      },
+      {
+        "bottom": 734,
+        "left": 201,
+        "right": 259,
+        "text": "取消",
+        "top": 690
+      },
+      {
+        "bottom": 734,
+        "left": 267,
+        "right": 353,
+        "text": "确认添加",
+        "top": 690
+      },
+      {
+        "bottom": 150,
+        "left": 313,
+        "right": 357,
+        "text": "关闭",
+        "top": 106
+      }
+    ],
+    "dialogs": [
+      {
+        "bottom": 755,
+        "left": 16,
+        "right": 374,
+        "top": 89,
+        "width": 358
+      }
+    ],
+    "document": 390,
+    "viewport": 390
+  },
+  {
+    "buttons": [
+      {
+        "bottom": 188,
+        "left": 197,
+        "right": 283,
+        "text": "项目管理",
+        "top": 144
+      },
+      {
+        "bottom": 232,
+        "left": 37,
+        "right": 283,
+        "text": "Synthetic project",
+        "top": 188
+      },
+      {
+        "bottom": 486.5,
+        "left": 96.9375,
+        "right": 225.6484375,
+        "text": "2026-10-23",
+        "top": 442.5
+      },
+      {
+        "bottom": 692,
+        "left": 131,
+        "right": 189,
+        "text": "取消",
+        "top": 648
+      },
+      {
+        "bottom": 692,
+        "left": 197,
+        "right": 283,
+        "text": "确认添加",
+        "top": 648
+      },
+      {
+        "bottom": 88,
+        "left": 243,
+        "right": 287,
+        "text": "关闭",
+        "top": 44
+      }
+    ],
+    "dialogs": [
+      {
+        "bottom": 713,
+        "left": 16,
+        "right": 304,
+        "top": 27,
+        "width": 288
+      }
+    ],
+    "document": 320,
+    "viewport": 320
+  }
+]

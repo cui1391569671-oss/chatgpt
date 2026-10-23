@@ -1,0 +1,258 @@
+{
+  "schema": 1,
+  "note": "Existing diagnostics only; this is a ratchet, not a clean strict check.",
+  "diagnostics": [
+    {
+      "file": "annual-plan-adapter.js",
+      "line": 3,
+      "code": "no-unused-vars",
+      "message": "'disposeAnnualPlans' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "annual-plan-adapter.js",
+      "line": 4,
+      "code": "no-unused-vars",
+      "message": "'renderAnnualPlans' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "auth.mjs",
+      "line": 45,
+      "code": "no-empty",
+      "message": "Empty block statement."
+    },
+    {
+      "file": "calendar-adapter.js",
+      "line": 5,
+      "code": "no-unused-vars",
+      "message": "'disposeWorkspaceCalendar' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "calendar-adapter.js",
+      "line": 6,
+      "code": "no-unused-vars",
+      "message": "'openCalendarEvent' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "calendar-adapter.js",
+      "line": 10,
+      "code": "no-unused-vars",
+      "message": "'mountWorkspaceCalendar' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "calendar-ui/src/attachments.jsx",
+      "line": 1,
+      "code": "no-unused-vars",
+      "message": "'React' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "calendar-ui/src/main.jsx",
+      "line": 1,
+      "code": "no-unused-vars",
+      "message": "'React' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "calendar-ui/src/main.jsx",
+      "line": 3,
+      "code": "no-unused-vars",
+      "message": "'IlamyCalendar' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "calendar-ui/src/main.jsx",
+      "line": 9,
+      "code": "no-unused-vars",
+      "message": "'Attachments' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "calendar-ui/src/main.jsx",
+      "line": 20,
+      "code": "no-unused-vars",
+      "message": "'Observer' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "calendar-ui/src/main.jsx",
+      "line": 21,
+      "code": "no-unused-vars",
+      "message": "'CalendarApp' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "calendar-ui/src/recurrence-core.js",
+      "line": 17,
+      "code": "no-empty",
+      "message": "Empty block statement."
+    },
+    {
+      "file": "fitness-adapter.js",
+      "line": 3,
+      "code": "no-unused-vars",
+      "message": "'disposeFitness' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "fitness-adapter.js",
+      "line": 4,
+      "code": "no-unused-vars",
+      "message": "'renderFitness' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "game-covers.mjs",
+      "line": 20,
+      "code": "no-empty",
+      "message": "Empty block statement."
+    },
+    {
+      "file": "game-covers.mjs",
+      "line": 29,
+      "code": "no-empty",
+      "message": "Empty block statement."
+    },
+    {
+      "file": "game-covers.mjs",
+      "line": 35,
+      "code": "no-empty",
+      "message": "Empty block statement."
+    },
+    {
+      "file": "game-covers.mjs",
+      "line": 40,
+      "code": "no-empty",
+      "message": "Empty block statement."
+    },
+    {
+      "file": "game-releases.mjs",
+      "line": 45,
+      "code": "no-unused-vars",
+      "message": "'key' is assigned a value but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "media-cover-picker.js",
+      "line": 4,
+      "code": "no-unused-vars",
+      "message": "'mediaReviewKey' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "media-cover-picker.js",
+      "line": 5,
+      "code": "no-unused-vars",
+      "message": "'setupMediaCoverPicker' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "media-cover-picker.js",
+      "line": 17,
+      "code": "no-unused-vars",
+      "message": "'button' is defined but never used. Allowed unused args must match /^_/u."
+    },
+    {
+      "file": "media-cover-picker.js",
+      "line": 23,
+      "code": "no-unused-vars",
+      "message": "'choices' is assigned a value but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "media-cover-picker.js",
+      "line": 39,
+      "code": "no-unused-vars",
+      "message": "'resolveMediaSourceCovers' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "media-cover-picker.js",
+      "line": 43,
+      "code": "no-empty",
+      "message": "Empty block statement."
+    },
+    {
+      "file": "media-library.js",
+      "line": 3,
+      "code": "no-unused-vars",
+      "message": "'closeMediaRecordEditor' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "media-library.js",
+      "line": 14,
+      "code": "no-unused-vars",
+      "message": "'mediaTrackingFields' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "media-library.js",
+      "line": 18,
+      "code": "no-unused-vars",
+      "message": "'initMediaTrackingForm' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "media-library.js",
+      "line": 35,
+      "code": "no-unused-vars",
+      "message": "'readMediaTracking' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "media-library.js",
+      "line": 45,
+      "code": "no-unused-vars",
+      "message": "'renderMediaLibrary' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "tasks-adapter.js",
+      "line": 3,
+      "code": "no-unused-vars",
+      "message": "'disposeWorkspaceTasks' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "tasks-adapter.js",
+      "line": 4,
+      "code": "no-unused-vars",
+      "message": "'mountWorkspaceTasks' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "tasks-adapter.js",
+      "line": 13,
+      "code": "no-unused-vars",
+      "message": "'openWorkspaceTask' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "tasks-ui/build.mjs",
+      "line": 7,
+      "code": "no-useless-escape",
+      "message": "Unnecessary escape character: \\\"."
+    },
+    {
+      "file": "tasks-ui/build.mjs",
+      "line": 7,
+      "code": "no-useless-escape",
+      "message": "Unnecessary escape character: \\\"."
+    },
+    {
+      "file": "tests/workspace.test.mjs",
+      "line": 7,
+      "code": "no-unused-vars",
+      "message": "'sql' is defined but never used. Allowed unused args must match /^_/u."
+    },
+    {
+      "file": "today-tasks-page.js",
+      "line": 2,
+      "code": "no-unused-vars",
+      "message": "'todayTasksPage' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "word-practice-adapter.js",
+      "line": 4,
+      "code": "no-unused-vars",
+      "message": "'renderWordPractice' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "workbench-shell.js",
+      "line": 4,
+      "code": "no-unused-vars",
+      "message": "'disposePersonalInfo' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "workbench-shell.js",
+      "line": 5,
+      "code": "no-unused-vars",
+      "message": "'renderPersonalInfo' is defined but never used. Allowed unused vars must match /^_/u."
+    },
+    {
+      "file": "workspace-autocomplete.js",
+      "line": 2,
+      "code": "no-unused-vars",
+      "message": "'enhanceWorkspaceAutocomplete' is defined but never used. Allowed unused vars must match /^_/u."
+    }
+  ]
+}

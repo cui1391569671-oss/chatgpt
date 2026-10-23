@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-23",
+  "sourceSha256": "04b7c7eaa64f892248873b554767937eec494dac139dc0d980f833ae482cea76",
+  "offlineCloneOnly": true,
+  "remoteAccess": false,
+  "compatibilityDate": "2026-07-30",
+  "productionCompatibilityVerified": false,
+  "syntheticLogin": true,
+  "authenticationBoundary": true,
+  "threePagesServed": true,
+  "projectAndArchiveExact": true,
+  "workspaceContentAndVersionsExact": true,
+  "reminderAndTodayDerivation": true,
+  "projectCalendar": true,
+  "projectCoreReadable": true,
+  "vaultEndpointReadable": true,
+  "realVaultDecryptionVerified": false,
+  "syntheticVaultRoundtrip": true,
+  "imagesVerified": 1,
+  "imageScopeIsolation": true,
+  "businessTablesUnchangedByReadChecks": [
+    "account_vault",
+    "calendar_images",
+    "project_core_information",
+    "tracker_history",
+    "tracker_state",
+    "vocabulary_sheet_sync"
+  ],
+  "cloneOnlyWrites": {
+    "twoWorkspaceCreateDelete": true,
+    "idempotentCreate": true,
+    "staleConflict": true,
+    "projectCreateDelete": true,
+    "originalRecordsPreserved": true,
+    "historyTriggerRetention": true
+  },
+  "sourceUnchanged": true,
+  "localApiSamples": [
+    {
+      "path": "/api/state",
+      "samples": 10,
+      "responseBytes": 7558,
+      "minMs": 1.9429999999993015,
+      "medianMs": 2.3896249999997963,
+      "maxMs": 9.645582999999533
+    },
+    {
+      "path": "/api/workspace?scope=work",
+      "samples": 10,
+      "responseBytes": 1845,
+      "minMs": 1.8921249999984866,
+      "medianMs": 2.0004374999998618,
+      "maxMs": 2.15166599999975
+    },
+    {
+      "path": "/api/workspace?scope=personal",
+      "samples": 10,
+      "responseBytes": 103654,
+      "minMs": 2.880458000001454,
+      "medianMs": 3.00499949999994,
+      "maxMs": 3.713207999999213
+    },
+    {
+      "path": "/api/project-calendar",
+      "samples": 10,
+      "responseBytes": 2628,
+      "minMs": 1.8647089999994932,
+      "medianMs": 2.0182709999999133,
+      "maxMs": 2.401458000000275
+    }
+  ],
+  "productionLatencyMeasured": false
+}

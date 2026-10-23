@@ -1,0 +1,21 @@
+{
+  "commit": "ee3adb13879acb84c176da88f1536d7280818e04",
+  "workerVersion": "a03ddab9-299f-4d0c-8c8a-f0d1ffe24474",
+  "site": "https://tracker.managementplatformlee.com",
+  "checkedAt": "2026-10-22 17:45:01 Asia/Shanghai",
+  "cloudflareBuild": "38a4e643-6a4e-484b-9676-6ce8bf88ff59",
+  "githubActionsRun": 39757515635,
+  "ci": "success",
+  "localTests": 210,
+  "localD1": "passed",
+  "onlineReadOnlyChecks": [
+    "existing Safari session and cached Basic header upgraded successfully",
+    "work calendar and reminders read successfully after refresh",
+    "embedded projects page opened without 429",
+    "private upcoming deep link selected correct view"
+  ],
+  "businessDataWrites": false,
+  "schemaMigration": false,
+  "secretsChanged": false,
+  "note": "Initial deployment Basic/Safari compatibility regression was repaired in this final version; full production CRUD and disaster recovery were not executed."
+}

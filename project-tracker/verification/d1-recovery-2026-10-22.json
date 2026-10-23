@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-22T10:06:52.926687+00:00",
+  "sourceDatabase": "a0043e4c-8f7b-45c7-b8dc-1575d3cfe0b0",
+  "isolatedDatabase": "88a0dcf1-864f-48db-b592-b6ac62ad99b6",
+  "isolatedName": "project-tracker-recovery-20261022",
+  "productionWrites": false,
+  "productionBindingChanged": false,
+  "sourceExportSha256": "3238a42b38e98a46db642e4dc4ef0b06853732eb8043e52967071aecb983b9cd",
+  "directImportPassed": false,
+  "directImportError": "SQLITE_TOOBIG",
+  "boundedImportPassed": true,
+  "cloudQueries": 5078,
+  "cloudSqlDurationMs": 5223.2034,
+  "schemaEqual": true,
+  "integrity": "ok",
+  "tables": [
+    {
+      "name": "account_vault",
+      "rows": 0,
+      "allValuesAndBlobBytesEqual": true,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "name": "calendar_images",
+      "rows": 1,
+      "allValuesAndBlobBytesEqual": true,
+      "sha256": "d12c1af4e43603fd69b70d386989e6f2a6ab7428d4cdb40be238d68330aa3608"
+    },
+    {
+      "name": "login_attempts",
+      "rows": 3,
+      "allValuesAndBlobBytesEqual": true,
+      "sha256": "f50105802ad627a0c526ae081960d3cf14724d4b26591a81e26ebf5f6e577d44"
+    },
+    {
+      "name": "project_core_information",
+      "rows": 1,
+      "allValuesAndBlobBytesEqual": true,
+      "sha256": "e36e0919c26daea06a9b83f7097b124075dd670d5d8139a87c209e29cf110a4b"
+    },
+    {
+      "name": "tracker_history",
+      "rows": 100,
+      "allValuesAndBlobBytesEqual": true,
+      "sha256": "2d824c0dda5bfcbd0a50a657caaa88f8b741991ced52feed62feaefb0787014a"
+    },
+    {
+      "name": "tracker_state",
+      "rows": 1,
+      "allValuesAndBlobBytesEqual": true,
+      "sha256": "01db94ef9babadb12a990ddd1d7bdcf2b6c0190d2b219704c2229b69d1479e43"
+    },
+    {
+      "name": "vocabulary_sheet_sync",
+      "rows": 1,
+      "allValuesAndBlobBytesEqual": true,
+      "sha256": "7c948d85cacfa192f0794e7bd5b9f65b92963f2b0b9df66ee1e97b0312245028"
+    }
+  ],
+  "vaultRecovery": "Source table empty: real password decryption not verified",
+  "timeTravelRestoreTested": false,
+  "applicationRecoveryTested": false,
+  "rpoRtoCommitted": false
+}

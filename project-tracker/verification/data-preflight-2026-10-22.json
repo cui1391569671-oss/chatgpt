@@ -1,0 +1,62 @@
+{
+  "source": "2026-10-22 official D1 export, read-only local snapshot",
+  "readOnly": true,
+  "payloadBytes": 113065,
+  "counts": {
+    "projects": {
+      "data": 16,
+      "archive": 9,
+      "deletedProjects": 2
+    },
+    "work": {
+      "requirements": 2,
+      "tasks": 0,
+      "notes": 1,
+      "events": 2,
+      "expenses": 1,
+      "maintenance": 0,
+      "dailyRoutines": 0,
+      "annualPlans": 0,
+      "vocabulary": 0,
+      "wordPracticeSessions": 0,
+      "fitnessSessions": 0,
+      "fitnessProfiles": 0,
+      "completedGames": 0,
+      "driveLinks": 1,
+      "wardrobe": 0,
+      "outfits": 0
+    },
+    "personal": {
+      "requirements": 0,
+      "tasks": 16,
+      "notes": 1,
+      "events": 0,
+      "expenses": 0,
+      "maintenance": 1,
+      "dailyRoutines": 0,
+      "annualPlans": 2,
+      "vocabulary": 139,
+      "wordPracticeSessions": 1,
+      "fitnessSessions": 0,
+      "fitnessProfiles": 1,
+      "completedGames": 109,
+      "driveLinks": 0,
+      "wardrobe": 0,
+      "outfits": 0
+    }
+  },
+  "projectValidation": {
+    "issueCount": 0,
+    "byRule": {},
+    "issues": []
+  },
+  "automaticChanges": false,
+  "imagePreview": {
+    "totalImages": 1,
+    "totalBytes": 162656,
+    "unreferencedCount": 0,
+    "unreferencedBytes": 0,
+    "missingReferenceCount": 0,
+    "automaticDeletion": false
+  }
+}

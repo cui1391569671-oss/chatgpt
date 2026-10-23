@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noUnusedLocals": true,
+    "types": ["react", "react-dom"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "paths": {"@/*": ["./tasks-ui/src/*"]}
+  },
+  "include": ["tasks-ui/src/**/*.ts", "tasks-ui/src/**/*.tsx", "calendar-ui/src/**/*.jsx"],
+  "exclude": ["**/node_modules", "**/dist"]
+}

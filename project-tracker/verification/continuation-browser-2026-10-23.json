@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-23",
+  "environment": "disposable local Miniflare synthetic data; loopback fault proxy only",
+  "productionWrites": false,
+  "checks": {
+    "taskDateArrowEnterAndFocus": true,
+    "taskCreateDatePreserved": true,
+    "http503PreservesTitleAndDetail": true,
+    "delayedSaveAndCancelDisabled": true,
+    "retryExactlyOneAfterLoadAndRefresh": true,
+    "taskCompleteAndReopen": true,
+    "deleteCancelPreservesRecord": true,
+    "deleteConfirmationAndListRefresh": true,
+    "personalWorkspaceHasNoWorkTask": true,
+    "searchNoResults": true,
+    "searchClearAndFocus": true,
+    "selectKeyboardAndEscapeFocus": true,
+    "popupWidthAt320": {
+      "trigger": 134,
+      "popup": 134
+    },
+    "viewportWidthsMeasured": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "shortScreen320x480SaveAndCancelReachable": true,
+    "nativeProjectSearchClearAndFocus": true,
+    "sharedSearchClearTarget": {
+      "width": 44,
+      "height": 44
+    }
+  },
+  "findings": [
+    {
+      "priority": "P2",
+      "status": "fixed-local",
+      "issue": "At 320px with Reset present, task search shrank to 8.664px; clear button center outside main prevented activation",
+      "files": [
+        "tasks-ui/src/style.css",
+        "workspace.css"
+      ],
+      "afterSearchWidth320": 274,
+      "afterSearchWidth390": 344
+    },
+    {
+      "priority": "P2",
+      "status": "open",
+      "issue": "Cancelling the task deletion dialog preserves the record but returns focus to BODY",
+      "file": "tasks-ui/src/main.tsx",
+      "line": 53,
+      "route": "/work?view=tasks",
+      "evidence": "Browser AX and document.activeElement after cancel: BODY; no aria-label",
+      "next": "Repair focus restoration using the maintained Dialog/overlay owner and retest cancellation, escape, success and sibling dialogs"
+    }
+  ],
+  "limits": [
+    "No real mobile device or virtual keyboard test",
+    "No full 200% zoom/theme/reduced-motion matrix",
+    "No production browser smoke or deployment",
+    "Original user preview URL was not accessed after browser policy rejection",
+    "Browser wait on a simulated four-second save exceeded the tool wait; subsequent observed state confirmed completion; no product timeout inferred"
+  ]
+}
