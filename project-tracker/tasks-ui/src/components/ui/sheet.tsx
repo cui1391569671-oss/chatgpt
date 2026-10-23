@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as SheetPrimitive from '@radix-ui/react-dialog'
+import * as SheetPrimitive from '@animate-ui/react/primitives/radix-ui/dialog'
 import { XIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -33,7 +33,7 @@ function SheetOverlay({
     <SheetPrimitive.Overlay
       data-tasks-portal='' data-slot='sheet-overlay'
       className={cn(
-        'fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        'fixed inset-0 z-50 bg-black/50',
         className
       )}
       {...props}
@@ -53,6 +53,7 @@ function SheetContent({
     <SheetPortal>
       <SheetOverlay />
       <SheetPrimitive.Content
+        transition={{type:"tween",duration:0.2}} exitTransition={{type:"tween",duration:0.15}}
         data-tasks-portal='' data-slot='sheet-content' data-side={side}
         className={cn(
           'workspace-sheet',

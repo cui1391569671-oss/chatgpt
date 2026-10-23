@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import * as DialogPrimitive from '@radix-ui/react-dialog'
+import * as DialogPrimitive from '@animate-ui/react/primitives/radix-ui/dialog'
 import { XIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -37,7 +37,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-ui-portal='' data-slot='dialog-overlay'
       className={cn(
-        'fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        'fixed inset-0 z-50 bg-black/50',
         className
       )}
       {...props}
@@ -62,6 +62,7 @@ function DialogContent({
     <DialogPortal data-slot='dialog-portal'>
       <DialogOverlay />
       <DialogPrimitive.Content
+        transition={{type:"tween",duration:0.2}} exitTransition={{type:"tween",duration:0.15}}
         data-ui-portal='' data-slot='dialog-content'
         className={cn(
           'workspace-dialog',
@@ -74,7 +75,7 @@ function DialogContent({
           // Resolve current nodes after the list has rendered; saved/deleted rows can replace the opener.
           for (const resolve of [returnFocus, returnFocusFallback]) {
             const target = resolve?.()
-            if (!target?.isConnected || target.matches(':disabled,[aria-disabled="true"]') || !target.getClientRects().length || getComputedStyle(target).visibility === 'hidden') continue
+            if (!target?.isConnected || target.closest('[inert]') || target.matches(':disabled,[aria-disabled="true"]') || !target.getClientRects().length || getComputedStyle(target).visibility === 'hidden') continue
             event.preventDefault()
             target.focus({ preventScroll: true })
             break
