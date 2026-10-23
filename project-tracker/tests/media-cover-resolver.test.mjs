@@ -10,3 +10,9 @@ test('failed source requests can retry and unrelated manual image hosts keep the
  vm.runInContext(source,context);await vm.runInContext('resolveMediaSourceCovers()',context);await vm.runInContext('resolveMediaSourceCovers()',context);assert.equal(calls,2);
  assert.equal(vm.runInContext("gameCoverImageUrl('https://example.test/manual.jpg')",context),'https://example.test/manual.jpg');assert.equal(vm.runInContext("gameCoverImageUrl('https://upload.wikimedia.org/a.jpg','movie')",context),'https://upload.wikimedia.org/a.jpg');assert.match(vm.runInContext("gameCoverImageUrl('https://shared.fastly.steamstatic.com/a.jpg')",context),/^\/api\/media\/image\?/);
 });
+
+test('a failed cached image falls back to its original URL exactly once',()=>{
+ const context=vm.createContext({Map});vm.runInContext(source,context);
+ const image={dataset:{coverFallback:'https://upload.wikimedia.org/a.png'},hidden:true,src:'/api/media/image?url=x'};
+ context.image=image;assert.equal(vm.runInContext('retryOriginalMediaCover(image)',context),true);assert.equal(image.src,'https://upload.wikimedia.org/a.png');assert.equal(image.hidden,false);assert.equal(vm.runInContext('retryOriginalMediaCover(image)',context),false);
+});
