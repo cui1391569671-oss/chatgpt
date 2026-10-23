@@ -1,0 +1,3 @@
+export const CHECKIN_KINDS={english:'英语学习',fitness:'健身'};
+export function validCheckin(row){return !!row&&Object.hasOwn(CHECKIN_KINDS,row.kind)&&typeof row.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(row.date)&&!Number.isNaN(Date.parse(row.date))&&new Date(row.date).toISOString().slice(0,10)===row.date&&row.id===row.date+':'+row.kind&&typeof row.completedAt==='string'&&row.completedAt.length<=40&&Number.isFinite(Date.parse(row.completedAt));}
+export function setDailyCheckin(rows,kind,date,checked,completedAt){const record={id:date+':'+kind,kind,date,completedAt};if(!validCheckin(record))throw Error('打卡日期或类型无效');const next=rows.filter(row=>row.id!==record.id);if(checked)next.push(rows.find(row=>row.id===record.id)||record);return next;}

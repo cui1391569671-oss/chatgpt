@@ -1,3 +1,4 @@
+import {validCheckin} from './checkin-records.mjs';
 import {WORKSPACE_CSP_REPORT_ONLY,cspReportRoute} from './security-policy.mjs';
 import {maintenanceAudit} from './maintenance-audit.mjs';
 import {assertProjectChanges} from './project-validation.mjs';
@@ -84,6 +85,7 @@ function validWorkspace(w){
  if(w.events.some(event=>!event||!validEventImages(event.images)))return false;
  if(w.requirements!==undefined&&!validRequirements(w.requirements))return false;
  if(w.fitnessProfiles!==undefined&&(!Array.isArray(w.fitnessProfiles)||w.fitnessProfiles.length>1||!w.fitnessProfiles.every(validFitnessProfile)))return false;
+ if(w.checkins!==undefined&&(!Array.isArray(w.checkins)||w.checkins.length>10000||new Set(w.checkins.map(x=>x?.id)).size!==w.checkins.length||!w.checkins.every(validCheckin)))return false;
  if(w.fitnessSessions!==undefined){if(!Array.isArray(w.fitnessSessions)||w.fitnessSessions.length>10000)return false;const ids=new Set();if(!w.fitnessSessions.every(s=>validFitnessSession(s)&&!ids.has(s.id)&&(ids.add(s.id),true)))return false;}
  if(w.annualPlans!==undefined&&!validAnnualPlans(w.annualPlans))return false;
  if(w.wordPracticeSessions!==undefined){if(!Array.isArray(w.wordPracticeSessions)||w.wordPracticeSessions.length>10000)return false;const ids=new Set();if(!w.wordPracticeSessions.every(s=>validPracticeSession(s)&&!ids.has(s.id)&&(ids.add(s.id),true)))return false;}
@@ -206,7 +208,7 @@ async function fetchRoute(request,env){
     const text=await readBoundedText(request,1500000);
     let input;try{input=JSON.parse(text);}catch{return json({error:'Invalid JSON'},400);}
     const workspace=url.pathname==='/api/workspace/patch',scope=url.searchParams.get('scope');if(workspace&&!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);
-    if(workspace&&scope==='work'&&input?.operations?.some(op=>['annualPlans','wordPracticeSessions','fitnessSessions','fitnessProfiles'].includes(op.collection)))return json({error:'此记录仅限私人空间'},400);
+    if(workspace&&scope==='work'&&input?.operations?.some(op=>['checkins','annualPlans','wordPracticeSessions','fitnessSessions','fitnessProfiles'].includes(op.collection)))return json({error:'此记录仅限私人空间'},400);
     const key=scope==='work'?'workWorkspace':'workspace';
     for(let attempt=0;attempt<5;attempt++){
      const current=await readState(env.DB);let updated;
@@ -230,7 +232,7 @@ async function fetchRoute(request,env){
      if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
      const body=await readBoundedText(request,1500000);
      let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
-    if(scope==='work'&&(input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined||input?.workspace?.fitnessSessions!==undefined||input?.workspace?.fitnessProfiles!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
+    if(scope==='work'&&(input?.workspace?.checkins!==undefined||input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined||input?.workspace?.fitnessSessions!==undefined||input?.workspace?.fitnessProfiles!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
      if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace)||scope==='work'&&input.workspace.tasks.some(t=>!!t.mediaRecordId)||input.workspace.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);
      for(let attempt=0;attempt<3;attempt++){
       const s=await readState(env.DB),versions=normalizedWorkspaceVersions(s.workspaceVersions);

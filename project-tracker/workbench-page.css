@@ -2323,3 +2323,5 @@ dialog[open]::backdrop {
 
 /* Today task aggregation business layout. */
 .today-task-group{margin-top:16px}.today-task-detail{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:8px}.today-task-date{margin:12px 0}.today-task-group .row-title{overflow-wrap:anywhere}@media(max-width:600px){.today-task-group .row{flex-wrap:wrap}.today-task-group .actions{margin-left:auto}}
+
+.checkin-list{list-style:none;padding:0;margin:0}.checkin-list li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--semantic-border)}.checkin-list li:last-child{border-bottom:0}.checkin-toggle{flex:1;min-width:0}.checkin-toggle span{overflow-wrap:anywhere}

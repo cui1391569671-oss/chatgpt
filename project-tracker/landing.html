@@ -3669,6 +3669,15 @@ body :is([data-slot=sheet-overlay],[data-slot=dialog-overlay]) {
   flex-shrink: 0;
   cursor: pointer;
 }
+.workspace-checkbox-label {
+  width: auto;
+  justify-content: flex-start;
+  gap: 12px;
+}
+.workspace-checkbox-completion input:checked + span {
+  color: var(--semantic-text-muted);
+  text-decoration: line-through;
+}
 .workspace-checkbox-target input[type=checkbox] {
   width: 22px;
   height: 22px;

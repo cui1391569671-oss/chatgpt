@@ -4380,6 +4380,15 @@ body :is([data-slot=sheet-overlay],[data-slot=dialog-overlay]) {
   flex-shrink: 0;
   cursor: pointer;
 }
+.workspace-checkbox-label {
+  width: auto;
+  justify-content: flex-start;
+  gap: 12px;
+}
+.workspace-checkbox-completion input:checked + span {
+  color: var(--semantic-text-muted);
+  text-decoration: line-through;
+}
 .workspace-checkbox-target input[type=checkbox] {
   width: 22px;
   height: 22px;
@@ -4983,7 +4992,7 @@ async function loadProjectLabels(){try{const response=await fetch('/api/project-
 
 /* PROJECT_LABELS_END */
 /* CLOUD_RECORDS_START */
-const WORKSPACE_COLLECTIONS=['requirements','tasks','notes','events','expenses','maintenance','dailyRoutines','annualPlans','vocabulary','wordPracticeSessions','fitnessSessions','fitnessProfiles','completedGames','driveLinks','wardrobe','outfits'];
+const WORKSPACE_COLLECTIONS=['checkins','requirements','tasks','notes','events','expenses','maintenance','dailyRoutines','annualPlans','vocabulary','wordPracticeSessions','fitnessSessions','fitnessProfiles','completedGames','driveLinks','wardrobe','outfits'];
 const PROJECT_COLLECTIONS=['data','archive','deletedProjects','projects','priorities'];
 function canonical(value){if(Array.isArray(value))return value.map(canonical);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])]));return value;}
 function equalRecord(a,b){return JSON.stringify(canonical(a))===JSON.stringify(canonical(b));}

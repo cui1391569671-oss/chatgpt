@@ -1,4 +1,4 @@
-export const WORKSPACE_COLLECTIONS=['requirements','tasks','notes','events','expenses','maintenance','dailyRoutines','annualPlans','vocabulary','wordPracticeSessions','fitnessSessions','fitnessProfiles','completedGames','driveLinks','wardrobe','outfits'];
+export const WORKSPACE_COLLECTIONS=['checkins','requirements','tasks','notes','events','expenses','maintenance','dailyRoutines','annualPlans','vocabulary','wordPracticeSessions','fitnessSessions','fitnessProfiles','completedGames','driveLinks','wardrobe','outfits'];
 export const PROJECT_COLLECTIONS=['data','archive','deletedProjects','projects','priorities'];
 export function canonical(value){if(Array.isArray(value))return value.map(canonical);if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])]));return value;}
 export function equalRecord(a,b){return JSON.stringify(canonical(a))===JSON.stringify(canonical(b));}
