@@ -1,0 +1,26 @@
+{
+  "commit": "67df020cb4c87a97142e54b208834be1d52acee5",
+  "tree": "3937de385f23a4f58ed0d0d8bb75372b4a6aed26",
+  "workerVersion": "59b7e0d3-b106-48e5-abea-88e98f3ad173",
+  "site": "https://tracker.managementplatformlee.com",
+  "checkedAt": "2026-10-23T12:46:50.438030+08:00",
+  "cloudflareBuild": "0df5d22c-9c96-4209-a315-292af8e12174",
+  "githubActionsRun": 39901195036,
+  "ci": "success",
+  "cloudflareBuildResult": "success",
+  "localTests": 222,
+  "onlineReadOnlyChecks": [
+    "existing authenticated Safari session opened work tasks",
+    "new maintenance audit endpoint returned readOnly true",
+    "personal tasks page loaded",
+    "projects page loaded"
+  ],
+  "productionBusinessDataWrites": false,
+  "schemaMigration": false,
+  "secretsChanged": false,
+  "excludedOriginalUntrackedFiles": true,
+  "privateSnapshotsPublished": false,
+  "p2FocusFixIncluded": false,
+  "rollbackCommit": "ee3adb13879acb84c176da88f1536d7280818e04",
+  "note": "Published before P2 code edits. P2 is a subsequent local-only change on codex/task-delete-focus-20261023."
+}

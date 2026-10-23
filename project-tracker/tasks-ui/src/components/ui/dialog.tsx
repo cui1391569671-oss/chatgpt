@@ -49,9 +49,14 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  onCloseAutoFocus,
+  returnFocus,
+  returnFocusFallback,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
+  returnFocus?: () => HTMLElement | null | undefined
+  returnFocusFallback?: () => HTMLElement | null | undefined
 }) {
   return (
     <DialogPortal data-slot='dialog-portal'>
@@ -63,6 +68,18 @@ function DialogContent({
           className
         )}
         {...props}
+        onCloseAutoFocus={event => {
+          onCloseAutoFocus?.(event)
+          if (event.defaultPrevented) return
+          // Resolve current nodes after the list has rendered; saved/deleted rows can replace the opener.
+          for (const resolve of [returnFocus, returnFocusFallback]) {
+            const target = resolve?.()
+            if (!target?.isConnected || target.matches(':disabled,[aria-disabled="true"]') || !target.getClientRects().length || getComputedStyle(target).visibility === 'hidden') continue
+            event.preventDefault()
+            target.focus({ preventScroll: true })
+            break
+          }
+        }}
       >
         {children}
         {showCloseButton && (

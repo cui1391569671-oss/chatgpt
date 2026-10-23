@@ -1,0 +1,69 @@
+{
+  "releaseCommit": "67df020cb4c87a97142e54b208834be1d52acee5",
+  "localBranch": "codex/task-delete-focus-20261023",
+  "productionBusinessWrites": false,
+  "syntheticBrowserChecks": [
+    {
+      "active": "删除：Synthetic task",
+      "bodyFocused": false,
+      "check": "row-delete-cancel"
+    },
+    {
+      "active": "删除：Synthetic task",
+      "bodyFocused": false,
+      "check": "keyboard-escape"
+    },
+    {
+      "active": "删除所选",
+      "bodyFocused": false,
+      "check": "bulk-cancel"
+    },
+    {
+      "active": "删除：Synthetic task",
+      "bodyFocused": false,
+      "check": "failed-delete-then-cancel"
+    },
+    {
+      "active": "删除：Synthetic task",
+      "bodyFocused": false,
+      "check": "mobile-escape"
+    },
+    {
+      "active": "新建待办",
+      "bodyFocused": false,
+      "check": "row-delete-success"
+    },
+    {
+      "active": "删除所选",
+      "bodyFocused": false,
+      "check": "two-row-bulk-cancel"
+    },
+    {
+      "active": "新建待办",
+      "bodyFocused": false,
+      "check": "bulk-delete-success"
+    },
+    {
+      "check": "date-explicit-close-handler",
+      "focused": true
+    },
+    {
+      "active": "删除：私人焦点验证",
+      "bodyFocused": false,
+      "check": "private-row-escape"
+    },
+    {
+      "active": "删除：私人焦点验证",
+      "bodyFocused": false,
+      "check": "320px-private-cancel",
+      "left": 257.5,
+      "right": 304.5,
+      "viewport": 320
+    },
+    {
+      "active": "添加问题",
+      "bodyFocused": false,
+      "check": "native-project-explicit-close-handler"
+    }
+  ]
+}
