@@ -35,7 +35,7 @@ function AnnualPlans({bridge,controller}){
  function changeYear(value){setYear(Number(value));const url=new URL(location.href);url.searchParams.set('planYear',value);history.replaceState(null,'',url.pathname+url.search);}
  const complete=visible.filter(x=>x.progress===100).length;
  return <section className='annual-plans' aria-label='年度计划' aria-busy={pending}>
- <header className='annual-heading'><div><p className='muted'>把想做的事，放进这一年</p><h2>{year} 年度计划</h2></div><Button disabled={pending} onClick={()=>open()}>＋ 新增事项</Button></header>
+ <header className='annual-heading workspace-page-hero workspace-page-hero--flow'><div><p className='muted'>把想做的事，放进这一年</p><h2>{year} 年度计划</h2></div><Button disabled={pending} onClick={()=>open()}>＋ 新增事项</Button></header>
  <div className='annual-toolbar'><WorkspaceSearch label='搜索年度计划' placeholder='搜索事项或备注…' value={query} onValueChange={setQuery}/><WorkspaceSelect label='计划年份' value={String(year)} onValueChange={changeYear} options={[...new Set([2025,2026,2027,2028,year])].sort().map(y=>({value:String(y),label:y+' 年'}))}/><WorkspaceSelect label='计划分类' value={category} onValueChange={setCategory} options={[{value:'all',label:'全部分类'},...Object.entries(PLAN_CATEGORIES).map(([value,label])=>({value,label}))]}/><WorkspaceSelect label='时间尺度' value={scale} onValueChange={setScale} options={[{value:'year',label:'全年 · 月刻度'},{value:'month',label:'详细 · 周刻度'}]}/></div>
  <div className='annual-caption' role='status'><span>{visible.length} 项计划 · 已完成 {complete} 项</span><span>{pending?'正在保存…':'双击时间条编辑 · 拖动调整排期'}</span></div>
  {error&&!editor&&<p className='tasks-error' role='alert'>{error}<Button variant='outline' onClick={()=>setError('')}>关闭提示</Button></p>}
