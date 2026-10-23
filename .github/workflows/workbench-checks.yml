@@ -30,10 +30,4 @@ jobs:
       - run: npm run test:d1
       - run: python3 scripts/rehearse-recovery.py
       - name: Check committed generated resources
-        run: |
-          files="pages.mjs tasks-assets.mjs ilamy-assets.mjs ilamy-recurrence-runtime.mjs glass-theme.mjs glass-preset.css index.html workbench.html landing.html google-apps-script/project-core-sync.gs"
-          for file in $(git diff --name-only -- $files); do
-            detail=$(git diff --numstat -- "$file")
-            echo "::error file=project-tracker/$file::Generated output differs: $detail"
-          done
-          git diff --exit-code -- $files
+        run: node scripts/check-generated.mjs
