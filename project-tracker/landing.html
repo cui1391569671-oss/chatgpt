@@ -512,19 +512,15 @@
   --shadow-xl: 0 24px 64px rgb(45 61 91 / .16);
 
   
-  --btn-primary-bg: linear-gradient(135deg, var(--semantic-primary), var(--semantic-secondary));
+  --btn-primary-bg: var(--semantic-primary);
   --btn-primary-text: var(--semantic-text-inverse);
-  --btn-primary-hover-bg: linear-gradient(
-    135deg,
-    var(--semantic-primary-hover),
-    var(--semantic-primary)
-  );
-  --btn-primary-glow: 0 0 24px rgb(116 142 255 / .24);
-  --btn-secondary-bg: var(--semantic-surface-elevated);
-  --btn-secondary-text: var(--semantic-text);
-  --btn-secondary-border: var(--semantic-border);
+  --btn-primary-hover-bg: var(--semantic-primary-hover);
+  --btn-primary-glow: none;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: var(--semantic-text-muted);
+  --btn-secondary-border: transparent;
   --btn-secondary-hover-bg: var(--semantic-surface-muted);
-  --btn-secondary-glow: var(--glow-neutral);
+  --btn-secondary-glow: none;
   --btn-ghost-bg: transparent;
   --btn-ghost-text: var(--semantic-text-muted);
   --btn-ghost-hover-bg: var(--semantic-surface-medium);
@@ -535,14 +531,14 @@
   --btn-success-text: var(--semantic-text-inverse);
   --btn-success-glow: var(--glow-success);
   
-  --btn-outline-border: var(--semantic-border-strong);
+  --btn-outline-border: var(--semantic-border-muted);
   --btn-outline-text: var(--semantic-text);
   --btn-outline-hover-bg: var(--semantic-surface-muted);
   --btn-outline-glow: none;
   
   --btn-link-text: var(--semantic-primary);
   
-  --btn-primary-shadow: 0 4px 15px var(--semantic-primary-muted);
+  --btn-primary-shadow: none;
   --btn-destructive-shadow: 0 4px 15px var(--semantic-error-muted);
   --btn-success-shadow: 0 4px 15px var(--semantic-success-muted);
   --btn-glow-radial: radial-gradient(circle, var(--oklch-white-15) 0%, transparent 70%);
@@ -2560,7 +2556,7 @@ body.shadcn-workbench.shared-workspace h2 {
 body.shadcn-workbench.shared-workspace .btn {
   padding: 8px 12px;
   font-weight: 500;
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
 }
 body.shadcn-workbench.shared-workspace .primary:hover {
   background: var(--admin-primary);
@@ -3863,7 +3859,7 @@ body.shadcn-workbench,body.modern-project {
   --border: var(--semantic-border);
   --card: var(--card-bg);
   --control-height: 44px;
-  --control-radius: 14px;
+  --control-radius: 10px;
   --control-font-size: 14px;
   --dialog-radius: 20px;
   --dialog-gap: 16px;
