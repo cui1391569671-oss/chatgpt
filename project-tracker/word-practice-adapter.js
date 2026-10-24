@@ -1,3 +1,4 @@
+/* exported renderWordPractice */
 let wordPracticeController=null;
 function isWordPracticing(){return !!wordPracticeController?.isEditing();}
 function disposeWordPractice(){wordPracticeController?.dispose();wordPracticeController=null;}

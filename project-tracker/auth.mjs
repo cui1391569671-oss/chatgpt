@@ -42,7 +42,7 @@ export async function authRoute(request,env){
  if(url.pathname==='/login'&&request.method==='GET')return html(url.searchParams.get('next'));
  if(!['/auth/login','/auth/logout'].includes(url.pathname))return null;
  if(request.method!=='POST')return new Response('Method not allowed',{status:405});
- const origin=request.headers.get('Origin');let sameReferer=false;try{sameReferer=new URL(request.headers.get('Referer')).origin===url.origin;}catch{}
+ const origin=request.headers.get('Origin');let sameReferer=false;try{sameReferer=new URL(request.headers.get('Referer')).origin===url.origin;}catch{sameReferer=false;}
  if(origin&&origin!=='null'&&origin!==url.origin)return html('/work','登录来源不匹配，请重新打开登录页。',403);
  if(url.pathname==='/auth/logout'&&origin!==url.origin&&!sameReferer)return html('/work','请重新打开工作台后退出登录。',403);
  if(url.pathname==='/auth/logout')return new Response(null,{status:303,headers:{Location:'/login','Set-Cookie':COOKIE+'=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0','Cache-Control':'no-store'}});

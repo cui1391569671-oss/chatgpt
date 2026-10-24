@@ -1,3 +1,4 @@
+/* exported closeMediaRecordEditor, mediaTrackingFields, initMediaTrackingForm, readMediaTracking, renderMediaLibrary */
 let mediaFormBaseline='';
 function mediaFormSnapshot(){return JSON.stringify([...new FormData($('form')).entries()]);}
 async function closeMediaRecordEditor(){if(busy)return;if(kind==='completedGames'&&mediaFormSnapshot()!==mediaFormBaseline){if(!await window.WorkspacePrimitives.confirm({title:'放弃修改？',description:'尚未保存的娱乐记录修改将丢失。',action:'放弃修改'}))return;}$('editor').close();}

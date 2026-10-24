@@ -42,7 +42,7 @@ export function parseSteamGames(html){
 }
 const cache=new Map();
 export async function getSteamReleases(mode,fetcher=fetch,now=new Date()){
- const today=now.toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'}),year=Number(today.slice(0,4)),key=mode+today;
+ const today=now.toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'}),year=Number(today.slice(0,4));
  const upcoming=mode==='upcoming',items=new Map();let complete=false;
  for(let page=0;page<10;page++){
   const params=new URLSearchParams({start:String(page*100),count:'100',filter:upcoming?'popularcomingsoon':'popularnew',category1:'998',infinite:'1',l:'english'});

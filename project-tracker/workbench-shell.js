@@ -1,3 +1,4 @@
+/* exported disposePersonalInfo, renderPersonalInfo */
 /* shadcn-admin shell bridge: business state remains owned by workbench.html. */
 let personalInfoController=null;
 function isPersonalInfoEditing(){return !!personalInfoController?.isEditing();}

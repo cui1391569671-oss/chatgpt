@@ -1,4 +1,4 @@
-import React,{useRef} from 'react';
+import {useRef} from 'react';
 import {Search,X} from 'lucide-react';
 import {Input} from '@/components/ui/input';
 export function WorkspaceSearch({value,onValueChange,label,placeholder,className=''}){

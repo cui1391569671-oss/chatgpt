@@ -10,7 +10,7 @@ export function useSidebarEdgeSwipe({enabled,onOpen}){
   // Project content lives in a same-origin iframe. Touch hit testing can target it
   // even just outside its border; use the outer viewport edge, not the frame edge.
   const syncFrames=()=>{
-   const current=new Set(document.querySelectorAll('iframe#projectFrame'));
+   const current=new Set(document.querySelectorAll<HTMLIFrameElement>('iframe#projectFrame'));
    for(const [frame,entry] of frames)if(!current.has(frame)){entry.dispose();frames.delete(frame);}
    for(const frame of current){
     try{

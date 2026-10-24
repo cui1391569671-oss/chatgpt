@@ -1,3 +1,4 @@
+/* exported disposeWorkspaceTasks, mountWorkspaceTasks, openWorkspaceTask */
 let workspaceTasks=null,tasksEditing=false;
 function isTasksEditing(){return tasksEditing||!!workspaceTasks?.isEditing?.();}
 function disposeWorkspaceTasks(){const node=document.getElementById('workspaceTasks');if(node)window.WorkspaceTasks?.unmount(node);workspaceTasks=null;}

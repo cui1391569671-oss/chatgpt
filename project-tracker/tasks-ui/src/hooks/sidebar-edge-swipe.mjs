@@ -3,6 +3,7 @@ const EDGE=28,INTENT=12,DISTANCE=64,VERTICAL=32,MAX_DURATION=800;
 const MODAL='dialog[open],[role="dialog"][aria-modal="true"],[role="dialog"][data-state="open"],[role="listbox"][data-state="open"],[role="menu"][data-state="open"]';
 const INTERACTIVE='a[href],button,input,textarea,select,label,[contenteditable]:not([contenteditable="false"]),[role="button"],[role="slider"],[draggable="true"],.ilamy-surface,[data-sidebar-swipe-ignore]';
 export const hasSidebarBlockingOverlay=doc=>!!doc.querySelector(MODAL);
+/** @param {{document?:Document,window?:Window,onOpen:()=>void,edgeOffset?:()=>number,isBlocked?:()=>boolean}} options */
 export function installSidebarEdgeSwipe({document:doc=document,window:view=window,onOpen,edgeOffset=()=>0,isBlocked=()=>false}){
  let gesture=null;
  const cancel=()=>{gesture=null;};

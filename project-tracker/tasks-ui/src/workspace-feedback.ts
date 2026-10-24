@@ -11,4 +11,6 @@ export function showFeedback(node:HTMLElement,message:string,tone='info'){
  };
  if(tone==='error')timers.set(node,setTimeout(show,0));else show();
 }
-window.WorkspaceFeedback={show:showFeedback};
+export const workspaceFeedback={show:showFeedback};
+
+window.WorkspaceFeedback=workspaceFeedback;

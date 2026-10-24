@@ -1,3 +1,4 @@
+/* exported disposeWorkspaceCalendar, openCalendarEvent, mountWorkspaceCalendar */
 // ilamy owns the calendar and its standard event form. This adapter owns only
 // workbench routing, scope isolation and the existing cloud persistence boundary.
 let workspaceCalendar=null,workspaceCalendarView='month',workspaceCalendarAnchor='',calendarDeferredRender=false;

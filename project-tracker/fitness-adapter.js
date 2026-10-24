@@ -1,3 +1,4 @@
+/* exported disposeFitness, renderFitness */
 let fitnessController=null;
 function isFitnessEditing(){return !!fitnessController?.isEditing();}
 function disposeFitness(){fitnessController?.dispose();fitnessController=null;}

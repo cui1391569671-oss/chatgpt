@@ -1,4 +1,4 @@
-import {useWorkspaceMotionOff} from '@/workspace-motion-policy';
+import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 'use client'
 
 import * as React from 'react'
@@ -37,7 +37,7 @@ function DialogOverlay({
   const motionOff=useWorkspaceMotionOff();
   return (
     <DialogPrimitive.Overlay
-      transition={{duration:motionOff?0:0.18}}
+      transition={{duration:motionOff?0:motionTiming.control/1000}}
       data-ui-portal='' data-slot='dialog-overlay'
       className={cn(
         'fixed inset-0 z-50 bg-black/50',
@@ -66,7 +66,7 @@ function DialogContent({
     <DialogPortal data-slot='dialog-portal'>
       <DialogOverlay />
       <DialogPrimitive.Content
-        transition={{type:"tween",duration:motionOff?0:0.18}} exitTransition={{type:"tween",duration:motionOff?0:0.15}}
+        transition={{type:"tween",duration:motionOff?0:motionTiming.control/1000}} exitTransition={{type:"tween",duration:motionOff?0:motionTiming.exit/1000}}
         data-ui-portal='' data-slot='dialog-content'
         className={cn(
           'workspace-dialog',

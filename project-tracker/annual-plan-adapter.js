@@ -1,3 +1,4 @@
+/* exported disposeAnnualPlans, renderAnnualPlans */
 let annualPlanController=null;
 function isAnnualPlanEditing(){return !!annualPlanController?.isEditing();}
 function disposeAnnualPlans(){annualPlanController?.dispose();annualPlanController=null;}

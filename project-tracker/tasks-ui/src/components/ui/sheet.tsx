@@ -1,4 +1,4 @@
-import {useWorkspaceMotionOff} from '@/workspace-motion-policy';
+import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 import * as React from 'react'
 import * as SheetPrimitive from '@animate-ui/react/primitives/radix-ui/dialog'
 import { XIcon } from 'lucide-react'
@@ -33,7 +33,7 @@ function SheetOverlay({
   const motionOff=useWorkspaceMotionOff();
   return (
     <SheetPrimitive.Overlay
-      transition={{duration:motionOff?0:0.18}}
+      transition={{duration:motionOff?0:motionTiming.control/1000}}
       data-tasks-portal='' data-slot='sheet-overlay'
       className={cn(
         'fixed inset-0 z-50 bg-black/50',
@@ -57,7 +57,7 @@ function SheetContent({
     <SheetPortal>
       <SheetOverlay />
       <SheetPrimitive.Content
-        transition={{type:"tween",duration:motionOff?0:0.18}} exitTransition={{type:"tween",duration:motionOff?0:0.15}}
+        transition={{type:"tween",duration:motionOff?0:motionTiming.control/1000}} exitTransition={{type:"tween",duration:motionOff?0:motionTiming.exit/1000}}
         data-tasks-portal='' data-slot='sheet-content' data-side={side}
         className={cn(
           'workspace-sheet',

@@ -1,6 +1,5 @@
 import {enhanceHomeLayout} from './workspace-home-layout';
-import {installCoverTransition} from './workspace-cover-transition';
-import {refreshSpectacle} from './workspace-spectacle';
+import {WorkspaceReactBits} from './workspace-react-bits';
 import {useState,useEffect} from 'react';
 import {SlidersHorizontal} from 'lucide-react';
 import {Button} from './components/ui/button';
@@ -12,10 +11,10 @@ function apply(value){document.documentElement.dataset.theme='light';const previ
 export function PersonalPreferences(){
  const [open,setOpen]=useState(false),[draft,setDraft]=useState(read),[error,setError]=useState('');
 
- return <><button className='wb-icon-button' aria-label='个性设置' title='个性设置' onClick={()=>{setDraft(read());setError('');setOpen(true);}}><SlidersHorizontal size={18}/></button><Dialog open={open} onOpenChange={setOpen}><DialogContent returnFocus={()=>document.querySelector<HTMLButtonElement>('[aria-label="个性设置"]')}><DialogTitle>让工作台更像你</DialogTitle><DialogDescription>偏好保存在当前浏览器，业务记录仍按原方式同步。</DialogDescription><form noValidate className='wb-personal-form' onSubmit={e=>{e.preventDefault();try{localStorage.setItem(key,JSON.stringify(draft));apply(draft);refreshSpectacle();setOpen(false);}catch{setError('浏览器未允许保存偏好，请检查存储设置后重试。');}}}><label htmlFor='personal-motto'>首页寄语</label><input id='personal-motto' maxLength={80} value={draft.motto} onChange={e=>setDraft({...draft,motto:e.target.value})}/><small>留一句想对自己说的话，最多80字。</small>{[['compact','紧凑布局'],['goals','展示年度目标'],['leisure','展示娱乐记录']].map(([name,label])=><label className='wb-preference-row' key={name}><span>{label}</span><input type='checkbox' checked={draft[name]} onChange={e=>setDraft({...draft,[name]:e.target.checked})}/></label>)}<small>华丽动效已启用，系统减少动态效果设置仍优先。</small><p role='alert'>{error}</p><div className='wb-personal-actions'><Button type='button' variant='secondary' onClick={()=>setDraft(defaults)}>恢复默认</Button><Button type='submit'>保存偏好</Button></div></form></DialogContent></Dialog></>;
+ return <><button className='wb-icon-button' aria-label='个性设置' title='个性设置' onClick={()=>{setDraft(read());setError('');setOpen(true);}}><SlidersHorizontal size={18}/></button><Dialog open={open} onOpenChange={setOpen}><DialogContent returnFocus={()=>document.querySelector<HTMLButtonElement>('[aria-label="个性设置"]')}><DialogTitle>让工作台更像你</DialogTitle><DialogDescription>偏好保存在当前浏览器，业务记录仍按原方式同步。</DialogDescription><form noValidate className='wb-personal-form' onSubmit={e=>{e.preventDefault();try{localStorage.setItem(key,JSON.stringify(draft));apply(draft);setOpen(false);}catch{setError('浏览器未允许保存偏好，请检查存储设置后重试。');}}}><label htmlFor='personal-motto'>首页寄语</label><input id='personal-motto' maxLength={80} value={draft.motto} onChange={e=>setDraft({...draft,motto:e.target.value})}/><small>留一句想对自己说的话，最多80字。</small>{[['compact','紧凑布局'],['goals','展示年度目标'],['leisure','展示娱乐记录']].map(([name,label])=><label className='wb-preference-row' key={name}><span>{label}</span><input type='checkbox' checked={draft[name]} onChange={e=>setDraft({...draft,[name]:e.target.checked})}/></label>)}<small>华丽动效已启用，系统减少动态效果设置仍优先。</small><p role='alert'>{error}</p><div className='wb-personal-actions'><Button type='button' variant='secondary' onClick={()=>setDraft(defaults)}>恢复默认</Button><Button type='submit'>保存偏好</Button></div></form></DialogContent></Dialog></>;
 }
 
 export function WorkspaceMotionRuntime(){
- useEffect(()=>{const stopCoverTransition=installCoverTransition();apply(read());enhanceHomeLayout();refreshSpectacle();const observer=new MutationObserver(()=>{apply(read());enhanceHomeLayout();refreshSpectacle();});const content=document.getElementById('content');if(content)observer.observe(content,{childList:true});const media=matchMedia('(prefers-reduced-motion: reduce)');media.addEventListener('change',refreshSpectacle);return()=>{stopCoverTransition();observer.disconnect();media.removeEventListener('change',refreshSpectacle);};},[]);
- return null;
+ useEffect(()=>{apply(read());enhanceHomeLayout();const observer=new MutationObserver(()=>{apply(read());enhanceHomeLayout();});const content=document.getElementById('content');if(content)observer.observe(content,{childList:true});return()=>{observer.disconnect();};},[]);
+ return <WorkspaceReactBits/>;
 }

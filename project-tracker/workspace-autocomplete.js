@@ -1,3 +1,4 @@
+/* exported enhanceWorkspaceAutocomplete */
 // Shared DOM combobox adapter. The caller owns fetching and candidate markup.
 function enhanceWorkspaceAutocomplete(input,list,onSelect,onSearch){
  input.setAttribute('data-workspace-autocomplete','');input.setAttribute('role','combobox');input.setAttribute('aria-autocomplete','list');input.setAttribute('aria-controls',list.id);input.setAttribute('aria-expanded','false');input.autocomplete='off';

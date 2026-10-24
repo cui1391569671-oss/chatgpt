@@ -14,6 +14,6 @@ export function ruleOccurrencesOn(date,items){
   const overrides=new Set(items.filter(x=>x.recurrenceId&&(x.uid||x.id+'@ilamy.calendar')===uid).map(x=>Date.parse(x.recurrenceId)));
   const dates=new RRule(options(event.rrule)).between(new Date(start-Math.min(duration,31*86400000)),new Date(end-1),true,(value,index)=>index<1000);
   for(const occurrence of dates){const ms=occurrence.getTime();if(excluded.has(ms)||overrides.has(ms)||ms+duration<start||event.allDay&&ms+duration<=start)continue;const occurrenceDate=wall(ms).slice(0,10);result.push({...event,start:wall(ms),end:event.end?wall(ms+duration):'',occurrenceDate,done:event.done||(event.completedDates||[]).includes(occurrenceDate)});}
- }catch{}}
+ }catch{/* Malformed legacy recurrence is skipped; the stored event stays intact. */}}
  return result;
 }

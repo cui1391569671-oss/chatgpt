@@ -28,7 +28,7 @@
 项目接口仅返回项目字段；项目保存与每日归档保留两边工作台的数据和版本。
 
 修改 `index.html`、`workbench.html` 或 `landing.html` 后运行 `npm run build:pages`，生成 Worker 使用的 `pages.mjs`，并将生成文件一起提交。
-完整构建使用 `npm run build`，重建 Tasks、Calendar、页面并配置数据库绑定。不准备部署时使用 `npm run build:ui`、`npm run build:pages`。`npm run verify` 检查资源一致性、lint/类型诊断基线并执行测试。类型配置使用独立的 `tsconfig.audit.json`，不改变前端构建器的隐式配置。`npm run lint:strict` / `npm run typecheck:strict` 要求存量诊断清零，当前尚未通过；不得将基线门禁通过当成严格全绿。
+完整构建使用 `npm run build`，重建 Tasks、Calendar、页面并配置数据库绑定。不准备部署时使用 `npm run build:ui`、`npm run build:pages`。`npm run verify` 检查资源一致性、lint/类型诊断基线并执行测试。类型配置使用独立的 `tsconfig.audit.json`，不改变前端构建器的隐式配置。`npm run lint:strict` / `npm run typecheck:strict` 要求存量诊断清零，目前均已通过，历史诊断基线为空。UI静态审计通过项目适配器 `scripts/audit-ui.py` 核对外部事件与共享表单宿主，反例测试见 `scripts/test-audit-ui.py`。
 运行 `npm test` 验证数据保留、空间隔离、版本冲突、归档、输入校验和页面路由。
 
 ## 日历与工作台切换

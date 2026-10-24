@@ -1,4 +1,4 @@
-import React,{useRef,useState,useEffect,useLayoutEffect} from 'react';
+import {useRef,useState,useEffect,useLayoutEffect} from 'react';
 import {createPortal} from 'react-dom';
 async function jpeg(file){
  if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>10*1024*1024)throw Error('请选择 10MB 以内的 JPG、PNG 或 WebP 图片。');

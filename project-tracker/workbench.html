@@ -3372,7 +3372,7 @@ dialog[open]::backdrop {
 .media-wall-status,.media-wall-rating{position:absolute;z-index:2;background:var(--semantic-surface-muted);color:var(--semantic-text);padding:4px 8px;border-radius:7px;font-size:12px;pointer-events:none}
 .media-wall-status{left:8px;bottom:8px}
 .media-wall-rating{right:8px;top:8px}
-@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.media-wall-cover{transition:transform var(--duration-fast),box-shadow var(--duration-fast)}body:not([data-motion-level=off]) .media-wall-cover:hover{transform:perspective(700px) translateY(-3px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));box-shadow:var(--shadow-md)}}
+
 .media-wall-cover:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .media-wall-item h3{font-size:14px;line-height:1.5;margin:6px 0 2px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .media-wall-item p{margin:0;font-size:12px;overflow-wrap:anywhere}
@@ -6570,15 +6570,20 @@ body[data-home-goals=false] .home2-goals,body[data-home-leisure=false] .home2-le
 @media(max-width:600px){.wb-page-location small{display:none}.wb-page-location strong{font-size:14px}.wb-personal-actions{flex-wrap:wrap}}
 
 /* Decorative effects never receive pointer events or alter calendar geometry. */
-.shared-workspace .card{position:relative;--spot-x:-300px;--spot-y:-300px}body.shared-workspace[data-motion-level=lavish] .card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(240px circle at var(--spot-x,-300px) var(--spot-y,-300px),var(--semantic-primary-subtle),transparent 75%);opacity:0;transition:opacity .3s}body.shared-workspace[data-motion-level=lavish] .card:hover::after{opacity:.7}.wb-celebration{position:fixed;width:7px;height:7px;background:var(--semantic-primary);border-radius:2px;pointer-events:none;z-index:1000}.wb-celebration:nth-of-type(even){background:var(--semantic-primary-muted)}.wb-motion-options{display:flex;flex-wrap:wrap;gap:12px;border:0;padding:0;margin:0}.wb-motion-options legend{margin-bottom:8px}.wb-motion-options label{display:flex;gap:8px;align-items:center;min-height:44px;cursor:pointer}.wb-motion-options small{flex-basis:100%}
+/* React Bits SpotlightCard: material remains owned by the shared card. */
+.shared-workspace .card,.workspace-board-card,.workspace-goal-card{position:relative}
+.spotlight-card__light,.spotlight-card__grain,.spotlight-card__edge{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0}
+.spotlight-card__light{z-index:0}
+.spotlight-card__edge{z-index:1;padding:1px;mask:linear-gradient(currentColor 0 0) content-box exclude,linear-gradient(currentColor 0 0)}
+.wb-motion-options{display:flex;flex-wrap:wrap;gap:12px;border:0;padding:0;margin:0}.wb-motion-options legend{margin-bottom:8px}.wb-motion-options label{display:flex;gap:8px;align-items:center;min-height:44px;cursor:pointer}.wb-motion-options small{flex-basis:100%}
 
-@media(prefers-reduced-motion:reduce){body.shared-workspace[data-motion-level=lavish] .card::after{display:none}}
+@media(prefers-reduced-motion:reduce){.spotlight-card__light,.spotlight-card__edge{display:none}}
 
 
 
-.wb-cover-flight{position:fixed;z-index:1000;object-fit:contain;background:var(--semantic-surface-muted);border-radius:var(--radius-sm);transform-origin:top left;pointer-events:none;box-shadow:var(--shadow-md)}
 
-.wb-click-ring{position:fixed;z-index:1000;width:28px;height:28px;border:2px solid var(--semantic-primary-muted);border-radius:50%;pointer-events:none}.wb-day-complete{position:fixed;left:50%;bottom:32px;z-index:1000;max-width:calc(100vw - 32px);padding:16px 24px;border-radius:var(--control-radius);background:var(--semantic-surface-muted);color:var(--semantic-primary-text);border:1px solid var(--semantic-primary-muted);box-shadow:var(--shadow-md);pointer-events:none;font-size:14px;text-align:center}
+
+.wb-day-complete{position:fixed;left:50%;bottom:32px;z-index:1000;max-width:calc(100vw - 32px);padding:16px 24px;border-radius:var(--control-radius);background:var(--semantic-surface-muted);color:var(--semantic-primary-text);border:1px solid var(--semantic-primary-muted);box-shadow:var(--shadow-md);pointer-events:none;font-size:14px;text-align:center}
 
 /* Explicit 2.0 page-header variant, shared by native and React feature pages. */
 .workspace-page-hero{--workspace-heading-size:28px;--workspace-heading-leading:1.3;--workspace-heading-tracking:-.03em;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:8px 0 20px;margin-bottom:20px;min-width:0;background:transparent;border:0;border-bottom:1px solid var(--semantic-border-muted);border-radius:0}.workspace-page-hero--flow{margin-bottom:0}.workspace-page-hero>div{min-width:0;overflow-wrap:anywhere}.workspace-page-hero h2{font-size:var(--workspace-heading-size);line-height:1.3;letter-spacing:-.03em;margin:4px 0 8px}.workspace-page-hero p{margin:4px 0;font-size:14px;max-width:64ch}.tag[data-tone=error]{background:var(--semantic-error-subtle);color:var(--semantic-error-text)}.workspace-page-summary{font-size:12px;color:var(--semantic-text-muted);overflow-wrap:anywhere}.wb-context-nav{display:flex;align-items:center;gap:4px;margin-right:auto;padding:4px;border-radius:var(--control-radius);background:var(--semantic-surface-muted);border:1px solid var(--semantic-border-muted)}.wb-context-nav button{position:relative;isolation:isolate;appearance:none;border:0;background:transparent;border-radius:var(--radius-sm);min-height:44px;padding:8px 12px;color:var(--semantic-text-muted);font:inherit;cursor:pointer;white-space:nowrap}.wb-context-nav button:hover{background:var(--semantic-primary-subtle)}.wb-context-nav button[aria-current=page]{color:var(--semantic-text)}.wb-context-nav button:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}.workspace-week-strip{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}.workspace-week-strip li{display:grid;gap:8px;text-align:center;padding:16px 4px;border:1px solid var(--semantic-border-muted);border-radius:var(--control-radius);background:var(--semantic-surface-muted)}.workspace-week-strip time,.workspace-week-strip span{font-size:12px}.workspace-week-strip strong{font-size:18px}.workspace-week-strip li[data-completion="2"]{background:var(--semantic-primary-subtle);border-color:var(--semantic-primary-muted);color:var(--semantic-primary-text)}
@@ -6608,6 +6613,7 @@ function setDailyCheckin(rows,kind,date,checked,completedAt){const record={id:da
 
 /* CHECKIN_RECORDS_END */
 /* TODAY_TASKS_START */
+/* exported todayTasksPage */
 let todayTaskData=null,todayTaskLoading=false,todayTaskError='';
 function todayTasksPage(){return '<section aria-label="今日任务"><div class="card-head"><div><h2>今日任务</h2><p class="muted">数据来源于日历，按北京时间展示当天的全部条目。</p></div><div class="actions"><button class="btn" data-nav="home">返回概览</button><button class="btn" data-refresh-today '+(todayTaskLoading?'disabled':'')+'>刷新</button></div></div><div id="todayTaskResults" aria-live="polite"></div></section>';}
 function renderTodayTaskResults(){const node=$('todayTaskResults');if(!node)return;let html='';if(todayTaskError)html+='<p class="form-error" role="alert">'+esc(todayTaskError)+' 当前内容保留，可点击刷新重试。</p>';if(!todayTaskData){node.innerHTML=html+(todayTaskLoading?'<div class="card empty" role="status">正在读取今日任务…</div>':'');return;}html+='<p class="muted today-task-date">'+esc(todayTaskData.date)+' · 共 '+todayTaskData.items.length+' 项</p>';const rows=todayTaskData.items;html+='<section class="card today-task-group" aria-label="今日日历清单"><div class="card-head"><h2>日历安排</h2><span class="muted">'+rows.length+' 项</span></div>'+(rows.length?rows.map(item=>'<article class="row"><div class="row-content"><div class="row-title">'+esc(item.title)+'</div><div class="row-meta"><span class="tag">'+esc(item.time)+'</span><span class="tag">'+({tasks:'待办',projects:'项目问题',events:'日程'}[item.source]||'日历')+'</span><span class="tag">'+esc(item.status)+'</span>'+(item.project?'<span>'+esc(displayProject(item.project))+'</span>':'')+'</div>'+(item.detail?'<p class="today-task-detail">'+esc(item.detail)+'</p>':'')+'</div><div class="actions">'+(item.source==='tasks'?'<button data-edit="tasks" data-id="'+esc(item.id)+'">查看待办</button>':item.source==='projects'?'<button data-nav="projects">查看项目</button>':'<button data-today-calendar="'+esc(todayTaskData.date)+'">查看日历</button>')+'</div></article>').join(''):'<div class="empty">今天的日历暂无安排。</div>')+'</section>';node.innerHTML=html;}
@@ -6683,6 +6689,7 @@ function migrateGameTasks(workspace,choices){
  return next;
 }
 
+/* exported disposeWorkspaceTasks, mountWorkspaceTasks, openWorkspaceTask */
 let workspaceTasks=null,tasksEditing=false;
 function isTasksEditing(){return tasksEditing||!!workspaceTasks?.isEditing?.();}
 function disposeWorkspaceTasks(){const node=document.getElementById('workspaceTasks');if(node)window.WorkspaceTasks?.unmount(node);workspaceTasks=null;}
@@ -7019,6 +7026,7 @@ function applyCalendarMutation(records,mutation){
 
 /* ILAMY_RECORDS_END */
 /* ILAMY_ADAPTER_START */
+/* exported disposeWorkspaceCalendar, openCalendarEvent, mountWorkspaceCalendar */
 // ilamy owns the calendar and its standard event form. This adapter owns only
 // workbench routing, scope isolation and the existing cloud persistence boundary.
 let workspaceCalendar=null,workspaceCalendarView='month',workspaceCalendarAnchor='',calendarDeferredRender=false;
@@ -7118,6 +7126,7 @@ function mediaTrackingStats(items,year){
  return {total:items.length,active:items.filter(x=>mediaTrackingStatus(x)==='in_progress').length,planned:items.filter(x=>mediaTrackingStatus(x)==='planned').length,completed:items.filter(x=>mediaTrackingStatus(x)==='completed'&&x.completedDate?.startsWith(String(year))).length};
 }
 
+/* exported closeMediaRecordEditor, mediaTrackingFields, initMediaTrackingForm, readMediaTracking, renderMediaLibrary */
 let mediaFormBaseline='';
 function mediaFormSnapshot(){return JSON.stringify([...new FormData($('form')).entries()]);}
 async function closeMediaRecordEditor(){if(busy)return;if(kind==='completedGames'&&mediaFormSnapshot()!==mediaFormBaseline){if(!await window.WorkspacePrimitives.confirm({title:'放弃修改？',description:'尚未保存的娱乐记录修改将丢失。',action:'放弃修改'}))return;}$('editor').close();}
@@ -7182,6 +7191,7 @@ $('content').addEventListener('click',async e=>{
  if(button.dataset.mediaAdvance&&!busy&&ready&&!conflict){const next=structuredClone(state),item=next.completedGames.find(x=>x.id===button.dataset.mediaAdvance);if(!item||mediaTrackingStatus(item)!=='in_progress'||item.total>0&&item.progress>=item.total)return;const old=structuredClone(item);item.progress=(item.progress||0)+1;item.history=mediaTrackingHistory(old,item);if(await change(next))toast('已更新观看进度');}
 });
 
+/* exported enhanceWorkspaceAutocomplete */
 // Shared DOM combobox adapter. The caller owns fetching and candidate markup.
 function enhanceWorkspaceAutocomplete(input,list,onSelect,onSearch){
  input.setAttribute('data-workspace-autocomplete','');input.setAttribute('role','combobox');input.setAttribute('aria-autocomplete','list');input.setAttribute('aria-controls',list.id);input.setAttribute('aria-expanded','false');input.autocomplete='off';
@@ -7199,6 +7209,7 @@ function enhanceWorkspaceAutocomplete(input,list,onSelect,onSearch){
  return {clear(){items=[];list.replaceChildren();close();},set(candidates,markup){items=candidates;index=-1;list.innerHTML=markup;list.querySelectorAll('[data-choice]').forEach((node,i)=>{node.id=list.id+'-option-'+i;node.setAttribute('role','option');node.setAttribute('aria-selected','false');node.tabIndex=-1;});list.hidden=!items.length;input.setAttribute('aria-expanded',String(!!items.length));},destroy(){input.removeEventListener('workspace-autocomplete-close',close);document.removeEventListener('pointerdown',outside);input.removeEventListener('keydown',keydown);}};
 }
 
+/* exported mediaReviewKey, setupMediaCoverPicker, resolveMediaSourceCovers */
 const mediaSourceNames={tmdb:'TMDB',igdb:'IGDB',steam:'Steam',bangumi:'Bangumi',mal:'MyAnimeList'};
 const resolvedMediaCovers=new Map();
 function mediaCoverKey(item){return [item.id,item.mediaSource,item.mediaSourceId,item.mediaType,item.season].join(':');}
@@ -7215,13 +7226,13 @@ function setupMediaCoverPicker(){
  const applyDetails=(item,replaceTitle=false)=>{if(replaceTitle&&item.matchedTitle)$('title').value=item.matchedTitle;if(item.coverUrl)$('coverUrl').value=item.coverUrl;if(item.platforms&&!$('platform').value)$('platform').value=item.platforms.slice(0,100);if(item.total>0&&!Number($('total').value)&&['anime','tv'].includes($('mediaType').value))$('total').value=item.total;if(item.steamAppId)$('steamAppId').value=item.steamAppId;preview();binding();};
  const detailsUrl=()=>'/api/media/details?'+new URLSearchParams({source:$('mediaSource').value,id:$('mediaSourceId').value,type:$('mediaType').value,season:$('season').value||'0'});
  const refresh=async()=>{if(!$('mediaSource').value)return;invalidate();const seq=gameCoverSequence;$('gameCoverStatus').textContent='正在按已选作品读取资料…';$('refreshMediaSource').disabled=true;try{const data=await request(detailsUrl(),seq);if(!data)return;if($('coverMode').value==='manual'){$('gameCoverStatus').textContent='已保留自定义封面。重新选择候选作品后可使用来源封面。';return;}applyDetails(data);$('gameCoverStatus').textContent=data.coverUrl?'已刷新所选作品封面。':'此作品暂时没有封面，可填写自定义链接。';}catch(e){if(active(seq)&&e.name!=='AbortError')$('gameCoverStatus').textContent='作品资料暂不可用，已保留现有封面。';}finally{if(active(seq))$('refreshMediaSource').disabled=false;}};
- const choose=async(item,button)=>{
+ const choose=async(item)=>{
   invalidate();const seq=gameCoverSequence;setIdentity(item);$('coverUrl').value=item.coverUrl||'';applyDetails(item,true);$('gameCoverStatus').textContent='已选择 '+mediaSourceNames[item.source]+'：'+item.matchedTitle+(item.coverUrl?'':'（暂无封面，可填写自定义链接）');
   try{const data=await request(detailsUrl(),seq);if(data&&$('coverMode').value!=='manual'){applyDetails(data);$('gameCoverStatus').textContent='已关联 '+mediaSourceNames[item.source]+'：'+item.matchedTitle;}}catch(e){if(active(seq)&&e.name!=='AbortError')$('gameCoverStatus').textContent='已选择作品；详细资料暂不可用，现有结果仍可保存。';}
  };
  const search=async()=>{
   const title=$('title').value.trim(),type=$('mediaType').value;if(!title)return;invalidate();const seq=gameCoverSequence;$('matchGameCover').disabled=true;$('gameCoverStatus').textContent='正在搜索作品…';
-  try{const data=await request('/api/media/search?'+new URLSearchParams({q:title,type}),seq);if(!data||$('title').value.trim()!==title||$('mediaType').value!==type)return;const candidates=data.candidates||[],choices=$('animeCoverChoices');
+  try{const data=await request('/api/media/search?'+new URLSearchParams({q:title,type}),seq);if(!data||$('title').value.trim()!==title||$('mediaType').value!==type)return;const candidates=data.candidates||[];
    autocomplete.set(candidates,candidates.map((x,i)=>'<button type="button" class="media-name-option" data-choice="'+i+'" aria-label="选择 '+esc(x.matchedTitle)+' · '+esc(mediaSourceNames[x.source])+' · '+esc(x.date||'日期未知')+'">'+(x.coverUrl?'<img src="'+esc(gameCoverImageUrl(x.coverUrl,type))+'" data-cover-fallback="'+esc(gameCoverImageUrl(x.coverUrl,type)!==x.coverUrl?x.coverUrl:'')+'" onerror="if(!retryOriginalMediaCover(this))this.hidden=true" alt="'+esc(x.matchedTitle)+'封面" loading="lazy" referrerpolicy="no-referrer">':'<span>暂无封面</span>')+'<span>'+esc(x.matchedTitle)+'</span><small>'+esc(x.originalTitle&&x.originalTitle!==x.matchedTitle?x.originalTitle:'')+'</small><small>'+esc(x.date||'日期未知')+' · '+esc(mediaSourceNames[x.source])+'</small>'+(x.platforms?'<small>'+esc(x.platforms)+'</small>':'')+'</button>').join(''));
    $('gameCoverStatus').textContent=(candidates.length?'找到 '+candidates.length+' 部作品，请按名称、年份和平台选择。':'没有找到作品，可调整关键词或填写封面链接。')+(data.warnings?.length?' '+data.warnings.join('；')+'。':'');
   }catch(e){if(active(seq)&&e.name!=='AbortError')$('gameCoverStatus').textContent='作品搜索暂不可用，现有封面与输入已保留，可稍后重试。';}finally{if(active(seq))$('matchGameCover').disabled=false;}
@@ -7250,7 +7261,7 @@ async function resolveMediaSourceCovers(){
   if(!pendingMediaCovers.has(key))pendingMediaCovers.set(key,(async()=>{
    try{const response=await fetch('/api/media/details?'+new URLSearchParams({source:item.mediaSource,id:item.mediaSourceId,type:item.mediaType||'game',season:String(item.season||0)}),{signal:AbortSignal.timeout(12000)});
     if(response.ok)resolvedMediaCovers.set(key,(await response.json()).coverUrl||'');
-   }catch{}finally{pendingMediaCovers.delete(key);}
+   }catch{/* Optional cover resolution keeps the saved cover and retries on a later render. */}finally{pendingMediaCovers.delete(key);}
   })());
   await pendingMediaCovers.get(key);
  };
@@ -7337,6 +7348,7 @@ function practiceQueue(words,scope='all',limit=20){return [...words].filter(w=>w
 function reviewedWord(word,correct,date){const count=Number.parseInt(word.reviewCount||'0',10);return {...word,mastery:correct?'已掌握':'不会',reviewCount:String((Number.isFinite(count)&&count>=0?count:0)+1),firstLearned:word.firstLearned||date,lastReviewed:date};}
 function validPracticeSession(s){return !!s&&typeof s.id==='string'&&s.id.length>0&&s.id.length<=100&&['typing','dictation'].includes(s.mode)&&Number.isInteger(s.total)&&s.total>0&&s.total<=100&&Number.isInteger(s.correct)&&s.correct>=0&&s.correct<=s.total&&Number.isInteger(s.durationSeconds)&&s.durationSeconds>=0&&s.durationSeconds<=604800&&typeof s.completedOn==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s.completedOn)&&!Number.isNaN(Date.parse(s.completedOn))&&new Date(s.completedOn).toISOString().slice(0,10)===s.completedOn&&[s.startedAt,s.completedAt].every(v=>typeof v==='string'&&v.length<=40&&!Number.isNaN(Date.parse(v)))&&Date.parse(s.completedAt)>=Date.parse(s.startedAt);}
 
+/* exported renderWordPractice */
 let wordPracticeController=null;
 function isWordPracticing(){return !!wordPracticeController?.isEditing();}
 function disposeWordPractice(){wordPracticeController?.dispose();wordPracticeController=null;}
@@ -7362,6 +7374,7 @@ $('content').addEventListener('click',async e=>{if(!e.target.closest('[data-sync
 
 /* WORD_PRACTICE_END */
 /* FITNESS_START */
+/* exported disposeFitness, renderFitness */
 let fitnessController=null;
 function isFitnessEditing(){return !!fitnessController?.isEditing();}
 function disposeFitness(){fitnessController?.dispose();fitnessController=null;}
@@ -7389,6 +7402,7 @@ window.addEventListener('beforeunload',event=>{if(isFitnessEditing()){event.prev
 
 /* FITNESS_END */
 /* ANNUAL_PLANS_START */
+/* exported disposeAnnualPlans, renderAnnualPlans */
 let annualPlanController=null;
 function isAnnualPlanEditing(){return !!annualPlanController?.isEditing();}
 function disposeAnnualPlans(){annualPlanController?.dispose();annualPlanController=null;}
@@ -7411,6 +7425,7 @@ window.addEventListener('beforeunload',event=>{if(isAnnualPlanEditing()){event.p
 
 /* ANNUAL_PLANS_END */
 /* WORKBENCH_SHELL_START */
+/* exported disposePersonalInfo, renderPersonalInfo */
 /* shadcn-admin shell bridge: business state remains owned by workbench.html. */
 let personalInfoController=null;
 function isPersonalInfoEditing(){return !!personalInfoController?.isEditing();}

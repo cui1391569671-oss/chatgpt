@@ -252,7 +252,7 @@ export const ButtonGlass = forwardRef<HTMLButtonElement, ButtonGlassProps>(
     const [ripple, setRipple] = useState<{ x: number; y: number } | null>(null);
 
     const isDisabled = disabled || loading;
-    const rippleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const rippleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Cleanup ripple timeout on unmount
     useEffect(() => {

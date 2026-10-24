@@ -1,4 +1,4 @@
-import {useWorkspaceMotionOff} from '@/workspace-motion-policy';
+import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 import {SaveButton} from '@/components/save-button';
 import {AnimatePresence,motion,useIsPresent} from 'motion/react';
 import './workspace-motion';
@@ -15,7 +15,7 @@ import {WorkspaceSelect} from '@/components/workspace-select';
 import {Textarea} from '@/components/ui/textarea';
 import {Dialog,DialogContent,DialogTitle,DialogDescription,DialogHeader,DialogFooter} from '@/components/ui/dialog';
 // Adapted from satnaing/shadcn-admin TasksTable and TasksMutateDrawer (MIT).
-import React,{useState,useMemo,useEffect,useRef} from 'react';
+import {useState,useMemo,useEffect,useRef} from 'react';
 import {createRoot} from 'react-dom/client';
 import {useReactTable,getCoreRowModel,getFilteredRowModel,getPaginationRowModel,getSortedRowModel,flexRender} from '@tanstack/react-table';
 import {useForm} from 'react-hook-form';
@@ -23,9 +23,9 @@ import {Button} from '@/components/ui/button';import {Input} from '@/components/
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from '@/components/ui/table';
 import {Sheet,SheetContent,SheetHeader,SheetTitle,SheetDescription,SheetFooter} from '@/components/ui/sheet';
 import {Form as FormProvider,FormField,FormItem,FormLabel,FormControl,FormMessage} from '@/components/ui/form';
-import {ArrowUpDown,Plus,CheckCircle2,Circle,ChevronLeft,ChevronRight,Search,Trash2,X} from 'lucide-react';
+import {ArrowUpDown,Plus,CheckCircle2,Circle,ChevronLeft,ChevronRight,Trash2} from 'lucide-react';
 const MotionTaskRow=motion.create(TableRow);
-function AnimatedTaskRow({children,...props}){const present=useIsPresent(),reduce=useWorkspaceMotionOff();return <MotionTaskRow {...props} inert={!present?true:undefined} layout={reduce?false:'position'} initial={{opacity:reduce?1:0,y:reduce?0:4}} animate={{opacity:1,y:0}} exit={{opacity:reduce?1:0,y:reduce?0:-4}} transition={{duration:reduce?0:0.18,ease:'easeOut'}}>{children}</MotionTaskRow>;}
+function AnimatedTaskRow({children,...props}){const present=useIsPresent(),reduce=useWorkspaceMotionOff();return <MotionTaskRow {...props} inert={!present?true:undefined} layout={reduce?false:'position'} initial={{opacity:reduce?1:0,y:reduce?0:4}} animate={{opacity:1,y:0}} exit={{opacity:reduce?1:0,y:reduce?0:-4}} transition={{duration:reduce?0:motionTiming.control/1000,ease:'easeOut'}}>{children}</MotionTaskRow>;}
 const priorityNames={high:'高',normal:'普通',low:'低'};
 function App({bridge,controller}){
  const [layout,setLayout]=useState(bridge.scope==='personal'&&new URLSearchParams(location.search).get('taskLayout')!=='table'?'board':'table');
@@ -46,7 +46,7 @@ function App({bridge,controller}){
  {accessorKey:'priority',header:'优先级',cell:({row})=><span className={'task-priority '+row.original.priority}>{priorityNames[row.original.priority]||'普通'}</span>},
  {id:'actions',header:'操作',cell:({row})=><div className='task-actions'>{row.original.mediaRecordId&&games.some(g=>g.id===row.original.mediaRecordId)&&<Button variant='ghost' disabled={pending} aria-label={'查看关联游戏：'+row.original.title} onClick={()=>bridge.openGame(row.original.mediaRecordId)}>游戏</Button>}<Button ref={node=>{if(node)deleteButtons.current.set(row.original.id,node);else deleteButtons.current.delete(row.original.id);}} variant='ghost' aria-label={'删除：'+row.original.title} onClick={()=>openDelete([row.original.id])}><Trash2 size={15}/></Button></div>}
  ],[pending,bridge.today,games]);
- const table=useReactTable({data,columns,getRowId:r=>r.id,state:{sorting,rowSelection:selection,globalFilter:query,pagination},onSortingChange:setSorting,onRowSelectionChange:setSelection,onGlobalFilterChange:setQuery,onPaginationChange:setPagination,enableRowSelection:true,globalFilterFn:(row,_,value)=>(row.original.title+' '+(row.original.detail||'')+' '+(row.original.gamePlatform||'')).toLowerCase().includes(value.toLowerCase()),getCoreRowModel:getCoreRowModel(),getFilteredRowModel:getFilteredRowModel(),getSortedRowModel:getSortedRowModel(),getPaginationRowModel:getPaginationRowModel()});
+ const table=useReactTable({data,columns,getRowId:r=>String(r.id),state:{sorting,rowSelection:selection,globalFilter:query,pagination},onSortingChange:setSorting,onRowSelectionChange:setSelection,onGlobalFilterChange:setQuery,onPaginationChange:setPagination,enableRowSelection:true,globalFilterFn:(row,_,value)=>(row.original.title+' '+(row.original.detail||'')+' '+(row.original.gamePlatform||'')).toLowerCase().includes(value.toLowerCase()),getCoreRowModel:getCoreRowModel(),getFilteredRowModel:getFilteredRowModel(),getSortedRowModel:getSortedRowModel(),getPaginationRowModel:getPaginationRowModel()});
  const selected=table.getFilteredSelectedRowModel().rows.map(r=>r.original.id);
  const isBoard=layout==='board'&&bridge.scope==='personal',filteredCount=table.getFilteredRowModel().rows.length;
  const resetFilters=()=>{setQuery('');setStatus('all');setPriority('all');setSelection({});};
@@ -77,4 +77,6 @@ function TasksMutateDrawer({currentRow,scope,games,pending,error,close,save}){
  {field('detail','详情（可选）',f=><Textarea {...f} maxLength={5000} rows={5} className='resize-none'/>)}
  </fieldset>{error&&<p className='tasks-error' role='alert'>{error}</p>}</form></FormProvider><SheetFooter><Button variant='outline' disabled={pending} onClick={close}>取消</Button><SaveButton form='tasks-form' type='submit' pending={pending}/></SheetFooter></SheetContent></Sheet>;
 }
-const roots=new WeakMap();window.WorkspaceTasks={mount(node,bridge){let mounted=roots.get(node);if(mounted){mounted.controller.update(bridge.rows);return mounted.controller;}const controller={update(data){bridge.rows=data;}},root=createRoot(node);roots.set(node,{root,controller});root.render(<App bridge={bridge} controller={controller}/>);return controller;},unmount(node){const m=roots.get(node);if(m){m.root.unmount();roots.delete(node);}}};
+const roots=new WeakMap();export const workspaceTasks={mount(node,bridge){let mounted=roots.get(node);if(mounted){mounted.controller.update(bridge.rows);return mounted.controller;}const controller={update(data){bridge.rows=data;}},root=createRoot(node);roots.set(node,{root,controller});root.render(<App bridge={bridge} controller={controller}/>);return controller;},unmount(node){const m=roots.get(node);if(m){m.root.unmount();roots.delete(node);}}};
+
+window.WorkspaceTasks=workspaceTasks;

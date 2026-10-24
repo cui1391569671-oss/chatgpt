@@ -4,7 +4,7 @@ import worker,{validWorkspace} from './helpers/session-worker.mjs';
 export function database(){
  const initial={data:[],archive:[],priorities:{},projects:['保留项目'],deletedProjects:[]};
  let payload=JSON.stringify(initial),version=1;
- return {prepare(sql){let args;return {bind(...v){args=v;return this;},async first(){return {payload,version};},async run(){if(version!==args[1])return {meta:{changes:0}};payload=args[0];version++;return {meta:{changes:1}};}};}};
+ return {prepare(_sql){let args;return {bind(...v){args=v;return this;},async first(){return {payload,version};},async run(){if(version!==args[1])return {meta:{changes:0}};payload=args[0];version++;return {meta:{changes:1}};}};}};
 }
 const workspace={tasks:[{id:'task',title:'个人待办',done:false,dueDate:'2026-10-09',priority:'high',detail:''}],notes:[{id:'note',title:'笔记',body:'测试内容',updatedAt:'2026-10-09T08:00:00Z'}],events:[{id:'event',title:'会议',start:'2026-10-09T09:00',end:'2026-10-09T10:00',location:'办公室',detail:''}]};
 function request(path,body){return new Request('https://test.local'+path,{method:body?'POST':'GET',headers:{Authorization:'Basic '+btoa('user:password'),Origin:'https://test.local','Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});}
