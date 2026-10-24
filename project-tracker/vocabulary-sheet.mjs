@@ -1,5 +1,5 @@
 export const VOCABULARY_SHEET={id:'1oXdYD6Lf5E3d2mgv8Lt7DP_cS9r0PJyAUZuhz5kY_fY',tab:'词汇库',url:'https://docs.google.com/spreadsheets/d/1oXdYD6Lf5E3d2mgv8Lt7DP_cS9r0PJyAUZuhz5kY_fY/edit'};
-const fields={Lesson:['lesson',100],单词:['word',200],音标:['phonetic',500],词性:['partOfSpeech',100],中文释义:['meaning',2000],例句:['example',5000],熟练度:['mastery',100],首次学习日期:['firstLearned',40],最近复习:['lastReviewed',40],复习次数:['reviewCount',20],备注:['note',5000]};
+const fields={Lesson:['lesson',100],单词:['word',200],音标:['phonetic',500],词性:['partOfSpeech',100],中文释义:['meaning',2000],例句:['example',5000],例句译文:['exampleTranslation',5000],熟练度:['mastery',100],首次学习日期:['firstLearned',40],最近复习:['lastReviewed',40],复习次数:['reviewCount',20],备注:['note',5000]};
 const learning=['mastery','firstLearned','lastReviewed','reviewCount'];
 const key=word=>word.normalize('NFKC').trim().toLowerCase();
 function wordId(word){let a=2166136261,b=5381;for(const c of key(word)){a=Math.imul(a^c.charCodeAt(0),16777619);b=Math.imul(b,33)^c.charCodeAt(0);}return 'sheet-'+(a>>>0).toString(16)+'-'+(b>>>0).toString(16);}

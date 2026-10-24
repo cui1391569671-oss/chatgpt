@@ -104,7 +104,7 @@ function validWorkspace(w){
  }
  if(w.vocabulary!==undefined){
   if(!Array.isArray(w.vocabulary)||w.vocabulary.length>5000)return false;
-  const wordIds=new Set();const fields={lesson:100,word:200,phonetic:500,partOfSpeech:100,meaning:2000,example:5000,mastery:100,firstLearned:40,lastReviewed:40,reviewCount:20,note:5000};
+  const wordIds=new Set();const fields={lesson:100,word:200,phonetic:500,partOfSpeech:100,meaning:2000,example:5000,exampleTranslation:5000,mastery:100,firstLearned:40,lastReviewed:40,reviewCount:20,note:5000};
   if(!w.vocabulary.every(v=>{if(!v||!str(v.id,100)||!v.id||wordIds.has(v.id)||!str(v.word,200)||!v.word.trim()||!Object.entries(fields).every(([key,max])=>v[key]===undefined||str(v[key],max)))return false;wordIds.add(v.id);return true;}))return false;
  }
  if(w.wardrobe!==undefined){

@@ -61,10 +61,11 @@ export function WorkspaceReactBits(){
   return()=>{document.removeEventListener('click',click);window.removeEventListener('workspace-celebrate',celebrate);clearTimeout(completeTimer.current);setComplete(false);};
  },[off]);
  if(off)return null;
+ const sparkColor=getComputedStyle(document.body).getPropertyValue('--semantic-primary').trim()||getComputedStyle(document.body).color;
  return <>
   {complete&&createPortal(<div className='wb-day-complete' role='status'><BlurText text='今日英语与健身，全部打卡完成 ✓' trigger='load' animateBy='letters' delay={16} stepDuration={.14} distance={6} blur={5}/></div>,document.body)}
   {targets.view&&<AnimatedContent key={targets.view} target={document.getElementById('content')!} trigger='mount' distance={0} duration={motionTiming.page/1000} blur={targets.view==='calendar'?0:2} initialOpacity={.4}/>}
-  {createPortal(<ClickSpark ref={spark} sparkColor='var(--semantic-primary)' sparkCount={10} sparkRadius={28} sparkSize={8} duration={480} shape='star' ring glow={.4} style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:1000}}/>,document.body)}
+  {createPortal(<ClickSpark ref={spark} sparkColor={sparkColor} sparkCount={10} sparkRadius={28} sparkSize={8} duration={480} shape='star' ring glow={.4} style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:1000}}/>,document.body)}
   {targets.cards.map(target=><SpotlightCard key={'card-'+nodeKey(target)} target={target} theme='light' spotlightColor='var(--semantic-primary)' intensity={.55} borderGlow={.7} spotlightSize={280} proximity={0} smoothing={.3} grain={0} ambient={false}/>)}
   {targets.buttons.map(target=><Magnet key={'button-'+nodeKey(target)} target={target} padding={12} maxOffset={2} magnetStrength={12} spring={{stiffness:170,damping:22}}/>)}
   {targets.covers.map(target=><Magnet key={'cover-'+nodeKey(target)} target={target} motionTarget={target.querySelector<HTMLElement>('img')||target} padding={0} maxOffset={0} tilt={7} scale={1.025} exclusive={false} spring={{stiffness:170,damping:22}}/>)}

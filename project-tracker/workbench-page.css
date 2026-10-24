@@ -2173,17 +2173,19 @@ dialog[open]::backdrop {
 .word-practice-settings label{display:grid;gap:8px;min-width:0}
 .word-practice-intro{display:grid;justify-items:start;gap:12px;text-align:left;padding:24px 0;overflow-wrap:anywhere}.word-practice-intro p{margin:0;max-width:64ch}.word-practice-summary{text-align:left;padding:20px 0;overflow-wrap:anywhere;border-top:1px solid var(--admin-border)}.word-practice-summary h3{margin:0 0 8px}
 .word-practice-position{display:flex;justify-content:space-between;gap:12px;color:var(--admin-muted-foreground);font-size:12px}
-.word-practice-progress{width:100%;height:5px;accent-color:var(--admin-primary);margin-top:12px}
-.word-practice-word{text-align:center;padding:32px 0 24px;min-height:200px}
+.word-practice-progress{width:100%;margin-top:16px}.word-practice-progress-caption{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;font-variant-numeric:tabular-nums}.word-practice-progress-caption strong{font-size:14px;font-weight:600}
+.word-practice-word{text-align:center;padding:24px 0 16px;min-height:0}
 .word-practice-letters{font-size:clamp(24px,5vw,44px);font-weight:600;letter-spacing:.04em;line-height:1.4;overflow-wrap:anywhere}
 .word-practice-meaning{margin:12px 0;font-size:16px;overflow-wrap:anywhere}
 .word-practice-feedback{min-height:48px;margin:12px 0;font-size:14px;overflow-wrap:anywhere}
+.word-practice-session-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.word-practice-session-head>p{margin:0}.word-practice-session-head>button{flex-shrink:0}
 .word-practice-body form{display:grid;min-width:0}
 .word-practice-actions{display:flex;gap:12px;flex-wrap:wrap}
 .word-practice-example{margin:12px 0;overflow-wrap:anywhere}
+.word-practice-sentence{font-size:clamp(20px,3vw,28px);line-height:1.7;font-weight:500;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.word-practice-reference{margin-top:20px;text-align:left;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}.word-practice-reference>p{margin:8px 0}
 .word-practice-mistakes{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .word-practice-mistakes span{padding:6px 12px;border:1px solid var(--admin-border);border-radius:8px}
-@media(max-width:600px){.word-practice-settings{grid-template-columns:1fr}.word-practice-body{padding:20px 16px}.word-practice-header{align-items:flex-start}.word-practice-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.word-practice-actions>button{white-space:nowrap}.word-practice-actions>button:first-child{grid-column:1/-1}.word-practice-word{padding-top:24px;min-height:180px}}
+@media(max-width:600px){.word-practice-settings{grid-template-columns:1fr}.word-practice-body{padding:20px 16px}.word-practice-header{align-items:flex-start}.word-practice-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.word-practice-actions>button{white-space:nowrap}.word-practice-actions>button:first-child{grid-column:1/-1}.word-practice-word{padding-top:16px;min-height:0}}
 .annual-plans{display:flex;flex-direction:column;gap:20px;min-width:0}
 .annual-heading,.annual-caption{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .annual-heading h2{margin:6px 0 0}

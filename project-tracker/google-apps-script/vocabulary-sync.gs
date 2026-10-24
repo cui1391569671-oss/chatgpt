@@ -38,7 +38,7 @@ function uninstallVocabularySync() {
 }
 
 function vocabularyEdited(event) {
-  if (!event || !event.range || event.source.getId() !== VOCAB_SYNC.spreadsheetId || event.range.getSheet().getName() !== VOCAB_SYNC.sheetName || event.range.getColumn() > 11) return;
+  if (!event || !event.range || event.source.getId() !== VOCAB_SYNC.spreadsheetId || event.range.getSheet().getName() !== VOCAB_SYNC.sheetName || event.range.getColumn() > 12) return;
   pushVocabulary_(false);
 }
 function vocabularyTimer() { pushVocabulary_(false); }
@@ -53,7 +53,7 @@ function pushVocabulary_(force) {
     const sheet = SpreadsheetApp.openById(VOCAB_SYNC.spreadsheetId).getSheetByName(VOCAB_SYNC.sheetName);
     if (!sheet || sheet.getLastRow() < 2) throw new Error('词汇库为空，已保留工作台原数据。');
     if (sheet.getLastRow() > 5002) throw new Error('表格行数超出限制，请先检查词汇库。');
-    const rows = sheet.getRange(1, 1, sheet.getLastRow(), 11).getDisplayValues();
+    const rows = sheet.getRange(1, 1, sheet.getLastRow(), 12).getDisplayValues();
     const body = JSON.stringify({spreadsheetId: VOCAB_SYNC.spreadsheetId, sheetName: VOCAB_SYNC.sheetName, rows: rows});
     const hash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, body, Utilities.Charset.UTF_8).map(function(x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join('');
     if (!force && hash === properties.getProperty('LAST_SUCCESS_HASH')) return;

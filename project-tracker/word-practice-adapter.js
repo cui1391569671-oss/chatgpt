@@ -3,7 +3,7 @@ let wordPracticeController=null;
 function isWordPracticing(){return !!wordPracticeController?.isEditing();}
 function disposeWordPractice(){wordPracticeController?.dispose();wordPracticeController=null;}
 function renderWordPractice(){
- $('heading').textContent='单词练习';$('add').classList.add('hidden');$('projectPanel').classList.add('hidden');document.body.dataset.workspaceView='vocabulary';document.body.classList.remove('project-view');
+ $('heading').textContent='英语练习';$('add').classList.add('hidden');$('projectPanel').classList.add('hidden');document.body.dataset.workspaceView='vocabulary';document.body.classList.remove('project-view');
  if(wordPracticeController){wordPracticeController.update(state.vocabulary||[]);return;}
  disposeWorkspaceTasks();disposeWorkspaceCalendar();disposePersonalInfo();disposeAnnualPlans();stopWordAudio();
  $('content').innerHTML='<div id="workspaceWordPractice" data-ui-root data-ui-owner="word-practice"></div>';
