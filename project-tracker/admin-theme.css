@@ -1,4 +1,4 @@
-/* Role adapter only. Values come from the pinned shadcn-glass-ui Light preset. */
+/* Role adapter only. Values come from the workspace-theme.css through the generated preset. */
 :root{
  --admin-radius:var(--radius);
  --admin-background:var(--semantic-surface-strong);

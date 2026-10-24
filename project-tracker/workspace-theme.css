@@ -1,0 +1,580 @@
+/* Project Daylight theme. Component aliases derived from pinned shadcn-glass-ui (Apache-2.0); see theme-presets/shadcn-glass-ui/LICENSE.txt. This is the app theme owner; the upstream snapshot remains unchanged. */
+
+:root {
+  /* ========================================
+     BASE COLORS (HSL format)
+     ======================================== */
+  --background-base: 220 35% 97%;
+  --foreground-base: 222 35% 16%;
+
+  --card-base: 0 0% 100%;
+  --card-fg-base: 222 35% 16%;
+
+  --popover-base: 0 0% 100%;
+  --popover-fg-base: 222 35% 16%;
+
+  --primary-base: 263 70% 50%;
+  --primary-fg-base: 210 40% 98%;
+
+  --secondary-base: 210 40% 96%;
+  --secondary-fg-base: 222 47% 11%;
+
+  --muted-base: 210 40% 96%;
+  --muted-fg-base: 215 16% 47%;
+
+  --accent-base: 210 40% 96%;
+  --accent-fg-base: 222 47% 11%;
+
+  --destructive-base: 0 84% 60%;
+  --destructive-fg-base: 210 40% 98%;
+
+  --border-base: 214 32% 91%;
+  --input-base: 214 32% 91%;
+  --ring-base: 263 70% 50%;
+
+  /* Chart Colors */
+  --chart-1-base: 263 70% 50%;
+  --chart-2-base: 217 91% 60%;
+  --chart-3-base: 186 94% 43%;
+  --chart-4-base: 142 76% 36%;
+  --chart-5-base: 43 96% 56%;
+
+  /* Status Colors */
+  --success-base: 142 76% 36%;
+  --warning-base: 43 74% 49%;
+  --error-base: 0 72% 51%;
+  --info-base: 217 91% 60%;
+
+  /* ========================================
+     SEMANTIC COLOR TOKENS (Layer 2)
+     Map primitive tokens to semantic roles (Daylight)
+     Primitives defined in: src/styles/tokens/oklch-primitives.css
+     ======================================== */
+
+  /* Primary Accent (Periwinkle highlight) */
+  --semantic-primary: #6554c0;
+  --semantic-primary-hover: #5744b3;
+  --semantic-primary-muted: rgb(101 84 192 / .2);
+  --semantic-primary-subtle: rgb(101 84 192 / .08);
+  --semantic-primary-text: #5945b0;
+
+  /* Secondary Accent (Violet-500) */
+  --semantic-secondary: #7353ba;
+  --semantic-secondary-muted: rgb(115 83 186 / .14);
+
+  /* Surface Colors (Layered light surfaces) */
+  --semantic-surface: #f5f7fc;
+  --semantic-surface-muted: #edf1f8;
+  --semantic-surface-elevated: #ffffff;
+  --semantic-surface-overlay: rgb(234 239 249 / .8);
+  --semantic-surface-strong: #ffffff;
+  /* Surface hover states (slate-100 for hover/interactive elements) */
+  --semantic-surface-medium: #e8edf7;
+  --semantic-surface-intense: #dde5f2;
+
+  /* Border Colors (Slate-200) */
+  --semantic-border: #d3dbe9;
+  --semantic-border-muted: rgb(91 111 145 / .18);
+  --semantic-border-strong: #8796af;
+  --semantic-border-subtle: rgb(91 111 145 / .12);
+
+  /* Text Colors (Slate text hierarchy) */
+  --semantic-text: #243047;
+  --semantic-text-muted: #56647b;
+  --semantic-text-subtle: #627087;
+  --semantic-text-disabled: #69778d;
+  --semantic-text-inverse: #ffffff;
+
+  /* Status Colors - Success (Emerald) */
+  --semantic-success: #16815e;
+  --semantic-success-muted: var(--oklch-emerald-500-20);
+  --semantic-success-subtle: var(--oklch-emerald-500-10);
+  --semantic-success-text: #116c4d;
+
+  /* Status Colors - Warning (Amber) */
+  --semantic-warning: #a3660c;
+  --semantic-warning-muted: var(--oklch-amber-400-20);
+  --semantic-warning-subtle: var(--oklch-amber-400-10);
+  --semantic-warning-text: #85520a;
+
+  /* Status Colors - Error/Destructive (Red) */
+  --semantic-error: #b83254;
+  --semantic-error-muted: var(--oklch-red-500-20);
+  --semantic-error-subtle: var(--oklch-red-500-10);
+  --semantic-error-text: #a32b49;
+
+  /* Status Colors - Info (Blue) */
+  --semantic-info: #2471a4;
+  --semantic-info-muted: var(--oklch-blue-500-20);
+  --semantic-info-subtle: var(--oklch-blue-400-10);
+  --semantic-info-text: #1d658f;
+
+  /* Shadow for components */
+  --semantic-shadow: rgb(45 61 91 / .12);
+
+  /* Glass-specific Effects (Light theme - high opacity) */
+  --semantic-glass-bg: rgb(255 255 255 / .86);
+  --semantic-glass-bg-subtle: rgb(255 255 255 / .66);
+  --semantic-glass-bg-medium: rgb(255 255 255 / .9);
+  --semantic-glass-bg-strong: rgb(255 255 255 / .96);
+
+  /* ========================================
+     GLASS EFFECTS (Layer 3 Component Tokens)
+     Using semantic tokens from Layer 2
+     ======================================== */
+  --glass-bg: var(--semantic-glass-bg);
+  --glass-bg-subtle: var(--semantic-glass-bg-subtle);
+  --glass-bg-medium: var(--semantic-glass-bg-medium);
+  --glass-bg-strong: var(--semantic-glass-bg-strong);
+
+  --glass-border: var(--semantic-border);
+  --glass-border-subtle: var(--semantic-border-subtle);
+  --glass-border-medium: var(--semantic-border);
+  --glass-border-strong: var(--semantic-border-strong);
+
+  /* Note: --blur-sm/md/lg/xl defined in primitives.css */
+
+  /* ========================================
+     SEMANTIC GLOWS (Layer 3 Component Tokens)
+     ======================================== */
+  --glow-primary: 0 0 20px var(--oklch-violet-600-30);
+  --glow-secondary: 0 0 15px var(--oklch-blue-500-25);
+  --glow-success: 0 0 20px var(--oklch-emerald-500-50);
+  --glow-warning: 0 0 20px var(--oklch-amber-500-50);
+  --glow-error: 0 0 20px var(--oklch-red-500-50);
+
+  /* Additional color glows */
+  --glow-blue: 0 0 15px var(--oklch-blue-500-25);
+  --glow-violet: 0 0 15px var(--oklch-violet-500-25);
+  --glow-cyan: 0 0 15px var(--oklch-cyan-500-25);
+  --glow-neutral: 0 4px 12px var(--oklch-black-8);
+
+  /* ========================================
+     BACKGROUND ORBS (Layer 3 Component Tokens)
+     ======================================== */
+  --orb-1: rgb(82 120 255 / .12);
+  --orb-2: rgb(140 90 255 / .1);
+  --orb-3: rgb(59 196 230 / .08);
+  --orb-4: var(--oklch-violet-600-10);
+  --orb-5: transparent;
+
+  /* ========================================
+     SHADOWS
+     ======================================== */
+  --shadow-sm: 0 4px 16px rgb(45 61 91 / .06);
+  --shadow: 0 12px 36px rgb(45 61 91 / .1);
+  --shadow-md: 0 12px 32px rgb(45 61 91 / .1);
+  --shadow-lg: 0 20px 56px rgb(45 61 91 / .14);
+  --shadow-xl: 0 24px 64px rgb(45 61 91 / .16);
+
+  /* ========================================
+     BUTTON VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --btn-primary-bg: linear-gradient(135deg, var(--semantic-primary), var(--semantic-secondary));
+  --btn-primary-text: var(--semantic-text-inverse);
+  --btn-primary-hover-bg: linear-gradient(
+    135deg,
+    var(--semantic-primary-hover),
+    var(--semantic-primary)
+  );
+  --btn-primary-glow: 0 0 24px rgb(116 142 255 / .24);
+  --btn-secondary-bg: var(--semantic-surface-elevated);
+  --btn-secondary-text: var(--semantic-text);
+  --btn-secondary-border: var(--semantic-border);
+  --btn-secondary-hover-bg: var(--semantic-surface-muted);
+  --btn-secondary-glow: var(--glow-neutral);
+  --btn-ghost-bg: transparent;
+  --btn-ghost-text: var(--semantic-text-muted);
+  --btn-ghost-hover-bg: var(--semantic-surface-medium);
+  --btn-destructive-bg: #9f2344;
+  --btn-destructive-text: var(--oklch-white);
+  --btn-destructive-glow: var(--glow-error);
+  --btn-success-bg: linear-gradient(135deg, var(--semantic-success), var(--semantic-success-text));
+  --btn-success-text: var(--semantic-text-inverse);
+  --btn-success-glow: var(--glow-success);
+  /* Outline variant (shadcn/ui compatible) */
+  --btn-outline-border: var(--semantic-border-strong);
+  --btn-outline-text: var(--semantic-text);
+  --btn-outline-hover-bg: var(--semantic-surface-muted);
+  --btn-outline-glow: none;
+  /* Link variant (shadcn/ui compatible) */
+  --btn-link-text: var(--semantic-primary);
+  /* Button shadow fallbacks (for non-hover state) */
+  --btn-primary-shadow: 0 4px 15px var(--semantic-primary-muted);
+  --btn-destructive-shadow: 0 4px 15px var(--semantic-error-muted);
+  --btn-success-shadow: 0 4px 15px var(--semantic-success-muted);
+  --btn-glow-radial: radial-gradient(circle, var(--oklch-white-15) 0%, transparent 70%);
+
+  /* ========================================
+     BADGE VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  /* shadcn/ui compatible variants */
+  --badge-default-bg: var(--semantic-surface-muted);
+  --badge-default-text: var(--semantic-text);
+  --badge-default-border: var(--semantic-border);
+  --badge-secondary-bg: var(--semantic-surface-overlay);
+  --badge-secondary-text: var(--semantic-text-muted);
+  --badge-secondary-border: var(--semantic-border);
+  --badge-destructive-bg: var(--semantic-error-subtle);
+  --badge-destructive-text: var(--semantic-error-text);
+  --badge-destructive-border: var(--semantic-error-muted);
+  --badge-outline-bg: transparent;
+  --badge-outline-text: var(--semantic-text);
+  --badge-outline-border: var(--semantic-border-strong);
+  /* Glass UI extended variants */
+  --badge-success-bg: var(--semantic-success-subtle);
+  --badge-success-text: var(--semantic-success-text);
+  --badge-success-border: var(--semantic-success-muted);
+  --badge-warning-bg: var(--semantic-warning-subtle);
+  --badge-warning-text: var(--semantic-warning-text);
+  --badge-warning-border: var(--semantic-warning-muted);
+  --badge-info-bg: var(--semantic-info-subtle);
+  --badge-info-text: var(--semantic-info-text);
+  --badge-info-border: var(--semantic-info-muted);
+
+  /* ========================================
+     INPUT VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --input-bg: var(--semantic-surface-strong);
+  --input-border: var(--semantic-border-strong);
+  --input-text: var(--semantic-text);
+  --input-placeholder: var(--semantic-text-disabled);
+  --input-focus-border: var(--semantic-primary);
+
+  /* ========================================
+     FOCUS RING VARIABLES (Layer 3 Component Tokens)
+     Unified focus glow for all components
+     ======================================== */
+  --focus-glow: 0 0 0 2px var(--semantic-primary-muted), 0 0 12px var(--semantic-primary-subtle);
+
+  /* ========================================
+     ALERT VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  /* shadcn/ui compatible variants */
+  --alert-default-bg: var(--semantic-info-subtle);
+  --alert-default-border: var(--semantic-info-muted);
+  --alert-default-text: var(--semantic-info-text);
+  --alert-destructive-bg: var(--semantic-error-subtle);
+  --alert-destructive-border: var(--semantic-error-muted);
+  --alert-destructive-text: var(--semantic-error-text);
+  /* Glass UI extended variants */
+  --alert-success-bg: var(--semantic-success-subtle);
+  --alert-success-border: var(--semantic-success-muted);
+  --alert-success-text: var(--semantic-success-text);
+  --alert-warning-bg: var(--semantic-warning-subtle);
+  --alert-warning-border: var(--semantic-warning-muted);
+  --alert-warning-text: var(--semantic-warning-text);
+  /* Alias for FlagAlertGlass danger type */
+  --alert-danger-bg: var(--alert-destructive-bg);
+  --alert-danger-border: var(--alert-destructive-border);
+  --alert-danger-text: var(--alert-destructive-text);
+
+  /* ========================================
+     TOGGLE/CHECKBOX VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --toggle-bg: var(--semantic-border);
+  --toggle-active-bg: linear-gradient(135deg, var(--semantic-primary), var(--semantic-secondary));
+  --toggle-knob: var(--semantic-text-inverse);
+  --toggle-glow: var(--glow-primary);
+  /* Toggle outline variant (shadcn/ui compatible) */
+  --toggle-outline-border: var(--semantic-border-strong);
+  --toggle-outline-active-border: var(--semantic-primary);
+  --toggle-outline-active-bg: var(--semantic-primary-subtle);
+  --checkbox-bg: var(--semantic-surface-strong);
+  --checkbox-border: var(--semantic-border-strong);
+  --checkbox-checked-bg: var(--semantic-primary);
+  --checkbox-glow: 0 0 0 3px var(--semantic-primary-subtle);
+
+  /* ========================================
+     TABS VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --tab-bg: transparent;
+  --tab-active-bg: var(--semantic-primary-subtle);
+  --tab-active-text: var(--semantic-primary);
+  --tab-border: var(--semantic-border);
+  --tab-indicator: var(--semantic-primary);
+  --tab-container-bg: var(--semantic-surface-muted);
+  --tab-container-border: var(--semantic-border);
+
+  /* ========================================
+     STEPPER VARIABLES (using semantic tokens)
+     ======================================== */
+  /* Step indicator backgrounds */
+  --stepper-step-bg: var(--semantic-surface);
+  --stepper-step-active-bg: var(--semantic-primary-muted);
+  --stepper-step-completed-bg: var(--semantic-primary);
+  --stepper-step-disabled-bg: var(--semantic-surface-muted);
+  /* Step indicator borders */
+  --stepper-step-border: var(--semantic-border);
+  --stepper-step-active-border: var(--semantic-primary-subtle);
+  --stepper-step-completed-border: var(--semantic-primary);
+  --stepper-step-disabled-border: var(--semantic-border-muted);
+  /* Step indicator text */
+  --stepper-step-text: var(--semantic-text-muted);
+  --stepper-step-active-text: var(--semantic-primary-text);
+  --stepper-step-completed-text: var(--semantic-text-inverse);
+  --stepper-step-disabled-text: var(--semantic-text-disabled);
+  /* Connector lines */
+  --stepper-connector-bg: var(--semantic-border);
+  --stepper-connector-active-bg: var(--semantic-primary);
+  /* Glow effects */
+  --stepper-step-glow: none;
+  --stepper-step-active-glow: var(--glow-primary);
+  /* Label colors */
+  --stepper-label-text: var(--semantic-text);
+  --stepper-description-text: var(--semantic-text-subtle);
+
+  /* ========================================
+     MODAL/DROPDOWN VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --modal-bg: var(--semantic-surface-strong);
+  --modal-border: var(--semantic-border);
+  --modal-overlay: var(--oklch-black-50);
+  --modal-glow: 0 25px 50px var(--semantic-shadow);
+  --modal-glow-effect: none;
+  --modal-close-btn-bg: var(--semantic-surface-muted);
+  --modal-close-btn-border: none;
+  --modal-close-btn-hover-glow: 0 0 10px var(--semantic-primary-muted);
+  --dropdown-bg: var(--semantic-surface-strong);
+  --dropdown-border: var(--semantic-border);
+  --dropdown-item-hover: var(--semantic-surface-intense);
+  --dropdown-item-text: var(--semantic-text);
+  --dropdown-icon: var(--semantic-text-muted);
+  --dropdown-icon-hover: var(--semantic-primary);
+  --dropdown-divider: var(--semantic-border);
+  --dropdown-glow: 0 10px 40px var(--semantic-shadow);
+
+  /* Separator Variables */
+  --separator-bg: var(--semantic-border);
+  --separator-glow: none;
+
+  /* ScrollArea Variables */
+  --scroll-thumb-bg: var(--semantic-surface-intense);
+  --scroll-thumb-hover-bg: var(--semantic-primary-muted);
+  --scroll-thumb-border: var(--semantic-border);
+  --scroll-track-bg: var(--semantic-surface-muted);
+
+  /* Popover Variables */
+  --popover-bg: var(--semantic-surface-strong);
+  --popover-border: var(--semantic-border);
+  --popover-shadow: 0 10px 40px var(--semantic-shadow);
+  --popover-arrow-bg: var(--semantic-surface-strong);
+
+  /* HoverCard Variables */
+  --hovercard-bg: var(--semantic-surface-strong);
+  --hovercard-border: var(--semantic-border);
+  --hovercard-shadow: var(--popover-shadow);
+  --hovercard-arrow-bg: var(--semantic-surface-strong);
+
+  /* Select Variables - Used by ComboBoxGlass */
+  --select-item-hover-bg: var(--semantic-surface-intense);
+  --select-item-selected-bg: var(--semantic-primary-subtle);
+  --select-item-selected-text: var(--semantic-primary);
+
+  /* ========================================
+     TEXT VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --text-primary: var(--semantic-text);
+  --text-secondary: var(--semantic-text-muted);
+  --text-muted: var(--semantic-text-subtle);
+  --text-accent: var(--semantic-primary-text);
+  --text-inverse: var(--semantic-text-inverse);
+
+  /* ========================================
+     SLIDER VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --slider-track: var(--semantic-border);
+  --slider-fill: var(--semantic-primary);
+  --slider-fill-glow: none;
+  --slider-thumb: var(--semantic-text-inverse);
+  --slider-thumb-border: var(--semantic-primary);
+  --slider-thumb-glow: var(--glow-primary);
+  --slider-thumb-shadow: 0 2px 4px var(--semantic-shadow);
+
+  /* ========================================
+     AVATAR VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --avatar-bg: linear-gradient(135deg, var(--semantic-primary), var(--semantic-secondary));
+  --avatar-border: var(--semantic-text-inverse);
+  --avatar-shadow: 0 4px 12px var(--semantic-primary-muted);
+  --avatar-hover-glow: 0 8px 24px var(--semantic-primary-muted);
+
+  /* ========================================
+     STATUS COLORS (Layer 3 Component Tokens)
+     Semantic naming for clarity:
+     - online: Available/Success (green)
+     - away: Idle/Warning (yellow)
+     - busy: Unavailable/Error (red)
+     ======================================== */
+  --status-online: var(--semantic-success);
+  --status-online-glow: none;
+  --status-offline: var(--semantic-text-muted);
+  --status-busy: var(--semantic-error);
+  --status-busy-glow: none;
+  --status-away: var(--semantic-warning);
+  --status-away-glow: none;
+
+  /* ========================================
+     SEGMENTED CONTROL VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --segmented-container-bg: var(--semantic-surface-muted);
+  --segmented-container-border: var(--semantic-border);
+  --segmented-active-bg: var(--semantic-surface-strong);
+  --segmented-active-text: var(--semantic-text-inverse);
+  --segmented-inactive-text: var(--semantic-text-muted);
+
+  /* ========================================
+     RAINBOW PROGRESS VARIABLES (Layer 3 Component Tokens)
+     ======================================== */
+  --rainbow-glow: inset 0 1px 2px var(--oklch-black-10);
+  --rainbow-animation: none;
+
+  /* ========================================
+     SKELETON VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --skeleton-bg: var(--semantic-border);
+  --skeleton-shine: var(--semantic-surface);
+
+  /* ========================================
+     NOTIFICATION VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --notification-bg: var(--semantic-surface-strong);
+  --notification-border: var(--semantic-border-strong);
+  --notification-shadow: 0 10px 40px var(--semantic-shadow);
+  --notification-info-color: var(--semantic-info);
+  --notification-info-glow: var(--glow-info);
+  --notification-info-icon-bg: var(--semantic-info-subtle);
+  --notification-success-color: var(--semantic-success);
+  --notification-success-glow: var(--glow-success);
+  --notification-success-icon-bg: var(--semantic-success-subtle);
+  --notification-warning-color: var(--semantic-warning);
+  --notification-warning-glow: var(--glow-warning);
+  --notification-warning-icon-bg: var(--semantic-warning-subtle);
+  --notification-error-color: var(--semantic-error);
+  --notification-error-glow: var(--glow-error);
+  --notification-error-icon-bg: var(--semantic-error-subtle);
+
+  /* ========================================
+     TOOLTIP VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --tooltip-bg: var(--semantic-surface-strong);
+  --tooltip-text: var(--semantic-text);
+  --tooltip-border: var(--semantic-border);
+  --tooltip-shadow: 0 4px 12px var(--semantic-shadow);
+
+  /* ========================================
+     CARD VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --card-bg: var(--semantic-glass-bg);
+  --card-border: var(--semantic-border);
+  --card-hover-bg: var(--semantic-surface-strong);
+  --card-hover-border: var(--semantic-border-strong);
+  --card-hover-glow: 0 8px 24px var(--semantic-primary-subtle);
+  --card-subtle-bg: var(--semantic-glass-bg-subtle);
+  --card-subtle-border: var(--semantic-border-subtle);
+  --card-medium-bg: var(--semantic-glass-bg);
+  --card-medium-border: var(--semantic-border);
+  --card-strong-bg: var(--semantic-surface-strong);
+  --card-strong-border: var(--semantic-border-strong);
+  --expanded-bg: var(--semantic-glass-bg-medium);
+  --expanded-border: var(--semantic-secondary);
+
+  /* ========================================
+     PROGRESS VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --progress-bg: var(--semantic-border);
+  --progress-glow: var(--glow-primary);
+  --progress-glow-violet: 0 0 8px var(--oklch-violet-500-30);
+  --progress-glow-blue: 0 0 8px var(--oklch-blue-500-30);
+  --progress-glow-cyan: 0 0 8px var(--oklch-cyan-500-30);
+  --progress-glow-amber: 0 0 8px var(--oklch-amber-500-30);
+  --progress-glow-emerald: 0 0 8px var(--oklch-emerald-500-30);
+  --progress-glow-rose: 0 0 8px var(--oklch-rose-400-30);
+
+  /* ========================================
+     METRIC CARD VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  /* shadcn/ui compatible variants */
+  --metric-default-bg: transparent;
+  --metric-default-text: var(--semantic-info);
+  --metric-default-border: transparent;
+  --metric-default-glow: none;
+
+  --metric-secondary-bg: transparent;
+  --metric-secondary-text: var(--semantic-text-muted);
+  --metric-secondary-border: transparent;
+  --metric-secondary-glow: none;
+
+  --metric-success-bg: transparent;
+  --metric-success-text: var(--semantic-success);
+  --metric-success-border: transparent;
+  --metric-success-glow: none;
+
+  --metric-warning-bg: transparent;
+  --metric-warning-text: var(--semantic-warning);
+  --metric-warning-border: transparent;
+  --metric-warning-glow: none;
+
+  --metric-destructive-bg: transparent;
+  --metric-destructive-text: var(--semantic-error);
+  --metric-destructive-border: transparent;
+  --metric-destructive-glow: none;
+
+  /* ========================================
+     PROFILE AVATAR VARIABLES (Layer 3 Component Tokens)
+     Using semantic and primitive tokens
+     ======================================== */
+  --profile-avatar-border: var(--semantic-text-inverse);
+  --profile-avatar-glow: 0 8px 24px var(--semantic-primary-muted);
+
+  /* ========================================
+     BACKGROUND VARIABLES (using primitive tokens)
+     Page background gradients and grid
+     ======================================== */
+  --bg-from: #f4f7fc;
+  --bg-via: #eef1fa;
+  --bg-to: #f8f9fd;
+  --grid-color: var(--oklch-black-10);
+  --grid-opacity: 0.015;
+  --footer-text: var(--oklch-slate-400-60);
+
+  /* ========================================
+     NOTE: Demo-specific tokens (year-card, ai-card, header,
+     repo-card, sparkline) have been moved to:
+     src/styles/demo/demo-tokens.css
+     ======================================== */
+
+  /* ========================================
+     SIDEBAR VARIABLES (shadcn/ui compatible)
+     ======================================== */
+  --sidebar-width: 16rem;
+  --sidebar-width-mobile: 18rem;
+  --sidebar-width-icon: 3rem;
+  --sidebar-bg: var(--semantic-surface-muted);
+  --sidebar-border: var(--semantic-border);
+  --sidebar-primary: var(--semantic-primary);
+  --sidebar-primary-foreground: var(--semantic-text-inverse);
+  --sidebar-accent: var(--semantic-surface-elevated);
+  --sidebar-accent-foreground: var(--semantic-text);
+  --sidebar-ring: var(--semantic-primary-muted);
+  --sidebar-glow: 0 4px 20px var(--semantic-shadow);
+  --sidebar-backdrop-blur: var(--blur-md);
+  --sidebar-foreground: var(--semantic-text);
+}

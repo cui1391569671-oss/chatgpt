@@ -11,6 +11,7 @@ import {validEventImages,calendarImagesRoute} from './calendar-images.mjs';
 import {validRequirements} from './requirements.mjs';
 import {vocabularySyncStatus,vocabularyPushRoute} from './vocabulary-sheet.mjs';
 import {FITNESS_MEDIA} from './fitness-media.mjs';
+import {WALLPAPER} from './wallpaper-assets.mjs';
 import {validFitnessSession,validFitnessProfile} from './fitness.mjs';
 import {validPracticeSession} from './word-practice.mjs';
 import {validAnnualPlans} from './annual-plans.mjs';
@@ -141,6 +142,10 @@ async function fetchRoute(request,env){
     const asset=FITNESS_MEDIA[url.pathname.slice('/assets/fitness/'.length)];
     if(!asset)return json({error:'Not found'},404);
     return new Response(request.method==='HEAD'?null:Uint8Array.from(atob(asset.data),c=>c.charCodeAt(0)),{headers:{'Content-Type':asset.type,'Cache-Control':'private, max-age=3600','X-Content-Type-Options':'nosniff'}});
+   }
+   if(url.pathname==='/assets/workspace-wallpaper.webp'){
+    if(!['GET','HEAD'].includes(request.method))return json({error:'Method not allowed'},405);
+    return new Response(request.method==='HEAD'?null:Uint8Array.from(atob(WALLPAPER),c=>c.charCodeAt(0)),{headers:{'Content-Type':'image/webp','Cache-Control':'private, max-age=3600','X-Content-Type-Options':'nosniff'}});
    }
    if(['/assets/tasks.js','/assets/tasks.css','/assets/tasks.LICENSE.txt'].includes(url.pathname)&&['GET','HEAD'].includes(request.method))return staticAssetResponse(request,url.pathname,url.pathname.endsWith('.js')?TASKS_JS:url.pathname.endsWith('.css')?TASKS_CSS:TASKS_LICENSE);
    if(['/assets/ilamy-3.2.1.js','/assets/ilamy-3.2.1.css','/assets/calendar.js.LEGAL.txt'].includes(url.pathname)&&['GET','HEAD'].includes(request.method))return staticAssetResponse(request,url.pathname,url.pathname.endsWith('.js')?ILAMY_JS:url.pathname.endsWith('.css')?ILAMY_CSS:ILAMY_LICENSE);

@@ -1,3 +1,4 @@
+import {useWorkspaceMotionOff} from '@/workspace-motion-policy';
 'use client'
 
 import * as React from 'react'
@@ -33,8 +34,10 @@ function DialogOverlay({
   className,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+  const motionOff=useWorkspaceMotionOff();
   return (
     <DialogPrimitive.Overlay
+      transition={{duration:motionOff?0:0.18}}
       data-ui-portal='' data-slot='dialog-overlay'
       className={cn(
         'fixed inset-0 z-50 bg-black/50',
@@ -58,11 +61,12 @@ function DialogContent({
   returnFocus?: () => HTMLElement | null | undefined
   returnFocusFallback?: () => HTMLElement | null | undefined
 }) {
+  const motionOff=useWorkspaceMotionOff();
   return (
     <DialogPortal data-slot='dialog-portal'>
       <DialogOverlay />
       <DialogPrimitive.Content
-        transition={{type:"tween",duration:0.2}} exitTransition={{type:"tween",duration:0.15}}
+        transition={{type:"tween",duration:motionOff?0:0.18}} exitTransition={{type:"tween",duration:motionOff?0:0.15}}
         data-ui-portal='' data-slot='dialog-content'
         className={cn(
           'workspace-dialog',

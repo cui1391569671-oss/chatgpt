@@ -1,4 +1,4 @@
-/* Generated from shadcn-glass-ui 32d7625 Light; edit adapter, not preset values. */
+/* Generated from pinned shadcn primitives and workspace-theme.css; edit the theme owner. */
 :root, [data-theme="light"] {
 
   
@@ -345,14 +345,14 @@
 
 
   
-  --background-base: 0 0% 100%;
-  --foreground-base: 222 47% 11%;
+  --background-base: 220 35% 97%;
+  --foreground-base: 222 35% 16%;
 
   --card-base: 0 0% 100%;
-  --card-fg-base: 222 47% 11%;
+  --card-fg-base: 222 35% 16%;
 
   --popover-base: 0 0% 100%;
-  --popover-fg-base: 222 47% 11%;
+  --popover-fg-base: 222 35% 16%;
 
   --primary-base: 263 70% 50%;
   --primary-fg-base: 210 40% 98%;
@@ -389,71 +389,71 @@
   
 
   
-  --semantic-primary: var(--oklch-violet-600);
-  --semantic-primary-hover: var(--oklch-violet-500);
-  --semantic-primary-muted: var(--oklch-violet-600-25);
-  --semantic-primary-subtle: var(--oklch-violet-600-15);
-  --semantic-primary-text: var(--oklch-violet-600);
+  --semantic-primary: #6554c0;
+  --semantic-primary-hover: #5744b3;
+  --semantic-primary-muted: rgb(101 84 192 / .2);
+  --semantic-primary-subtle: rgb(101 84 192 / .08);
+  --semantic-primary-text: #5945b0;
 
   
-  --semantic-secondary: var(--oklch-violet-500);
-  --semantic-secondary-muted: var(--oklch-violet-500-20);
+  --semantic-secondary: #7353ba;
+  --semantic-secondary-muted: rgb(115 83 186 / .14);
 
   
-  --semantic-surface: var(--oklch-slate-100-80);
-  --semantic-surface-muted: var(--oklch-slate-100-50);
-  --semantic-surface-elevated: var(--oklch-white);
-  --semantic-surface-overlay: var(--oklch-slate-100-40);
-  --semantic-surface-strong: var(--oklch-white);
+  --semantic-surface: #f5f7fc;
+  --semantic-surface-muted: #edf1f8;
+  --semantic-surface-elevated: #ffffff;
+  --semantic-surface-overlay: rgb(234 239 249 / .8);
+  --semantic-surface-strong: #ffffff;
   
-  --semantic-surface-medium: var(--oklch-slate-100-80);
-  --semantic-surface-intense: var(--oklch-slate-100-90);
+  --semantic-surface-medium: #e8edf7;
+  --semantic-surface-intense: #dde5f2;
 
   
-  --semantic-border: var(--oklch-slate-200);
-  --semantic-border-muted: var(--oklch-slate-200-50);
-  --semantic-border-strong: var(--oklch-slate-200-80);
-  --semantic-border-subtle: var(--oklch-slate-200-40);
+  --semantic-border: #d3dbe9;
+  --semantic-border-muted: rgb(91 111 145 / .18);
+  --semantic-border-strong: #8796af;
+  --semantic-border-subtle: rgb(91 111 145 / .12);
 
   
-  --semantic-text: var(--oklch-slate-800);
-  --semantic-text-muted: var(--oklch-slate-500);
-  --semantic-text-subtle: var(--oklch-slate-500);
-  --semantic-text-disabled: var(--oklch-slate-400);
-  --semantic-text-inverse: var(--oklch-white);
+  --semantic-text: #243047;
+  --semantic-text-muted: #56647b;
+  --semantic-text-subtle: #627087;
+  --semantic-text-disabled: #69778d;
+  --semantic-text-inverse: #ffffff;
 
   
-  --semantic-success: var(--oklch-emerald-500);
+  --semantic-success: #16815e;
   --semantic-success-muted: var(--oklch-emerald-500-20);
   --semantic-success-subtle: var(--oklch-emerald-500-10);
-  --semantic-success-text: var(--oklch-emerald-500);
+  --semantic-success-text: #116c4d;
 
   
-  --semantic-warning: var(--oklch-amber-500);
+  --semantic-warning: #a3660c;
   --semantic-warning-muted: var(--oklch-amber-400-20);
   --semantic-warning-subtle: var(--oklch-amber-400-10);
-  --semantic-warning-text: var(--oklch-amber-500);
+  --semantic-warning-text: #85520a;
 
   
-  --semantic-error: var(--oklch-red-500);
+  --semantic-error: #b83254;
   --semantic-error-muted: var(--oklch-red-500-20);
   --semantic-error-subtle: var(--oklch-red-500-10);
-  --semantic-error-text: var(--oklch-red-500);
+  --semantic-error-text: #a32b49;
 
   
-  --semantic-info: var(--oklch-blue-500);
+  --semantic-info: #2471a4;
   --semantic-info-muted: var(--oklch-blue-500-20);
   --semantic-info-subtle: var(--oklch-blue-400-10);
-  --semantic-info-text: var(--oklch-blue-500);
+  --semantic-info-text: #1d658f;
 
   
-  --semantic-shadow: var(--oklch-black-10);
+  --semantic-shadow: rgb(45 61 91 / .12);
 
   
-  --semantic-glass-bg: var(--oklch-white-60);
-  --semantic-glass-bg-subtle: var(--oklch-white-40);
-  --semantic-glass-bg-medium: var(--oklch-white-70);
-  --semantic-glass-bg-strong: var(--oklch-white-85);
+  --semantic-glass-bg: rgb(255 255 255 / .86);
+  --semantic-glass-bg-subtle: rgb(255 255 255 / .66);
+  --semantic-glass-bg-medium: rgb(255 255 255 / .9);
+  --semantic-glass-bg-strong: rgb(255 255 255 / .96);
 
   
   --glass-bg: var(--semantic-glass-bg);
@@ -482,18 +482,18 @@
   --glow-neutral: 0 4px 12px var(--oklch-black-8);
 
   
-  --orb-1: var(--oklch-blue-400-20);
-  --orb-2: var(--oklch-violet-400-15);
-  --orb-3: var(--oklch-cyan-400-15);
+  --orb-1: rgb(82 120 255 / .12);
+  --orb-2: rgb(140 90 255 / .1);
+  --orb-3: rgb(59 196 230 / .08);
   --orb-4: var(--oklch-violet-600-10);
   --orb-5: transparent;
 
   
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.15);
-  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.15);
-  --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-sm: 0 4px 16px rgb(45 61 91 / .06);
+  --shadow: 0 12px 36px rgb(45 61 91 / .1);
+  --shadow-md: 0 12px 32px rgb(45 61 91 / .1);
+  --shadow-lg: 0 20px 56px rgb(45 61 91 / .14);
+  --shadow-xl: 0 24px 64px rgb(45 61 91 / .16);
 
   
   --btn-primary-bg: linear-gradient(135deg, var(--semantic-primary), var(--semantic-secondary));
@@ -503,7 +503,7 @@
     var(--semantic-primary-hover),
     var(--semantic-primary)
   );
-  --btn-primary-glow: var(--glow-primary);
+  --btn-primary-glow: 0 0 24px rgb(116 142 255 / .24);
   --btn-secondary-bg: var(--semantic-surface-elevated);
   --btn-secondary-text: var(--semantic-text);
   --btn-secondary-border: var(--semantic-border);
@@ -512,8 +512,8 @@
   --btn-ghost-bg: transparent;
   --btn-ghost-text: var(--semantic-text-muted);
   --btn-ghost-hover-bg: var(--semantic-surface-medium);
-  --btn-destructive-bg: linear-gradient(135deg, var(--semantic-error), var(--semantic-error-text));
-  --btn-destructive-text: var(--semantic-text-inverse);
+  --btn-destructive-bg: #9f2344;
+  --btn-destructive-text: var(--oklch-white);
   --btn-destructive-glow: var(--glow-error);
   --btn-success-bg: linear-gradient(135deg, var(--semantic-success), var(--semantic-success-text));
   --btn-success-text: var(--semantic-text-inverse);
@@ -558,7 +558,7 @@
 
   
   --input-bg: var(--semantic-surface-strong);
-  --input-border: var(--semantic-border);
+  --input-border: var(--semantic-border-strong);
   --input-text: var(--semantic-text);
   --input-placeholder: var(--semantic-text-disabled);
   --input-focus-border: var(--semantic-primary);
@@ -806,9 +806,9 @@
   --profile-avatar-glow: 0 8px 24px var(--semantic-primary-muted);
 
   
-  --bg-from: var(--oklch-slate-100);
-  --bg-via: var(--oklch-slate-100);
-  --bg-to: var(--oklch-slate-100);
+  --bg-from: #f4f7fc;
+  --bg-via: #eef1fa;
+  --bg-to: #f8f9fd;
   --grid-color: var(--oklch-black-10);
   --grid-opacity: 0.015;
   --footer-text: var(--oklch-slate-400-60);

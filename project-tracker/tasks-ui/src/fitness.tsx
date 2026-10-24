@@ -1,4 +1,5 @@
-import {motion,useReducedMotion} from 'motion/react';
+import {useWorkspaceMotionOff} from '@/workspace-motion-policy';
+import {motion} from 'motion/react';
 import {WorkspaceProgress} from '@/components/workspace-progress';
 import {SaveButton} from '@/components/save-button';
 import React,{useState,useRef,useEffect} from 'react';
@@ -17,7 +18,7 @@ function ExerciseAnimation({exercise}){
  const animate=playing&&visible&&!background&&!failed;
  return <figure ref={figure} className='fitness-animation' aria-label={exercise.name+'动画'}>{unavailable?<p role='status'>示意图暂时无法加载，可查看下方动作步骤。</p>:<img src={'/assets/fitness/'+exercise.id+(animate?'.gif':'.png')} alt={exercise.name+'动作示意'} width={480} height={270} loading='lazy' decoding='async' onError={()=>{if(animate)setFailed(true);else setUnavailable(true);}}/>}<figcaption><span className='muted'>{failed?'动画加载失败，已显示静态图':exercise.id==='Plank'?'静态保持姿势 · 自然呼吸':'动作示意 · 配合下方步骤'}</span><Button type='button' variant='outline' disabled={failed||unavailable} aria-pressed={playing} onClick={()=>setPlaying(p=>!p)}>{failed||unavailable?'动画暂不可用':playing?'暂停动画':'播放动画'}</Button></figcaption></figure>;
 }
-function CompletedSet({checked,children}){const reduce=useReducedMotion();return <motion.label initial={false} animate={{scale:!reduce&&checked?[1,1.04,1]:1}} transition={{duration:reduce?0:0.18}}>{children}</motion.label>;}
+function CompletedSet({checked,children}){const reduce=useWorkspaceMotionOff();return <motion.label initial={false} animate={{scale:!reduce&&checked?[1,1.04,1]:1}} transition={{duration:reduce?0:0.18}}>{children}</motion.label>;}
 function Fitness({bridge,controller}){
  const [sessions,setSessions]=useState(bridge.sessions),[query,setQuery]=useState(''),[active,setActive]=useState(false),[pending,setPending]=useState(false),[error,setError]=useState(''),[done,setDone]=useState({}),[saved,setSaved]=useState(false);
  const [profile,setProfile]=useState(bridge.profile),[profileDraft,setProfileDraft]=useState(()=>structuredClone(bridge.profile||FITNESS_PROFILE_DEFAULTS)),[profileEditor,setProfileEditor]=useState(!bridge.profile),[profileError,setProfileError]=useState('');
