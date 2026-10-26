@@ -5,7 +5,7 @@ import SpotlightCard from './vendor/react-bits/SpotlightCard';
 import Magnet from './vendor/react-bits/Magnet';
 import AnimatedContent from './vendor/react-bits/AnimatedContent';
 import BlurText from './vendor/react-bits/BlurText';
-import GradientText from './vendor/react-bits/GradientText';
+import {WorkspaceGradientText} from './components/workspace-gradient-text';
 import {motionTiming,useWorkspaceMotionOff} from './workspace-motion-policy';
 
 const cardSelector='#content .card,#content .workspace-board-card,#content .workspace-goal-card';
@@ -61,7 +61,7 @@ export function WorkspaceReactBits(){
   document.addEventListener('click',click);window.addEventListener('workspace-celebrate',celebrate);
   return()=>{document.removeEventListener('click',click);window.removeEventListener('workspace-celebrate',celebrate);clearTimeout(completeTimer.current);setComplete(false);};
  },[off]);
- const headingGradient=targets.view==='home'&&targets.title?.matches('.home2-intro h1')&&<GradientText target={targets.title} colors={['var(--heading-gradient-start)','var(--heading-gradient-middle)','var(--heading-gradient-end)']} animationSpeed={8} variant='flow' glow={.4}/>;
+ const headingGradient=targets.view==='home'&&targets.title?.matches('.home2-intro h1')&&<WorkspaceGradientText target={targets.title}/>;
  if(off)return headingGradient;
  const sparkColor=getComputedStyle(document.body).getPropertyValue('--semantic-primary').trim()||getComputedStyle(document.body).color;
  return <>

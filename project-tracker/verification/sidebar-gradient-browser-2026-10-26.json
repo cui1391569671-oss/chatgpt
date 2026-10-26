@@ -1,0 +1,430 @@
+{
+  "checks": [
+    {
+      "scope": "work",
+      "labels": [
+        {
+          "gradient": true,
+          "name": "工作概览",
+          "selected": true
+        },
+        {
+          "gradient": false,
+          "name": "项目问题",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "待办事项",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "项目资料",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "需求登记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "工作笔记",
+          "selected": false
+        }
+      ],
+      "otherGradientCount": 0,
+      "overflow": false,
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "labels": [
+        {
+          "gradient": true,
+          "name": "工作概览",
+          "selected": true
+        },
+        {
+          "gradient": false,
+          "name": "项目问题",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "待办事项",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "项目资料",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "需求登记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "工作笔记",
+          "selected": false
+        }
+      ],
+      "otherGradientCount": 0,
+      "overflow": false,
+      "width": 582
+    },
+    {
+      "scope": "work",
+      "labels": [
+        {
+          "gradient": true,
+          "name": "工作概览",
+          "selected": true
+        },
+        {
+          "gradient": false,
+          "name": "项目问题",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "待办事项",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "项目资料",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "需求登记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "工作笔记",
+          "selected": false
+        }
+      ],
+      "otherGradientCount": 0,
+      "overflow": false,
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "labels": [
+        {
+          "gradient": true,
+          "name": "工作概览",
+          "selected": true
+        },
+        {
+          "gradient": false,
+          "name": "项目问题",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "待办事项",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "项目资料",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "需求登记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "工作笔记",
+          "selected": false
+        }
+      ],
+      "otherGradientCount": 0,
+      "overflow": false,
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "labels": [
+        {
+          "gradient": true,
+          "name": "我的一天",
+          "selected": true
+        },
+        {
+          "gradient": false,
+          "name": "生活日历",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "年度计划",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "待办事项",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "需求登记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "我的笔记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "打卡记录",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "英语学习",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "居家健身",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "娱乐记录",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "我的衣橱",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "设备维保",
+          "selected": false
+        }
+      ],
+      "otherGradientCount": 0,
+      "overflow": false,
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "labels": [
+        {
+          "gradient": true,
+          "name": "我的一天",
+          "selected": true
+        },
+        {
+          "gradient": false,
+          "name": "生活日历",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "年度计划",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "待办事项",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "需求登记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "我的笔记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "打卡记录",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "英语学习",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "居家健身",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "娱乐记录",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "我的衣橱",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "设备维保",
+          "selected": false
+        }
+      ],
+      "otherGradientCount": 0,
+      "overflow": false,
+      "width": 582
+    },
+    {
+      "scope": "personal",
+      "labels": [
+        {
+          "gradient": true,
+          "name": "我的一天",
+          "selected": true
+        },
+        {
+          "gradient": false,
+          "name": "生活日历",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "年度计划",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "待办事项",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "需求登记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "我的笔记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "打卡记录",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "英语学习",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "居家健身",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "娱乐记录",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "我的衣橱",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "设备维保",
+          "selected": false
+        }
+      ],
+      "otherGradientCount": 0,
+      "overflow": false,
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "labels": [
+        {
+          "gradient": true,
+          "name": "我的一天",
+          "selected": true
+        },
+        {
+          "gradient": false,
+          "name": "生活日历",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "年度计划",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "待办事项",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "需求登记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "我的笔记",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "打卡记录",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "英语学习",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "居家健身",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "娱乐记录",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "我的衣橱",
+          "selected": false
+        },
+        {
+          "gradient": false,
+          "name": "设备维保",
+          "selected": false
+        }
+      ],
+      "otherGradientCount": 0,
+      "overflow": false,
+      "width": 320
+    }
+  ],
+  "clickTransfer": true,
+  "keyboardTransfer": true
+}
