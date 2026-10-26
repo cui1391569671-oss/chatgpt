@@ -149,13 +149,33 @@ export default function BellToggle({
     if (reduce) [glyphRef.current, clapperRef.current, waveLeft.current, waveRight.current].forEach(node => node?.getAnimations().forEach(animation => animation.cancel()));
   }, [reduce]);
 
+  const hasReminders = count > 0;
   useEffect(() => {
-    if (action && disabled) return;
+    if (!action || disabled || reduce || !hasReminders) return undefined;
+    let timer = 0;
+    const stop = () => {
+      window.clearTimeout(timer);
+      [glyphRef.current, clapperRef.current, waveLeft.current, waveRight.current]
+        .forEach(node => node?.getAnimations().forEach(animation => animation.cancel()));
+    };
+    const ring = () => {
+      if (document.hidden) return;
+      swing(ringAmplitude, ringPasses, ringDuration);
+      timer = window.setTimeout(ring, Math.max(5000, ringDuration + 1000));
+    };
+    const visibility = () => { stop(); if (!document.hidden) ring(); };
+    document.addEventListener('visibilitychange', visibility);
+    ring();
+    return () => { stop(); document.removeEventListener('visibilitychange', visibility); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [action, disabled, reduce, hasReminders, ringAmplitude, ringPasses, ringDuration, ringDecay, waves]);
+
+  useEffect(() => {
+    if (action) return;
     const was = prevCount.current;
     prevCount.current = count;
-    if (count > was && (on || action) && !disabled && !reduce) {
-      swing(action ? ringAmplitude : ringAmplitude * WOBBLE.amplitude,
-        action ? ringPasses : WOBBLE.passes, action ? ringDuration : WOBBLE.duration);
+    if (count > was && on && !disabled && !reduce) {
+      swing(ringAmplitude * WOBBLE.amplitude, WOBBLE.passes, WOBBLE.duration);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count, action, disabled, on, reduce]);

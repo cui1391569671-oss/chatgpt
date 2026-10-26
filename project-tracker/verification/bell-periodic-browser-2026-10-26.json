@@ -1,0 +1,466 @@
+{
+  "positiveSamples": [
+    {
+      "ms": 34,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 208,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 380,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 569,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 752,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 930,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 1103,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 1290,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 1472,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 1655,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 1835,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 2021,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 2201,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 2374,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 2561,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 2732,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 2905,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 3085,
+      "transform": "matrix(1, 0, 0, 1, 0, 0)",
+      "moving": false
+    },
+    {
+      "ms": 3266,
+      "transform": "matrix(0.97328, 0.229621, -0.229621, 0.97328, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 3445,
+      "transform": "matrix(0.993801, 0.111174, -0.111174, 0.993801, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 3622,
+      "transform": "matrix(0.998243, -0.0592561, 0.0592561, 0.998243, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 3803,
+      "transform": "matrix(0.999867, -0.0163071, 0.0163071, 0.999867, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 3981,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 4161,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 4350,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 4525,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 4705,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 4887,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 5069,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 5256,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 5444,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 5629,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 5815,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 5998,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 6182,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 6365,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 6543,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 6721,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 6897,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 7078,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 7255,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 7437,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 7618,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 7802,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 7986,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 8169,
+      "transform": "matrix(0.969605, -0.244675, 0.244675, 0.969605, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 8352,
+      "transform": "matrix(0.984745, -0.174003, 0.174003, 0.984745, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 8528,
+      "transform": "matrix(0.995358, 0.0962466, -0.0962466, 0.995358, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 8706,
+      "transform": "matrix(0.9984, -0.0565429, 0.0565429, 0.9984, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 8887,
+      "transform": "matrix(1, -0.000919918, 0.000919918, 1, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 9071,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 9261,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 9445,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 9633,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 9817,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 10001,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 10184,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 10369,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 10553,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 10729,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 10905,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 11085,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 11264,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 11440,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 11626,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 11811,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 11997,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 12179,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 12368,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 12551,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 12727,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 12908,
+      "transform": "none",
+      "moving": false
+    },
+    {
+      "ms": 13093,
+      "transform": "matrix(1, 0, 0, 1, 0, 0)",
+      "moving": false
+    },
+    {
+      "ms": 13274,
+      "transform": "matrix(0.973299, 0.22954, -0.22954, 0.973299, 0, 0)",
+      "moving": true
+    },
+    {
+      "ms": 13451,
+      "transform": "matrix(0.993817, 0.111034, -0.111034, 0.993817, 0, 0)",
+      "moving": true
+    }
+  ],
+  "bursts": [
+    3266,
+    8169,
+    13274
+  ],
+  "clearSamples": [
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none"
+  ],
+  "clearedStopsImmediately": true,
+  "noRestartAfterSixSeconds": true,
+  "reducedPeriodicSamples": [
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none",
+    "none"
+  ],
+  "reducedStops": true,
+  "resumesAfterMotionRestored": true,
+  "disabledStopsImmediately": true,
+  "unmountNoErrors": true
+}
