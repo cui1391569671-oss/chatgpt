@@ -1,0 +1,79 @@
+.wb-gradient-text {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  min-width: 0;
+  vertical-align: baseline;
+  isolation: isolate;
+}
+
+.wb-gradient-text--border {
+  padding: 0.35em 0.75em;
+  border-radius: 999px;
+}
+
+.wb-gradient-text--border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: var(--gt-border);
+  border-radius: inherit;
+  background-image: var(--gt-gradient);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+.wb-gradient-text__inner {
+  position: relative;
+  display: inline-block;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.wb-gradient-text-target {
+  position: relative;
+  isolation: isolate;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.wb-gradient-text-target,
+.wb-gradient-text__content {
+  background-image: var(--gt-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.wb-gradient-text__glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--gt-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: blur(0.3em) saturate(1.4);
+  opacity: var(--gt-glow);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Preserve readable text when clipping is unavailable or system colors are forced. */
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+  .wb-gradient-text-target, .wb-gradient-text__content { -webkit-text-fill-color: currentColor; }
+  .wb-gradient-text__glow { display: none; }
+}
+@media (forced-colors: active) {
+  .wb-gradient-text-target, .wb-gradient-text__content { background-image: none; -webkit-text-fill-color: CanvasText; }
+  .wb-gradient-text__glow { display: none; }
+}

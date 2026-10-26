@@ -1,5 +1,6 @@
 @layer theme, base, components, utilities;
 @import "@svar-ui/react-gantt/all.css";
+@import "./vendor/react-bits/GradientText.css";
 @import "tailwindcss/theme.css" layer(theme);
 @layer base{.grid{grid-template-columns:none}h1,h2,h3,h4,h5,h6,p,fieldset{margin:0}button,input,textarea,select{font:inherit}button{background:transparent}textarea{resize:none}}
 @import "tailwindcss/utilities.css" layer(utilities);

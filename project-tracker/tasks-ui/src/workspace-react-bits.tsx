@@ -5,6 +5,7 @@ import SpotlightCard from './vendor/react-bits/SpotlightCard';
 import Magnet from './vendor/react-bits/Magnet';
 import AnimatedContent from './vendor/react-bits/AnimatedContent';
 import BlurText from './vendor/react-bits/BlurText';
+import GradientText from './vendor/react-bits/GradientText';
 import {motionTiming,useWorkspaceMotionOff} from './workspace-motion-policy';
 
 const cardSelector='#content .card,#content .workspace-board-card,#content .workspace-goal-card';
@@ -60,7 +61,8 @@ export function WorkspaceReactBits(){
   document.addEventListener('click',click);window.addEventListener('workspace-celebrate',celebrate);
   return()=>{document.removeEventListener('click',click);window.removeEventListener('workspace-celebrate',celebrate);clearTimeout(completeTimer.current);setComplete(false);};
  },[off]);
- if(off)return null;
+ const headingGradient=targets.view==='home'&&targets.title?.matches('.home2-intro h1')&&<GradientText target={targets.title} colors={['var(--heading-gradient-start)','var(--heading-gradient-middle)','var(--heading-gradient-end)']} animationSpeed={8} variant='flow' glow={.4}/>;
+ if(off)return headingGradient;
  const sparkColor=getComputedStyle(document.body).getPropertyValue('--semantic-primary').trim()||getComputedStyle(document.body).color;
  return <>
   {complete&&createPortal(<div className='wb-day-complete' role='status'><BlurText text='今日英语与健身，全部打卡完成 ✓' trigger='load' animateBy='letters' delay={16} stepDuration={.14} distance={6} blur={5}/></div>,document.body)}
@@ -69,6 +71,7 @@ export function WorkspaceReactBits(){
   {targets.cards.map(target=><SpotlightCard key={'card-'+nodeKey(target)} target={target} theme='light' spotlightColor='var(--semantic-primary)' intensity={.55} borderGlow={.7} spotlightSize={280} proximity={0} smoothing={.3} grain={0} ambient={false}/>)}
   {targets.buttons.map(target=><Magnet key={'button-'+nodeKey(target)} target={target} padding={12} maxOffset={2} magnetStrength={12} spring={{stiffness:170,damping:22}}/>)}
   {targets.covers.map(target=><Magnet key={'cover-'+nodeKey(target)} target={target} motionTarget={target.querySelector<HTMLElement>('img')||target} padding={0} maxOffset={0} tilt={7} scale={1.025} exclusive={false} spring={{stiffness:170,damping:22}}/>)}
+  {headingGradient}
   {targets.title&&<AnimatedHeading key={nodeKey(targets.title)} target={targets.title} view={targets.view}/>}
  </>;
 }
