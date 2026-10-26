@@ -4499,8 +4499,6 @@ body {
     border-color: CanvasText;
   }
 }
-@media(max-width:760px) {
-}
 .modern-project .project-empty-row td {
   padding-top: 22px;
   padding-bottom: 22px;
@@ -5043,8 +5041,6 @@ body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-contr
   padding: 9px var(--workspace-field-inset-end) 9px var(--workspace-field-inset-start);
   font-family: var(--admin-font);
 }
-@media(max-width:767px) {
-}
 .shadcn-workbench #workbenchShell [data-slot=sidebar] {
   --sidebar-width: 18rem;
   --sidebar-width-icon: 3rem;
@@ -5196,9 +5192,6 @@ body.shadcn-workbench .wb-search-trigger>span {
   }
 }
 @media(min-width:768px) and (max-width:1040px) {
-  body.shadcn-workbench .wb-topnav {
-    gap: 12px;
-  }
   body.shadcn-workbench .wb-search-trigger {
     width: 40px;
     padding: 8px;
@@ -5317,12 +5310,6 @@ body.shadcn-workbench :is(.row,.word-row) {
   body.shadcn-workbench .wb-search-trigger :is(span,kbd) {
     display: none;
   }
-  body.shadcn-workbench .wb-topnav {
-    gap: 12px;
-  }
-  body.shadcn-workbench .wb-topnav button {
-    min-height: 44px;
-  }
   body.shadcn-workbench .wb-header-divider {
     display: none;
   }
@@ -5346,12 +5333,6 @@ body.shadcn-workbench :is(.row,.word-row) {
   }
 }
 @media(max-width:420px) {
-  body.shadcn-workbench .wb-topnav {
-    gap: 8px;
-  }
-  body.shadcn-workbench .wb-topnav button {
-    font-size: 12px;
-  }
   body.shadcn-workbench .wb-topbar {
     padding: 0 8px;
   }
@@ -5662,13 +5643,6 @@ body.shadcn-workbench[data-workspace-view=drive] .project-core-scroll {
 body.shadcn-workbench .wb-header-divider {
   display: none;
 }
-body.shadcn-workbench .wb-topnav {
-  min-width: 0;
-  gap: 2px;
-  border-radius: 16px;
-  padding: 4px;
-  margin-right: auto;
-}
 body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button {
   width: 44px;
   height: 44px;
@@ -5693,14 +5667,6 @@ body.shadcn-workbench .ilamy-calendar-box .bg-border {
 body.shadcn-workbench .ilamy-calendar-box .droppable-cell {
   border-right: 1px solid color-mix(in srgb,var(--admin-border) 75%,transparent);
   border-bottom: 1px solid color-mix(in srgb,var(--admin-border) 75%,transparent);
-}
-@media(max-width:1040px) {
-  body.shadcn-workbench .wb-topnav {
-    gap: 0;
-  }
-  body.shadcn-workbench .wb-topnav button {
-    padding: 6px 8px;
-  }
 }
 @media(max-width:767px) {
   body.shadcn-workbench .wb-topbar {
@@ -5797,27 +5763,6 @@ body.shadcn-workbench .wb-topbar {
   padding: 0 8px;
   background: transparent;
 }
-body.shadcn-workbench :is(.wb-topnav,.wb-context-nav) {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(var(--blur-md));
-  -webkit-backdrop-filter: blur(var(--blur-md));
-}
-body.shadcn-workbench .wb-topnav button {
-  min-height: var(--control-height);
-  position: relative;
-  isolation: isolate;
-  padding: 6px 10px;
-  min-height: 32px;
-  border-radius: var(--radius-sm);
-  color: var(--semantic-text-muted);
-}
-body.shadcn-workbench .wb-topnav button:hover { background: var(--tab-active-bg); }
-body.shadcn-workbench .wb-topnav button.active { color: var(--tab-active-text); }
-.wb-topnav-indicator { position: absolute; inset: 0; border-radius: inherit; background: var(--tab-active-bg); z-index: -1; pointer-events: none; }
-.wb-topnav-label { position: relative; }
 
 body.shadcn-workbench .wb-icon-button {
   background: var(--btn-secondary-bg);
@@ -6085,7 +6030,7 @@ body :focus-visible {
   }
 }
 @media(prefers-reduced-transparency:reduce) {
-  body.shadcn-workbench #workbenchShell [data-slot=sidebar-inner],body.shadcn-workbench .card,body [role=dialog],body .wb-topnav {
+  body.shadcn-workbench #workbenchShell [data-slot=sidebar-inner],body.shadcn-workbench .card,body [role=dialog] {
     background: var(--semantic-surface-strong);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -6128,19 +6073,12 @@ body.shadcn-workbench.shared-workspace main {
     --control-switch-duration: var(--duration-base);
     --control-switch-ease: cubic-bezier(.22,1,.36,1);
   }
-  body.shadcn-workbench #workbenchShell [data-sidebar=menu-button],
- body.shadcn-workbench .wb-topnav button,
- body.shadcn-workbench :is([role=tab],[role=radio],[aria-pressed],[data-slot=tabs-trigger],[data-ui-control=button]),
- body.shadcn-workbench .ilamy-surface button,
- body.modern-project :is(.btn,[role=tab],[aria-pressed]) {
+  body.shadcn-workbench #workbenchShell [data-sidebar=menu-button],body.shadcn-workbench :is([role=tab],[role=radio],[aria-pressed],[data-slot=tabs-trigger],[data-ui-control=button]),body.shadcn-workbench .ilamy-surface button,body.modern-project :is(.btn,[role=tab],[aria-pressed]) {
     transition-property: background-color,color,border-color,box-shadow,opacity,scale;
     transition-duration: var(--control-switch-duration);
     transition-timing-function: var(--control-switch-ease);
   }
-  body.shadcn-workbench #workbenchShell [data-sidebar=menu-button]:not(:disabled):active,
- body.shadcn-workbench .wb-topnav button:not(:disabled):active,
- body.shadcn-workbench :is([role=tab],[role=radio],[aria-pressed]):not(:disabled):active,
- body.modern-project :is([role=tab],[aria-pressed]):not(:disabled):active {
+  body.shadcn-workbench #workbenchShell [data-sidebar=menu-button]:not(:disabled):active,body.shadcn-workbench :is([role=tab],[role=radio],[aria-pressed]):not(:disabled):active,body.modern-project :is([role=tab],[aria-pressed]):not(:disabled):active {
     scale: .98;
   }
 }
@@ -6561,8 +6499,7 @@ body[data-home-goals=false] .home2-goals,body[data-home-leisure=false] .home2-le
 .wb-day-complete{position:fixed;left:50%;bottom:32px;z-index:1000;max-width:calc(100vw - 32px);padding:16px 24px;border-radius:var(--control-radius);background:var(--semantic-surface-muted);color:var(--semantic-primary-text);border:1px solid var(--semantic-primary-muted);box-shadow:var(--shadow-md);pointer-events:none;font-size:14px;text-align:center}
 
 /* Explicit 2.0 page-header variant, shared by native and React feature pages. */
-.workspace-page-hero{--workspace-heading-size:28px;--workspace-heading-leading:1.3;--workspace-heading-tracking:-.03em;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:8px 0 20px;margin-bottom:20px;min-width:0;background:transparent;border:0;border-bottom:1px solid var(--semantic-border-muted);border-radius:0}.workspace-page-hero--flow{margin-bottom:0}.workspace-page-hero>div{min-width:0;overflow-wrap:anywhere}.workspace-page-hero h2{font-size:var(--workspace-heading-size);line-height:1.3;letter-spacing:-.03em;margin:4px 0 8px}.workspace-page-hero p{margin:4px 0;font-size:14px;max-width:64ch}.tag[data-tone=error]{background:var(--semantic-error-subtle);color:var(--semantic-error-text)}.workspace-page-summary{font-size:12px;color:var(--semantic-text-muted);overflow-wrap:anywhere}.wb-context-nav{display:flex;align-items:center;gap:4px;margin-right:auto;padding:4px}.wb-context-nav button{position:relative;isolation:isolate;appearance:none;border:0;background:transparent;border-radius:var(--radius-sm);min-height:44px;padding:8px 12px;color:var(--semantic-text-muted);font:inherit;cursor:pointer;white-space:nowrap}.wb-context-nav button:hover{background:var(--semantic-primary-subtle)}.wb-context-nav button[aria-current=page]{color:var(--semantic-text)}.wb-context-nav button:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}.workspace-week-strip{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}.workspace-week-strip li{display:grid;gap:8px;text-align:center;padding:16px 4px;border:1px solid var(--semantic-border-muted);border-radius:var(--control-radius);background:var(--semantic-surface-muted)}.workspace-week-strip time,.workspace-week-strip span{font-size:12px}.workspace-week-strip strong{font-size:18px}.workspace-week-strip li[data-completion="2"]{background:var(--semantic-primary-subtle);border-color:var(--semantic-primary-muted);color:var(--semantic-primary-text)}
-@media(max-width:1100px){.wb-context-nav{display:none}}
+.workspace-page-hero{--workspace-heading-size:28px;--workspace-heading-leading:1.3;--workspace-heading-tracking:-.03em;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:8px 0 20px;margin-bottom:20px;min-width:0;background:transparent;border:0;border-bottom:1px solid var(--semantic-border-muted);border-radius:0}.workspace-page-hero--flow{margin-bottom:0}.workspace-page-hero>div{min-width:0;overflow-wrap:anywhere}.workspace-page-hero h2{font-size:var(--workspace-heading-size);line-height:1.3;letter-spacing:-.03em;margin:4px 0 8px}.workspace-page-hero p{margin:4px 0;font-size:14px;max-width:64ch}.tag[data-tone=error]{background:var(--semantic-error-subtle);color:var(--semantic-error-text)}.workspace-page-summary{font-size:12px;color:var(--semantic-text-muted);overflow-wrap:anywhere}.workspace-week-strip{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}.workspace-week-strip li{display:grid;gap:8px;text-align:center;padding:16px 4px;border:1px solid var(--semantic-border-muted);border-radius:var(--control-radius);background:var(--semantic-surface-muted)}.workspace-week-strip time,.workspace-week-strip span{font-size:12px}.workspace-week-strip strong{font-size:18px}.workspace-week-strip li[data-completion="2"]{background:var(--semantic-primary-subtle);border-color:var(--semantic-primary-muted);color:var(--semantic-primary-text)}
 @media(max-width:600px){.workspace-page-hero{--workspace-heading-size:24px;padding:8px 0 20px;gap:12px}.workspace-page-hero h2{font-size:24px}.workspace-week-strip{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 .workspace-tile-controls{border-bottom:1px dashed var(--semantic-primary-muted);padding-bottom:12px}.workspace-tile-controls [data-tile-move]{cursor:grab}.workspace-tile-controls [data-tile-move]:active{cursor:grabbing}.workspace-goal-canvas{border-radius:var(--radius-xl);background:transparent;border:0}.workspace-goal-note,.workspace-board-card{appearance:none;color:var(--semantic-text);font:inherit;background:var(--semantic-surface);border:1px solid var(--semantic-border-muted);border-radius:var(--control-radius);box-shadow:var(--shadow-sm)}.workspace-goal-note{cursor:pointer;border-top:3px solid var(--semantic-primary-muted)}.workspace-goal-note:hover{background:var(--semantic-primary-subtle)}.workspace-goal-note:focus-visible,.workspace-record-title:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}.tasks-empty-board{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:240px;padding:32px 24px;text-align:center;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-xl)}.tasks-empty-board strong{font-size:18px;color:var(--semantic-text)}.tasks-empty-board p{max-width:46ch;line-height:1.7}.workspace-board-lane{border:1px solid var(--semantic-border-muted);border-radius:var(--radius-xl);background:var(--semantic-surface-muted)}.workspace-record-title{appearance:none;border:0;background:transparent;color:var(--semantic-text);font:inherit;font-weight:600;cursor:pointer;border-radius:var(--radius-sm);padding:8px}.workspace-record-title:hover,.workspace-record-title[aria-current=true]{background:var(--semantic-primary-subtle);color:var(--semantic-primary-text)}
@@ -6574,9 +6511,17 @@ body[data-home-goals=false] .home2-goals,body[data-home-leisure=false] .home2-le
 body[data-motion-level=off]{--duration-fast:0ms;--duration-base:0ms;--duration-slow:0ms;--control-switch-duration:0ms;--workspace-feedback-duration:0ms}
 
 /* Shared immersive shell; decorative layers never capture interaction. */
-body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;isolation:isolate}.workspace-atmosphere{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;contain:strict;background-image:linear-gradient(color-mix(in srgb,var(--semantic-surface) 32%,transparent),color-mix(in srgb,var(--semantic-surface) 48%,transparent)),url("/assets/workspace-wallpaper.webp");background-size:cover;background-position:center;background-repeat:no-repeat}.wb-side-indicator{position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--semantic-primary);box-shadow:var(--glow-primary);pointer-events:none}.wb-context-indicator{position:absolute;inset:0;z-index:-1;border:1px solid var(--semantic-primary-muted);border-radius:var(--radius-sm);background:var(--semantic-primary-subtle);pointer-events:none}.wb-context-label{position:relative}.workspace-page-hero h2,.home2-intro h1{font-weight:650}.workspace-board-lane h3,.workspace-canvas-lane h3{color:var(--semantic-primary-text)}
+body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;isolation:isolate}.workspace-atmosphere{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;contain:strict;background-image:linear-gradient(color-mix(in srgb,var(--semantic-surface) 32%,transparent),color-mix(in srgb,var(--semantic-surface) 48%,transparent)),url("/assets/workspace-wallpaper.webp");background-size:cover;background-position:center;background-repeat:no-repeat}.wb-side-indicator{position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--semantic-primary);box-shadow:var(--glow-primary);pointer-events:none}.workspace-page-hero h2,.home2-intro h1{font-weight:650}.workspace-board-lane h3,.workspace-canvas-lane h3{color:var(--semantic-primary-text)}
 
 .workspace-link{color:var(--semantic-info-text);text-decoration:underline;text-underline-offset:3px}.workspace-link:hover{color:var(--semantic-primary-text)}.workspace-link:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:3px}
+
+/* Shared horizontal choice controls. Business adapters keep their source nodes. */
+.wb-segment-scroll { min-width: 0; max-width: 100%; overflow-x: auto; padding: 3px; }
+.wb-segment-navigation { min-width: 0; max-width: 100%; margin-right: auto; }
+.wb-segment-native { min-width: 0; max-width: 100%; }
+.wb-segment-page-tabs { margin-bottom: 16px; }
+@media (max-width: 1100px) { .wb-segment-personal { display: none; } }
+@media (max-width: 1023px) { .wb-segment-work { display: none; } }
 </style><!-- PRODUCT_DESIGN_END --></head>
 <body><div class="shell"><aside><div class="sidebar-head"><div class="brand">我的工作台<small>PERSONAL WORKSPACE</small></div></div><nav aria-label="顶部主导航"><button data-view="home" class="active">首页</button><button data-view="tasks">个人待办</button><button data-view="requirements">需求登记</button><button data-view="notes">我的笔记</button><button data-view="completedGames" id="completedGamesLink" class="hidden">通关游戏</button><button data-view="upcoming" id="upcomingLink" class="hidden">即将发售</button><button data-view="maintenance" id="maintenanceLink" class="hidden">设备维保</button><button data-view="wardrobe" id="wardrobeLink" class="hidden">我的衣橱</button><button data-view="vocabulary" id="vocabularyLink" class="hidden">英语词汇</button><button data-view="drive" id="driveLink" class="hidden">Google Drive</button><button data-view="projects" id="projectLink">项目问题表</button></nav><button id="notificationToggle" class="btn notification-toggle" aria-label="消息通知" title="消息通知" aria-haspopup="dialog" disabled><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span id="notificationBadge" class="notification-badge hidden" aria-hidden="true"></span></button><button id="accountToggle" class="btn account-toggle" type="button" aria-label="个人中心" title="个人中心" aria-haspopup="dialog"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg></button></aside><main><header><div class="header-title"><div class="eyebrow" id="today"></div><h1 id="heading">首页</h1></div><div class="header-actions"><button id="add" class="btn primary" disabled>＋ 新建待办</button></div></header><div class="status hidden" id="status" role="status"><span id="statusText">正在连接云端…</span><button class="btn hidden" id="recover">重新加载</button></div><div id="projectPanel" class="hidden"><iframe id="projectFrame" title="项目问题跟进表" style="width:100%;height:calc(100dvh - 220px);min-height:600px;border:0;border-radius:12px;background:white"></iframe></div><div id="content" aria-busy="true"><div class="card empty">正在加载你的工作台…</div></div></main><footer class="page-footer">v1.2.1</footer></div>
 <dialog id="accountCenter" aria-labelledby="accountTitle"><div class="card-head"><h2 id="accountTitle">个人中心</h2><button id="accountClose" class="btn" type="button">关闭</button></div><p id="accountStatus" role="status">正在确认登录状态…</p><button id="personalInfoLink" class="btn" type="button">个人信息 · 证件与银行卡</button><form action="/auth/logout" method="post" novalidate><button class="btn danger" type="submit">退出登录</button></form></dialog><dialog id="drivePreview" class="drive-preview" aria-labelledby="drivePreviewTitle"><div class="card-head"><h2 id="drivePreviewTitle">表格预览</h2><div class="drive-preview-tools"><a id="drivePreviewExternal" class="btn" target="_blank" rel="noopener noreferrer">在 Google 中打开 ↗</a><button id="drivePreviewClose" class="btn" type="button">关闭</button></div></div><p class="muted">在此查看表格。若提示登录、没有权限或无法显示，请使用上方“在 Google 中打开”，登录有权限的账号后重试。</p><iframe id="drivePreviewFrame" title="Google 表格预览" referrerpolicy="no-referrer" allow="fullscreen"></iframe></dialog><dialog id="clothingEditor" aria-labelledby="clothingTitle"><form id="clothingForm" class="wardrobe-form" novalidate><h2 id="clothingTitle">添加衣服</h2><label for="clothingPhoto">衣服照片</label><input id="clothingPhoto" type="file" accept="image/jpeg,image/png,image/webp" required><img id="clothingPreview" class="hidden" alt="衣服预览"><label for="clothingName">名称</label><input id="clothingName" maxlength="100" required placeholder="如 白色衬衫"><label for="clothingCategory">类别</label><select id="clothingCategory"><option value="top">上装</option><option value="bottom">下装</option><option value="dress">连衣裙</option><option value="outer">外套</option><option value="shoes">鞋子</option><option value="accessory">配饰</option></select><label for="clothingColor">颜色</label><input id="clothingColor" maxlength="50" placeholder="如 白色"><fieldset id="clothingSeasons"><legend>适用季节（可多选）</legend></fieldset><p id="clothingError" class="form-error" role="alert"></p><div class="actions"><button type="button" class="btn" id="clothingCancel">取消</button><button class="btn primary" id="clothingSave">保存</button></div></form></dialog><dialog id="notifications" aria-labelledby="notificationSummary"><div class="card-head"><h2 id="notificationSummary">消息通知</h2><button class="btn" id="notificationClose" aria-label="关闭消息通知">关闭</button></div><p class="muted">按北京时间提前一天提醒，包含未完成的逾期任务；工作和私人提醒分别汇总。</p><div id="notificationList" class="notification-list"></div></dialog><dialog id="releaseDialog" class="release-dialog" aria-labelledby="releaseTitle"><div class="card-head"><h2 id="releaseTitle">今年已发售热门游戏</h2><button class="btn" id="releaseClose">关闭</button></div><p class="muted">收录 Steam 热门新品与 PlayStation 官方精选中的今年已发售游戏。中文名优先；不同平台的发售日期分别标注。</p><div class="release-toolbar"><input id="releaseSearch" aria-label="搜索已发售游戏" placeholder="搜索游戏名称"><select id="releasePlatform" aria-label="游戏平台筛选"><option value="all">全部平台</option><option value="pc">PC 游戏</option><option value="ps">PS5 游戏</option></select><button class="btn" id="releaseRefresh">刷新榜单</button></div><div id="releasedList" aria-live="polite"></div></dialog><dialog id="editor"><form id="form" novalidate><h2 id="editorTitle"></h2><div id="fields"></div><p id="formError" class="form-error" role="alert"></p><div class="actions"><button type="button" class="btn danger hidden" id="deleteEntertainment">删除记录</button><button type="button" class="btn" id="cancel">取消</button><button class="btn primary" id="submit">保存</button></div></form></dialog><div class="toast hidden" role="status" id="toast"></div>
@@ -6710,13 +6655,13 @@ function eventOccurrencesOn(date,items){
 /* PROJECT_LABELS_START */
 function projectNameOnly(value){return String(value||'').replace(/^\s*(?:PM|P)\s*\d+\s*[-—:：]?\s*/i,'').trim();}
 function projectLabel(value,items=[]){
- const name=projectNameOnly(value),key=name.replace(/\s+/g,'').toLowerCase();
+ const original=String(value||'').trim(),name=projectNameOnly(value),key=name.replace(/\s+/g,'').toLowerCase();
  const matches=items.filter(item=>[item.projectName,item.sourceSheet,...(item.aliases||[])].some(alias=>projectNameOnly(alias).replace(/\s+/g,'').toLowerCase()===key));
- return matches.length===1&&matches[0].projectCode?matches[0].projectCode+' '+name:name;
+ return matches.length===1&&matches[0].projectCode?matches[0].projectCode+' '+name:original;
 }
 let projectLabelItems=[];
 function displayProject(value){return projectLabel(value,projectLabelItems);}
-async function loadProjectLabels(){try{const response=await fetch('/api/project-core-information',{cache:'no-store'});if(!response.ok)throw Error();const payload=await response.json();if(Array.isArray(payload.items))projectLabelItems=payload.items;}catch{projectLabelItems=[];}}
+async function loadProjectLabels(){try{const response=await fetch('/api/project-core-information',{cache:'no-store'});if(!response.ok)throw Error();const payload=await response.json();if(!Array.isArray(payload.items)||!payload.items.every(item=>item&&typeof item.projectCode==='string'&&item.projectCode.trim()&&typeof item.projectName==='string'&&(item.aliases===undefined||Array.isArray(item.aliases)&&item.aliases.every(alias=>typeof alias==='string'))))throw Error();projectLabelItems=payload.items;}catch{/* A failed refresh must retain the last successfully loaded labels. */}}
 
 /* PROJECT_LABELS_END */
 /* CLOUD_RECORDS_START */

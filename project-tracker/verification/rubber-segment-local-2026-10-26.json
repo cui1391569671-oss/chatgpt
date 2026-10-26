@@ -1,0 +1,2357 @@
+{
+  "baseCommit": "70733d8b79390e64ffd3e04f5a648d72c88085d4",
+  "environment": "localhost demo data only; no production writes or deployment",
+  "coverage": [
+    {
+      "scope": "work",
+      "view": "home",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 604,
+            "top": 20,
+            "width": 248,
+            "x": 356,
+            "y": 20
+          },
+          "label": "快捷导航",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 173,
+            "height": 56,
+            "left": 793,
+            "right": 1049,
+            "top": 117,
+            "width": 256,
+            "x": 793,
+            "y": 117
+          },
+          "label": "日历视图",
+          "targets": [
+            44,
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 604,
+            "top": 20,
+            "width": 248,
+            "x": 356,
+            "y": 20
+          },
+          "label": "快捷导航",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 776,
+        "height": 680,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 237,
+            "height": 56,
+            "left": 793,
+            "right": 1049,
+            "top": 181,
+            "width": 256,
+            "x": 793,
+            "y": 181
+          },
+          "label": "日历视图",
+          "targets": [
+            44,
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 152,
+            "height": 56,
+            "left": 302,
+            "right": 1250,
+            "top": 96,
+            "width": 948,
+            "x": 302,
+            "y": 96
+          },
+          "label": "记录页面",
+          "targets": [
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 408.3984375,
+            "height": 56,
+            "left": 302,
+            "right": 651.828125,
+            "top": 352.3984375,
+            "width": 349.828125,
+            "x": 302,
+            "y": 352.3984375
+          },
+          "label": "作品类别",
+          "targets": [
+            44,
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 152,
+            "height": 56,
+            "left": 302,
+            "right": 1250,
+            "top": 96,
+            "width": 948,
+            "x": 302,
+            "y": 96
+          },
+          "label": "记录页面",
+          "targets": [
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 272.3984375,
+            "height": 56,
+            "left": 302,
+            "right": 474,
+            "top": 216.3984375,
+            "width": 172,
+            "x": 302,
+            "y": 216.3984375
+          },
+          "label": "衣橱视图",
+          "targets": [
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "home",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 604,
+            "top": 20,
+            "width": 248,
+            "x": 356,
+            "y": 20
+          },
+          "label": "快捷导航",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 173,
+            "height": 56,
+            "left": 793,
+            "right": 1049,
+            "top": 117,
+            "width": 256,
+            "x": 793,
+            "y": 117
+          },
+          "label": "日历视图",
+          "targets": [
+            44,
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 604,
+            "top": 20,
+            "width": 248,
+            "x": 356,
+            "y": 20
+          },
+          "label": "快捷导航",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 776,
+        "height": 680,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 237,
+            "height": 56,
+            "left": 793,
+            "right": 1049,
+            "top": 181,
+            "width": 256,
+            "x": 793,
+            "y": 181
+          },
+          "label": "日历视图",
+          "targets": [
+            44,
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 152,
+            "height": 56,
+            "left": 302,
+            "right": 1250,
+            "top": 96,
+            "width": 948,
+            "x": 302,
+            "y": 96
+          },
+          "label": "记录页面",
+          "targets": [
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 408.3984375,
+            "height": 56,
+            "left": 302,
+            "right": 651.828125,
+            "top": 352.3984375,
+            "width": 349.828125,
+            "x": 302,
+            "y": 352.3984375
+          },
+          "label": "作品类别",
+          "targets": [
+            44,
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 152,
+            "height": 56,
+            "left": 302,
+            "right": 1250,
+            "top": 96,
+            "width": 948,
+            "x": 302,
+            "y": 96
+          },
+          "label": "记录页面",
+          "targets": [
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 272.3984375,
+            "height": 56,
+            "left": 302,
+            "right": 474,
+            "top": 216.3984375,
+            "width": 172,
+            "x": 302,
+            "y": 216.3984375
+          },
+          "label": "衣橱视图",
+          "targets": [
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "home",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 604,
+            "top": 20,
+            "width": 248,
+            "x": 356,
+            "y": 20
+          },
+          "label": "快捷导航",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 173,
+            "height": 56,
+            "left": 793,
+            "right": 1049,
+            "top": 117,
+            "width": 256,
+            "x": 793,
+            "y": 117
+          },
+          "label": "日历视图",
+          "targets": [
+            44,
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 604,
+            "top": 20,
+            "width": 248,
+            "x": 356,
+            "y": 20
+          },
+          "label": "快捷导航",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 776,
+        "height": 680,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 237,
+            "height": 56,
+            "left": 793,
+            "right": 1049,
+            "top": 181,
+            "width": 256,
+            "x": 793,
+            "y": 181
+          },
+          "label": "日历视图",
+          "targets": [
+            44,
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "documentWidth": 1280,
+      "groups": [],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 524,
+            "top": 20,
+            "width": 168,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 152,
+            "height": 56,
+            "left": 302,
+            "right": 1250,
+            "top": 96,
+            "width": 948,
+            "x": 302,
+            "y": 96
+          },
+          "label": "记录页面",
+          "targets": [
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 408.3984375,
+            "height": 56,
+            "left": 302,
+            "right": 651.828125,
+            "top": 352.3984375,
+            "width": 349.828125,
+            "x": 302,
+            "y": 352.3984375
+          },
+          "label": "作品类别",
+          "targets": [
+            44,
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 152,
+            "height": 56,
+            "left": 302,
+            "right": 1250,
+            "top": 96,
+            "width": 948,
+            "x": 302,
+            "y": 96
+          },
+          "label": "记录页面",
+          "targets": [
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        },
+        {
+          "bounds": {
+            "bottom": 272.3984375,
+            "height": 56,
+            "left": 302,
+            "right": 474,
+            "top": 216.3984375,
+            "width": 172,
+            "x": 302,
+            "y": 216.3984375
+          },
+          "label": "衣橱视图",
+          "targets": [
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "documentWidth": 1280,
+      "groups": [
+        {
+          "bounds": {
+            "bottom": 76,
+            "height": 56,
+            "left": 356,
+            "right": 576,
+            "top": 20,
+            "width": 220,
+            "x": 356,
+            "y": 20
+          },
+          "label": "同组页面",
+          "targets": [
+            44,
+            44,
+            44,
+            44
+          ]
+        }
+      ],
+      "main": {
+        "bottom": 880,
+        "height": 784,
+        "left": 300,
+        "right": 1252,
+        "top": 96,
+        "width": 952,
+        "x": 300,
+        "y": 96
+      },
+      "width": 1280
+    }
+  ],
+  "sequence": [
+    {
+      "addCount": 1,
+      "content": 45,
+      "url": "http://127.0.0.1:8895/personal?view=notes"
+    },
+    {
+      "addCount": 1,
+      "content": 151,
+      "url": "http://127.0.0.1:8895/personal?view=tasks"
+    },
+    {
+      "addCount": 1,
+      "content": 132,
+      "url": "http://127.0.0.1:8895/personal?view=annualPlans"
+    },
+    {
+      "addCount": 1,
+      "content": 173,
+      "url": "http://127.0.0.1:8895/personal?view=vocabulary"
+    },
+    {
+      "addCount": 1,
+      "content": 820,
+      "url": "http://127.0.0.1:8895/personal?view=fitness"
+    },
+    {
+      "addCount": 1,
+      "content": 113,
+      "url": "http://127.0.0.1:8895/personal?view=wardrobe"
+    },
+    {
+      "addCount": 1,
+      "content": 55,
+      "url": "http://127.0.0.1:8895/personal?view=maintenance"
+    },
+    {
+      "addCount": 1,
+      "content": 381,
+      "url": "http://127.0.0.1:8895/personal?view=completedGames"
+    }
+  ],
+  "interactionChecks": [
+    "native category click and controlled value sync",
+    "calendar week selection matches original Radix state",
+    "wardrobe Space activation and focus restore",
+    "native category arrows and End focus restore",
+    "320px selected option revealed in internal scroll",
+    "desktop navigation drag/flick updates original route",
+    "top navigation Space activation",
+    "isolated navigation veto retains A and thumb",
+    "isolated Space activation selects C with visible thumb stretch",
+    "isolated disabled state disables all radios"
+  ],
+  "limits": [
+    "System reduced-motion handling reviewed in source; OS setting not toggled in browser",
+    "Business save success/failure/retry not re-exercised for this switch-only change; demo API rejects writes",
+    "Existing premium audit historical findings are not declared resolved"
+  ]
+}

@@ -1,3 +1,4 @@
+import './workspace-segments';
 import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 import {SaveButton} from '@/components/save-button';
 import {AnimatePresence,motion,useIsPresent} from 'motion/react';

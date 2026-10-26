@@ -1,3 +1,4 @@
+@import "./vendor/react-bits/RubberSegment.css";
 @layer theme, base, components, utilities;
 @import "@svar-ui/react-gantt/all.css";
 @import "./vendor/react-bits/GradientText.css";
@@ -28,7 +29,6 @@
 .wb-topbar{display:flex;align-items:center;gap:12px;height:64px;padding:0 16px;background:var(--admin-background)}
 .wb-trigger{width:28px;height:28px;min-height:28px;padding:6px;border:1px solid var(--admin-border);border-radius:6px;background:var(--admin-background)}
 .wb-header-divider{height:24px;width:1px;background:var(--admin-border);flex-shrink:0}
-.wb-topnav{display:flex;align-items:center;gap:24px;margin-right:auto}.wb-topnav button{padding:4px 0;min-height:32px;font-size:14px;font-weight:500;color:var(--admin-muted-foreground);background:none;border:0}.wb-topnav button:hover,.wb-topnav button.active{color:var(--admin-foreground)}
 .wb-search-trigger{width:208px;justify-content:flex-start;gap:8px;padding:6px 10px;font-weight:400;color:var(--admin-muted-foreground);background:color-mix(in oklch,var(--admin-muted) 25%,transparent);box-shadow:none}
 .wb-search-trigger kbd{font:10px/18px ui-monospace,monospace;margin-left:auto;padding:0 5px;border:1px solid var(--admin-border);background:var(--admin-muted)}
 .wb-search-end{margin-left:auto}.wb-topbar-actions{display:flex;align-items:center;gap:8px;margin-left:auto}.wb-search-end+.wb-topbar-actions{margin-left:0}
@@ -43,7 +43,6 @@
 [data-shell-root] [data-sidebar=group],[data-shell-portal] [data-sidebar=group]{flex:none}
 [data-tasks-root] [data-slot=checkbox],[data-tasks-portal] [data-slot=checkbox]{min-height:16px;width:16px;height:16px;padding:0;flex-shrink:0;border:1px solid var(--border);border-radius:4px}
 @media(min-width:768px){[data-shell-root] [data-collapsible=icon] [data-sidebar=footer] [data-sidebar=menu-button]>svg{display:none}}
-@media(max-width:767px){}
 @media(max-width:767px){.tasks-empty{width:calc(100vw - 68px);white-space:normal;padding:40px 8px}.tasks-empty p{white-space:normal}}
 
 /* shadcn/ui shared controls and authored popup surfaces. */
@@ -71,11 +70,10 @@
 [data-shell-root] [data-sidebar=content]{gap:0;overflow:auto}[data-shell-root] [data-sidebar=group-label]{font-size:12px;font-weight:500}[data-shell-root] [data-sidebar=menu-button]{font-size:14px;font-weight:400;line-height:20px}[data-shell-root] [data-sidebar=menu-button][data-active=true]{font-weight:500}[data-shell-root] [data-sidebar=footer]{border:0}
 .tasks-toolbar{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}.tasks-search{position:relative;width:250px;max-width:100%}.tasks-table-scroll{overflow-x:auto}.tasks-table-scroll th,.tasks-table-scroll td{border-bottom:1px solid var(--admin-border)}.tasks-table-scroll th{color:var(--admin-muted-foreground);text-align:left}.tasks-create-button{height:36px;gap:8px}.tasks-pagination{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;color:var(--admin-muted-foreground);font-size:14px}.tasks-empty{text-align:center;padding:48px 16px;min-height:224px;display:flex;flex-direction:column;align-items:center;justify-content:center}.tasks-fields{display:flex;flex-direction:column;gap:16px;padding:0;border:0;min-width:0}.tasks-fields label{font-size:14px;font-weight:500}.tasks-drawer,.tasks-confirm{background:var(--admin-background)}
 [data-tasks-root] .task-status{font-size:14px;color:var(--admin-foreground)}
-@media(max-width:1023px){.wb-topnav{display:none}.wb-search-end{margin-left:0}}
+@media(max-width:1023px){.wb-search-end{margin-left:0}}
 @media(max-width:767px){.wb-topbar{height:64px;padding:0 12px;gap:12px}.wb-search-trigger{flex:1;min-width:0;width:auto}.wb-search-trigger kbd{display:none}.wb-trigger,.wb-icon-button{width:44px;height:44px;min-height:44px}.wb-topbar-actions{gap:4px;margin-left:0}.wb-header-divider{display:none}.tasks-create-button{min-height:44px;grid-column:2}.tasks-search{width:100%;grid-column:1/-1}.tasks-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:16px}.wb-space-menu [role=menuitem]{min-height:44px}}
 .wb-space-menu [role=menuitem]{min-height:32px;text-decoration:none;color:inherit;gap:10px;font-size:14px;padding:6px 8px}
 @media(max-width:767px){.wb-space-menu [role=menuitem]{min-height:44px}}
 .wb-command-dialog [data-slot=command-input]{border:0;box-shadow:none;outline:none;margin:0;background:transparent;padding:12px 0}
 .wb-command-dialog [data-slot=command-input-wrapper]:focus-within{border-bottom-color:var(--admin-ring)}
-@media(max-width:767px){}
 [data-shell-root] .wb-header-avatar{background:var(--admin-muted);border-radius:50%;color:var(--admin-foreground);font-size:12px;font-weight:500}

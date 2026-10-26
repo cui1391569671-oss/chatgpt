@@ -1,0 +1,21 @@
+{
+  "base": "70733d8b79390e64ffd3e04f5a648d72c88085d4",
+  "status": "local only; not deployed",
+  "fixture": "Synthetic P901 / PM902 / unnumbered projects; project-core-information GET returns 503; writes rejected",
+  "checks": {
+    "existingPrefixesPreserved": true,
+    "searchPM902ReturnsTwoIssues": true,
+    "drawerProjectNumberVisible": true,
+    "cancelNoWrite": true,
+    "embeddedWorkbenchNumbersVisible": true,
+    "mobile390DocumentWidth": 390,
+    "unitTests": 241,
+    "lint": "clean",
+    "typecheck": "clean",
+    "generatedFingerprints": "match"
+  },
+  "limits": [
+    "No production business data read or changed",
+    "Does not invent a number for unnumbered records without a unique information-sheet match"
+  ]
+}
