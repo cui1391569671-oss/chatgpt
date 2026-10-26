@@ -1,3 +1,4 @@
+import {closeSelectOnEscape} from '@/components/workspace-select-escape';
 import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 'use client'
 
@@ -53,6 +54,7 @@ function DialogContent({
   children,
   showCloseButton = true,
   onCloseAutoFocus,
+  onEscapeKeyDown,
   returnFocus,
   returnFocusFallback,
   ...props
@@ -73,6 +75,9 @@ function DialogContent({
           className
         )}
         {...props}
+        onEscapeKeyDown={event => {
+          if (!closeSelectOnEscape(event)) onEscapeKeyDown?.(event)
+        }}
         onCloseAutoFocus={event => {
           onCloseAutoFocus?.(event)
           if (event.defaultPrevented) return

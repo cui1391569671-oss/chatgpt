@@ -12,5 +12,5 @@ export function WorkspaceSegment({label,className='',focusSelection,onFocusResto
   if(focusSelection){viewport?.querySelector<HTMLButtonElement>('button[aria-checked="true"]')?.focus({preventScroll:true});onFocusRestored?.();}
   const observer=new ResizeObserver(reveal);if(viewport)observer.observe(viewport);return()=>observer.disconnect();
  },[props.value,focusSelection,onFocusRestored]);
- return <div ref={host} className={'wb-segment-scroll '+className}><RubberSegment {...props} aria-label={label} size='lg' equalSlots={false} trackColor='var(--admin-muted)' thumbColor='var(--tab-active-bg)' textColor='var(--text-muted)' activeTextColor='var(--tab-active-text)' style={{'--rs-h':'calc(var(--control-height) + 6px)','--rs-radius':'var(--control-radius)','--rs-pad':'12px'}}/></div>;
+ return <div ref={host} data-ui-owner="rubber-segment" className={'wb-segment-scroll '+className}><RubberSegment {...props} aria-label={label} size='lg' equalSlots={false} trackColor='var(--admin-muted)' thumbColor='var(--tab-active-bg)' textColor='var(--text-muted)' activeTextColor='var(--tab-active-text)' style={{'--rs-h':'calc(var(--control-height) + 6px)','--rs-radius':'var(--control-radius)','--rs-pad':'12px'}}/></div>;
 }

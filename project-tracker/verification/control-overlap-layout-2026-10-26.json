@@ -1,0 +1,2291 @@
+{
+  "date": "2026-10-26",
+  "environment": "local synthetic data at 127.0.0.1:8895; all API writes return 503",
+  "baseline": "0733af73a6343b2417057e83518e985a58729fcd",
+  "deployed": false,
+  "layout": [
+    {
+      "scope": "work",
+      "view": "home",
+      "collisions": [],
+      "controls": 40,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "collisions": [],
+      "controls": 19,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "collisions": [],
+      "controls": 11,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 29,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 14,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "collisions": [],
+      "controls": 37,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "collisions": [],
+      "controls": 44,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "collisions": [],
+      "controls": 28,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 31,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 21,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "collisions": [],
+      "controls": 23,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "collisions": [],
+      "controls": 27,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "collisions": [],
+      "controls": 27,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "collisions": [],
+      "controls": 37,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "collisions": [],
+      "controls": 35,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "collisions": [],
+      "controls": 25,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "collisions": [],
+      "controls": 28,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "personalInfo",
+      "collisions": [],
+      "controls": 22,
+      "dialogs": [],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "home",
+      "collisions": [],
+      "controls": 40,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "collisions": [],
+      "controls": 19,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "collisions": [],
+      "controls": 11,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 29,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 14,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "collisions": [],
+      "controls": 37,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "collisions": [],
+      "controls": 44,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "collisions": [],
+      "controls": 28,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 31,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 21,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "collisions": [],
+      "controls": 23,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "collisions": [],
+      "controls": 27,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "collisions": [],
+      "controls": 27,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "collisions": [],
+      "controls": 37,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "collisions": [],
+      "controls": 35,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "collisions": [],
+      "controls": 25,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "collisions": [],
+      "controls": 28,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "personal",
+      "view": "personalInfo",
+      "collisions": [],
+      "controls": 22,
+      "dialogs": [],
+      "pageWidth": 1440,
+      "spills": [],
+      "width": 1440
+    },
+    {
+      "scope": "work",
+      "view": "home",
+      "collisions": [],
+      "controls": 36,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "collisions": [],
+      "controls": 19,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "collisions": [],
+      "controls": 11,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 29,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 14,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "collisions": [],
+      "controls": 33,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "collisions": [],
+      "controls": 36,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 27,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 21,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "collisions": [],
+      "controls": 20,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "collisions": [],
+      "controls": 20,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "collisions": [],
+      "controls": 34,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "collisions": [],
+      "controls": 31,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "collisions": [],
+      "controls": 21,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "collisions": [],
+      "controls": 20,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "personal",
+      "view": "personalInfo",
+      "collisions": [],
+      "controls": 22,
+      "dialogs": [],
+      "pageWidth": 1100,
+      "spills": [],
+      "width": 1100
+    },
+    {
+      "scope": "work",
+      "view": "home",
+      "collisions": [],
+      "controls": 36,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "collisions": [],
+      "controls": 19,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "collisions": [],
+      "controls": 11,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 29,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 14,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "collisions": [],
+      "controls": 33,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "collisions": [],
+      "controls": 36,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 27,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 21,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "collisions": [],
+      "controls": 20,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "collisions": [],
+      "controls": 20,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "collisions": [],
+      "controls": 32,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "collisions": [],
+      "controls": 31,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "collisions": [],
+      "controls": 21,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "collisions": [],
+      "controls": 20,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "personal",
+      "view": "personalInfo",
+      "collisions": [],
+      "controls": 22,
+      "dialogs": [],
+      "pageWidth": 1024,
+      "spills": [],
+      "width": 1024
+    },
+    {
+      "scope": "work",
+      "view": "home",
+      "collisions": [],
+      "controls": 32,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "collisions": [],
+      "controls": 15,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "collisions": [],
+      "controls": 11,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 27,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 14,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "collisions": [],
+      "controls": 13,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "collisions": [],
+      "controls": 28,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "collisions": [],
+      "controls": 36,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 27,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 21,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "collisions": [],
+      "controls": 20,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "collisions": [],
+      "controls": 20,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "collisions": [],
+      "controls": 25,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "collisions": [],
+      "controls": 31,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "collisions": [],
+      "controls": 21,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "collisions": [],
+      "controls": 20,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "personal",
+      "view": "personalInfo",
+      "collisions": [],
+      "controls": 22,
+      "dialogs": [],
+      "pageWidth": 768,
+      "spills": [],
+      "width": 768
+    },
+    {
+      "scope": "work",
+      "view": "home",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "collisions": [],
+      "controls": 7,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "collisions": [],
+      "controls": 3,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 18,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "collisions": [],
+      "controls": 5,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 6,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "collisions": [],
+      "controls": 5,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "collisions": [],
+      "controls": 15,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "collisions": [],
+      "controls": 22,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "collisions": [],
+      "controls": 10,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 12,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 7,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "collisions": [],
+      "controls": 6,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "collisions": [],
+      "controls": 6,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "collisions": [],
+      "controls": 10,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "collisions": [],
+      "controls": 10,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "collisions": [],
+      "controls": 11,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "collisions": [],
+      "controls": 17,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "collisions": [],
+      "controls": 7,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "collisions": [],
+      "controls": 10,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "collisions": [],
+      "controls": 6,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "personalInfo",
+      "collisions": [],
+      "controls": 8,
+      "dialogs": [],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "view": "home",
+      "collisions": [],
+      "controls": 24,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "work",
+      "view": "today",
+      "collisions": [],
+      "controls": 7,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "work",
+      "view": "projects",
+      "collisions": [],
+      "controls": 3,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 16,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "work",
+      "view": "drive",
+      "collisions": [],
+      "controls": 5,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 6,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "collisions": [],
+      "controls": 5,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "home",
+      "collisions": [],
+      "controls": 15,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "calendar",
+      "collisions": [],
+      "controls": 22,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "collisions": [],
+      "controls": 10,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 12,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 7,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "notes",
+      "collisions": [],
+      "controls": 6,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "checkins",
+      "collisions": [],
+      "controls": 6,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "vocabulary",
+      "collisions": [],
+      "controls": 10,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "vocabularyLibrary",
+      "collisions": [],
+      "controls": 10,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "fitness",
+      "collisions": [],
+      "controls": 11,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "collisions": [],
+      "controls": 17,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "upcoming",
+      "collisions": [],
+      "controls": 7,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "collisions": [],
+      "controls": 10,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "collisions": [],
+      "controls": 6,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    },
+    {
+      "scope": "personal",
+      "view": "personalInfo",
+      "collisions": [],
+      "controls": 8,
+      "dialogs": [],
+      "pageWidth": 320,
+      "spills": [],
+      "width": 320
+    }
+  ],
+  "dialogs": [
+    {
+      "scope": "work",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 8,
+      "dialogs": [
+        {
+          "label": "新建待办保存后同步到当前空间的日历和到期提醒。标题状态未完成未完成已完成优先级普通高普通低截止日期（",
+          "rect": {
+            "bottom": 900,
+            "height": 900,
+            "left": 820,
+            "right": 1280,
+            "top": 0,
+            "width": 460,
+            "x": 820,
+            "y": 0
+          }
+        }
+      ],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "collisions": [],
+      "controls": 5,
+      "dialogs": [
+        {
+          "label": "新建笔记填写内容后保存，或取消返回当前页面。新建笔记标题笔记内容删除记录取消保存关闭",
+          "rect": {
+            "bottom": 680.25,
+            "height": 460.5,
+            "left": 360,
+            "right": 920,
+            "top": 219.75,
+            "width": 560,
+            "x": 360,
+            "y": 219.75
+          }
+        }
+      ],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 7,
+      "dialogs": [
+        {
+          "label": "新建需求填写内容后保存，或取消返回当前页面。新建需求标题处理状态待评估已排期处理中已完成暂不处理待评",
+          "rect": {
+            "bottom": 725.5,
+            "height": 551,
+            "left": 360,
+            "right": 920,
+            "top": 174.5,
+            "width": 560,
+            "x": 360,
+            "y": 174.5
+          }
+        }
+      ],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "collisions": [],
+      "controls": 9,
+      "dialogs": [
+        {
+          "label": "新增年度事项安排时间与进度，保存到私人工作台。事项名称分类学习学习健康生活旅行其他开始日期2026-",
+          "rect": {
+            "bottom": 900,
+            "height": 900,
+            "left": 820,
+            "right": 1280,
+            "top": 0,
+            "width": 460,
+            "x": 820,
+            "y": 0
+          }
+        }
+      ],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "collisions": [],
+      "controls": 8,
+      "dialogs": [
+        {
+          "label": "新建设备填写内容后保存，或取消返回当前页面。新建设备设备名称设备位置（可选）上次维保日期（可选）选择",
+          "rect": {
+            "bottom": 769.75,
+            "height": 639.5,
+            "left": 360,
+            "right": 920,
+            "top": 130.25,
+            "width": 560,
+            "x": 360,
+            "y": 130.25
+          }
+        }
+      ],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "collisions": [],
+      "controls": 14,
+      "dialogs": [
+        {
+          "label": "新建游戏记录填写内容后保存，或取消返回当前页面。新建游戏记录记录类型游戏电影电视剧动漫游戏游戏电影电",
+          "rect": {
+            "bottom": 884,
+            "height": 868,
+            "left": 360,
+            "right": 920,
+            "top": 16,
+            "width": 560,
+            "x": 360,
+            "y": 16
+          }
+        }
+      ],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "collisions": [],
+      "controls": 11,
+      "dialogs": [
+        {
+          "label": "添加衣服填写内容后保存，或取消返回当前页面。添加衣服衣服照片选择文件名称类别上装下装连衣裙外套鞋子配",
+          "rect": {
+            "bottom": 754.57421875,
+            "height": 609.1484375,
+            "left": 360,
+            "right": 920,
+            "top": 145.42578125,
+            "width": 560,
+            "x": 360,
+            "y": 145.42578125
+          }
+        }
+      ],
+      "pageWidth": 1280,
+      "spills": [],
+      "width": 1280
+    },
+    {
+      "scope": "work",
+      "view": "tasks",
+      "collisions": [],
+      "controls": 8,
+      "dialogs": [
+        {
+          "label": "新建待办保存后同步到当前空间的日历和到期提醒。标题状态未完成未完成已完成优先级普通高普通低截止日期（",
+          "rect": {
+            "bottom": 900,
+            "height": 900,
+            "left": 0,
+            "right": 390,
+            "top": 0,
+            "width": 390,
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "view": "notes",
+      "collisions": [],
+      "controls": 5,
+      "dialogs": [
+        {
+          "label": "新建笔记填写内容后保存，或取消返回当前页面。新建笔记标题笔记内容删除记录取消保存关闭",
+          "rect": {
+            "bottom": 676.25,
+            "height": 452.5,
+            "left": 16,
+            "right": 374,
+            "top": 223.75,
+            "width": 358,
+            "x": 16,
+            "y": 223.75
+          }
+        }
+      ],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "work",
+      "view": "requirements",
+      "collisions": [],
+      "controls": 7,
+      "dialogs": [
+        {
+          "label": "新建需求填写内容后保存，或取消返回当前页面。新建需求标题处理状态待评估已排期处理中已完成暂不处理待评",
+          "rect": {
+            "bottom": 772.75,
+            "height": 645.5,
+            "left": 16,
+            "right": 374,
+            "top": 127.25,
+            "width": 358,
+            "x": 16,
+            "y": 127.25
+          }
+        }
+      ],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "annualPlans",
+      "collisions": [],
+      "controls": 9,
+      "dialogs": [
+        {
+          "label": "新增年度事项安排时间与进度，保存到私人工作台。事项名称分类学习学习健康生活旅行其他开始日期2026-",
+          "rect": {
+            "bottom": 900,
+            "height": 900,
+            "left": 0,
+            "right": 390,
+            "top": 0,
+            "width": 390,
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "maintenance",
+      "collisions": [],
+      "controls": 8,
+      "dialogs": [
+        {
+          "label": "新建设备填写内容后保存，或取消返回当前页面。新建设备设备名称设备位置（可选）上次维保日期（可选）选择",
+          "rect": {
+            "bottom": 817,
+            "height": 734,
+            "left": 16,
+            "right": 374,
+            "top": 83,
+            "width": 358,
+            "x": 16,
+            "y": 83
+          }
+        }
+      ],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "completedGames",
+      "collisions": [],
+      "controls": 9,
+      "dialogs": [
+        {
+          "label": "新建游戏记录填写内容后保存，或取消返回当前页面。新建游戏记录记录类型游戏电影电视剧动漫游戏游戏电影电",
+          "rect": {
+            "bottom": 884,
+            "height": 868,
+            "left": 16,
+            "right": 374,
+            "top": 16,
+            "width": 358,
+            "x": 16,
+            "y": 16
+          }
+        }
+      ],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    },
+    {
+      "scope": "personal",
+      "view": "wardrobe",
+      "collisions": [],
+      "controls": 11,
+      "dialogs": [
+        {
+          "label": "添加衣服填写内容后保存，或取消返回当前页面。添加衣服衣服照片选择文件名称类别上装下装连衣裙外套鞋子配",
+          "rect": {
+            "bottom": 750.57421875,
+            "height": 601.1484375,
+            "left": 16,
+            "right": 374,
+            "top": 149.42578125,
+            "width": 358,
+            "x": 16,
+            "y": 149.42578125
+          }
+        }
+      ],
+      "pageWidth": 390,
+      "spills": [],
+      "width": 390
+    }
+  ],
+  "supplement": {
+    "calendarChecks": [
+      {
+        "name": "周",
+        "groups": 1,
+        "options": [
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "日"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "true",
+            "text": "周"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "月"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "年"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "列表"
+          }
+        ]
+      },
+      {
+        "name": "日",
+        "groups": 1,
+        "options": [
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "true",
+            "text": "日"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "周"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "月"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "年"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "列表"
+          }
+        ]
+      },
+      {
+        "name": "年",
+        "groups": 1,
+        "options": [
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "日"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "周"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "月"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "true",
+            "text": "年"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "列表"
+          }
+        ]
+      },
+      {
+        "name": "列表",
+        "groups": 1,
+        "options": [
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "日"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "周"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "月"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "年"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "true",
+            "text": "列表"
+          }
+        ]
+      },
+      {
+        "name": "月",
+        "groups": 1,
+        "options": [
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "日"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "周"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "true",
+            "text": "月"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "年"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "列表"
+          }
+        ]
+      },
+      {
+        "name": "周",
+        "groups": 1,
+        "options": [
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "日"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "true",
+            "text": "周"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "月"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "年"
+          },
+          {
+            "adapter": null,
+            "border": "0px",
+            "checked": "false",
+            "text": "列表"
+          }
+        ]
+      }
+    ],
+    "projectResults": [
+      {
+        "tag": "project-table",
+        "collisions": [],
+        "controls": 31,
+        "dialogs": [],
+        "pageWidth": 1280,
+        "spills": [],
+        "width": 1280
+      },
+      {
+        "tag": "project-table",
+        "collisions": [],
+        "controls": 26,
+        "dialogs": [],
+        "pageWidth": 952,
+        "spills": [],
+        "width": 952
+      },
+      {
+        "tag": "project-table",
+        "collisions": [],
+        "controls": 21,
+        "dialogs": [],
+        "pageWidth": 768,
+        "spills": [],
+        "width": 768
+      },
+      {
+        "tag": "project-table",
+        "collisions": [],
+        "controls": 11,
+        "dialogs": [],
+        "pageWidth": 450,
+        "spills": [],
+        "width": 450
+      },
+      {
+        "tag": "project-table",
+        "collisions": [],
+        "controls": 11,
+        "dialogs": [],
+        "pageWidth": 390,
+        "spills": [],
+        "width": 390
+      },
+      {
+        "tag": "project-table",
+        "collisions": [],
+        "controls": 11,
+        "dialogs": [],
+        "pageWidth": 320,
+        "spills": [],
+        "width": 320
+      },
+      {
+        "tag": "project-table",
+        "collisions": [],
+        "controls": 11,
+        "dialogs": [],
+        "pageWidth": 296,
+        "spills": [],
+        "width": 296
+      }
+    ],
+    "supplementResults": [
+      {
+        "tag": "mobile-date",
+        "collisions": [],
+        "controls": 50,
+        "dialogs": [
+          {
+            "label": "选择日期选择日期，使用方向键移动，回车确认。2026年1月周日周一周二周三周四周五周六2829303",
+            "rect": {
+              "bottom": 725,
+              "height": 550,
+              "left": 16,
+              "right": 374,
+              "top": 175,
+              "width": 358,
+              "x": 16,
+              "y": 175
+            }
+          }
+        ],
+        "pageWidth": 390,
+        "spills": [],
+        "width": 390
+      },
+      {
+        "tag": "mobile-date-month-select",
+        "collisions": [],
+        "controls": 0,
+        "dialogs": [],
+        "pageWidth": 390,
+        "spills": [],
+        "width": 390
+      },
+      {
+        "tag": "search-dialog",
+        "collisions": [],
+        "controls": 1,
+        "dialogs": [
+          {
+            "label": "搜索页面输入页面名称，通过方向键和回车选择。页面搜索最近访问我的一天娱乐记录安排与记录我的一天生活日",
+            "rect": {
+              "bottom": 679,
+              "height": 458,
+              "left": 360,
+              "right": 920,
+              "top": 221,
+              "width": 560,
+              "x": 360,
+              "y": 221
+            }
+          }
+        ],
+        "pageWidth": 1280,
+        "spills": [],
+        "width": 1280
+      },
+      {
+        "tag": "account-center",
+        "collisions": [],
+        "controls": 3,
+        "dialogs": [
+          {
+            "label": "个人中心管理账号资料，或安全退出当前登录。个人中心关闭已登录 · 工作台个人信息 · 证件与银行卡退",
+            "rect": {
+              "bottom": 483,
+              "height": 246,
+              "left": 450,
+              "right": 830,
+              "top": 237,
+              "width": 380,
+              "x": 450,
+              "y": 237
+            }
+          }
+        ],
+        "pageWidth": 1280,
+        "spills": [],
+        "width": 1280
+      },
+      {
+        "tag": "notifications",
+        "collisions": [],
+        "controls": 2,
+        "dialogs": [
+          {
+            "label": "到期提醒 · 暂无到期任务查看内容，关闭后返回当前页面。到期提醒 · 暂无到期任务关闭按北京时间提前",
+            "rect": {
+              "bottom": 474,
+              "height": 228,
+              "left": 360,
+              "right": 920,
+              "top": 246,
+              "width": 560,
+              "x": 360,
+              "y": 246
+            }
+          }
+        ],
+        "pageWidth": 1280,
+        "spills": [],
+        "width": 1280
+      }
+    ]
+  },
+  "verification": {
+    "tests": 243,
+    "failed": 0,
+    "lintStrict": "passed",
+    "typecheckStrict": "passed",
+    "assets": "passed",
+    "diffCheck": "passed",
+    "premiumRawFindingsBefore": 41,
+    "premiumRawFindingsAfter": 41,
+    "projectAdapterFindings": 0
+  },
+  "limitations": [
+    "Empty fixture collections limit populated editing and successful CRUD coverage.",
+    "No production business writes or deployment.",
+    "No physical-device or full OS reduced-motion matrix.",
+    "Table internal horizontal scrolling is intentional; iframe content audited separately."
+  ]
+}

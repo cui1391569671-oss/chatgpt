@@ -3919,44 +3919,12 @@ body {
   gap: 18px;
   margin-top: 18px;
 }
-.view-tabs {
-  display: flex;
-  gap: 4px;
-  width: fit-content;
-  padding: 4px;
-  margin: 0 0 18px;
-  border-radius: 12px;
-  background: var(--line);
-}
-.view-tabs button {
-  border: 0;
-  border-radius: var(--control-radius);
-  background: transparent;
-  color: var(--muted);
-  min-height: 44px;
-  padding: 8px 22px;
-  font: inherit;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background .18s,color .18s;
-}
-.view-tabs button[aria-pressed=true] {
-  background: var(--surface);
-  color: var(--accent);
-}
-.view-tabs button:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 2px;
-}
 @media(max-width:760px) {
   .shared-workspace .card {
     padding: 16px;
   }
   .shared-workspace .calendar-day {
     min-height: 58px;
-  }
-  .view-tabs {
-    margin-bottom: 14px;
   }
 }
 @media(max-width:760px) {
@@ -4870,34 +4838,6 @@ body.shadcn-workbench.shared-workspace h2 {
 body.shadcn-workbench.shared-workspace .page-footer {
   display: none;
 }
-body.shadcn-workbench.shared-workspace .view-tabs {
-  display: flex;
-  gap: 4px;
-  background: var(--admin-muted);
-  border: 0;
-  border-radius: 8px;
-  padding: 4px;
-  margin: 0 0 16px;
-  width: fit-content;
-}
-body.shadcn-workbench.shared-workspace .view-tabs button {
-  font-size: 14px;
-  font-weight: 500;
-  background: transparent;
-  border: 0;
-  border-radius: 6px;
-  min-height: 44px;
-  padding: 8px 12px;
-  color: var(--admin-muted-foreground);
-}
-body.shadcn-workbench.shared-workspace .view-tabs button[aria-pressed=true] {
-  background: var(--admin-background);
-  color: var(--admin-foreground);
-  box-shadow: var(--shadow-sm);
-}
-body.shadcn-workbench:has(#workspaceCalendar) .view-tabs,body.shadcn-workbench:has(#workspaceTasks) .view-tabs {
-  display: none;
-}
 body.shadcn-workbench.project-view main {
   display: block;
   overflow: visible;
@@ -4946,9 +4886,6 @@ body.modern-project.shadcn-controls .table-wrapper,body.modern-project.shadcn-co
   }
   body.shadcn-workbench.shared-workspace .card {
     padding: 20px;
-  }
-  body.shadcn-workbench.shared-workspace .view-tabs button {
-    min-height: 40px;
   }
 }
 /* Existing business DOM adopts the shared shadcn/ui control contract. */
@@ -5139,10 +5076,6 @@ body.shadcn-workbench :is(input,textarea,select,.ui-select-mount),body.modern-pr
 body.shadcn-workbench :is(img,iframe,video) {
   max-width: 100%;
 }
-body.shadcn-workbench .view-tabs {
-  max-width: 100%;
-  flex-wrap: wrap;
-}
 body.shadcn-workbench :is(.project-core-scroll,.tasks-table-scroll),body.modern-project .table-wrapper {
   min-width: 0;
   width: 100%;
@@ -5175,11 +5108,6 @@ body.shadcn-workbench .project-core-actions {
 body.shadcn-workbench .project-core-table {
   table-layout: fixed;
 }
-body.shadcn-workbench .wb-search-trigger>span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 @media(min-width:768px) {
   body.shadcn-workbench #workbenchShell [data-collapsible=icon] [data-slot=sidebar-container] {
     width: 80px;
@@ -5192,14 +5120,6 @@ body.shadcn-workbench .wb-search-trigger>span {
   }
 }
 @media(min-width:768px) and (max-width:1040px) {
-  body.shadcn-workbench .wb-search-trigger {
-    width: 40px;
-    padding: 8px;
-    flex-shrink: 0;
-  }
-  body.shadcn-workbench .wb-search-trigger :is(span,kbd) {
-    display: none;
-  }
   body.shadcn-workbench .grid {
     grid-template-columns: minmax(0,1fr);
   }
@@ -5301,14 +5221,6 @@ body.shadcn-workbench :is(.row,.word-row) {
   }
   body.shadcn-workbench .wb-topbar {
     gap: 6px;
-  }
-  body.shadcn-workbench .wb-search-trigger {
-    width: 44px;
-    padding: 10px;
-    flex-shrink: 0;
-  }
-  body.shadcn-workbench .wb-search-trigger :is(span,kbd) {
-    display: none;
   }
   body.shadcn-workbench .wb-header-divider {
     display: none;
@@ -5651,12 +5563,6 @@ body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button {
   padding: 10px;
   border-radius: 13px;
 }
-body.shadcn-workbench .wb-search-trigger {
-  min-width: 44px;
-  margin-left: auto;
-  flex-shrink: 1;
-  max-width: 208px;
-}
 body.shadcn-workbench .wb-topbar-actions {
   flex-shrink: 0;
   margin-left: 0;
@@ -5673,12 +5579,8 @@ body.shadcn-workbench .ilamy-calendar-box .droppable-cell {
     gap: 8px;
     padding: 0 2px;
   }
-  body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button,body.shadcn-workbench .wb-search-trigger {
+  body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button {
     width: 44px;
-  }
-  body.shadcn-workbench .wb-search-trigger {
-    flex: none;
-    margin-left: auto;
   }
 }
 /* Night Observatory: bind project semantic/component tokens to existing business owners.
@@ -6138,14 +6040,16 @@ body .ui-business-dialog :is(.dialog-actions,.modal-actions,.issue-details-actio
   margin-top: var(--dialog-gap);
 }
 /* Search: one owner for React fields and enhanced DOM fields. */
+.wb-search-trigger { margin-left: auto; }
 .workspace-search {
   --workspace-field-inset-start: 36px;
   --workspace-field-inset-end: 48px;
   position: relative;
   display: flex;
   align-items: center;
-  min-width: 0;
-  flex: 1;
+  min-width: min(100%, 160px);
+  max-width: 100%;
+  flex: 1 1 200px;
 }
 .workspace-search>input {
   width: 100%;
@@ -6719,7 +6623,7 @@ const priority=p=>({high:'高优先级',normal:'普通',low:'低优先级'}[p]||
 function status(text,error=false){$('status').setAttribute('role',error?'alert':'status');$('statusText').textContent=text;$('status').classList.toggle('error',error);$('status').classList.toggle('hidden',!error||view==='projects');$('recover').classList.toggle('hidden',!error);}
 async function workspaceConfirm(description){if(!window.WorkspacePrimitives){toast('确认组件加载失败，请刷新页面后重试。');return false;}return window.WorkspacePrimitives.confirm({title:'确认操作',description,action:description.includes('移除')?'移除':'删除'});}
 function toast(text,tone){const kind=tone||(/失败|无法|错误|未保存|不支持|请先|需要/.test(text)?'error':/已保存|已更新|已删除|成功/.test(text)?'success':'info');if(window.WorkspaceFeedback)return window.WorkspaceFeedback.show($('toast'),text,kind);$('toast').textContent=text;$('toast').hidden=false;}
-function setBusy(value){busy=value;renderNotifications();$('add').disabled=value||!ready||conflict;$('submit').disabled=value;document.querySelectorAll('#content button,#content input[type=checkbox]').forEach(x=>{if(!x.closest('#workspaceCalendar,#workspaceTasks,#workspacePersonalInfo,#workspaceAnnualPlans,#workspaceWordPractice,#workspaceFitness'))x.disabled=value||!ready||conflict;});}
+function setBusy(value){busy=value;renderNotifications();document.querySelectorAll('[data-workspace-segment]').forEach(node=>{node.dataset.segmentDisabled=String(value||!ready||conflict);});$('add').disabled=value||!ready||conflict;$('submit').disabled=value;document.querySelectorAll('#content button,#content input[type=checkbox]').forEach(x=>{if(!x.closest('#workspaceCalendar,#workspaceTasks,#workspacePersonalInfo,#workspaceAnnualPlans,#workspaceWordPractice,#workspaceFitness'))x.disabled=value||!ready||conflict;});}
 async function load(){setBusy(true);try{if(scope==='work')await loadProjectLabels();const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const s=await r.json();state=s.workspace;state.driveLinks??=[];version=s.version;ready=true;conflict=false;refreshProjectCalendar();refreshReminders();const target=new URLSearchParams(location.search);const allowedViews=scope==='work'?['today','home','tasks','projects','drive','requirements','notes','personalInfo']:['home','calendar','checkins','tasks','annualPlans','requirements','notes','vocabulary','vocabularyLibrary','fitness','completedGames','upcoming','wardrobe','maintenance','personalInfo'];if(allowedViews.includes(target.get('view')))view=target.get('view');status('已连接云端 · '+(scope==='work'?'工作':'私人')+'数据独立保存');render();if(target.has('task')){const task=state.tasks.find(t=>t.id===target.get('task'));if(task){setBusy(false);edit('tasks',task.id);}else toast('该任务已移除，请查看最新待办。');}}catch(e){ready=false;status(e.message+'，请重新加载。',true);}finally{setBusy(false);$('content').setAttribute('aria-busy','false');}}
 let workspaceRefreshing=false;
 async function refreshWorkspace(){if(!ready||busy||workspaceRefreshing||(document.querySelector('#editor[open],#clothingEditor[open]')||isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()))return;workspaceRefreshing=true;const priorVersion=version;try{const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const latest=await r.json();if(busy||version!==priorVersion||(document.querySelector('#editor[open],#clothingEditor[open]')||isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()))return;if(latest.version!==version){state=latest.workspace;state.driveLinks??=[];version=latest.version;render();}}catch(e){status('云端更新检查失败：'+e.message+'，当前数据保留。',true);}finally{workspaceRefreshing=false;}}
@@ -6813,8 +6717,17 @@ function openHomeEvent(id){view='calendar';render();history.replaceState(null,''
 
 function homePie(open,overdue,events){const groups=[['未逾期待办',open.length-overdue.length,'#4b55ed'],['已逾期待办',overdue.length,'#e5484d'],['今日日程',events.length,'#17a398'],['我的笔记',state.notes.length,'#efaa38']],max=Math.max(1,...groups.map(x=>x[1]));return '<section class="card home-pie-card"><div class="home-chart"><h2>'+(scope==='work'?'工作统计':'首页统计')+'</h2><div class="home-bars" role="img" aria-label="'+esc(groups.map(x=>x[0]+' '+x[1]).join('，'))+'">'+groups.map(x=>'<div class="home-bar-column"><strong>'+x[1]+'</strong><div class="home-bar-track"><div style="height:'+x[1]/max*100+'%;background:'+x[2]+'"></div></div><span>'+x[0]+'</span></div>').join('')+'</div></div>'+todaySchedule(events)+'</section>';}
 
+function segmentControl(key,label,value,items,className=''){return window.WorkspaceSegments.markup({key,label,value,items,className,disabled:busy||!ready||conflict});}
+$('content').addEventListener('workspace-segment-change',event=>{
+ const {key,value}=event.detail||{},source=event.target;
+ if(!(source instanceof HTMLElement)||!source.matches('[data-workspace-segment]')||busy||!ready||conflict||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()||isCalendarEditing()||document.querySelector('dialog[open]')){event.preventDefault();return;}
+ if(key==='media'&&view==='completedGames'&&(value==='all'||Object.hasOwn(mediaTypes,value))){source.dataset.segmentValue=value;mediaFilter=value;renderResults();}
+ else if(key==='wardrobe'&&view==='wardrobe'&&['clothes','outfits'].includes(value)){source.dataset.segmentValue=value;wardrobeMode=value;render();}
+ else if(key==='pages'&&scope==='personal'&&['completedGames','upcoming'].includes(view)&&['completedGames','upcoming'].includes(value)){source.dataset.segmentValue=value;view=value;query='';render();history.replaceState(null,'',location.pathname+'?view='+encodeURIComponent(view));}
+ else event.preventDefault();
+});
 function render(){if(isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing())return;const pageAdd=$('add');if(pageAdd)document.querySelector('.header-actions').append(pageAdd);if(view==='fitness'&&scope==='personal'){renderFitness();return;}disposeFitness();if(view==='vocabulary'&&scope==='personal'){renderWordPractice();return;}disposeWordPractice();if(view==='annualPlans'&&scope==='personal'){renderAnnualPlans();return;}disposeAnnualPlans();if(view==='personalInfo'){renderPersonalInfo();return;}disposePersonalInfo();document.body.dataset.workspaceView=view;disposeWorkspaceTasks();if(isCalendarEditing()){calendarDeferredRender=true;return;}disposeWorkspaceCalendar();document.body.classList.toggle('project-view',view==='projects');stopWordAudio();renderTaskBadge();renderNotifications();const today=day(),open=state.tasks.filter(t=>!t.done),overdue=open.filter(t=>t.dueDate&&t.dueDate<today),todayEvents=eventsOn(today,state.events).sort((a,b)=>a.start.localeCompare(b.start));$('heading').textContent=view==='tasks'?'待办事项':view==='home'?(scope==='work'?'工作概览':'我的一天'):(scope==='personal'&&['completedGames','upcoming'].includes(view)?'娱乐':titles[view]);$('add').textContent='＋ 新建'+(view==='requirements'?'需求':view==='maintenance'?'设备':view==='completedGames'?'记录':view==='drive'?'常用文件':view==='notes'?'笔记':['calendar','home'].includes(view)?'日程':'待办');document.querySelectorAll('.nav-group').forEach(g=>g.classList.toggle('group-active',!!g.querySelector('[data-view="'+view+'"]')));document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',(b.dataset.view===view||(b.dataset.view==='home'&&view==='tasks')||(scope==='personal'&&b.dataset.view==='completedGames'&&view==='upcoming')));b.setAttribute('aria-current',(b.dataset.view===view||(b.dataset.view==='home'&&view==='tasks')||(scope==='personal'&&b.dataset.view==='completedGames'&&view==='upcoming'))?'page':'false');});$('add').classList.toggle('hidden',(scope==='personal'&&view==='home')||view==='checkins'||view==='today'||view==='tasks'||view==='projects'||view==='drive'||view==='vocabularyLibrary'||view==='wardrobe'||view==='upcoming');$('status').classList.toggle('hidden',view==='projects'||!$('status').classList.contains('error'));$('projectPanel').classList.toggle('hidden',view!=='projects');if(view==='projects'&&!$('projectFrame').getAttribute('src'))$('projectFrame').src='/projects?embedded=1';let html='';if(view==='checkins'&&scope==='personal'){html=checkinPage();}else if(view==='today'){html=todayTasksPage();}else if(view==='upcoming'){html=upcomingHomeCard();}else if(view==='requirements'){html='<div class="filters requirements-filters"><input id="search" aria-label="搜索需求" placeholder="搜索需求标题或说明" value="'+esc(query)+'"><select id="requirementFilter" aria-label="需求状态筛选"><option value="all">全部状态</option>'+Object.entries(REQUIREMENT_STATUSES).map(([key,label])=>'<option value="'+key+'">'+label+'</option>').join('')+'</select></div><div id="results"></div>';}else if(view==='maintenance'){html='<div class="filters"><input id="search" aria-label="搜索设备" placeholder="搜索设备名称、位置或维保内容" value="'+esc(query)+'"></div><div id="results"></div>';}else if(view==='completedGames'){html='<div class="filters"><input id="search" aria-label="搜索娱乐记录" placeholder="搜索名称、平台或感想" value="'+esc(query)+'"></div><div id="results"></div>';}else if(view==='drive'){html=drivePage();}else if(view==='wardrobe'){html=wardrobePage();}else if(view==='vocabularyLibrary'){html='<div class="card"><div class="card-head workspace-page-hero"><h2>我的英语词汇库</h2><button class="btn primary" type="button" data-word-practice>英语练习</button><label class="btn" for="vocabImport">导入词汇<input id="vocabImport" type="file" accept="application/json,.json" class="hidden"></label></div><details class="secondary-help"><summary>导入说明</summary>导入时合并新单词，保留已有释义、例句与学习记录。</details><div class="filters" style="margin-top:16px"><input id="search" aria-label="搜索英语词汇" placeholder="搜索单词、中文释义、例句或课程" value="'+esc(query)+'"><select id="vocabFilter" aria-label="熟练度筛选"><option value="all">全部熟练度</option><option value="unknown">不会</option><option value="mastered">已掌握</option></select></div><div id="vocabularySync" class="vocabulary-sync" role="status"></div><div id="results"></div></div>';}else if(view==='projects'){html='';}else if(view==='home'){html=productHome();}else if(view==='tasks'){html='<div id="workspaceTasks" data-tasks-root></div>';}
-else{html='<div class="filters"><input id="search" aria-label="搜索'+titles[view]+'" placeholder="搜索'+(view==='tasks'?'待办标题和详情':view==='notes'?'笔记标题和内容':'日程、地点和详情')+'" value="'+esc(query)+'">'+(view==='tasks'?'<select id="filter" aria-label="待办状态"><option value="open">未完成</option><option value="done">已完成</option><option value="all">全部</option><option value="overdue">已逾期</option>'+ (scope==='personal'?'<option value="games">想玩的游戏</option><option value="gamesDone">已玩游戏</option>':'')+'</select>':'')+'</div><div id="results"></div>';}const tabs=scope==='work'&&['home','tasks'].includes(view)?[['home','日历'],['tasks','待办']]:scope==='personal'&&['completedGames','upcoming'].includes(view)?[['completedGames','我的记录'],['upcoming','即将发售']]:[];if(scope==='personal'&&['notes','maintenance','wardrobe','requirements'].includes(view)){const intro={notes:['生活与记录','我的笔记','留下想法，也留住值得记住的片刻。'],maintenance:['生活与记录','设备维保','把维护安排清楚，让常用设备保持状态。'],wardrobe:['生活与收藏','我的衣橱','整理四季衣物，找到今天的搭配。'],requirements:['安排与记录','需求登记','记录工作台的新想法，逐步评估与跟进。']}[view];html='<header class="workspace-page-hero"><div><h2>'+intro[1]+'</h2><p class="muted">'+intro[2]+'</p></div></header>'+html;}$('content').innerHTML=(tabs.length?'<div class="view-tabs" aria-label="页面视图">'+tabs.map(([target,label])=>'<button data-nav="'+target+'" aria-pressed="'+(view===target)+'">'+label+'</button>').join('')+'</div>':'')+html;if(view==='home'){renderCalendar();if(scope==='personal')mountWorkspaceTasks();}if(view!=='home')renderResults();setBusy(busy);if(view==='upcoming')loadReleaseGames('upcoming');if(view==='drive'&&!projectCoreInfo&&!projectCoreLoading&&!projectCoreError)loadProjectCoreInfo();}
+else{html='<div class="filters"><input id="search" aria-label="搜索'+titles[view]+'" placeholder="搜索'+(view==='tasks'?'待办标题和详情':view==='notes'?'笔记标题和内容':'日程、地点和详情')+'" value="'+esc(query)+'">'+(view==='tasks'?'<select id="filter" aria-label="待办状态"><option value="open">未完成</option><option value="done">已完成</option><option value="all">全部</option><option value="overdue">已逾期</option>'+ (scope==='personal'?'<option value="games">想玩的游戏</option><option value="gamesDone">已玩游戏</option>':'')+'</select>':'')+'</div><div id="results"></div>';}const tabs=scope==='personal'&&['completedGames','upcoming'].includes(view)?[['completedGames','我的记录'],['upcoming','即将发售']]:[];if(scope==='personal'&&['notes','maintenance','wardrobe','requirements'].includes(view)){const intro={notes:['生活与记录','我的笔记','留下想法，也留住值得记住的片刻。'],maintenance:['生活与记录','设备维保','把维护安排清楚，让常用设备保持状态。'],wardrobe:['生活与收藏','我的衣橱','整理四季衣物，找到今天的搭配。'],requirements:['安排与记录','需求登记','记录工作台的新想法，逐步评估与跟进。']}[view];html='<header class="workspace-page-hero"><div><h2>'+intro[1]+'</h2><p class="muted">'+intro[2]+'</p></div></header>'+html;}$('content').innerHTML=(tabs.length?segmentControl('pages','记录页面',view,tabs.map(([value,label])=>({value,label})),'wb-segment-page-tabs'):'')+html;if(view==='home'){renderCalendar();if(scope==='personal')mountWorkspaceTasks();}if(view!=='home')renderResults();setBusy(busy);if(view==='upcoming')loadReleaseGames('upcoming');if(view==='drive'&&!projectCoreInfo&&!projectCoreLoading&&!projectCoreError)loadProjectCoreInfo();}
 
 const releaseData={},releasePending={},releaseErrors={};
 function releaseCards(items){items=items.map(g=>({...g,coverUrl:/^\d+$/.test(g.id)?'https://cdn.akamai.steamstatic.com/steam/apps/'+g.id+'/library_600x900.jpg':''}));return '<div class="release-list">'+items.map(g=>'<a class="release-item" href="'+esc(g.url)+'" target="_blank" rel="noopener noreferrer">'+(g.coverUrl?'<img class="game-cover-thumb" data-official-portrait="true" loading="lazy" src="'+esc(g.coverUrl)+'" alt="'+esc(g.title)+' 封面">':'')+'<div><h3>'+esc(g.title)+'</h3>'+(g.platformReleases||[{platform:g.platform,releaseDate:g.releaseDate,releaseLabel:g.releaseLabel}]).map(p=>'<p class="muted">'+esc(p.platform||'平台待确认')+' · '+esc(p.releaseDate||p.releaseLabel||'日期待定')+'</p>').join('')+'</div></a>').join('')+'</div>';}
@@ -7098,7 +7011,7 @@ function renderMediaLibrary(resolve=true){
  items.sort(mediaSort==='title'?(a,b)=>a.title.localeCompare(b.title,'zh-CN'):mediaSort==='rating'?(a,b)=>(b.rating??-1)-(a.rating??-1):(a,b)=>(b.history?.at(-1)?.at||b.completedDate||b.startedDate||'').localeCompare(a.history?.at(-1)?.at||a.completedDate||a.startedDate||''));
  const signature=[query,mediaFilter,mediaStatusFilter,mediaSort].join('|');if(signature!==mediaSignature){mediaPage=1;mediaSignature=signature;}
  const pages=Math.max(1,Math.ceil(items.length/24));mediaPage=Math.min(mediaPage,pages);const visible=items.slice((mediaPage-1)*24,mediaPage*24),stats=mediaTrackingStats(raw,day().slice(0,4));
- $('results').innerHTML='<header class="workspace-page-hero"><div><h2>我的娱乐收藏</h2><p class="muted">游戏、电影与动漫，记录每一段体验。</p></div><span class="workspace-page-summary">'+stats.total+' 部作品 · '+stats.active+' 部进行中</span></header><div class="media-controls"><div class="media-filters"><button class="btn '+(mediaFilter==='all'?'primary':'')+'" data-media-filter="all">全部 '+all.length+'</button>'+Object.entries(mediaTypes).map(([key,name])=>'<button class="btn '+(mediaFilter===key?'primary':'')+'" data-media-filter="'+key+'">'+name+' '+all.filter(g=>(g.mediaType||'game')===key).length+'</button>').join('')+'</div><div class="media-library-toolbar"><label>状态<select id="mediaTrackingFilter" aria-label="记录状态筛选"><option value="all">全部状态</option>'+Object.entries(MEDIA_STATUSES).map(([value,label])=>'<option value="'+value+'" '+(value===mediaStatusFilter?'selected':'')+'>'+label+' '+selected.filter(g=>mediaTrackingStatus(g)===value).length+'</option>').join('')+'</select></label><label>排序<select id="mediaTrackingSort" aria-label="作品排序">'+[['recent','最近更新'],['title','作品名称'],['rating','我的评分']].map(([v,l])=>'<option value="'+v+'" '+(v===mediaSort?'selected':'')+'>'+l+'</option>').join('')+'</select></label><button class="btn" data-media-layout="'+(mediaLayout==='grid'?'list':'grid')+'">'+(mediaLayout==='grid'?'切换列表':'切换封面墙')+'</button></div></div><p class="muted media-library-summary">共 '+stats.total+' 部作品 · 进行中 '+stats.active+' · 想看 / 想玩 '+stats.planned+' · '+day().slice(0,4)+' 年已完成 '+stats.completed+'</p>'+(items.length?'<div class="'+(mediaLayout==='list'?'media-library-list':'media-wall')+'">'+visible.map((g,index)=>mediaLayout==='grid'?mediaWallCard(g,index):'<article class="card"><button type="button" class="record-cover" data-edit="completedGames" data-id="'+esc(g.id)+'" aria-label="编辑娱乐记录：'+esc(g.title)+'">'+(g.coverUrl?'<img class="game-cover" loading="lazy" decoding="async" width="300" height="450" referrerpolicy="no-referrer" src="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game'))+'" data-cover-fallback="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game')!==g.coverUrl?g.coverUrl:'')+'" alt="'+esc(g.title)+' 封面" onerror="if(!retryOriginalMediaCover(this))this.hidden=true">':'<span class="game-cover-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m10 8 6 4-6 4z"/></svg><span class="sr-only">暂无封面</span></span>')+(g.coverUrl&&(g.mediaType||'game')==='game'?'<span class="cover-rating">'+esc((steamReviews.get(mediaReviewKey(g))||{}).label||'评价加载中…')+'</span>':'')+'<span class="cover-platform">'+esc(g.platform||mediaTypes[g.mediaType||'game'])+'</span></button><div class="media-record-info"><h3>'+esc(g.title)+'</h3><span class="tag">'+mediaStatusName(g)+'</span><p>'+mediaProgressText(g)+'</p><p class="muted">'+(g.rating==null?'尚未个人评分':'我的评分 '+g.rating+' / 10')+' · '+((g.mediaType||'game')==='game'?'重玩':'重看')+' '+(g.repeats||0)+' 次</p>'+(g.completedDate?'<p class="muted">完成 '+esc(g.completedDate)+'</p>':'')+(g.detail?'<p class="media-record-note">'+esc(g.detail)+'</p>':'')+'<div class="media-record-actions"><button class="btn" data-edit="completedGames" data-id="'+esc(g.id)+'">更新记录</button>'+(['anime','tv'].includes(g.mediaType)&&mediaTrackingStatus(g)==='in_progress'?'<button class="btn" data-media-advance="'+esc(g.id)+'" '+(busy||g.total>0&&g.progress>=g.total?'disabled':'')+'>＋1 集</button>':'')+'</div></div></article>').join('')+'</div><div class="media-pagination"><button class="btn" data-media-page="-1" '+(mediaPage===1?'disabled':'')+'>上一页</button><span>第 '+mediaPage+' / '+pages+' 页 · '+items.length+' 条</span><button class="btn" data-media-page="1" '+(mediaPage===pages?'disabled':'')+'>下一页</button></div>':'<div class="card">'+empty(raw.length?'没有符合条件的记录':'还没有娱乐记录','添加想看或想玩的作品，逐步记录进度。')+(raw.length?'<button class="btn" data-media-reset>清空筛选</button>':'')+'</div>');
+ $('results').innerHTML='<header class="workspace-page-hero"><div><h2>我的娱乐收藏</h2><p class="muted">游戏、电影与动漫，记录每一段体验。</p></div><span class="workspace-page-summary">'+stats.total+' 部作品 · '+stats.active+' 部进行中</span></header><div class="media-controls">'+segmentControl('media','作品类别',mediaFilter,[{value:'all',label:'全部 '+all.length},...Object.entries(mediaTypes).map(([value,label])=>({value,label:label+' '+all.filter(g=>(g.mediaType||'game')===value).length}))],'media-filters')+'<div class="media-library-toolbar"><label>状态<select id="mediaTrackingFilter" aria-label="记录状态筛选"><option value="all">全部状态</option>'+Object.entries(MEDIA_STATUSES).map(([value,label])=>'<option value="'+value+'" '+(value===mediaStatusFilter?'selected':'')+'>'+label+' '+selected.filter(g=>mediaTrackingStatus(g)===value).length+'</option>').join('')+'</select></label><label>排序<select id="mediaTrackingSort" aria-label="作品排序">'+[['recent','最近更新'],['title','作品名称'],['rating','我的评分']].map(([v,l])=>'<option value="'+v+'" '+(v===mediaSort?'selected':'')+'>'+l+'</option>').join('')+'</select></label><button class="btn" data-media-layout="'+(mediaLayout==='grid'?'list':'grid')+'">'+(mediaLayout==='grid'?'切换列表':'切换封面墙')+'</button></div></div><p class="muted media-library-summary">共 '+stats.total+' 部作品 · 进行中 '+stats.active+' · 想看 / 想玩 '+stats.planned+' · '+day().slice(0,4)+' 年已完成 '+stats.completed+'</p>'+(items.length?'<div class="'+(mediaLayout==='list'?'media-library-list':'media-wall')+'">'+visible.map((g,index)=>mediaLayout==='grid'?mediaWallCard(g,index):'<article class="card"><button type="button" class="record-cover" data-edit="completedGames" data-id="'+esc(g.id)+'" aria-label="编辑娱乐记录：'+esc(g.title)+'">'+(g.coverUrl?'<img class="game-cover" loading="lazy" decoding="async" width="300" height="450" referrerpolicy="no-referrer" src="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game'))+'" data-cover-fallback="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game')!==g.coverUrl?g.coverUrl:'')+'" alt="'+esc(g.title)+' 封面" onerror="if(!retryOriginalMediaCover(this))this.hidden=true">':'<span class="game-cover-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m10 8 6 4-6 4z"/></svg><span class="sr-only">暂无封面</span></span>')+(g.coverUrl&&(g.mediaType||'game')==='game'?'<span class="cover-rating">'+esc((steamReviews.get(mediaReviewKey(g))||{}).label||'评价加载中…')+'</span>':'')+'<span class="cover-platform">'+esc(g.platform||mediaTypes[g.mediaType||'game'])+'</span></button><div class="media-record-info"><h3>'+esc(g.title)+'</h3><span class="tag">'+mediaStatusName(g)+'</span><p>'+mediaProgressText(g)+'</p><p class="muted">'+(g.rating==null?'尚未个人评分':'我的评分 '+g.rating+' / 10')+' · '+((g.mediaType||'game')==='game'?'重玩':'重看')+' '+(g.repeats||0)+' 次</p>'+(g.completedDate?'<p class="muted">完成 '+esc(g.completedDate)+'</p>':'')+(g.detail?'<p class="media-record-note">'+esc(g.detail)+'</p>':'')+'<div class="media-record-actions"><button class="btn" data-edit="completedGames" data-id="'+esc(g.id)+'">更新记录</button>'+(['anime','tv'].includes(g.mediaType)&&mediaTrackingStatus(g)==='in_progress'?'<button class="btn" data-media-advance="'+esc(g.id)+'" '+(busy||g.total>0&&g.progress>=g.total?'disabled':'')+'>＋1 集</button>':'')+'</div></div></article>').join('')+'</div><div class="media-pagination"><button class="btn" data-media-page="-1" '+(mediaPage===1?'disabled':'')+'>上一页</button><span>第 '+mediaPage+' / '+pages+' 页 · '+items.length+' 条</span><button class="btn" data-media-page="1" '+(mediaPage===pages?'disabled':'')+'>下一页</button></div>':'<div class="card">'+empty(raw.length?'没有符合条件的记录':'还没有娱乐记录','添加想看或想玩的作品，逐步记录进度。')+(raw.length?'<button class="btn" data-media-reset>清空筛选</button>':'')+'</div>');
  window.WorkspaceMotion?.rearrange($('results'),priorLayout);
  $('mediaTrackingFilter').onchange=e=>{mediaStatusFilter=e.target.value;saveMediaView();renderCompletedGames(false);};$('mediaTrackingSort').onchange=e=>{mediaSort=e.target.value;saveMediaView();renderCompletedGames(false);};
  $('results').insertAdjacentHTML('beforeend','<details class="media-source-credits secondary-help"><summary>数据来源与致谢</summary><p><a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer"><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" width="80" height="58" alt="TMDB"></a></p><p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p><p>游戏资料：IGDB / Steam；动漫资料：Bangumi / MyAnimeList。</p></details>');if(resolve){resolveSavedGameCovers();resolveSteamReviews();}
@@ -7226,10 +7139,10 @@ let editorBackdropPress=false;
 function outsideEditor(e){const r=$('editor').getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom;}
 $('editor').addEventListener('pointerdown',e=>{editorBackdropPress=e.target===$('editor')&&outsideEditor(e);});
 $('editor').addEventListener('click',e=>{if(editorBackdropPress&&!busy&&e.target===$('editor')&&outsideEditor(e))$('editor').close();editorBackdropPress=false;});
-$('deleteEntertainment').onclick=async()=>{if(busy||kind!=='completedGames'||!editing)return;const item=state.completedGames.find(g=>g.id===editing);if(!item)return;const linked=state.tasks.filter(t=>t.mediaRecordId===item.id).length;if(!await workspaceConfirm('删除娱乐记录「'+item.title+'」？'+(linked?'关联的 '+linked+' 项待办会保留，可在待办编辑中解除关联。':'')))return;if(await deleteRecord('completedGames',editing))$('editor').close();else $('formError').textContent=saveError||'删除未成功，请重试。';};$('cancel').onclick=()=>closeMediaRecordEditor();$('editor').addEventListener('cancel',e=>{if(busy)e.preventDefault();else if(kind==='completedGames'){e.preventDefault();closeMediaRecordEditor();}});$('recover').onclick=()=>{if(!busy){$('editor').close();load();}};$('add').onclick=()=>edit(view==='requirements'?'requirements':view==='maintenance'?'maintenance':view==='completedGames'?'completedGames':view==='drive'?'driveLinks':view==='notes'?'notes':['calendar','home'].includes(view)?'events':'tasks');document.querySelector('nav').onclick=e=>{const b=e.target.closest('button[data-view]');if(b){if(isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()){toast('请先关闭编辑面板或处理未保存修改。');return;}view=b.dataset.view;query='';render();}};$('content').addEventListener('input',e=>{if(e.target.id==='search'){query=e.target.value;renderResults();}});$('content').addEventListener('change',async e=>{if(e.target.id==='requirementFilter'){requirementFilter=e.target.value;renderRequirements();}if(e.target.id==='filter'){filter=e.target.value;renderResults();}if(e.target.dataset.routineToggle){const next=structuredClone(state),item=next.dailyRoutines.find(x=>x.id===e.target.dataset.routineToggle);if(!item)return;item.completedOn=e.target.checked?day():'';if(!await change(next))e.target.checked=!e.target.checked;}if(e.target.dataset.eventToggle){const next=structuredClone(state),item=next.events.find(x=>x.id===e.target.dataset.eventToggle);if(!item)return;if(item.recurrence){const dates=new Set(item.completedDates||[]),date=e.target.dataset.occurrenceDate;if(e.target.checked)dates.add(date);else dates.delete(date);item.completedDates=[...dates];}else item.done=e.target.checked;if(!await change(next))e.target.checked=!e.target.checked;}if(e.target.dataset.toggle){const next=structuredClone(state),t=next.tasks.find(t=>t.id===e.target.dataset.toggle);t.done=e.target.checked;if(!await change(next))e.target.checked=!e.target.checked;}});$('content').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.readNote){readingNoteId=b.dataset.readNote;renderResults();document.querySelector('.workspace-note-reader h2')?.setAttribute('tabindex','-1');document.querySelector('.workspace-note-reader h2')?.focus({preventScroll:true});return;}if(b.hasAttribute('data-home-new-event')){openHomeEvent();return;}if(b.dataset.homeEvent){openHomeEvent(b.dataset.homeEvent);return;}if(b.hasAttribute('data-refresh-today')){refreshTodayTasks();return;}if(b.dataset.todayCalendar){selectedDate=b.dataset.todayCalendar;workspaceCalendarAnchor=selectedDate;view='home';render();return;}if(b.hasAttribute('data-refresh-core')){loadProjectCoreInfo();return;}if(b.hasAttribute('data-add-routine'))edit('dailyRoutines');if(b.dataset.carousel){const items=monthlyGames(releaseData.upcoming);upcomingIndex=(upcomingIndex+(b.dataset.carousel==='next'?1:-1)+items.length)%Math.max(1,items.length);drawUpcoming(releaseData.upcoming);}if(b.dataset.mediaFilter){mediaFilter=b.dataset.mediaFilter;renderResults();}if(b.hasAttribute('data-game-releases')){$('releaseDialog').showModal();loadReleaseGames('released');}if(b.hasAttribute('data-release-retry'))loadReleaseGames(b.dataset.releaseRetry,true);if(b.hasAttribute('data-refresh-project-calendar'))refreshProjectCalendar();if(b.dataset.previewSheet)previewSheet(b.dataset.previewSheet);if(b.dataset.addEvent)openCalendarEvent();if(b.hasAttribute('data-add-task'))edit('tasks');if(b.dataset.nav){if(isTasksEditing()){toast('请先关闭待办编辑面板。');return;}view=b.dataset.nav==='calendar'&&scope==='work'?'home':b.dataset.nav;query='';render();history.replaceState(null,'',location.pathname+'?view='+encodeURIComponent(view));}if(b.dataset.edit)edit(b.dataset.edit,b.dataset.id);if(b.dataset.delete){const type=b.dataset.delete;if(type==='events'){openCalendarEvent(b.dataset.id);return;}const item=state[type].find(x=>x.id===b.dataset.id);if(!await workspaceConfirm(type==='driveLinks'?'移除常用链接「'+item.title+'」？Google 中的文件会保留。':'删除'+labels[type]+'「'+item.title+'」？'))return;await deleteRecord(type,item.id);}};
+$('deleteEntertainment').onclick=async()=>{if(busy||kind!=='completedGames'||!editing)return;const item=state.completedGames.find(g=>g.id===editing);if(!item)return;const linked=state.tasks.filter(t=>t.mediaRecordId===item.id).length;if(!await workspaceConfirm('删除娱乐记录「'+item.title+'」？'+(linked?'关联的 '+linked+' 项待办会保留，可在待办编辑中解除关联。':'')))return;if(await deleteRecord('completedGames',editing))$('editor').close();else $('formError').textContent=saveError||'删除未成功，请重试。';};$('cancel').onclick=()=>closeMediaRecordEditor();$('editor').addEventListener('cancel',e=>{if(busy)e.preventDefault();else if(kind==='completedGames'){e.preventDefault();closeMediaRecordEditor();}});$('recover').onclick=()=>{if(!busy){$('editor').close();load();}};$('add').onclick=()=>edit(view==='requirements'?'requirements':view==='maintenance'?'maintenance':view==='completedGames'?'completedGames':view==='drive'?'driveLinks':view==='notes'?'notes':['calendar','home'].includes(view)?'events':'tasks');document.querySelector('nav').onclick=e=>{const b=e.target.closest('button[data-view]');if(b){if(isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()){toast('请先关闭编辑面板或处理未保存修改。');return;}view=b.dataset.view;query='';render();}};$('content').addEventListener('input',e=>{if(e.target.id==='search'){query=e.target.value;renderResults();}});$('content').addEventListener('change',async e=>{if(e.target.id==='requirementFilter'){requirementFilter=e.target.value;renderRequirements();}if(e.target.id==='filter'){filter=e.target.value;renderResults();}if(e.target.dataset.routineToggle){const next=structuredClone(state),item=next.dailyRoutines.find(x=>x.id===e.target.dataset.routineToggle);if(!item)return;item.completedOn=e.target.checked?day():'';if(!await change(next))e.target.checked=!e.target.checked;}if(e.target.dataset.eventToggle){const next=structuredClone(state),item=next.events.find(x=>x.id===e.target.dataset.eventToggle);if(!item)return;if(item.recurrence){const dates=new Set(item.completedDates||[]),date=e.target.dataset.occurrenceDate;if(e.target.checked)dates.add(date);else dates.delete(date);item.completedDates=[...dates];}else item.done=e.target.checked;if(!await change(next))e.target.checked=!e.target.checked;}if(e.target.dataset.toggle){const next=structuredClone(state),t=next.tasks.find(t=>t.id===e.target.dataset.toggle);t.done=e.target.checked;if(!await change(next))e.target.checked=!e.target.checked;}});$('content').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.readNote){readingNoteId=b.dataset.readNote;renderResults();document.querySelector('.workspace-note-reader h2')?.setAttribute('tabindex','-1');document.querySelector('.workspace-note-reader h2')?.focus({preventScroll:true});return;}if(b.hasAttribute('data-home-new-event')){openHomeEvent();return;}if(b.dataset.homeEvent){openHomeEvent(b.dataset.homeEvent);return;}if(b.hasAttribute('data-refresh-today')){refreshTodayTasks();return;}if(b.dataset.todayCalendar){selectedDate=b.dataset.todayCalendar;workspaceCalendarAnchor=selectedDate;view='home';render();return;}if(b.hasAttribute('data-refresh-core')){loadProjectCoreInfo();return;}if(b.hasAttribute('data-add-routine'))edit('dailyRoutines');if(b.dataset.carousel){const items=monthlyGames(releaseData.upcoming);upcomingIndex=(upcomingIndex+(b.dataset.carousel==='next'?1:-1)+items.length)%Math.max(1,items.length);drawUpcoming(releaseData.upcoming);}if(b.hasAttribute('data-game-releases')){$('releaseDialog').showModal();loadReleaseGames('released');}if(b.hasAttribute('data-release-retry'))loadReleaseGames(b.dataset.releaseRetry,true);if(b.hasAttribute('data-refresh-project-calendar'))refreshProjectCalendar();if(b.dataset.previewSheet)previewSheet(b.dataset.previewSheet);if(b.dataset.addEvent)openCalendarEvent();if(b.hasAttribute('data-add-task'))edit('tasks');if(b.dataset.nav){if(isTasksEditing()){toast('请先关闭待办编辑面板。');return;}view=b.dataset.nav==='calendar'&&scope==='work'?'home':b.dataset.nav;query='';render();history.replaceState(null,'',location.pathname+'?view='+encodeURIComponent(view));}if(b.dataset.edit)edit(b.dataset.edit,b.dataset.id);if(b.dataset.delete){const type=b.dataset.delete;if(type==='events'){openCalendarEvent(b.dataset.id);return;}const item=state[type].find(x=>x.id===b.dataset.id);if(!await workspaceConfirm(type==='driveLinks'?'移除常用链接「'+item.title+'」？Google 中的文件会保留。':'删除'+labels[type]+'「'+item.title+'」？'))return;await deleteRecord(type,item.id);}};
 const seasons={spring:'春季',summer:'夏季',autumn:'秋季',winter:'冬季'},categories={top:'上装',bottom:'下装',dress:'连衣裙',outer:'外套',shoes:'鞋子',accessory:'配饰'};
 let wardrobeSeason='spring',wardrobeMode='clothes',selectedClothes=new Set(),clothingImage=null,clothingEditId=null;
-function wardrobePage(){return '<div class="wardrobe-tabs"><button class="btn '+(wardrobeMode==='clothes'?'primary':'')+'" data-wardrobe-mode="clothes">我的衣服</button><button class="btn '+(wardrobeMode==='outfits'?'primary':'')+'" data-wardrobe-mode="outfits">四季穿搭</button><button class="btn" data-add-clothing>＋ 添加衣服</button></div><div class="filters"><input id="search" aria-label="搜索衣服" placeholder="搜索名称、颜色" value="'+esc(query)+'"><select id="wardrobeSeason" aria-label="穿搭季节">'+Object.entries(seasons).map(([k,v])=>'<option value="'+k+'" '+(k===wardrobeSeason?'selected':'')+'>'+v+'</option>').join('')+'</select></div><div id="results"></div>';}
+function wardrobePage(){return '<div class="wardrobe-tabs">'+segmentControl('wardrobe','衣橱视图',wardrobeMode,[{value:'clothes',label:'我的衣服'},{value:'outfits',label:'四季穿搭'}])+'<button class="btn" data-add-clothing>＋ 添加衣服</button></div><div class="filters"><input id="search" aria-label="搜索衣服" placeholder="搜索名称、颜色" value="'+esc(query)+'"><select id="wardrobeSeason" aria-label="穿搭季节">'+Object.entries(seasons).map(([k,v])=>'<option value="'+k+'" '+(k===wardrobeSeason?'selected':'')+'>'+v+'</option>').join('')+'</select></div><div id="results"></div>';}
 function outfitImages(ids){return '<div class="outfit-images">'+ids.map(id=>(state.wardrobe||[]).find(c=>c.id===id)).filter(Boolean).map(c=>'<img src="'+esc(c.image)+'" alt="'+esc(c.name)+'" title="'+esc(c.name)+'">').join('')+'</div>';}
 function renderWardrobe(){
  const all=state.wardrobe||[],items=all.filter(c=>c.seasons.includes(wardrobeSeason)&&(c.name+' '+c.color).toLowerCase().includes(query.toLowerCase()));
@@ -7245,7 +7158,7 @@ $('clothingForm').onsubmit=async e=>{e.preventDefault();if(busy)return;const sel
 function basicOutfit(clothes,season){const pool=clothes.filter(c=>c.seasons.includes(season)),pick=cat=>pool.find(c=>c.category===cat);const dress=pick('dress'),top=pick('top'),bottom=pick('bottom');let result=top&&bottom?[top.id,bottom.id]:dress?[dress.id]:[];if(!result.length)return [];for(const cat of ['outer','shoes','accessory']){if(cat==='outer'&&season==='summer')continue;const c=pick(cat);if(c)result.push(c.id);}return result;}
 async function saveOutfit(ids){if(!ids.length){toast('需要上装和下装，或一件连衣裙，才能生成基础组合');return;}const name=await window.WorkspacePrimitives.confirm({title:'保存穿搭',description:'给这套'+seasons[wardrobeSeason]+'穿搭起个名字。',input:true,initialValue:seasons[wardrobeSeason]+'穿搭',action:'保存穿搭'});if(!name?.trim())return;if(name.trim().length>100){toast('名称最多100字');return;}const next=structuredClone(state);next.outfits=next.outfits||[];next.outfits.push({id:crypto.randomUUID(),name:name.trim(),season:wardrobeSeason,items:ids});if(await change(next)){selectedClothes.clear();wardrobeMode='outfits';render();toast('穿搭已保存');}}
 $('content').addEventListener('change',e=>{if(e.target.id==='wardrobeSeason'){wardrobeSeason=e.target.value;selectedClothes.clear();renderWardrobe();}if(e.target.dataset.selectClothing){if(e.target.checked)selectedClothes.add(e.target.dataset.selectClothing);else selectedClothes.delete(e.target.dataset.selectClothing);renderWardrobe();}});
-$('content').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b||busy||!ready)return;if(b.hasAttribute('data-add-clothing')){clothingBlob=null;openClothing();}if(b.dataset.editClothing){clothingBlob=null;openClothing(b.dataset.editClothing);}if(b.dataset.wardrobeMode){wardrobeMode=b.dataset.wardrobeMode;render();}if(b.hasAttribute('data-save-outfit'))await saveOutfit([...selectedClothes]);if(b.hasAttribute('data-suggest-outfit'))await saveOutfit(basicOutfit(state.wardrobe||[],wardrobeSeason));if(b.dataset.deleteOutfit) {if(await workspaceConfirm('删除这套穿搭？'))await deleteRecord('outfits',b.dataset.deleteOutfit);}if(b.dataset.deleteClothing){if(!await workspaceConfirm('删除这件衣服？引用它的穿搭也会一并移除。'))return;const id=b.dataset.deleteClothing,next=structuredClone(state);next.wardrobe=next.wardrobe.filter(c=>c.id!==id);next.outfits=(next.outfits||[]).filter(o=>!o.items.includes(id));if(await change(next))selectedClothes.delete(id);}});
+$('content').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b||busy||!ready)return;if(b.hasAttribute('data-add-clothing')){clothingBlob=null;openClothing();}if(b.dataset.editClothing){clothingBlob=null;openClothing(b.dataset.editClothing);}if(b.hasAttribute('data-save-outfit'))await saveOutfit([...selectedClothes]);if(b.hasAttribute('data-suggest-outfit'))await saveOutfit(basicOutfit(state.wardrobe||[],wardrobeSeason));if(b.dataset.deleteOutfit) {if(await workspaceConfirm('删除这套穿搭？'))await deleteRecord('outfits',b.dataset.deleteOutfit);}if(b.dataset.deleteClothing){if(!await workspaceConfirm('删除这件衣服？引用它的穿搭也会一并移除。'))return;const id=b.dataset.deleteClothing,next=structuredClone(state);next.wardrobe=next.wardrobe.filter(c=>c.id!==id);next.outfits=(next.outfits||[]).filter(o=>!o.items.includes(id));if(await change(next))selectedClothes.delete(id);}});
 const sidebarPaths={requirements:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',upcoming:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18m-10 4 4 3-4 3z"/>',maintenance:'<path d="M14 6a5 5 0 0 0-6 6L3 17l4 4 5-5a5 5 0 0 0 6-6l-3 3-4-4z"/>',completedGames:'<path d="M7 3h10v6a5 5 0 0 1-10 0zM7 5H3v3a4 4 0 0 0 4 4M17 5h4v3a4 4 0 0 1-4 4M12 14v5M8 21h8M9 19h6"/>',drive:'<path d="m9 3 6 0 7 12-3 6H5l-3-6zM9 3l7 12H2M22 15H8l7-12M5 21l7-12"/>',wardrobe:'<path d="m8 3-5 4 3 5 3-2v11h6V10l3 2 3-5-5-4c0 3-8 3-8 0z"/>',vocabulary:'<path d="M4 4h7v16H4zM11 4h9v16h-9M7 8h1M14 8h3M14 12h3"/>',home:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',tasks:'<path d="m3 6 2 2 4-4M12 6h9M3 13l2 2 4-4M12 13h9M12 20h9M4 20h3"/>',notes:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h6"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18M8 15h2M14 15h2"/>',projects:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M9 5V3h6v2M3 11h18M8 15h8M8 18h5"/>',switch:'<path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4-4-4 4 4 4"/>',collapse:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18m7-12-3 3 3 3"/>'};
 function sidebarIcon(name){return '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+sidebarPaths[name]+'</svg>';}
 document.body.classList.add('shared-workspace');if(scope==='work')document.body.classList.add('modern-work');

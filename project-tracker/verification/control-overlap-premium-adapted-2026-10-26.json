@@ -1,0 +1,179 @@
+{
+  "mode": "strict",
+  "project_root": "/Users/cuimingli/2.智库智能项目管理资料/海外项目管理资料/AI/项目问题跟进表云端版/project-tracker",
+  "findings": [],
+  "bindingEvidence": [
+    {
+      "line": 4819,
+      "evidence": "projectSearchToggle bound through searchToggle"
+    },
+    {
+      "line": 4848,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 4848,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 4855,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 4866,
+      "evidence": "projectCreateCancel directly bound to click"
+    },
+    {
+      "line": 4871,
+      "evidence": "issueClose directly bound to click"
+    },
+    {
+      "line": 4871,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 4871,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 4871,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 4871,
+      "evidence": "issueCancel directly bound to click"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "[data-view] matched by delegated click target"
+    },
+    {
+      "line": 6430,
+      "evidence": "notificationToggle directly bound to click"
+    },
+    {
+      "line": 6430,
+      "evidence": "accountToggle directly bound to click"
+    },
+    {
+      "line": 6430,
+      "evidence": "add directly bound to click"
+    },
+    {
+      "line": 6430,
+      "evidence": "recover directly bound to click"
+    },
+    {
+      "line": 6431,
+      "evidence": "accountClose directly bound to click"
+    },
+    {
+      "line": 6431,
+      "evidence": "personalInfoLink directly bound to click"
+    },
+    {
+      "line": 6431,
+      "evidence": "drivePreviewClose directly bound to click"
+    },
+    {
+      "line": 6431,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 6431,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 6431,
+      "evidence": "clothingCancel directly bound to click"
+    },
+    {
+      "line": 6431,
+      "evidence": "notificationClose directly bound to click"
+    },
+    {
+      "line": 6431,
+      "evidence": "releaseClose directly bound to click"
+    },
+    {
+      "line": 6431,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 6431,
+      "evidence": "WorkspacePrimitives.install -> authored select/date adapter"
+    },
+    {
+      "line": 6431,
+      "evidence": "releaseRefresh directly bound to click"
+    },
+    {
+      "line": 6431,
+      "evidence": "deleteEntertainment directly bound to click"
+    },
+    {
+      "line": 6431,
+      "evidence": "cancel directly bound to click"
+    },
+    {
+      "line": 4099,
+      "evidence": ".menu-toggle bound through menu"
+    },
+    {
+      "line": 4101,
+      "evidence": "[data-demo] click binding for each matched node"
+    },
+    {
+      "line": 4101,
+      "evidence": "[data-demo] click binding for each matched node"
+    },
+    {
+      "line": 9,
+      "evidence": "[data-layout-reset] directly bound to click"
+    },
+    {
+      "line": 9,
+      "evidence": "[data-layout-edit] directly bound to click"
+    }
+  ]
+}

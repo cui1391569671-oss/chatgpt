@@ -1,3 +1,4 @@
+import {closeSelectOnEscape} from '@/components/workspace-select-escape';
 import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 import * as React from 'react'
 import * as SheetPrimitive from '@animate-ui/react/primitives/radix-ui/dialog'
@@ -48,6 +49,7 @@ function SheetContent({
   className,
   children,
   side = 'right',
+  onEscapeKeyDown,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: 'top' | 'right' | 'bottom' | 'left'
@@ -64,6 +66,9 @@ function SheetContent({
           className
         )}
         {...props}
+        onEscapeKeyDown={event => {
+          if (!closeSelectOnEscape(event)) onEscapeKeyDown?.(event)
+        }}
       >
         {children}
         <SheetPrimitive.Close data-slot='dialog-close' className='absolute inset-e-4 top-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary'>

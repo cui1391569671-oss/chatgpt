@@ -53,10 +53,10 @@ function normalizeCalendarControl(element){
  for(const name of [...element.classList])if(/^(?:(?:sm|md|lg):)?(?:rounded(?:-|$)|h-|min-h-|size-|p[xytrbl]?-|gap-|shadow(?:-|$)|bg-|hover:bg-|hover:text-)/.test(name)||name==='font-normal'||name.startsWith('has-')&&/:p[xy]-/.test(name))element.classList.remove(name);
 }
 function bindCalendarControls(root){
- for(const input of root.querySelectorAll('input[type=file]'))enhanceFileInput(input);
- for(const field of root.querySelectorAll('input:not([type=file]):not([type=checkbox]):not([type=hidden]),textarea')){field.dataset.uiControl=field.tagName==='TEXTAREA'?'textarea':'input';normalizeCalendarControl(field);}
+ for(const input of root.querySelectorAll('input[type=file]'))if(!input.closest('[data-ui-owner]'))enhanceFileInput(input);
+ for(const field of root.querySelectorAll('input:not([type=file]):not([type=checkbox]):not([type=hidden]),textarea')){if(field.closest('[data-ui-owner]'))continue;field.dataset.uiControl=field.tagName==='TEXTAREA'?'textarea':'input';normalizeCalendarControl(field);}
  for(const button of root.querySelectorAll('button[data-slot=button],button[data-slot=popover-trigger],button[data-slot=dropdown-menu-trigger],button[data-slot=select-trigger],button[data-slot=color-picker-trigger],button[role=radio],.ilamy-failure button,.ilamy-attachment-list button')){
-  if(button.closest('table')||button.classList.contains('rounded-full'))continue;
+  if(button.closest('table,[data-ui-owner]')||button.classList.contains('rounded-full'))continue;
   button.dataset.uiControl='button';
   if(button.querySelector('svg')&&!button.textContent.trim())button.dataset.workspaceSize='icon';
   if(button.classList.contains('bg-primary'))button.classList.add('primary');
