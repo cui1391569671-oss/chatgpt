@@ -688,9 +688,9 @@ thead th {
   --soft: var(--semantic-surface);
   --shadow: none;
   --shadow-lg: var(--shadow-sm);
-  --motion-fast: 140ms;
-  --motion-enter: 180ms;
-  --motion-ease: cubic-bezier(.2,.7,.2,1);
+  --motion-fast: var(--duration-fast);
+  --motion-enter: var(--workspace-motion-control);
+  --motion-ease: var(--workspace-motion-ease);
 }
 .btn,input,select,textarea {
   transition: background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,color var(--motion-fast) ease,opacity var(--motion-fast) ease;

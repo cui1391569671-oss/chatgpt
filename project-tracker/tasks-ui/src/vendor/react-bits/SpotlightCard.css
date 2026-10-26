@@ -1,0 +1,41 @@
+/* Component decoration only; existing workspace cards keep their material and geometry. */
+.wb-spotlight-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding: var(--card-padding, 2rem);
+  border-radius: var(--card-radius, 1.5rem);
+  background-color: var(--spotlight-card-surface);
+  box-shadow: var(--spotlight-card-shadow);
+}
+.wb-spotlight-card__light,
+.wb-spotlight-card__grain,
+.wb-spotlight-card__border,
+.wb-spotlight-card__edge {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.wb-spotlight-card__light,
+.wb-spotlight-card__grain { z-index: 0; opacity: 0; }
+.wb-spotlight-card__grain { background-size: 160px 160px; mix-blend-mode: overlay; }
+.wb-spotlight-card > .wb-spotlight-card__light,
+.wb-spotlight-card > .wb-spotlight-card__grain { z-index: -1; }
+.wb-spotlight-card__border,
+.wb-spotlight-card__edge {
+  z-index: 1;
+  padding: 1px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.wb-spotlight-card__border { background: var(--spotlight-card-border); }
+.wb-spotlight-card__edge { opacity: 0; }
+@media (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .wb-spotlight-card__light,
+  .wb-spotlight-card__grain,
+  .wb-spotlight-card__edge { display: none; }
+}

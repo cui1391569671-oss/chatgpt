@@ -2021,7 +2021,7 @@ body.project-view .page-footer {
   min-height: 44px;
   border-radius: 10px;
   padding: 9px 14px;
-  transition: background-color 160ms ease,color 160ms ease,box-shadow 160ms ease;
+  transition: background-color var(--duration-fast) ease,color var(--duration-fast) ease,box-shadow var(--duration-fast) ease;
 }
 .nav-group>summary:hover,.nav-group[open]>summary {
   background: var(--soft);
@@ -2036,7 +2036,7 @@ body.project-view .page-footer {
   border-bottom: 1.5px solid currentColor;
   transform: rotate(45deg);
   margin-left: 3px;
-  transition: transform 180ms ease;
+  transition: transform var(--workspace-motion-exit) var(--workspace-motion-ease);
 }
 .nav-group[open]>summary::after {
   transform: rotate(225deg);
@@ -2069,13 +2069,13 @@ body.project-view .page-footer {
   height: 9px;
 }
 .nav-group[open] .nav-submenu {
-  animation: nav-menu-enter 160ms ease-out both;
+  animation: nav-menu-enter var(--workspace-motion-control) var(--workspace-motion-ease) both;
 }
 .shared-workspace nav .nav-submenu button {
   width: 100%;
   min-height: 44px;
   justify-content: flex-start;
-  transition: background-color 140ms ease,color 140ms ease;
+  transition: background-color var(--duration-fast) ease,color var(--duration-fast) ease;
   border-radius: 8px;
 }
 .shared-workspace nav .nav-submenu button:hover {
@@ -2107,9 +2107,9 @@ body.project-view .page-footer {
   --accent: var(--semantic-info-text);
   --soft: var(--semantic-surface);
   --danger: var(--semantic-error-text);
-  --motion-fast: 140ms;
-  --motion-enter: 180ms;
-  --motion-ease: cubic-bezier(.2,.7,.2,1);
+  --motion-fast: var(--duration-fast);
+  --motion-enter: var(--workspace-motion-control);
+  --motion-ease: var(--workspace-motion-ease);
 }
 .btn,.actions button,.calendar-day,.filters input,.filters select,dialog input,dialog select,dialog textarea {
   transition: background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,color var(--motion-fast) ease,opacity var(--motion-fast) ease;

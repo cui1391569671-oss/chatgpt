@@ -1,4 +1,5 @@
 import {closeSelectOnEscape} from '@/components/workspace-select-escape';
+import {restoreWorkspaceFocus} from '@/components/workspace-return-focus';
 import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 'use client'
 
@@ -80,15 +81,7 @@ function DialogContent({
         }}
         onCloseAutoFocus={event => {
           onCloseAutoFocus?.(event)
-          if (event.defaultPrevented) return
-          // Resolve current nodes after the list has rendered; saved/deleted rows can replace the opener.
-          for (const resolve of [returnFocus, returnFocusFallback]) {
-            const target = resolve?.()
-            if (!target?.isConnected || target.closest('[inert]') || target.matches(':disabled,[aria-disabled="true"]') || !target.getClientRects().length || getComputedStyle(target).visibility === 'hidden') continue
-            event.preventDefault()
-            target.focus({ preventScroll: true })
-            break
-          }
+          restoreWorkspaceFocus(event,[returnFocus,returnFocusFallback])
         }}
       >
         {children}

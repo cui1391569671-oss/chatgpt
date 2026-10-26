@@ -1,0 +1,37 @@
+import type {CSSProperties,HTMLAttributes,ReactNode,ReactElement} from 'react';
+export type AnimatedContentWipe = 'none' | 'up' | 'down' | 'left' | 'right' | 'center';
+export type AnimatedContentStaggerFrom = 'start' | 'end' | 'center' | 'edges' | 'random';
+export interface AnimatedContentProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onAnimationStart'> {
+  children?: ReactNode;
+  target?: HTMLElement;
+  container?: Element | string | null;
+  distance?: number;
+  direction?: 'vertical' | 'horizontal';
+  reverse?: boolean;
+  duration?: number;
+  ease?: string;
+  initialOpacity?: number;
+  animateOpacity?: boolean;
+  scale?: number;
+  blur?: number;
+  rotate?: number;
+  tilt?: number;
+  wipe?: AnimatedContentWipe;
+  threshold?: number;
+  delay?: number;
+  stagger?: number;
+  staggerFrom?: AnimatedContentStaggerFrom;
+  trigger?: 'scroll' | 'mount';
+  once?: boolean;
+  scrub?: boolean | number;
+  disappearAfter?: number;
+  disappearDuration?: number;
+  disappearEase?: string;
+  onStart?: () => void;
+  onComplete?: () => void;
+  onDisappearanceComplete?: () => void;
+  className?: string;
+  style?: CSSProperties;
+}
+declare const AnimatedContent: (props: AnimatedContentProps) => ReactElement | null;
+export default AnimatedContent;

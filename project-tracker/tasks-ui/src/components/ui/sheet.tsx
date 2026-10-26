@@ -1,4 +1,5 @@
 import {closeSelectOnEscape} from '@/components/workspace-select-escape';
+import {restoreWorkspaceFocus} from '@/components/workspace-return-focus';
 import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 import * as React from 'react'
 import * as SheetPrimitive from '@animate-ui/react/primitives/radix-ui/dialog'
@@ -50,9 +51,14 @@ function SheetContent({
   children,
   side = 'right',
   onEscapeKeyDown,
+  onCloseAutoFocus,
+  returnFocus,
+  returnFocusFallback,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: 'top' | 'right' | 'bottom' | 'left'
+  returnFocus?: () => HTMLElement | null | undefined
+  returnFocusFallback?: () => HTMLElement | null | undefined
 }) {
   const motionOff=useWorkspaceMotionOff();
   return (
@@ -66,6 +72,10 @@ function SheetContent({
           className
         )}
         {...props}
+        onCloseAutoFocus={event => {
+          onCloseAutoFocus?.(event)
+          restoreWorkspaceFocus(event,[returnFocus,returnFocusFallback])
+        }}
         onEscapeKeyDown={event => {
           if (!closeSelectOnEscape(event)) onEscapeKeyDown?.(event)
         }}

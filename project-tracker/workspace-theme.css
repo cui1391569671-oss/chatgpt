@@ -1,6 +1,15 @@
 /* Project Daylight theme. Component aliases derived from pinned shadcn-glass-ui (Apache-2.0); see theme-presets/shadcn-glass-ui/LICENSE.txt. This is the app theme owner; the upstream snapshot remains unchanged. */
 
 :root {
+  /* Shared motion contract: read by workspace-motion-policy.ts and native CSS. */
+  --workspace-motion-card: 500ms;
+  --workspace-motion-heading: 480ms;
+  --workspace-motion-control: 240ms;
+  --workspace-motion-exit: 180ms;
+  --workspace-motion-stagger: 70ms;
+  --workspace-motion-stagger-max: 280ms;
+  --workspace-motion-distance: 18px;
+  --workspace-motion-ease: cubic-bezier(.22,1,.36,1);
   /* ========================================
      BASE COLORS (HSL format)
      ======================================== */

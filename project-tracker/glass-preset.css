@@ -345,6 +345,15 @@
 
 
   
+  --workspace-motion-card: 500ms;
+  --workspace-motion-heading: 480ms;
+  --workspace-motion-control: 240ms;
+  --workspace-motion-exit: 180ms;
+  --workspace-motion-stagger: 70ms;
+  --workspace-motion-stagger-max: 280ms;
+  --workspace-motion-distance: 18px;
+  --workspace-motion-ease: cubic-bezier(.22,1,.36,1);
+  
   --background-base: 220 35% 97%;
   --foreground-base: 222 35% 16%;
 

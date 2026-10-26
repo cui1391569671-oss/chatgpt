@@ -1,5 +1,6 @@
 import {enhanceHomeLayout} from './workspace-home-layout';
 import {WorkspaceReactBits} from './workspace-react-bits';
+import {observeWorkspaceAnimations} from './workspace-motion-policy';
 import {useState,useEffect} from 'react';
 import {SlidersHorizontal} from 'lucide-react';
 import {Button} from './components/ui/button';
@@ -15,6 +16,7 @@ export function PersonalPreferences(){
 }
 
 export function WorkspaceMotionRuntime(){
+ useEffect(observeWorkspaceAnimations,[]);
  useEffect(()=>{apply(read());enhanceHomeLayout();const observer=new MutationObserver(()=>{apply(read());enhanceHomeLayout();});const content=document.getElementById('content');if(content)observer.observe(content,{childList:true});return()=>{observer.disconnect();};},[]);
  return <WorkspaceReactBits/>;
 }

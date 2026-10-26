@@ -1,4 +1,5 @@
 @import "./vendor/react-bits/SpringCheck.css";
+@import "./vendor/react-bits/SpotlightCard.css";
 @import "./vendor/react-bits/RubberSegment.css";
 @layer theme, base, components, utilities;
 @import "@svar-ui/react-gantt/all.css";

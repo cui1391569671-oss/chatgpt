@@ -6,9 +6,9 @@ import Magnet from './vendor/react-bits/Magnet';
 import AnimatedContent from './vendor/react-bits/AnimatedContent';
 import BlurText from './vendor/react-bits/BlurText';
 import {WorkspaceGradientText} from './components/workspace-gradient-text';
-import {motionTiming,useWorkspaceMotionOff} from './workspace-motion-policy';
+import {useWorkspaceMotionOff,motionTiming,motionEase,workspaceCardSelector} from './workspace-motion-policy';
 
-const cardSelector='#content .card,#content .workspace-board-card,#content .workspace-goal-card';
+const cardSelector=workspaceCardSelector.split(',').map(selector=>'#content '+selector).join(',');
 const buttonSelector='.header-actions .btn.primary,#content .btn.primary,#content [data-slot="button"][data-variant="default"]';
 let lastHeadingView='';
 let nextNodeId=0;
@@ -17,10 +17,20 @@ const nodeKey=(node:HTMLElement)=>{if(!nodeIds.has(node))nodeIds.set(node,++next
 type Targets={cards:HTMLElement[];buttons:HTMLElement[];covers:HTMLElement[];title:HTMLElement|null;view:string};
 const same=(a:HTMLElement[],b:HTMLElement[])=>a.length===b.length&&a.every((node,i)=>node===b[i]);
 
+// Keep completed card identities across native DOM rebuilds within one visit.
+function AnimatedCards({cards,view}:{cards:HTMLElement[];view:string}){
+ const completed=useRef(new Set<string>());
+ return <>{cards.map((target,index)=>{const identity=target.dataset.motionCard||target.closest<HTMLElement>('[data-tile]')?.dataset.tile||target.id||target.className+':'+index;return <CardEntrance key={nodeKey(target)} target={target} index={index} identity={identity} completed={completed.current} stationary={view==='calendar'}/>;})}</>;
+}
+function CardEntrance({target,index,identity,completed,stationary}:{target:HTMLElement;index:number;identity:string;completed:Set<string>;stationary:boolean}){
+ const [animate]=useState(()=>!completed.has(identity));
+ return animate?<AnimatedContent target={target} container={document.getElementById('content')} trigger='scroll' once distance={stationary?0:motionTiming.distance} duration={motionTiming.card/1000} ease={motionEase.gsap} initialOpacity={0} delay={Math.min(index*motionTiming.stagger,motionTiming.staggerMax)/1000} threshold={.05} onComplete={()=>completed.add(identity)}/>:null;
+}
+
 // Add decoration to existing nodes. Never wrap, clone or replace business controls.
 function AnimatedHeading({target,view}:{target:HTMLElement;view:string}){
  const [animate]=useState(()=>{const play=lastHeadingView!==view;lastHeadingView=view;return play;});
- return animate?<AnimatedContent target={target} trigger='mount' distance={0} duration={.48} blur={7} initialOpacity={.35}/>:null;
+ return animate?<AnimatedContent target={target} trigger='mount' distance={0} duration={motionTiming.heading/1000} blur={7} initialOpacity={.35}/>:null;
 }
 
 export function WorkspaceReactBits(){
@@ -32,7 +42,7 @@ export function WorkspaceReactBits(){
   let frame=0;
   const scan=()=>{
    frame=0;
-   const cards=Array.from(document.querySelectorAll<HTMLElement>(cardSelector)).filter(node=>!node.parentElement?.closest('.card'));
+   const cards=Array.from(document.querySelectorAll<HTMLElement>(cardSelector)).filter(node=>!node.parentElement?.closest(workspaceCardSelector)&&!node.closest('[role=dialog],dialog,.ilamy-calendar,.annual-chart'));
    const buttons=Array.from(document.querySelectorAll<HTMLElement>(buttonSelector)).filter(node=>!node.closest('dialog,[role=dialog],.annual-chart,.ilamy-calendar')).slice(0,8);
    const covers=Array.from(document.querySelectorAll<HTMLElement>('#content .media-wall-cover'));
    const title=document.querySelector<HTMLElement>('#content .home2-intro h1,#content .workspace-page-hero h1,#content .workspace-page-hero h2');
@@ -40,7 +50,7 @@ export function WorkspaceReactBits(){
    setTargets(old=>same(cards,old.cards)&&same(buttons,old.buttons)&&same(covers,old.covers)&&title===old.title&&view===old.view?old:{cards,buttons,covers,title,view});
   };
   const queue=(records:MutationRecord[])=>{
-   if(records.every(record=>(record.target as Element).closest?.('[data-rb-decoration],.spotlight-card__light,.spotlight-card__grain,.spotlight-card__edge')))return;
+   if(records.every(record=>(record.target as Element).closest?.('[data-rb-decoration],.wb-spotlight-card__light,.wb-spotlight-card__grain,.wb-spotlight-card__edge')))return;
    if(!frame)frame=requestAnimationFrame(scan);
   };
   const observer=new MutationObserver(queue);
@@ -66,7 +76,7 @@ export function WorkspaceReactBits(){
  const sparkColor=getComputedStyle(document.body).getPropertyValue('--semantic-primary').trim()||getComputedStyle(document.body).color;
  return <>
   {complete&&createPortal(<div className='wb-day-complete' role='status'><BlurText text='今日英语与健身，全部打卡完成 ✓' trigger='load' animateBy='letters' delay={16} stepDuration={.14} distance={6} blur={5}/></div>,document.body)}
-  {targets.view&&<AnimatedContent key={targets.view} target={document.getElementById('content')!} trigger='mount' distance={0} duration={motionTiming.page/1000} blur={targets.view==='calendar'?0:2} initialOpacity={.4}/>}
+  {targets.view&&<AnimatedCards key={targets.view} cards={targets.cards} view={targets.view}/>}
   {createPortal(<ClickSpark ref={spark} sparkColor={sparkColor} sparkCount={10} sparkRadius={28} sparkSize={8} duration={480} shape='star' ring glow={.4} style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:1000}}/>,document.body)}
   {targets.cards.map(target=><SpotlightCard key={'card-'+nodeKey(target)} target={target} theme='light' spotlightColor='var(--semantic-primary)' intensity={.55} borderGlow={.7} spotlightSize={280} proximity={0} smoothing={.3} grain={0} ambient={false}/>)}
   {targets.buttons.map(target=><Magnet key={'button-'+nodeKey(target)} target={target} padding={12} maxOffset={2} magnetStrength={12} spring={{stiffness:170,damping:22}}/>)}
