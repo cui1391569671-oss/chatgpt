@@ -1,7 +1,7 @@
 import {calendarSourceHash} from './fingerprint.mjs';
 import {fileURLToPath} from 'node:url';import {build} from 'esbuild';import postcss from 'postcss';import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';import {execFileSync} from 'node:child_process';
 process.chdir(fileURLToPath(new URL('.',import.meta.url)));mkdirSync('dist',{recursive:true});
-await build({entryPoints:['src/main.jsx'],bundle:true,minify:true,format:'iife',target:['es2022'],outfile:'dist/calendar.js',define:{'process.env.NODE_ENV':'"production"'},legalComments:'linked'});
+await build({entryPoints:['src/main.jsx'],jsx:'automatic',bundle:true,minify:true,format:'iife',target:['es2022'],outfile:'dist/calendar.js',define:{'process.env.NODE_ENV':'"production"'},legalComments:'linked'});
 execFileSync(process.execPath,['node_modules/@tailwindcss/cli/dist/index.mjs','-i','src/style.css','-o','dist/calendar.css','--minify'],{stdio:'inherit'});
 // Scope utility selectors, including Radix portal roots, without touching keyframes.
 const css=postcss.parse(readFileSync('dist/calendar.css','utf8'));css.walkRules(rule=>{let parent=rule.parent;while(parent){if(parent.type==='rule'||parent.type==='atrule'&&parent.name.includes('keyframes'))return;parent=parent.parent;}const selectors=rule.selectors;if(!selectors)return;rule.selectors=selectors.flatMap(selector=>selector.includes('.ilamy-')||selector.includes('[data-ilamy-portal]')?[selector]:selector===':root'||selector===':host'?['.ilamy-surface','[data-ilamy-portal]']:[`:is(.ilamy-surface,[data-ilamy-portal]) ${selector}`,`:is(.ilamy-surface,[data-ilamy-portal]):is(${selector})`]);});css.walkAtRules('layer',rule=>{if(rule.nodes)rule.replaceWith(...rule.nodes);else rule.remove();});writeFileSync('dist/calendar.css',css.toString());

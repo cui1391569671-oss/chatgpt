@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {localDateStamp,dateGrid,dateAllowed,beijingDate} from '../tasks-ui/src/components/date-model.mjs';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
-test('authored date calendar handles leap day and Monday-first month boundaries',()=>{
- const grid=dateGrid(new Date(2024,1,1,12));assert.equal(grid.length,42);assert.equal(grid[0].getDay(),1);assert.ok(grid.some(d=>localDateStamp(d)==='2024-02-29'));assert.equal(new Set(grid.map(localDateStamp)).size,42);
- assert.equal(localDateStamp(dateGrid(new Date(2026,10,1,12))[0]),'2026-10-26');
+test('authored date calendar handles leap day and Sunday-first month boundaries',()=>{
+ const grid=dateGrid(new Date(2024,1,1,12));assert.equal(grid.length,42);assert.equal(grid[0].getDay(),0);assert.ok(grid.some(d=>localDateStamp(d)==='2024-02-29'));assert.equal(new Set(grid.map(localDateStamp)).size,42);
+ assert.equal(localDateStamp(dateGrid(new Date(2026,10,1,12))[0]),'2026-11-01');
 });
 test('date constraints retain inclusive min/max and Beijing day rollover',()=>{
  assert.equal(dateAllowed('2026-10-16','2026-10-16','2026-10-20'),true);assert.equal(dateAllowed('2026-10-20','2026-10-16','2026-10-20'),true);assert.equal(dateAllowed('2026-02-30'),false);assert.equal(dateAllowed('2026-10-15','2026-10-16','2026-10-20'),false);assert.equal(dateAllowed('2026-10-21','2026-10-16','2026-10-20'),false);assert.equal(beijingDate(new Date('2026-10-15T16:30:00Z')),'2026-10-16');

@@ -499,12 +499,12 @@
   --btn-primary-bg: var(--semantic-primary);
   --btn-primary-text: var(--semantic-text-inverse);
   --btn-primary-hover-bg: var(--semantic-primary-hover);
-  --btn-primary-glow: none;
-  --btn-secondary-bg: transparent;
-  --btn-secondary-text: var(--semantic-text-muted);
-  --btn-secondary-border: transparent;
-  --btn-secondary-hover-bg: var(--semantic-surface-muted);
-  --btn-secondary-glow: none;
+  --btn-primary-glow: 0 4px 12px rgb(101 84 192 / .24), inset 0 1px 0 rgb(255 255 255 / .2);
+  --btn-secondary-bg: var(--semantic-glass-bg-strong);
+  --btn-secondary-text: var(--semantic-text);
+  --btn-secondary-border: var(--semantic-border);
+  --btn-secondary-hover-bg: var(--semantic-surface-medium);
+  --btn-secondary-glow: 0 3px 8px rgb(45 61 91 / .12), inset 0 1px 0 rgb(255 255 255 / .8);
   --btn-ghost-bg: transparent;
   --btn-ghost-text: var(--semantic-text-muted);
   --btn-ghost-hover-bg: var(--semantic-surface-medium);
@@ -515,14 +515,14 @@
   --btn-success-text: var(--semantic-text-inverse);
   --btn-success-glow: var(--glow-success);
   
-  --btn-outline-border: var(--semantic-border-muted);
+  --btn-outline-border: var(--semantic-border);
   --btn-outline-text: var(--semantic-text);
   --btn-outline-hover-bg: var(--semantic-surface-muted);
-  --btn-outline-glow: none;
+  --btn-outline-glow: 0 2px 6px rgb(45 61 91 / .1);
   
   --btn-link-text: var(--semantic-primary);
   
-  --btn-primary-shadow: none;
+  --btn-primary-shadow: 0 2px 5px rgb(101 84 192 / .2), inset 0 1px 0 rgb(255 255 255 / .18);
   --btn-destructive-shadow: 0 4px 15px var(--semantic-error-muted);
   --btn-success-shadow: 0 4px 15px var(--semantic-success-muted);
   --btn-glow-radial: radial-gradient(circle, var(--oklch-white-15) 0%, transparent 70%);
@@ -554,7 +554,7 @@
 
   
   --input-bg: var(--semantic-surface-strong);
-  --input-border: var(--semantic-border-strong);
+  --input-border: var(--semantic-border);
   --input-text: var(--semantic-text);
   --input-placeholder: var(--semantic-text-disabled);
   --input-focus-border: var(--semantic-primary);
@@ -746,6 +746,7 @@
   --tooltip-shadow: 0 4px 12px var(--semantic-shadow);
 
   
+  --card-shadow: 0 4px 16px rgb(45 61 91 / .06);
   --card-bg: var(--semantic-glass-bg);
   --card-border: var(--semantic-border);
   --card-hover-bg: var(--semantic-surface-strong);
