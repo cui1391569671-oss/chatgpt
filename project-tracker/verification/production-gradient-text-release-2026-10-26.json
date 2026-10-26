@@ -1,0 +1,29 @@
+{
+  "commit": "4240e61003949990f19644f87f36ee95bffcb35d",
+  "tree": "0647773b4bd9acaee1ed16ecec2316e30b71519f",
+  "site": "https://tracker.managementplatformlee.com",
+  "githubActionsRun": 40278648416,
+  "ci": "success",
+  "cloudflareBuild": "6e0922b2-5ca2-4a9b-b8d0-c460a7c2ade7",
+  "cloudflareBuildResult": "success",
+  "cloudflareVersion": "94cb6fb5-5b18-411a-a4e9-d21610fa29b1",
+  "productionLoginHTTP": 401,
+  "productionThemeGradientTokens": true,
+  "localTests": 239,
+  "localD1": "passed (2026-07-30 compatibility date; production compatibility date not verified locally)",
+  "recoveryRehearsal": "passed synthetic 5 tables",
+  "browserCombinations": 8,
+  "reducedMotion": "retains static gradient; stops animation",
+  "staticPremiumFindings": 41,
+  "productionBusinessDataWrites": false,
+  "schemaMigration": false,
+  "secretsChanged": false,
+  "localMainAligned": true,
+  "rollbackCommit": "5943dc37ec2edc9ce44fed3a63dc06e4894b4d3d",
+  "limitations": [
+    "Production browser remains at login; authenticated gradient rendering and interactions verified locally using demo data.",
+    "Static premium audit retains 41 historical findings.",
+    "Actual Cloudflare disaster recovery was not exercised."
+  ],
+  "publishedVia": "Connected GitHub plugin; reviewed tree identical to local release commit"
+}

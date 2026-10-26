@@ -1,0 +1,21 @@
+{
+  "commit": "5943dc37ec2edc9ce44fed3a63dc06e4894b4d3d",
+  "tree": "443fed66564e403b75ddcbda5536f4605fb6c3d9",
+  "site": "https://tracker.managementplatformlee.com",
+  "githubActionsRun": 40264296390,
+  "ci": "success",
+  "cloudflareBuild": "ef69b551-5d92-4b2a-8e48-60b009693e80",
+  "cloudflareBuildResult": "success",
+  "localTests": 239,
+  "localD1": "passed",
+  "recoveryRehearsal": "passed synthetic 5 tables",
+  "nestedSelectEscape": "first Escape retains editor and returns focus, second closes editor",
+  "productionLoginGeometry": "44px height / 10px radius",
+  "productionBusinessDataWrites": false,
+  "schemaMigration": false,
+  "secretsChanged": false,
+  "limitations": [
+    "Authenticated business pages verified locally with synthetic data; production browser is at login.",
+    "Static premium audit retains 41 historical scanner findings."
+  ]
+}

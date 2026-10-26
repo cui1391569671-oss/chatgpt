@@ -1,0 +1,2314 @@
+{
+  "layouts": [
+    {
+      "route": "/personal?view=home",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 384.5,
+            "height": 44,
+            "left": 651,
+            "right": 737.4453125,
+            "top": 340.5,
+            "width": 86.4453125,
+            "x": 651,
+            "y": 340.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 445.5,
+            "height": 44,
+            "left": 651,
+            "right": 709.7265625,
+            "top": 401.5,
+            "width": 58.7265625,
+            "x": 651,
+            "y": 401.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 709.5,
+            "height": 44,
+            "left": 327,
+            "right": 371,
+            "top": 665.5,
+            "width": 44,
+            "x": 327,
+            "y": 665.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 802.5,
+            "height": 44,
+            "left": 327,
+            "right": 371,
+            "top": 758.5,
+            "width": 44,
+            "x": 327,
+            "y": 758.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 895.5,
+            "height": 44,
+            "left": 327,
+            "right": 371,
+            "top": 851.5,
+            "width": 44,
+            "x": 327,
+            "y": 851.5
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "route": "/personal?view=checkins",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 297.3984375,
+            "height": 44,
+            "left": 327,
+            "right": 413.4453125,
+            "top": 253.3984375,
+            "width": 86.4453125,
+            "x": 327,
+            "y": 253.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 366.3984375,
+            "height": 44,
+            "left": 327,
+            "right": 385.7265625,
+            "top": 322.3984375,
+            "width": 58.7265625,
+            "x": 327,
+            "y": 322.3984375
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "route": "/personal?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 534.890625,
+            "height": 44,
+            "left": 336,
+            "right": 573.328125,
+            "top": 490.890625,
+            "width": 237.328125,
+            "x": 336,
+            "y": 490.890625
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 740.3828125,
+            "height": 44,
+            "left": 336,
+            "right": 573.328125,
+            "top": 696.3828125,
+            "width": 237.328125,
+            "x": 336,
+            "y": 696.3828125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 534.890625,
+            "height": 44,
+            "left": 657.328125,
+            "right": 894.6640625,
+            "top": 490.890625,
+            "width": 237.3359375,
+            "x": 657.328125,
+            "y": 490.890625
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "route": "/personal?view=tasks&taskLayout=table",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 430.3984375,
+            "height": 44,
+            "left": 792.6953125,
+            "right": 865.28125,
+            "top": 386.3984375,
+            "width": 72.5859375,
+            "x": 792.6953125,
+            "y": 386.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 499.3984375,
+            "height": 44,
+            "left": 792.6953125,
+            "right": 865.28125,
+            "top": 455.3984375,
+            "width": 72.5859375,
+            "x": 792.6953125,
+            "y": 455.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 568.3984375,
+            "height": 44,
+            "left": 792.6953125,
+            "right": 865.28125,
+            "top": 524.3984375,
+            "width": 72.5859375,
+            "x": 792.6953125,
+            "y": 524.3984375
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "route": "/work?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 331,
+            "height": 44,
+            "left": 792.6953125,
+            "right": 865.28125,
+            "top": 287,
+            "width": 72.5859375,
+            "x": 792.6953125,
+            "y": 287
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 400,
+            "height": 44,
+            "left": 792.6953125,
+            "right": 865.28125,
+            "top": 356,
+            "width": 72.5859375,
+            "x": 792.6953125,
+            "y": 356
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 469,
+            "height": 44,
+            "left": 792.6953125,
+            "right": 865.28125,
+            "top": 425,
+            "width": 72.5859375,
+            "x": 792.6953125,
+            "y": 425
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "route": "/work?view=today",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 1280
+    },
+    {
+      "route": "/work?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 217,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 173,
+            "width": 44,
+            "x": 319,
+            "y": 173
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 316,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 272,
+            "width": 44,
+            "x": 319,
+            "y": 272
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "route": "/personal?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 337.3984375,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 293.3984375,
+            "width": 44,
+            "x": 319,
+            "y": 293.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 436.3984375,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 392.3984375,
+            "width": 44,
+            "x": 319,
+            "y": 392.3984375
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "route": "/projects?embedded=1",
+      "collisions": [],
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成问题：确认现场安装计划",
+          "rect": {
+            "bottom": 264.3984375,
+            "height": 44,
+            "left": 1203,
+            "right": 1247,
+            "top": 220.3984375,
+            "width": 44,
+            "x": 1203,
+            "y": 220.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成问题：补充设备接口清单",
+          "rect": {
+            "bottom": 346.1953125,
+            "height": 44,
+            "left": 1203,
+            "right": 1247,
+            "top": 302.1953125,
+            "width": 44,
+            "x": 1203,
+            "y": 302.1953125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成问题：核对发运包装尺寸",
+          "rect": {
+            "bottom": 421.59375,
+            "height": 44,
+            "left": 1203,
+            "right": 1247,
+            "top": 377.59375,
+            "width": 44,
+            "x": 1203,
+            "y": 377.59375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成问题：完成软件联调准备",
+          "rect": {
+            "bottom": 496.9921875,
+            "height": 44,
+            "left": 1203,
+            "right": 1247,
+            "top": 452.9921875,
+            "width": 44,
+            "x": 1203,
+            "y": 452.9921875
+          }
+        },
+        {
+          "checked": "true",
+          "name": "完成问题：确认托盘测试方案",
+          "rect": {
+            "bottom": 578.7890625,
+            "height": 44,
+            "left": 1203,
+            "right": 1247,
+            "top": 534.7890625,
+            "width": 44,
+            "x": 1203,
+            "y": 534.7890625
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "route": "/personal?view=home",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1004,
+        "top": 80,
+        "width": 712,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1024,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 476.5,
+            "height": 44,
+            "left": 565.6640625,
+            "right": 652.109375,
+            "top": 432.5,
+            "width": 86.4453125,
+            "x": 565.6640625,
+            "y": 432.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 537.5,
+            "height": 44,
+            "left": 565.6640625,
+            "right": 624.390625,
+            "top": 493.5,
+            "width": 58.7265625,
+            "x": 565.6640625,
+            "y": 493.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 801.5,
+            "height": 44,
+            "left": 327,
+            "right": 371,
+            "top": 757.5,
+            "width": 44,
+            "x": 327,
+            "y": 757.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 894.5,
+            "height": 44,
+            "left": 327,
+            "right": 371,
+            "top": 850.5,
+            "width": 44,
+            "x": 327,
+            "y": 850.5
+          }
+        }
+      ],
+      "width": 1024
+    },
+    {
+      "route": "/personal?view=checkins",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1004,
+        "top": 80,
+        "width": 712,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1024,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 297.3984375,
+            "height": 44,
+            "left": 327,
+            "right": 413.4453125,
+            "top": 253.3984375,
+            "width": 86.4453125,
+            "x": 327,
+            "y": 253.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 366.3984375,
+            "height": 44,
+            "left": 327,
+            "right": 385.7265625,
+            "top": 322.3984375,
+            "width": 58.7265625,
+            "x": 327,
+            "y": 322.3984375
+          }
+        }
+      ],
+      "width": 1024
+    },
+    {
+      "route": "/personal?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1004,
+        "top": 80,
+        "width": 712,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1024,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 534.890625,
+            "height": 44,
+            "left": 336,
+            "right": 488,
+            "top": 490.890625,
+            "width": 152,
+            "x": 336,
+            "y": 490.890625
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 740.3828125,
+            "height": 44,
+            "left": 336,
+            "right": 488,
+            "top": 696.3828125,
+            "width": 152,
+            "x": 336,
+            "y": 696.3828125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 534.890625,
+            "height": 44,
+            "left": 572,
+            "right": 724,
+            "top": 490.890625,
+            "width": 152,
+            "x": 572,
+            "y": 490.890625
+          }
+        }
+      ],
+      "width": 1024
+    },
+    {
+      "route": "/personal?view=tasks&taskLayout=table",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1004,
+        "top": 80,
+        "width": 712,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1024,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 430.3984375,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 386.3984375,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 386.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 499.3984375,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 455.3984375,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 455.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 568.3984375,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 524.3984375,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 524.3984375
+          }
+        }
+      ],
+      "width": 1024
+    },
+    {
+      "route": "/work?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1004,
+        "top": 80,
+        "width": 712,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1024,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 331,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 287,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 287
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 400,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 356,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 356
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 469,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 425,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 425
+          }
+        }
+      ],
+      "width": 1024
+    },
+    {
+      "route": "/work?view=today",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1004,
+        "top": 80,
+        "width": 712,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1024,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 1024
+    },
+    {
+      "route": "/work?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1004,
+        "top": 80,
+        "width": 712,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1024,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 217,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 173,
+            "width": 44,
+            "x": 319,
+            "y": 173
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 316,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 272,
+            "width": 44,
+            "x": 319,
+            "y": 272
+          }
+        }
+      ],
+      "width": 1024
+    },
+    {
+      "route": "/personal?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1004,
+        "top": 80,
+        "width": 712,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1024,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 337.3984375,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 293.3984375,
+            "width": 44,
+            "x": 319,
+            "y": 293.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 436.3984375,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 392.3984375,
+            "width": 44,
+            "x": 319,
+            "y": 392.3984375
+          }
+        }
+      ],
+      "width": 1024
+    },
+    {
+      "route": "/projects?embedded=1",
+      "collisions": [],
+      "pageWidth": 1024,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 1024
+    },
+    {
+      "route": "/personal?view=home",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 748,
+        "top": 80,
+        "width": 456,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 768,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 613.296875,
+            "height": 44,
+            "left": 327,
+            "right": 413.4453125,
+            "top": 569.296875,
+            "width": 86.4453125,
+            "x": 327,
+            "y": 569.296875
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 674.296875,
+            "height": 44,
+            "left": 327,
+            "right": 385.7265625,
+            "top": 630.296875,
+            "width": 58.7265625,
+            "x": 327,
+            "y": 630.296875
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 938.296875,
+            "height": 44,
+            "left": 327,
+            "right": 371,
+            "top": 894.296875,
+            "width": 44,
+            "x": 327,
+            "y": 894.296875
+          }
+        }
+      ],
+      "width": 768
+    },
+    {
+      "route": "/personal?view=checkins",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 748,
+        "top": 80,
+        "width": 456,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 768,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 297.3984375,
+            "height": 44,
+            "left": 327,
+            "right": 413.4453125,
+            "top": 253.3984375,
+            "width": 86.4453125,
+            "x": 327,
+            "y": 253.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 366.3984375,
+            "height": 44,
+            "left": 327,
+            "right": 385.7265625,
+            "top": 322.3984375,
+            "width": 58.7265625,
+            "x": 327,
+            "y": 322.3984375
+          }
+        }
+      ],
+      "width": 768
+    },
+    {
+      "route": "/personal?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 748,
+        "top": 80,
+        "width": 456,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 768,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 586.890625,
+            "height": 44,
+            "left": 336,
+            "right": 704,
+            "top": 542.890625,
+            "width": 368,
+            "x": 336,
+            "y": 542.890625
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 792.3828125,
+            "height": 44,
+            "left": 336,
+            "right": 704,
+            "top": 748.3828125,
+            "width": 368,
+            "x": 336,
+            "y": 748.3828125
+          }
+        }
+      ],
+      "width": 768
+    },
+    {
+      "route": "/personal?view=tasks&taskLayout=table",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 748,
+        "top": 80,
+        "width": 456,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 768,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 482.3984375,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 438.3984375,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 438.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 551.3984375,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 507.3984375,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 507.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 620.3984375,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 576.3984375,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 576.3984375
+          }
+        }
+      ],
+      "width": 768
+    },
+    {
+      "route": "/work?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 748,
+        "top": 80,
+        "width": 456,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 768,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 383,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 339,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 339
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 452,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 408,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 408
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 521,
+            "height": 44,
+            "left": 655.4140625,
+            "right": 728,
+            "top": 477,
+            "width": 72.5859375,
+            "x": 655.4140625,
+            "y": 477
+          }
+        }
+      ],
+      "width": 768
+    },
+    {
+      "route": "/work?view=today",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 748,
+        "top": 80,
+        "width": 456,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 768,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 768
+    },
+    {
+      "route": "/work?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 748,
+        "top": 80,
+        "width": 456,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 768,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 217,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 173,
+            "width": 44,
+            "x": 319,
+            "y": 173
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 348,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 304,
+            "width": 44,
+            "x": 319,
+            "y": 304
+          }
+        }
+      ],
+      "width": 768
+    },
+    {
+      "route": "/personal?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 748,
+        "top": 80,
+        "width": 456,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 768,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 337.3984375,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 293.3984375,
+            "width": 44,
+            "x": 319,
+            "y": 293.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 468.3984375,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 424.3984375,
+            "width": 44,
+            "x": 319,
+            "y": 424.3984375
+          }
+        }
+      ],
+      "width": 768
+    },
+    {
+      "route": "/projects?embedded=1",
+      "collisions": [],
+      "pageWidth": 768,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 768
+    },
+    {
+      "route": "/personal?view=home",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 390,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 559.046875,
+            "height": 44,
+            "left": 27,
+            "right": 113.4453125,
+            "top": 515.046875,
+            "width": 86.4453125,
+            "x": 27,
+            "y": 515.046875
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 620.046875,
+            "height": 44,
+            "left": 27,
+            "right": 85.7265625,
+            "top": 576.046875,
+            "width": 58.7265625,
+            "x": 27,
+            "y": 576.046875
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 860.046875,
+            "height": 44,
+            "left": 27,
+            "right": 71,
+            "top": 816.046875,
+            "width": 44,
+            "x": 27,
+            "y": 816.046875
+          }
+        }
+      ],
+      "width": 390
+    },
+    {
+      "route": "/personal?view=checkins",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 390,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 272.1953125,
+            "height": 44,
+            "left": 27,
+            "right": 113.4453125,
+            "top": 228.1953125,
+            "width": 86.4453125,
+            "x": 27,
+            "y": 228.1953125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 341.1953125,
+            "height": 44,
+            "left": 27,
+            "right": 85.7265625,
+            "top": 297.1953125,
+            "width": 58.7265625,
+            "x": 27,
+            "y": 297.1953125
+          }
+        }
+      ],
+      "width": 390
+    },
+    {
+      "route": "/personal?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 390,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 692.6875,
+            "height": 44,
+            "left": 48,
+            "right": 342,
+            "top": 648.6875,
+            "width": 294,
+            "x": 48,
+            "y": 648.6875
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 905.1796875,
+            "height": 44,
+            "left": 48,
+            "right": 342,
+            "top": 861.1796875,
+            "width": 294,
+            "x": 48,
+            "y": 861.1796875
+          }
+        }
+      ],
+      "width": 390
+    },
+    {
+      "route": "/personal?view=tasks&taskLayout=table",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 390,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 581.1953125,
+            "height": 44,
+            "left": 367.4140625,
+            "right": 440,
+            "top": 537.1953125,
+            "width": 72.5859375,
+            "x": 367.4140625,
+            "y": 537.1953125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 650.1953125,
+            "height": 44,
+            "left": 367.4140625,
+            "right": 440,
+            "top": 606.1953125,
+            "width": 72.5859375,
+            "x": 367.4140625,
+            "y": 606.1953125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 719.1953125,
+            "height": 44,
+            "left": 367.4140625,
+            "right": 440,
+            "top": 675.1953125,
+            "width": 72.5859375,
+            "x": 367.4140625,
+            "y": 675.1953125
+          }
+        }
+      ],
+      "width": 390
+    },
+    {
+      "route": "/work?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 390,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 407,
+            "height": 44,
+            "left": 367.4140625,
+            "right": 440,
+            "top": 363,
+            "width": 72.5859375,
+            "x": 367.4140625,
+            "y": 363
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 476,
+            "height": 44,
+            "left": 367.4140625,
+            "right": 440,
+            "top": 432,
+            "width": 72.5859375,
+            "x": 367.4140625,
+            "y": 432
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 545,
+            "height": 44,
+            "left": 367.4140625,
+            "right": 440,
+            "top": 501,
+            "width": 72.5859375,
+            "x": 367.4140625,
+            "y": 501
+          }
+        }
+      ],
+      "width": 390
+    },
+    {
+      "route": "/work?view=today",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 390,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 390
+    },
+    {
+      "route": "/work?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 390,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 261,
+            "height": 44,
+            "left": 31,
+            "right": 75,
+            "top": 217,
+            "width": 44,
+            "x": 31,
+            "y": 217
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 418,
+            "height": 44,
+            "left": 31,
+            "right": 75,
+            "top": 374,
+            "width": 44,
+            "x": 31,
+            "y": 374
+          }
+        }
+      ],
+      "width": 390
+    },
+    {
+      "route": "/personal?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 390,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 376.1953125,
+            "height": 44,
+            "left": 31,
+            "right": 75,
+            "top": 332.1953125,
+            "width": 44,
+            "x": 31,
+            "y": 332.1953125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 533.1953125,
+            "height": 44,
+            "left": 31,
+            "right": 75,
+            "top": 489.1953125,
+            "width": 44,
+            "x": 31,
+            "y": 489.1953125
+          }
+        }
+      ],
+      "width": 390
+    },
+    {
+      "route": "/projects?embedded=1",
+      "collisions": [],
+      "pageWidth": 390,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 390
+    },
+    {
+      "route": "/personal?view=home",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 320,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 583.046875,
+            "height": 44,
+            "left": 27,
+            "right": 113.4453125,
+            "top": 539.046875,
+            "width": 86.4453125,
+            "x": 27,
+            "y": 539.046875
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 644.046875,
+            "height": 44,
+            "left": 27,
+            "right": 85.7265625,
+            "top": 600.046875,
+            "width": 58.7265625,
+            "x": 27,
+            "y": 600.046875
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 884.046875,
+            "height": 44,
+            "left": 27,
+            "right": 71,
+            "top": 840.046875,
+            "width": 44,
+            "x": 27,
+            "y": 840.046875
+          }
+        }
+      ],
+      "width": 320
+    },
+    {
+      "route": "/personal?view=checkins",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 320,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 304.1953125,
+            "height": 44,
+            "left": 27,
+            "right": 113.4453125,
+            "top": 260.1953125,
+            "width": 86.4453125,
+            "x": 27,
+            "y": 260.1953125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 373.1953125,
+            "height": 44,
+            "left": 27,
+            "right": 85.7265625,
+            "top": 329.1953125,
+            "width": 58.7265625,
+            "x": 27,
+            "y": 329.1953125
+          }
+        }
+      ],
+      "width": 320
+    },
+    {
+      "route": "/personal?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 320,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 692.6875,
+            "height": 44,
+            "left": 48,
+            "right": 272,
+            "top": 648.6875,
+            "width": 224,
+            "x": 48,
+            "y": 648.6875
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 905.1796875,
+            "height": 44,
+            "left": 48,
+            "right": 272,
+            "top": 861.1796875,
+            "width": 224,
+            "x": 48,
+            "y": 861.1796875
+          }
+        }
+      ],
+      "width": 320
+    },
+    {
+      "route": "/personal?view=tasks&taskLayout=table",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 320,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 320
+    },
+    {
+      "route": "/work?view=tasks",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 320,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 320
+    },
+    {
+      "route": "/work?view=today",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 320,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 320
+    },
+    {
+      "route": "/work?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 320,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 261,
+            "height": 44,
+            "left": 31,
+            "right": 75,
+            "top": 217,
+            "width": 44,
+            "x": 31,
+            "y": 217
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 442,
+            "height": 44,
+            "left": 31,
+            "right": 75,
+            "top": 398,
+            "width": 44,
+            "x": 31,
+            "y": 398
+          }
+        }
+      ],
+      "width": 320
+    },
+    {
+      "route": "/personal?view=requirements",
+      "collisions": [],
+      "main": {
+        "bottom": 888,
+        "height": 812,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      },
+      "pageWidth": 320,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 376.1953125,
+            "height": 44,
+            "left": 31,
+            "right": 75,
+            "top": 332.1953125,
+            "width": 44,
+            "x": 31,
+            "y": 332.1953125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 557.1953125,
+            "height": 44,
+            "left": 31,
+            "right": 75,
+            "top": 513.1953125,
+            "width": 44,
+            "x": 31,
+            "y": 513.1953125
+          }
+        }
+      ],
+      "width": 320
+    },
+    {
+      "route": "/projects?embedded=1",
+      "collisions": [],
+      "pageWidth": 320,
+      "visibleBacking": 0,
+      "visibleChecks": [],
+      "width": 320
+    }
+  ],
+  "interactions": [
+    {
+      "case": "native-requirement-failure",
+      "checked": "false",
+      "error": "模拟保存失败，状态已恢复，请重试。",
+      "focus": "完成需求：需求失败回退验证",
+      "visible": 0
+    },
+    {
+      "case": "native-requirement-restore",
+      "snapshot": "- list:\n  - button \"切换工作空间\":\n    - strong: 我的工作台\n    - generic: 工作空间\n- navigation \"主导航\":\n  - generic: 工作空间\n  - list:\n    - button \"工作概览\":\n      - generic: 工作概览\n    - button \"项目问题\":\n      - generic: 项目问题\n    - button \"待办事项\":\n      - generic: 待办事项\n  - generic: 资料与记录\n  - list:\n    - button \"项目资料\":\n      - generic: 项目资料\n    - button \"需求登记\":\n      - text: 需求登记\n      - generic: 需求登记\n    - button \"工作笔记\":\n      - generic: 工作笔记\n- list:\n  - button \"个人中心\":\n    - strong: 我的账号\n    - generic: 工作空间\n- banner:\n  - button \"收起侧边栏\" [expanded]:\n  - button \"搜索页面\":\n  - button \"消息通知\":\n- main \"需求登记\":\n  - textbox \"搜索需求\":\n    - /placeholder: 搜索需求标题或说明\n  - combobox \"需求状态筛选\":\n    - generic: 全部状态\n  - button \"＋ 新建需求\"\n  - article:\n    - checkbox \"完成需求：示例需求完成验证\" [active]:\n    - heading \"示例需求完成验证\" [level=2]\n    - generic: 处理中\n    - generic: 普通\n    - generic: 登记于 2026-10-26\n    - paragraph: 仅本地隔离数据\n    - button \"编辑需求\": 编辑\n    - button \"删除需求\": 删除\n  - article:\n    - checkbox \"完成需求：需求失败回退验证\":\n    - heading \"需求失败回退验证\" [level=2]\n    - generic: 处理中\n    - generic: 普通\n    - generic: 登记于 2026-10-26\n    - paragraph: 仅本地隔离数据\n    - button \"编辑需求\": 编辑\n    - button \"删除需求\": 删除"
+    },
+    {
+      "case": "board-completion",
+      "checked": "true",
+      "fill": "scale(1)",
+      "focus": "重新打开：确认运输计划"
+    },
+    {
+      "case": "habit-completion",
+      "checked": "true",
+      "focus": "完成每日事项：阅读十分钟"
+    }
+  ],
+  "continuousNavigation": [
+    {
+      "name": "待办事项",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 534.890625,
+            "height": 44,
+            "left": 336,
+            "right": 573.328125,
+            "top": 490.890625,
+            "width": 237.328125,
+            "x": 336,
+            "y": 490.890625
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 740.3828125,
+            "height": 44,
+            "left": 336,
+            "right": 573.328125,
+            "top": 696.3828125,
+            "width": 237.328125,
+            "x": 336,
+            "y": 696.3828125
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 534.890625,
+            "height": 44,
+            "left": 657.328125,
+            "right": 894.6640625,
+            "top": 490.890625,
+            "width": 237.3359375,
+            "x": 657.328125,
+            "y": 490.890625
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "name": "需求登记",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "false",
+          "name": "完成需求：示例需求完成验证",
+          "rect": {
+            "bottom": 337.3984375,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 293.3984375,
+            "width": 44,
+            "x": 319,
+            "y": 293.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成需求：需求失败回退验证",
+          "rect": {
+            "bottom": 436.3984375,
+            "height": 44,
+            "left": 319,
+            "right": 363,
+            "top": 392.3984375,
+            "width": 44,
+            "x": 319,
+            "y": 392.3984375
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "name": "打卡记录",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "true",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 297.3984375,
+            "height": 44,
+            "left": 327,
+            "right": 413.4453125,
+            "top": 253.3984375,
+            "width": 86.4453125,
+            "x": 327,
+            "y": 253.3984375
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 366.3984375,
+            "height": 44,
+            "left": 327,
+            "right": 385.7265625,
+            "top": 322.3984375,
+            "width": 58.7265625,
+            "x": 327,
+            "y": 322.3984375
+          }
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "name": "我的一天",
+      "collisions": [],
+      "main": {
+        "bottom": 880,
+        "height": 800,
+        "left": 292,
+        "right": 1260,
+        "top": 80,
+        "width": 968,
+        "x": 292,
+        "y": 80
+      },
+      "pageWidth": 1280,
+      "visibleBacking": 0,
+      "visibleChecks": [
+        {
+          "checked": "true",
+          "name": "英语学习",
+          "rect": {
+            "bottom": 384.5,
+            "height": 44,
+            "left": 651,
+            "right": 737.4453125,
+            "top": 340.5,
+            "width": 86.4453125,
+            "x": 651,
+            "y": 340.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "健身",
+          "rect": {
+            "bottom": 445.5,
+            "height": 44,
+            "left": 651,
+            "right": 709.7265625,
+            "top": 401.5,
+            "width": 58.7265625,
+            "x": 651,
+            "y": 401.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：准备项目周会资料",
+          "rect": {
+            "bottom": 709.5,
+            "height": 44,
+            "left": 327,
+            "right": 371,
+            "top": 665.5,
+            "width": 44,
+            "x": 327,
+            "y": 665.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：确认运输计划",
+          "rect": {
+            "bottom": 802.5,
+            "height": 44,
+            "left": 327,
+            "right": 371,
+            "top": 758.5,
+            "width": 44,
+            "x": 327,
+            "y": 758.5
+          }
+        },
+        {
+          "checked": "false",
+          "name": "完成：失败回退验证",
+          "rect": {
+            "bottom": 895.5,
+            "height": 44,
+            "left": 327,
+            "right": 371,
+            "top": 851.5,
+            "width": 44,
+            "x": 327,
+            "y": 851.5
+          }
+        }
+      ],
+      "width": 1280
+    }
+  ]
+}

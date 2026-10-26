@@ -1391,13 +1391,6 @@ p {
   margin-top: 4px;
   overflow-wrap: anywhere;
 }
-.row input[type=checkbox] {
-  width: 22px;
-  height: 22px;
-  margin: 3px 0;
-  accent-color: var(--accent);
-  flex-shrink: 0;
-}
 .completed .row-title {
   text-decoration: line-through;
   color: var(--muted);
@@ -3435,12 +3428,12 @@ dialog[open]::backdrop {
 .fitness-library>h3{margin:0}
 .fitness-plan-row{padding:16px 0;margin:0;border:0;border-bottom:1px solid var(--admin-border)}
 .fitness-plan-row legend{padding-top:16px}
-.fitness-exercise-toggle,.fitness-set-list label{display:flex;gap:10px;align-items:center;min-height:44px}
+.fitness-exercise-toggle{display:flex;gap:10px;align-items:center;min-height:44px}
 .fitness-quantities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px}
 .fitness-quantities label{display:flex;flex-direction:column;gap:6px;min-width:0}
 .fitness-quantities input{width:100%;min-width:0}
 .fitness-set-list,.fitness-actions{display:flex;gap:12px;flex-wrap:wrap}
-.fitness-set-list label{padding:0 8px}
+
 .fitness-actions{margin-top:20px}
 .fitness-actions>button{min-width:0;max-width:100%;height:auto;white-space:normal;overflow-wrap:anywhere}
 .fitness-error{color:var(--admin-destructive)}
@@ -4317,11 +4310,6 @@ body {
   min-height: 36px;
   border-radius: 4px;
 }
-.modern-project td input[type=checkbox] {
-  width: 18px;
-  accent-color: var(--accent);
-  cursor: pointer;
-}
 .modern-project .issue-empty {
   text-align: center;
   color: var(--muted);
@@ -4622,10 +4610,10 @@ body {
   width: 11%;
 }
 .modern-project th:nth-child(6) {
-  width: 16%;
+  width: calc(21% - var(--control-height) - 32px);
 }
 .modern-project th:nth-child(7) {
-  width: 5%;
+  width: calc(var(--control-height) + 32px);
 }
 .issue-note-button {
   display: block;
@@ -5818,25 +5806,6 @@ body :is([data-slot=sheet-overlay],[data-slot=dialog-overlay]) {
   flex-shrink: 0;
   cursor: pointer;
 }
-.workspace-checkbox-label {
-  width: auto;
-  justify-content: flex-start;
-  gap: 12px;
-}
-.workspace-checkbox-completion span {
-  transition: color var(--duration-fast);
-}
-.workspace-checkbox-completion input:checked + span {
-  color: var(--semantic-text-muted);
-  text-decoration: line-through;
-}
-.workspace-checkbox-target input[type=checkbox] {
-  width: 22px;
-  height: 22px;
-  margin: 0;
-  accent-color: var(--admin-primary);
-  cursor: inherit;
-}
 body :is([data-slot=checkbox]) {
   border-color: var(--checkbox-border);
   background: var(--checkbox-bg);
@@ -6705,13 +6674,13 @@ function setProductBrand(){const link=document.createElement('a');link.href='/';
 function checkinPage(){
  const date=day(),rows=state.checkins||[];
  const recent=Array.from({length:7},(_,i)=>{const d=new Date(Date.parse(date+'T12:00:00+08:00')-(6-i)*86400000);const key=d.toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'});const count=rows.filter(r=>r.id===key+':english'||r.id===key+':fitness').length;return '<li data-completion="'+count+'"><time datetime="'+key+'">'+key.slice(5).replace('-','/')+'</time><strong>'+count+'/2</strong><span class="muted">'+(count===2?'已完成':count?'已打卡':'未打卡')+'</span></li>';}).join('');
- return '<div class="checkin-layout"><section class="card checkin-page" aria-label="今日打卡"><div class="card-head workspace-page-hero"><div><h2>今日打卡</h2><p class="muted">每天，向前一点。完成后勾选即可。</p></div><time>'+date+'</time></div><ul class="checkin-list">'+Object.entries(CHECKIN_KINDS).map(([key,label])=>{const checked=rows.some(r=>r.id===date+':'+key);return '<li><label class="workspace-checkbox-target workspace-checkbox-label workspace-checkbox-completion checkin-toggle"><input type="checkbox" data-daily-checkin="'+key+'" '+(checked?'checked':'')+'><span>'+label+'</span></label><span class="muted" data-checkin-state="'+key+'">'+(checked?'已打卡':'未打卡')+'</span></li>';}).join('')+'</ul><p id="checkinError" class="form-error" role="alert"></p></section><section class="card checkin-week" aria-label="近七天打卡记录"><div class="card-head"><h2>近七天</h2><span class="muted">英语 · 健身</span></div><ol class="workspace-week-strip">'+recent+'</ol></section></div>';
+ return '<div class="checkin-layout"><section class="card checkin-page" aria-label="今日打卡"><div class="card-head workspace-page-hero"><div><h2>今日打卡</h2><p class="muted">每天，向前一点。完成后勾选即可。</p></div><time>'+date+'</time></div><ul class="checkin-list">'+Object.entries(CHECKIN_KINDS).map(([key,label])=>{const checked=rows.some(r=>r.id===date+':'+key);return '<li><label class="checkin-toggle"><input type="checkbox" data-daily-checkin="'+key+'" data-completion-label="'+label+'" '+(checked?'checked':'')+'></label><span class="muted" data-checkin-state="'+key+'">'+(checked?'已打卡':'未打卡')+'</span></li>';}).join('')+'</ul><p id="checkinError" class="form-error" role="alert"></p></section><section class="card checkin-week" aria-label="近七天打卡记录"><div class="card-head"><h2>近七天</h2><span class="muted">英语 · 健身</span></div><ol class="workspace-week-strip">'+recent+'</ol></section></div>';
 }
 function productHome(){
  if(scope!=='personal')return '<section class="home-calendar" aria-label="首页日历与日程"><div id="homeCalendar"></div></section>';
  const today=day(),date=new Date(today+'T12:00:00+08:00'),events=eventsOn(today,state.events).sort((a,b)=>a.start.localeCompare(b.start)),open=state.tasks.filter(t=>!t.done).sort((a,b)=>(a.dueDate||'9999').localeCompare(b.dueDate||'9999')||(a.priority==='high'?-1:0)-(b.priority==='high'?-1:0)),checks=state.checkins||[],plans=(state.annualPlans||[]).filter(x=>x.progress<100&&x.startDate<=today&&x.endDate>=today).slice(0,2),playing=(state.completedGames||[]).filter(g=>mediaTrackingStatus(g)==='in_progress').slice(0,3),words=(state.wordPracticeSessions||[]).filter(x=>x.completedOn===today&&x.mode!=='sentence').reduce((n,x)=>n+x.total,0),sentences=(state.wordPracticeSessions||[]).filter(x=>x.completedOn===today&&x.mode==='sentence').reduce((n,x)=>n+x.total,0),training=(state.fitnessSessions||[]).filter(x=>x.completedOn===today).length;
  const head=(title,link,target)=>'<div class="card-head"><h2>'+title+'</h2><button class="btn" data-nav="'+target+'">'+link+' ↗</button></div>';
- return `<div class="home2" aria-label="私人工作台2.0"><header class="home2-hero"><div class="home2-date"><strong>${date.getDate()}</strong><span>${date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',month:'long'})}<br>${date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',weekday:'long'})}</span></div><div class="home2-intro"><h1>我的一天</h1><p>今日安排与待办，一处处理。</p></div><div class="home2-actions"><button class="btn primary" data-add-task>＋ 新建待办</button></div></header><div class="home2-columns"><div class="home2-main"><section class="card home2-agenda" data-empty="${!events.length}"><div class="card-head"><h2>今天的安排</h2><button class="btn" data-home-new-event>＋ 日程</button></div><p class="home2-section-note muted">${events.length?'今天有 '+events.length+' 项日程 · 北京时间':''}</p>${events.length?'<ol class="home2-timeline">'+events.map(e=>'<li><time>'+esc(e.allDay?'全天':e.start.slice(0,10)<today?'跨日':e.start.slice(11,16))+'</time><button class="workspace-surface-action home2-event" data-home-event="'+esc(e.id)+'"><strong>'+esc(e.title)+'</strong>'+(e.location?'<span class="muted">'+esc(e.location)+'</span>':'')+'</button></li>').join('')+'</ol>':'<p class="home2-quiet muted">今天没有日程，按自己的节奏安排。</p>'}</section><section class="card home2-tasks" data-empty="${!open.length}">${head('接下来要做','全部 '+open.length+' 项','tasks')}${open.length?'<ul class="home2-task-list">'+open.slice(0,4).map(t=>'<li><label class="workspace-checkbox-target" aria-label="完成：'+esc(t.title)+'"><input type="checkbox" data-home-task="'+esc(t.id)+'"></label><button class="workspace-surface-action" data-edit="tasks" data-id="'+esc(t.id)+'"><strong>'+esc(t.title)+'</strong>'+(t.detail?'<span class="muted">'+esc(t.detail)+'</span>':'')+'</button><span class="home2-due '+(t.dueDate&&t.dueDate<today?'home2-overdue':'')+'">'+esc(t.dueDate?t.dueDate<today?'已逾期':t.dueDate===today?'今天':t.dueDate:'无截止日期')+'</span></li>').join('')+'</ul>':'<p class="home2-quiet muted">待办已清空。想到新安排时，随时记下来。</p>'}<p id="homeTaskError" class="form-error" role="alert"></p></section></div><div class="home2-side" role="complementary" aria-label="学习与生活"><section class="card home2-checkins">${head('每天，向前一点','打卡记录','checkins')}<div class="home2-checkin-list">${Object.entries(CHECKIN_KINDS).map(([key,label])=>{const done=checks.some(x=>x.id===today+':'+key);return '<div><label class="workspace-checkbox-target workspace-checkbox-label workspace-checkbox-completion"><input type="checkbox" data-daily-checkin="'+key+'" '+(done?'checked':'')+'><span>'+label+'</span></label><span class="muted" data-checkin-state="'+key+'">'+(done?'已打卡':'未打卡')+'</span></div>';}).join('')}</div><p id="checkinError" class="form-error" role="alert"></p><div class="home2-practice-links"><button class="btn" data-nav="vocabulary">英语练习${sentences||words?'<small>今日 '+[sentences?sentences+' 句':'',words?words+' 词':''].filter(Boolean).join(' / ')+'</small>':''}</button><button class="btn" data-nav="fitness">居家健身${training?'<small>今日 '+training+' 次训练</small>':''}</button></div></section><section class="card home2-goals">${head('把目光放远','年度计划','annualPlans')}${plans.length?plans.map(x=>'<button class="workspace-surface-action home2-goal" data-nav="annualPlans"><span>'+esc(x.title)+'</span><strong>'+x.progress+'%</strong><progress aria-label="'+esc(x.title)+'完成进度" value="'+x.progress+'" max="100"></progress></button>').join(''):'<p class="home2-quiet muted">还没有进行中的年度目标。给想做的事留一个位置。</p>'}</section><section class="card home2-leisure">${head('正在玩与看','娱乐记录','completedGames')}${playing.length?'<div class="home2-cover-shelf">'+playing.map(g=>'<button class="workspace-surface-action home2-media" data-nav="completedGames"><span class="home2-media-art"><span class="home2-media-mark" aria-hidden="true">'+esc((g.mediaType||'game')==='game'?'玩':'看')+'</span>'+(g.coverUrl?'<img src="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game'))+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true">':'')+'</span><span><strong>'+esc(g.title)+'</strong><small class="muted">进行中'+(g.platform?' · '+esc(g.platform):'')+'</small></span><span aria-hidden="true">↗</span></button>').join('')+'</div>':'<p class="home2-quiet muted">添加想玩或想看的作品，封面会出现在这里。</p>'}</section></div></div>${(state.dailyRoutines||[]).length?dailyRoutineCard():''}<div id="workspaceTasks" data-tasks-root></div></div>`;
+ return `<div class="home2" aria-label="私人工作台2.0"><header class="home2-hero"><div class="home2-date"><strong>${date.getDate()}</strong><span>${date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',month:'long'})}<br>${date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',weekday:'long'})}</span></div><div class="home2-intro"><h1>我的一天</h1><p>今日安排与待办，一处处理。</p></div><div class="home2-actions"><button class="btn primary" data-add-task>＋ 新建待办</button></div></header><div class="home2-columns"><div class="home2-main"><section class="card home2-agenda" data-empty="${!events.length}"><div class="card-head"><h2>今天的安排</h2><button class="btn" data-home-new-event>＋ 日程</button></div><p class="home2-section-note muted">${events.length?'今天有 '+events.length+' 项日程 · 北京时间':''}</p>${events.length?'<ol class="home2-timeline">'+events.map(e=>'<li><time>'+esc(e.allDay?'全天':e.start.slice(0,10)<today?'跨日':e.start.slice(11,16))+'</time><button class="workspace-surface-action home2-event" data-home-event="'+esc(e.id)+'"><strong>'+esc(e.title)+'</strong>'+(e.location?'<span class="muted">'+esc(e.location)+'</span>':'')+'</button></li>').join('')+'</ol>':'<p class="home2-quiet muted">今天没有日程，按自己的节奏安排。</p>'}</section><section class="card home2-tasks" data-empty="${!open.length}">${head('接下来要做','全部 '+open.length+' 项','tasks')}${open.length?'<ul class="home2-task-list">'+open.slice(0,4).map(t=>'<li><label class="workspace-checkbox-target" aria-label="完成：'+esc(t.title)+'"><input type="checkbox" data-home-task="'+esc(t.id)+'"></label><button class="workspace-surface-action" data-edit="tasks" data-id="'+esc(t.id)+'"><strong>'+esc(t.title)+'</strong>'+(t.detail?'<span class="muted">'+esc(t.detail)+'</span>':'')+'</button><span class="home2-due '+(t.dueDate&&t.dueDate<today?'home2-overdue':'')+'">'+esc(t.dueDate?t.dueDate<today?'已逾期':t.dueDate===today?'今天':t.dueDate:'无截止日期')+'</span></li>').join('')+'</ul>':'<p class="home2-quiet muted">待办已清空。想到新安排时，随时记下来。</p>'}<p id="homeTaskError" class="form-error" role="alert"></p></section></div><div class="home2-side" role="complementary" aria-label="学习与生活"><section class="card home2-checkins">${head('每天，向前一点','打卡记录','checkins')}<div class="home2-checkin-list">${Object.entries(CHECKIN_KINDS).map(([key,label])=>{const done=checks.some(x=>x.id===today+':'+key);return '<div><label class="checkin-toggle"><input type="checkbox" data-daily-checkin="'+key+'" data-completion-label="'+label+'" '+(done?'checked':'')+'></label><span class="muted" data-checkin-state="'+key+'">'+(done?'已打卡':'未打卡')+'</span></div>';}).join('')}</div><p id="checkinError" class="form-error" role="alert"></p><div class="home2-practice-links"><button class="btn" data-nav="vocabulary">英语练习${sentences||words?'<small>今日 '+[sentences?sentences+' 句':'',words?words+' 词':''].filter(Boolean).join(' / ')+'</small>':''}</button><button class="btn" data-nav="fitness">居家健身${training?'<small>今日 '+training+' 次训练</small>':''}</button></div></section><section class="card home2-goals">${head('把目光放远','年度计划','annualPlans')}${plans.length?plans.map(x=>'<button class="workspace-surface-action home2-goal" data-nav="annualPlans"><span>'+esc(x.title)+'</span><strong>'+x.progress+'%</strong><progress aria-label="'+esc(x.title)+'完成进度" value="'+x.progress+'" max="100"></progress></button>').join(''):'<p class="home2-quiet muted">还没有进行中的年度目标。给想做的事留一个位置。</p>'}</section><section class="card home2-leisure">${head('正在玩与看','娱乐记录','completedGames')}${playing.length?'<div class="home2-cover-shelf">'+playing.map(g=>'<button class="workspace-surface-action home2-media" data-nav="completedGames"><span class="home2-media-art"><span class="home2-media-mark" aria-hidden="true">'+esc((g.mediaType||'game')==='game'?'玩':'看')+'</span>'+(g.coverUrl?'<img src="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game'))+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true">':'')+'</span><span><strong>'+esc(g.title)+'</strong><small class="muted">进行中'+(g.platform?' · '+esc(g.platform):'')+'</small></span><span aria-hidden="true">↗</span></button>').join('')+'</div>':'<p class="home2-quiet muted">添加想玩或想看的作品，封面会出现在这里。</p>'}</section></div></div>${(state.dailyRoutines||[]).length?dailyRoutineCard():''}<div id="workspaceTasks" data-tasks-root></div></div>`;
 }
 function openHomeEvent(id){view='calendar';render();history.replaceState(null,'',location.pathname+'?view=calendar');let attempts=0;const open=()=>{if(view!=='calendar')return;if(workspaceCalendar?.api){openCalendarEvent(id);return;}if(attempts++<30)requestAnimationFrame(open);else toast('日历尚未加载，请稍后重试。');};requestAnimationFrame(open);}
 

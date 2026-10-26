@@ -1,0 +1,43 @@
+{
+  "commit": "9b34a17151986c3d55e00a477ed183c1e9695b5e",
+  "tree": "7aba6e901a76e65cb1bdb8fc18b9f6d7e791a0bf",
+  "site": "https://tracker.managementplatformlee.com",
+  "githubActionsRun": 40284198257,
+  "ci": "success",
+  "cloudflareBuild": "e2e52272-826e-4af9-a5ac-3da9199fc68a",
+  "cloudflareBuildResult": "success",
+  "cloudflareVersion": "6bd85134-638b-4833-bf82-ced1aa22e0f0",
+  "changes": [
+    "Only selected sidebar navigation label uses GradientText; other sidebar names unchanged.",
+    "Bell automatically rings after readiness on first nonzero reminder count and on count increases; clicks only open reminders."
+  ],
+  "localTests": 239,
+  "strictLint": "passed",
+  "strictTypecheck": "passed",
+  "localD1": "passed with 2026-07-30 compatibility date; production compatibility not verified locally",
+  "recoveryRehearsal": "passed synthetic 5 tables",
+  "sidebarBrowserCombinations": 8,
+  "bellBrowserCombinations": 8,
+  "automaticBellCases": [
+    "first nonzero load",
+    "0 to 1",
+    "1 to 2",
+    "no ring on pointer click",
+    "no ring on unchanged count refresh"
+  ],
+  "productionLoginHTTP": 401,
+  "productionLoginPage": true,
+  "productionBusinessDataWrites": false,
+  "schemaMigration": false,
+  "secretsChanged": false,
+  "staticPremiumFindings": 41,
+  "localMainAligned": true,
+  "rollbackCommit": "4240e61003949990f19644f87f36ee95bffcb35d",
+  "limitations": [
+    "Authenticated UI interactions were verified locally with isolated demo data; production remains at login.",
+    "Reduced-motion behavior was verified through the shared motionOff component prop, not by changing the actual OS setting.",
+    "Static premium scan retains 41 historical findings.",
+    "Synthetic recovery rehearsal does not verify actual Cloudflare disaster recovery."
+  ],
+  "publishedVia": "Connected GitHub plugin; remote release tree equals local verified tree"
+}

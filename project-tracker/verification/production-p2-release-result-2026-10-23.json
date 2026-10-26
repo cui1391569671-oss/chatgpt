@@ -1,0 +1,28 @@
+{
+  "commit": "7131d7ac75b3a584473a6e977489f388f7f56850",
+  "tree": "97aa6258b2d2b951c637093bd07234ec95bf5843",
+  "workerVersion": "c28d295f-55f2-4361-94b6-c11ecd372cfa",
+  "site": "https://tracker.managementplatformlee.com",
+  "checkedAt": "2026-10-23T04:55:14.126Z",
+  "cloudflareBuild": "c846ff52-98ce-4c60-b6d7-7520804cc8ae",
+  "githubActionsRun": 39902747690,
+  "ci": "success",
+  "cloudflareBuildResult": "success",
+  "localTests": 222,
+  "localFocusChecks": 12,
+  "localD1": "passed",
+  "onlineReadOnlyChecks": [
+    "authenticated work tasks loaded after successful deployment and reload",
+    "projects page loaded"
+  ],
+  "productionBusinessDataWrites": false,
+  "schemaMigration": false,
+  "secretsChanged": false,
+  "p2FocusFixIncluded": true,
+  "rollbackCommit": "67df020cb4c87a97142e54b208834be1d52acee5",
+  "limitations": [
+    "Focus scenarios tested locally with synthetic data; no production task deletion performed",
+    "Existing lint 42 and type 98 baselines remain; strict static audit has 39 legacy findings"
+  ],
+  "supersedesP2LocalOnlyStatusIn": "p2-focus-fix-2026-10-23.md"
+}

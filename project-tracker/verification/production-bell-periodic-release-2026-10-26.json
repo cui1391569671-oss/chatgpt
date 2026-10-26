@@ -1,0 +1,35 @@
+{
+  "commit": "70733d8b79390e64ffd3e04f5a648d72c88085d4",
+  "tree": "514b4b9bce7918c01e1178dd49aae53455e9279d",
+  "site": "https://tracker.managementplatformlee.com",
+  "githubActionsRun": 40286670716,
+  "ci": "success",
+  "cloudflareBuild": "4802f083-210f-4bf1-bbc7-d037016fcc00",
+  "cloudflareBuildResult": "success",
+  "cloudflareVersion": "746d1cba-32ba-4c64-a772-90110a6f1f70",
+  "behavior": "While ready with count > 0, repeat an 820ms visual bell cue about every 5000ms; clear count stops immediately. Click only opens reminders.",
+  "browserObservedBurstsMs": [
+    3266,
+    8169,
+    13274
+  ],
+  "clearNoRestartObservationMs": 6000,
+  "motionOffFixtureStops": true,
+  "disabledFixtureStops": true,
+  "localTests": 239,
+  "strictLint": "passed",
+  "strictTypecheck": "passed",
+  "localD1": "passed with 2026-07-30 compatibility date",
+  "recovery": "passed synthetic 5 tables",
+  "staticPremiumFindings": 41,
+  "productionBusinessDataWrites": false,
+  "schemaMigration": false,
+  "secretsChanged": false,
+  "localMainAligned": true,
+  "rollbackCommit": "9b34a17151986c3d55e00a477ed183c1e9695b5e",
+  "limitations": [
+    "Authenticated interactions verified locally with isolated demo data; production verification limited to deployment status and login response.",
+    "Motion-off behavior verified through component prop; real OS preference and page background transition were not exercised.",
+    "Static premium scan retains 41 historical findings."
+  ]
+}

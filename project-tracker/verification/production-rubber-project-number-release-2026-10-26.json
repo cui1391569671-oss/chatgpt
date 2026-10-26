@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-26",
+  "commit": "0733af73a6343b2417057e83518e985a58729fcd",
+  "tree": "6947293ff928002edd7716f742e40d3ff8c02837",
+  "github": {
+    "runId": 40292254176,
+    "status": "success"
+  },
+  "cloudflare": {
+    "buildId": "78b9ecdc-475a-49cd-a1ae-9ad4f5d0f0b8",
+    "versionId": "061f4b89-3750-4869-8dd9-58b5c5022a2f",
+    "status": "success"
+  },
+  "checks": [
+    {
+      "name": "Workers Builds: project-tracker",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://dash.cloudflare.com/e5fb173fc60bf37b839027b00c215c41/workers/services/view/project-tracker/production/builds/78b9ecdc-475a-49cd-a1ae-9ad4f5d0f0b8"
+    },
+    {
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/cui1391569671-oss/chatgpt/actions/runs/40292254176/job/121469822000"
+    }
+  ],
+  "local": {
+    "tests": 241,
+    "lint": "zero diagnostics",
+    "typecheck": "zero diagnostics",
+    "generatedFiles": "match committed sources",
+    "localD1": true,
+    "syntheticRecoveryTables": 5,
+    "responsiveCombinations": 63,
+    "mainAlignedWithOrigin": true
+  },
+  "production": {
+    "url": "https://tracker.managementplatformlee.com",
+    "loginPage": "confirmed after successful deployment",
+    "authenticatedBusinessInteractions": "not re-exercised in production; local synthetic fixtures used",
+    "productionBusinessWrites": false
+  },
+  "preservedUnrelatedUntrackedFiles": true,
+  "limitations": [
+    "OS reduced-motion preference not toggled; cleanup branch reviewed in source",
+    "Local D1 compatibility date 2026-07-30; no production compatibility verification or production restore",
+    "Existing premium audit findings not declared resolved"
+  ]
+}

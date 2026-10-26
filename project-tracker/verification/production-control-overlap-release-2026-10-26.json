@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-26",
+  "commit": "4786ab33deb77484c33e7da23b2bad462dde167a",
+  "tree": "5158a31965c083c9278dddc93beeeec22f3d3753",
+  "github": {
+    "runId": 40317821722,
+    "status": "success"
+  },
+  "cloudflare": {
+    "buildId": "3f8629e4-d9bc-46f5-8125-407d7b3f08ac",
+    "versionId": "956f6aad-26c3-4432-9c29-edab83031f92",
+    "status": "success"
+  },
+  "checks": [
+    {
+      "name": "Workers Builds: project-tracker",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://dash.cloudflare.com/e5fb173fc60bf37b839027b00c215c41/workers/services/view/project-tracker/production/builds/3f8629e4-d9bc-46f5-8125-407d7b3f08ac"
+    },
+    {
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/cui1391569671-oss/chatgpt/actions/runs/40317821722/job/121554746339"
+    }
+  ],
+  "local": {
+    "tests": 243,
+    "lintStrict": "passed",
+    "typecheckStrict": "passed",
+    "localD1": true,
+    "syntheticRecoveryTables": 5,
+    "generatedFiles": "match committed sources",
+    "mainAlignedWithOrigin": true,
+    "unrelatedUntrackedFilesPreserved": true
+  },
+  "production": {
+    "url": "https://tracker.managementplatformlee.com",
+    "loginPage": "confirmed after successful deployment",
+    "businessInteractions": "local synthetic data verification only",
+    "businessWrites": false,
+    "screenshot": "/private/tmp/control-overlap-production-login.png"
+  },
+  "limitations": [
+    "Raw premium scan still has 41 historical findings; project adapter has 0.",
+    "No full populated-record CRUD or physical-device matrix in this change."
+  ]
+}

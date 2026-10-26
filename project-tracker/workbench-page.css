@@ -227,13 +227,6 @@ p {
   margin-top: 4px;
   overflow-wrap: anywhere;
 }
-.row input[type=checkbox] {
-  width: 22px;
-  height: 22px;
-  margin: 3px 0;
-  accent-color: var(--accent);
-  flex-shrink: 0;
-}
 .completed .row-title {
   text-decoration: line-through;
   color: var(--muted);
@@ -2271,12 +2264,12 @@ dialog[open]::backdrop {
 .fitness-library>h3{margin:0}
 .fitness-plan-row{padding:16px 0;margin:0;border:0;border-bottom:1px solid var(--admin-border)}
 .fitness-plan-row legend{padding-top:16px}
-.fitness-exercise-toggle,.fitness-set-list label{display:flex;gap:10px;align-items:center;min-height:44px}
+.fitness-exercise-toggle{display:flex;gap:10px;align-items:center;min-height:44px}
 .fitness-quantities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px}
 .fitness-quantities label{display:flex;flex-direction:column;gap:6px;min-width:0}
 .fitness-quantities input{width:100%;min-width:0}
 .fitness-set-list,.fitness-actions{display:flex;gap:12px;flex-wrap:wrap}
-.fitness-set-list label{padding:0 8px}
+
 .fitness-actions{margin-top:20px}
 .fitness-actions>button{min-width:0;max-width:100%;height:auto;white-space:normal;overflow-wrap:anywhere}
 .fitness-error{color:var(--admin-destructive)}

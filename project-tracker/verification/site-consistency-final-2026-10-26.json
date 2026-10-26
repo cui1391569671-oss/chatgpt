@@ -1,0 +1,1578 @@
+{
+  "desktop": [
+    {
+      "url": "http://127.0.0.1:8894/work?view=home",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "上一段时间",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "下一段时间",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "今天",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "导出",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "新建",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgb(101, 84, 192)",
+          "border": "1px solid rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=today",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=projects",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=tasks",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "新建待办",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgb(101, 84, 192)",
+          "border": "0px none rgb(255, 255, 255)"
+        },
+        {
+          "label": "标题",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(86, 100, 123)"
+        },
+        {
+          "label": "截止日期",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(86, 100, 123)"
+        },
+        {
+          "label": "删除：准备项目周会资料",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(86, 100, 123)"
+        },
+        {
+          "label": "删除：确认运输计划",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(86, 100, 123)"
+        },
+        {
+          "label": "上一页",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "下一页",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=drive",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=requirements",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=notes",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=home",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=calendar",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "上一段时间",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "下一段时间",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "今天",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "导出",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "新建",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgb(101, 84, 192)",
+          "border": "1px solid rgba(0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=annualPlans",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "＋ 新增事项",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgb(101, 84, 192)",
+          "border": "0px none rgb(255, 255, 255)"
+        },
+        {
+          "label": "切换时间轴",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "新增第一件事",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=tasks",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "切换表格",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "新建待办",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgb(101, 84, 192)",
+          "border": "0px none rgb(255, 255, 255)"
+        },
+        {
+          "label": "标记完成",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "标记完成",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=requirements",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=notes",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=checkins",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=vocabulary",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "词汇库",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "开始练习",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgb(101, 84, 192)",
+          "border": "0px none rgb(255, 255, 255)"
+        },
+        {
+          "label": "先练中文释义写单词",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(86, 100, 123)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=vocabularyLibrary",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=fitness",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "保存并更新安排",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgb(101, 84, 192)",
+          "border": "0px none rgb(255, 255, 255)"
+        },
+        {
+          "label": "取消",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "开始训练",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgb(101, 84, 192)",
+          "border": "0px none rgb(255, 255, 255)"
+        },
+        {
+          "label": "重置安排",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "暂停动画",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=completedGames",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=upcoming",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=wardrobe",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=maintenance",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=personalInfo",
+      "width": 1171,
+      "scrollWidth": 1171,
+      "main": {
+        "bottom": 807,
+        "height": 727,
+        "left": 292,
+        "right": 1151,
+        "top": 80,
+        "width": 859,
+        "x": 292,
+        "y": 80
+      },
+      "cardShadows": [
+        "rgba(45, 61, 91, 0.06) 0px 4px 16px 0px"
+      ],
+      "ordinaryButtons": [
+        {
+          "label": "搜索页面",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "显示资料密码",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgba(255, 255, 255, 0.96)",
+          "border": "1px solid rgb(135, 150, 175)"
+        },
+        {
+          "label": "创建资料库",
+          "height": 44,
+          "radius": "10px",
+          "size": "14px",
+          "bg": "rgb(101, 84, 192)",
+          "border": "0px none rgb(255, 255, 255)"
+        }
+      ]
+    }
+  ],
+  "mobile": [
+    {
+      "url": "http://127.0.0.1:8894/work?view=home",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=today",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=projects",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=tasks",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=drive",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=requirements",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=notes",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=home",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=calendar",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=annualPlans",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=tasks",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=requirements",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=notes",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=checkins",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=vocabulary",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=vocabularyLibrary",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=fitness",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=completedGames",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=upcoming",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=wardrobe",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=maintenance",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=personalInfo",
+      "width": 390,
+      "scrollWidth": 390,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 378,
+        "top": 76,
+        "width": 366,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=home",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=today",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=projects",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=tasks",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=drive",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=requirements",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/work?view=notes",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=home",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=calendar",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=annualPlans",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=tasks",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=requirements",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=notes",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=checkins",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=vocabulary",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=vocabularyLibrary",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=fitness",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=completedGames",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=upcoming",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=wardrobe",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=maintenance",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8894/personal?view=personalInfo",
+      "width": 320,
+      "scrollWidth": 320,
+      "main": {
+        "bottom": 832,
+        "height": 756,
+        "left": 12,
+        "right": 308,
+        "top": 76,
+        "width": 296,
+        "x": 12,
+        "y": 76
+      }
+    }
+  ],
+  "tests": {
+    "total": 239,
+    "pass": 239,
+    "fail": 0
+  },
+  "static": {
+    "errors": 41,
+    "baselineErrors": 41,
+    "unresolved": 7,
+    "violations": 34
+  },
+  "productionWrites": false
+}

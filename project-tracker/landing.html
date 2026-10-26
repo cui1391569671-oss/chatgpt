@@ -1984,11 +1984,6 @@ body {
   min-height: 36px;
   border-radius: 4px;
 }
-.modern-project td input[type=checkbox] {
-  width: 18px;
-  accent-color: var(--accent);
-  cursor: pointer;
-}
 .modern-project .issue-empty {
   text-align: center;
   color: var(--muted);
@@ -2289,10 +2284,10 @@ body {
   width: 11%;
 }
 .modern-project th:nth-child(6) {
-  width: 16%;
+  width: calc(21% - var(--control-height) - 32px);
 }
 .modern-project th:nth-child(7) {
-  width: 5%;
+  width: calc(var(--control-height) + 32px);
 }
 .issue-note-button {
   display: block;
@@ -3484,25 +3479,6 @@ body :is([data-slot=sheet-overlay],[data-slot=dialog-overlay]) {
   min-height: var(--control-height,44px);
   flex-shrink: 0;
   cursor: pointer;
-}
-.workspace-checkbox-label {
-  width: auto;
-  justify-content: flex-start;
-  gap: 12px;
-}
-.workspace-checkbox-completion span {
-  transition: color var(--duration-fast);
-}
-.workspace-checkbox-completion input:checked + span {
-  color: var(--semantic-text-muted);
-  text-decoration: line-through;
-}
-.workspace-checkbox-target input[type=checkbox] {
-  width: 22px;
-  height: 22px;
-  margin: 0;
-  accent-color: var(--admin-primary);
-  cursor: inherit;
 }
 body :is([data-slot=checkbox]) {
   border-color: var(--checkbox-border);

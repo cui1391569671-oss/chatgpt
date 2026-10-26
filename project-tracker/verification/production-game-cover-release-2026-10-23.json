@@ -1,0 +1,50 @@
+{
+  "commit": "83ac15e13f24c3ce96d10b352b96d9db49be6ea7",
+  "tree": "e682f000d930ed828f5bfb806e7d04b249145dec",
+  "workerVersion": "cb73900c-6fc4-4015-ae5a-93093244914b",
+  "cloudflareBuild": "4659fbb2-b5ea-4c8b-8b00-0a15405bba0f",
+  "githubActionsRun": 39909078443,
+  "ci": "success",
+  "deployment": "success",
+  "checkedAt": "2026-10-23T06:04:25.315415+00:00",
+  "games": 17,
+  "missingCoverLinks": 0,
+  "updatedRecords": 6,
+  "changedFields": [
+    "coverUrl"
+  ],
+  "otherBusinessFieldsPreserved": true,
+  "sourceImagesValidated": 17,
+  "sourceImagesSuccessful": 17,
+  "unitTests": 229,
+  "localD1": "passed",
+  "lintNewDiagnostics": 0,
+  "typeNewDiagnostics": 0,
+  "legacyLint": 42,
+  "legacyTypes": 98,
+  "legacyStaticFindings": 39,
+  "localBrowser": {
+    "loadedImages": 4,
+    "failurePlaceholder": 1,
+    "gridAndListOverflow": false,
+    "syntheticDataOnly": true
+  },
+  "productionReadOnly": {
+    "unauthenticatedImageStatus": 401,
+    "authenticatedBrowserRecheck": "passed in existing Safari session after unlock; all 17 game covers visually confirmed across scroll positions",
+    "actualUserLoadTimeMeasured": false,
+    "repeatRefresh": "passed; artwork visible again after refresh and game filtering"
+  },
+  "rollbackCodeCommit": "7131d7ac75b3a584473a6e977489f388f7f56850",
+  "schemaMigration": false,
+  "secretsChanged": false,
+  "notes": [
+    "Production cover backfill performed through existing UI, not direct SQL.",
+    "Rollback of code does not reverse six requested cover field updates.",
+    "First cold-cache request still depends on upstream image availability.",
+    "Production recheck found two Wikimedia server-fetch failures; Wikimedia now loads directly and other proxied images fall back to originals once.",
+    "This follow-up made no production business data changes.",
+    "No precise speedup percentage or fixed loading time was measured."
+  ],
+  "previousReleaseCommit": "da32fd4535cd615b17d7a0726bcbb7de17f007e9"
+}
