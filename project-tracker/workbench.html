@@ -837,9 +837,6 @@ SOFTWARE.
   --semantic-secondary-muted: var(--radix-cyan-a5);
 
 
-  --heading-gradient-start: var(--accent-12);
-  --heading-gradient-middle: var(--radix-cyan-12);
-  --heading-gradient-end: var(--accent-12);
 
 
   --semantic-surface: var(--gray-1);
@@ -3917,6 +3914,11 @@ body[data-personal-density=compact] .home2,body[data-personal-density=compact] .
 
 .home2-section-note:empty{display:none}.home2-cover-shelf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.home2-media-art{display:block;position:relative;aspect-ratio:2/3;width:100%;overflow:hidden}.home2-media-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.home2-media-art img[hidden]{display:none}.home2[data-layout-editing=true] .home2-actions{flex-wrap:wrap}
 
+/* Work overview: compact calendar and the canonical daily task stream. */
+.work-home{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:24px;align-items:stretch;height:min(640px,calc(100dvh - 144px));min-height:400px;min-width:0;--home-calendar-height:100%}.work-home>*{min-width:0;min-height:0}.work-home-today{display:flex;flex-direction:column;margin:0}.work-home-today>.card-head{flex:none;align-items:start}.work-home-today #todayTaskResults{min-height:0;overflow:auto;overscroll-behavior:contain;flex:1}.work-home-today .today-task-group{margin-top:16px}.work-home-today .row{flex-wrap:wrap}.work-home-today .row-content{min-width:0;flex:1 1 180px}.work-home-today .actions{margin-left:auto}.work-home-today .row-meta{flex-wrap:wrap}
+@media(max-width:1100px){.work-home{grid-template-columns:minmax(0,1fr);height:auto;min-height:0;--home-calendar-height:560px}.work-home-today #todayTaskResults{overflow:visible;flex:none}.work-home-today{min-height:220px}}
+@media(max-width:600px){.work-home{gap:16px;--home-calendar-height:460px}}
+
 /* Canonical workspace layout and materials. Edit owners here; do not append override sheets. */
 :root {
   --workspace-max-width: 100%;
@@ -5380,9 +5382,6 @@ body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-contr
 .shadcn-workbench #workbenchShell [data-slot=sidebar-container] {
   padding: 16px 12px 16px 16px;
 }
-.shadcn-workbench #workbenchShell [data-slot=sidebar-inner] {
-  border-radius: 24px;
-}
 .shadcn-workbench #workbenchShell [data-slot=sidebar-header],.shadcn-workbench #workbenchShell [data-slot=sidebar-footer] {
   padding: 12px;
 }
@@ -5773,7 +5772,7 @@ body.shadcn-workbench.project-view #projectFrame {
   max-height: 100%;
 }
 body.shadcn-workbench .home-calendar {
-  height: calc(100dvh - 124px);
+  height: var(--home-calendar-height,calc(100dvh - 124px));
   min-height: 200px;
   max-height: 100%;
   min-width: 0;
@@ -5889,7 +5888,7 @@ body.modern-project .table-wrapper {
     flex: 1;
   }
   body.shadcn-workbench .home-calendar {
-    height: calc(100dvh - 112px);
+    height: var(--home-calendar-height,calc(100dvh - 112px));
     min-height: 0;
   }
   body.shadcn-workbench.shared-workspace .calendar-full-surface {
@@ -5956,6 +5955,7 @@ body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button {
   flex: none;
   padding: 10px;
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
 }
 body.shadcn-workbench .wb-topbar-actions {
   flex-shrink: 0;
@@ -6015,13 +6015,15 @@ body.shadcn-workbench :is([data-shell-root],[data-tasks-root],[data-ui-root]),bo
 body.shadcn-workbench #workbenchShell [data-slot=sidebar-inner] {
   background: var(--sidebar-bg);
   border: 1px solid var(--sidebar-border);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   box-shadow: var(--sidebar-glow);
   backdrop-filter: blur(var(--sidebar-backdrop-blur));
   -webkit-backdrop-filter: blur(var(--sidebar-backdrop-blur));
 }
-body.shadcn-workbench #workbenchShell [data-sidebar=menu-button] {
-  border-radius: var(--radius-md);
+body.shadcn-workbench #workbenchShell [data-sidebar=menu-button],body [data-shell-portal] [data-sidebar=menu-button] {
+  border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   color: var(--semantic-text);
   transition: background var(--duration-fast),color var(--duration-fast);
 }
@@ -6084,6 +6086,7 @@ body.shadcn-workbench .wb-icon-button {
   color: var(--btn-secondary-text);
   border: 1px solid var(--btn-secondary-border);
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   box-shadow: none;
 }
 body.shadcn-workbench .wb-icon-button:not(:disabled):hover {
@@ -6212,7 +6215,8 @@ body [data-shell-portal][data-slot=sidebar] {
   inset: 12px auto 12px 12px;
   height: calc(100dvh - 24px);
   max-width: calc(100vw - 36px);
-  border-radius: var(--radius-xl);
+  border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   background: var(--sidebar-bg);
   border: 1px solid var(--sidebar-border);
   backdrop-filter: blur(var(--blur-lg));
@@ -6395,8 +6399,10 @@ body.shadcn-workbench,body.modern-project,body.glass-login {
   --soft: var(--semantic-primary-subtle);
   --border: var(--semantic-border);
   --card: var(--card-bg);
+  --home-calendar-height: calc(100dvh - 124px);
   --control-height: 44px;
-  --control-radius: 10px;
+  --control-radius: 24px;
+  --control-corner-shape: superellipse(1.5);
   --control-font-size: 14px;
   --control-line-height: 20px;
   --control-button-padding-x: 14px;
@@ -6407,6 +6413,7 @@ body :is(.workspace-input,.workspace-textarea,.workspace-select,[data-slot=butto
   min-height: var(--control-height);
   box-sizing: border-box;
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   font-size: var(--control-font-size);
 }
 body :is(.workspace-input,.workspace-select,[data-slot=input],[data-slot=select-trigger],[data-ui-control=input],[data-slot=button],[data-ui-control=button]),body.modern-project .btn {
@@ -6489,6 +6496,7 @@ body .ui-business-dialog :is(.dialog-actions,.modal-actions,.issue-details-actio
   background: transparent;
   border: 0;
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   color: var(--semantic-text-muted);
   cursor: pointer;
 }
@@ -6552,6 +6560,7 @@ input[data-ui-date-native],body [data-workspace-file-native] {
   border: 0;
   background: transparent;
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   color: var(--semantic-text);
   font-size: 14px;
 }
@@ -6585,6 +6594,7 @@ input[data-ui-date-native],body [data-workspace-file-native] {
   padding: 14px 18px;
   border: 1px solid var(--semantic-border);
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   background: var(--dropdown-bg);
   color: var(--semantic-text);
   box-shadow: var(--shadow);
@@ -6826,11 +6836,8 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 
 /* Shared horizontal choice controls. Business adapters keep their source nodes. */
 .wb-segment-scroll { min-width: 0; max-width: 100%; overflow-x: auto; padding: 3px; }
-.wb-segment-navigation { min-width: 0; max-width: 100%; margin-right: auto; }
 .wb-segment-native { min-width: 0; max-width: 100%; }
 .wb-segment-page-tabs { margin: 0; }
-@media (max-width: 1100px) { .wb-segment-personal { display: none; } }
-@media (max-width: 1023px) { .wb-segment-work { display: none; } }
 </style><!-- PRODUCT_DESIGN_END --></head>
 <body><div class="shell"><aside><div class="sidebar-head"><div class="brand">我的工作台<small>PERSONAL WORKSPACE</small></div></div><nav aria-label="顶部主导航"><button data-view="home" class="active">首页</button><button data-view="tasks">个人待办</button><button data-view="notes">我的笔记</button><button data-view="completedGames" id="completedGamesLink" class="hidden">通关游戏</button><button data-view="upcoming" id="upcomingLink" class="hidden">即将发售</button><button data-view="maintenance" id="maintenanceLink" class="hidden">设备维保</button><button data-view="wardrobe" id="wardrobeLink" class="hidden">我的衣橱</button><button data-view="vocabulary" id="vocabularyLink" class="hidden">英语词汇</button><button data-view="drive" id="driveLink" class="hidden">Google Drive</button><button data-view="projects" id="projectLink">项目问题表</button></nav><button id="notificationToggle" class="btn notification-toggle" aria-label="消息通知" title="消息通知" aria-haspopup="dialog" disabled><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span id="notificationBadge" class="notification-badge hidden" aria-hidden="true"></span></button><button id="accountToggle" class="btn account-toggle" type="button" aria-label="个人中心" title="个人中心" aria-haspopup="dialog"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg></button></aside><main><header><div class="header-title"><div class="eyebrow" id="today"></div><h1 id="heading">首页</h1></div><div class="header-actions"><button id="add" class="btn primary" disabled>＋ 新建待办</button></div></header><div class="status hidden" id="status" role="status"><span id="statusText">正在连接云端…</span><button class="btn hidden" id="recover">重新加载</button></div><div id="projectPanel" class="hidden"><iframe id="projectFrame" title="项目问题跟进表" ></iframe></div><div id="content" aria-busy="true"><div class="card empty">正在加载你的工作台…</div></div></main><footer class="page-footer">v1.2.1</footer></div>
 <dialog id="accountCenter" aria-labelledby="accountTitle"><div class="card-head"><h2 id="accountTitle">个人中心</h2><button id="accountClose" class="btn" type="button">关闭</button></div><p id="accountStatus" role="status">正在确认登录状态…</p><button id="personalInfoLink" class="btn" type="button">个人信息 · 证件与银行卡</button><form action="/auth/logout" method="post" novalidate><button class="btn danger" type="submit">退出登录</button></form></dialog><dialog id="drivePreview" class="drive-preview" aria-labelledby="drivePreviewTitle"><div class="card-head"><h2 id="drivePreviewTitle">表格预览</h2><div class="drive-preview-tools"><a id="drivePreviewExternal" class="btn" target="_blank" rel="noopener noreferrer">在 Google 中打开 ↗</a><button id="drivePreviewClose" class="btn" type="button">关闭</button></div></div><p class="muted">在此查看表格。若提示登录、没有权限或无法显示，请使用上方“在 Google 中打开”，登录有权限的账号后重试。</p><iframe id="drivePreviewFrame" title="Google 表格预览" referrerpolicy="no-referrer" allow="fullscreen"></iframe></dialog><dialog id="clothingEditor" aria-labelledby="clothingTitle"><form id="clothingForm" class="wardrobe-form" novalidate><h2 id="clothingTitle">添加衣服</h2><label for="clothingPhoto">衣服照片</label><input id="clothingPhoto" type="file" accept="image/jpeg,image/png,image/webp" required><img id="clothingPreview" class="hidden" alt="衣服预览"><label for="clothingName">名称</label><input id="clothingName" maxlength="100" required placeholder="如 白色衬衫"><label for="clothingCategory">类别</label><select id="clothingCategory"><option value="top">上装</option><option value="bottom">下装</option><option value="dress">连衣裙</option><option value="outer">外套</option><option value="shoes">鞋子</option><option value="accessory">配饰</option></select><label for="clothingColor">颜色</label><input id="clothingColor" maxlength="50" placeholder="如 白色"><fieldset id="clothingSeasons"><legend>适用季节（可多选）</legend></fieldset><p id="clothingError" class="form-error" role="alert"></p><div class="actions"><button type="button" class="btn" id="clothingCancel">取消</button><button class="btn primary" id="clothingSave">保存</button></div></form></dialog><dialog id="notifications" aria-labelledby="notificationSummary"><div class="card-head"><h2 id="notificationSummary">消息通知</h2><button class="btn" id="notificationClose" aria-label="关闭消息通知">关闭</button></div><p class="muted">按北京时间提前一天提醒，包含未完成的逾期任务；工作和私人提醒分别汇总。</p><div id="notificationList" class="notification-list"></div></dialog><dialog id="releaseDialog" class="release-dialog" aria-labelledby="releaseTitle"><div class="card-head"><h2 id="releaseTitle">今年已发售热门游戏</h2><button class="btn" id="releaseClose">关闭</button></div><p class="muted">收录 Steam 热门新品与 PlayStation 官方精选中的今年已发售游戏。中文名优先；不同平台的发售日期分别标注。</p><div class="release-toolbar"><input id="releaseSearch" aria-label="搜索已发售游戏" placeholder="搜索游戏名称"><select id="releasePlatform" aria-label="游戏平台筛选"><option value="all">全部平台</option><option value="pc">PC 游戏</option><option value="ps">PS5 游戏</option></select><button class="btn" id="releaseRefresh">刷新榜单</button></div><div id="releasedList" aria-live="polite"></div></dialog><dialog id="editor"><form id="form" novalidate><h2 id="editorTitle"></h2><div id="fields"></div><p id="formError" class="form-error" role="alert"></p><div class="actions"><button type="button" class="btn danger hidden" id="deleteEntertainment">删除记录</button><button type="button" class="btn" id="cancel">取消</button><button class="btn primary" id="submit">保存</button></div></form></dialog><div class="toast hidden" role="status" id="toast"></div>
@@ -6844,9 +6851,10 @@ function setDailyCheckin(rows,kind,date,checked,completedAt){const record={id:da
 /* TODAY_TASKS_START */
 /* exported todayTasksPage */
 let todayTaskData=null,todayTaskLoading=false,todayTaskError='';
-function todayTasksPage(){return '<section aria-label="今日任务"><div class="card-head"><div><h2>今日任务</h2><p class="muted">数据来源于日历，按北京时间展示当天的全部条目。</p></div><div class="actions" data-page-toolbar><button class="btn" data-nav="home">返回概览</button><button class="btn" data-refresh-today '+(todayTaskLoading?'disabled':'')+'>刷新</button></div></div><div id="todayTaskResults" aria-live="polite"></div></section>';}
-function renderTodayTaskResults(){const node=$('todayTaskResults');if(!node)return;let html='';if(todayTaskError)html+='<p class="form-error" role="alert">'+esc(todayTaskError)+' 当前内容保留，可点击刷新重试。</p>';if(!todayTaskData){node.innerHTML=html+(todayTaskLoading?'<div class="card empty" role="status">正在读取今日任务…</div>':'');return;}html+='<p class="muted today-task-date">'+esc(todayTaskData.date)+' · 共 '+todayTaskData.items.length+' 项</p>';const rows=todayTaskData.items;html+='<section class="card today-task-group" aria-label="今日日历清单"><div class="card-head"><h2>日历安排</h2><span class="muted">'+rows.length+' 项</span></div>'+(rows.length?rows.map(item=>'<article class="row"><div class="row-content"><div class="row-title">'+esc(item.title)+'</div><div class="row-meta"><span class="tag">'+esc(item.time)+'</span><span class="tag">'+({tasks:'待办',projects:'项目问题',events:'日程'}[item.source]||'日历')+'</span><span class="tag">'+esc(item.status)+'</span>'+(item.project?'<span>'+esc(displayProject(item.project))+'</span>':'')+'</div>'+(item.detail?'<p class="today-task-detail">'+esc(item.detail)+'</p>':'')+'</div><div class="actions">'+(item.source==='tasks'?'<button data-edit="tasks" data-id="'+esc(item.id)+'">查看待办</button>':item.source==='projects'?'<button data-nav="projects">查看项目</button>':'<button data-today-calendar="'+esc(todayTaskData.date)+'">查看日历</button>')+'</div></article>').join(''):'<div class="empty">今天的日历暂无安排。</div>')+'</section>';node.innerHTML=html;}
-async function refreshTodayTasks(){if(!ready||todayTaskLoading||view!=='today')return;todayTaskLoading=true;const refresh=document.querySelector('[data-refresh-today]');if(refresh)refresh.disabled=true;renderTodayTaskResults();try{const response=await fetch('/api/today-tasks?scope='+scope,{cache:'no-store'});if(!response.ok)throw Error('读取失败（'+response.status+'）');todayTaskData=await response.json();todayTaskError='';}catch(error){todayTaskError=error.message||'今日任务读取失败';}finally{todayTaskLoading=false;if(view==='today'){renderTodayTaskResults();const refresh=document.querySelector('[data-refresh-today]');if(refresh)refresh.disabled=false;}}}
+function todayTasksVisible(){return view==='today'||scope==='work'&&view==='home';}
+function todayTasksPage(embedded=false){return '<section class="'+(embedded?'card work-home-today':'')+'" aria-label="今日任务"><div class="card-head"><div><h2>今日任务</h2><p class="muted">数据来源于日历，按北京时间展示当天的全部条目。</p></div><div class="actions" data-page-toolbar>'+(embedded?'':'<button class="btn" data-nav="home">返回概览</button>')+'<button class="btn" data-refresh-today '+(todayTaskLoading?'disabled':'')+'>刷新</button></div></div><div id="todayTaskResults" aria-live="polite"></div></section>';}
+function renderTodayTaskResults(){const node=$('todayTaskResults');if(!node)return;let html='';if(todayTaskError)html+='<p class="form-error" role="alert">'+esc(todayTaskError)+' 当前内容保留，可点击刷新重试。</p>';if(!todayTaskData){node.innerHTML=html+(todayTaskLoading?'<div class="card empty" role="status">正在读取今日任务…</div>':'');return;}html+='<p class="muted today-task-date">'+esc(todayTaskData.date)+' · 共 '+todayTaskData.items.length+' 项</p>';const rows=todayTaskData.items;html+='<section class="'+(node.closest('.work-home-today')?'':'card ')+'today-task-group" aria-label="今日日历清单"><div class="card-head"><h2>日历安排</h2><span class="muted">'+rows.length+' 项</span></div>'+(rows.length?rows.map(item=>'<article class="row"><div class="row-content"><div class="row-title">'+esc(item.title)+'</div><div class="row-meta"><span class="tag">'+esc(item.time)+'</span><span class="tag">'+({tasks:'待办',projects:'项目问题',events:'日程'}[item.source]||'日历')+'</span><span class="tag">'+esc(item.status)+'</span>'+(item.project?'<span>'+esc(displayProject(item.project))+'</span>':'')+'</div>'+(item.detail?'<p class="today-task-detail">'+esc(item.detail)+'</p>':'')+'</div><div class="actions">'+(item.source==='tasks'?'<button data-edit="tasks" data-id="'+esc(item.id)+'">查看待办</button>':item.source==='projects'?'<button data-nav="projects">查看项目</button>':'<button data-today-calendar="'+esc(todayTaskData.date)+'">查看日历</button>')+'</div></article>').join(''):'<div class="empty">今天的日历暂无安排。</div>')+'</section>';node.innerHTML=html;}
+async function refreshTodayTasks(){if(!ready||todayTaskLoading||!todayTasksVisible())return;todayTaskLoading=true;const refresh=document.querySelector('[data-refresh-today]');if(refresh)refresh.disabled=true;renderTodayTaskResults();try{const response=await fetch('/api/today-tasks?scope='+scope,{cache:'no-store'});if(!response.ok)throw Error('读取失败（'+response.status+'）');todayTaskData=await response.json();todayTaskError='';}catch(error){todayTaskError=error.message||'今日任务读取失败';}finally{todayTaskLoading=false;if(todayTasksVisible()){renderTodayTaskResults();const refresh=document.querySelector('[data-refresh-today]');if(refresh)refresh.disabled=false;}}}
 setInterval(()=>{if(!document.hidden)refreshTodayTasks();},30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshTodayTasks();});
 
 /* TODAY_TASKS_END */
@@ -7107,7 +7115,7 @@ function checkinPage(){
  return '<div class="checkin-layout"><section class="card checkin-page" aria-label="今日打卡"><div class="card-head workspace-page-hero"><div><h2>今日打卡</h2><p class="muted">每天，向前一点。完成后勾选即可。</p></div><time>'+date+'</time></div><ul class="checkin-list">'+Object.entries(CHECKIN_KINDS).map(([key,label])=>{const checked=rows.some(r=>r.id===date+':'+key);return '<li><label class="checkin-toggle"><input type="checkbox" data-daily-checkin="'+key+'" data-completion-label="'+label+'" '+(checked?'checked':'')+'></label><span class="muted" data-checkin-state="'+key+'">'+(checked?'已打卡':'未打卡')+'</span></li>';}).join('')+'</ul><p id="checkinError" class="form-error" role="alert"></p></section><section class="card checkin-week" aria-label="近七天打卡记录"><div class="card-head"><h2>近七天</h2><span class="muted">英语 · 健身</span></div><ol class="workspace-week-strip">'+recent+'</ol></section></div>';
 }
 function productHome(){
- if(scope!=='personal')return '<section class="home-calendar" aria-label="首页日历与日程"><div id="homeCalendar"></div></section>';
+ if(scope!=='personal')return '<div class="work-home"><section class="home-calendar" aria-label="首页日历与日程"><div id="homeCalendar"></div></section>'+todayTasksPage(true)+'</div>';
  const today=day(),date=new Date(today+'T12:00:00+08:00'),events=eventsOn(today,state.events).sort((a,b)=>a.start.localeCompare(b.start)),open=state.tasks.filter(t=>!t.done).sort((a,b)=>(a.dueDate||'9999').localeCompare(b.dueDate||'9999')||(a.priority==='high'?-1:0)-(b.priority==='high'?-1:0)),checks=state.checkins||[],plans=(state.annualPlans||[]).filter(x=>x.progress<100&&x.startDate<=today&&x.endDate>=today).slice(0,2),playing=(state.completedGames||[]).filter(g=>mediaTrackingStatus(g)==='in_progress').slice(0,3),words=(state.wordPracticeSessions||[]).filter(x=>x.completedOn===today&&x.mode!=='sentence').reduce((n,x)=>n+x.total,0),sentences=(state.wordPracticeSessions||[]).filter(x=>x.completedOn===today&&x.mode==='sentence').reduce((n,x)=>n+x.total,0),training=(state.fitnessSessions||[]).filter(x=>x.completedOn===today).length;
  const head=(title,link,target)=>'<div class="card-head"><h2>'+title+'</h2><button class="btn" data-nav="'+target+'">'+link+' ↗</button></div>';
  return `<div class="home2" aria-label="私人工作台2.0"><header class="home2-hero"><div class="home2-date"><strong>${date.getDate()}</strong><span>${date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',month:'long'})}<br>${date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',weekday:'long'})}</span></div><div class="home2-intro"><h1>我的一天</h1><p>今日安排与待办，一处处理。</p></div><div class="home2-actions"><button class="btn primary" data-page-toolbar data-add-task>＋ 新建待办</button></div></header><div class="home2-columns"><div class="home2-main"><section class="card home2-agenda" data-empty="${!events.length}"><div class="card-head"><h2>今天的安排</h2><button class="btn" data-home-new-event>＋ 日程</button></div><p class="home2-section-note muted">${events.length?'今天有 '+events.length+' 项日程 · 北京时间':''}</p>${events.length?'<ol class="home2-timeline">'+events.map(e=>'<li><time>'+esc(e.allDay?'全天':e.start.slice(0,10)<today?'跨日':e.start.slice(11,16))+'</time><button class="workspace-surface-action home2-event" data-home-event="'+esc(e.id)+'"><strong>'+esc(e.title)+'</strong>'+(e.location?'<span class="muted">'+esc(e.location)+'</span>':'')+'</button></li>').join('')+'</ol>':'<p class="home2-quiet muted">今天没有日程，按自己的节奏安排。</p>'}</section><section class="card home2-tasks" data-empty="${!open.length}">${head('接下来要做','全部 '+open.length+' 项','tasks')}${open.length?'<ul class="home2-task-list">'+open.slice(0,4).map(t=>'<li><label class="workspace-checkbox-target" aria-label="完成：'+esc(t.title)+'"><input type="checkbox" data-home-task="'+esc(t.id)+'"></label><button class="workspace-surface-action" data-edit="tasks" data-id="'+esc(t.id)+'"><strong>'+esc(t.title)+'</strong>'+(t.detail?'<span class="muted">'+esc(t.detail)+'</span>':'')+'</button><span class="home2-due '+(t.dueDate&&t.dueDate<today?'home2-overdue':'')+'">'+esc(t.dueDate?t.dueDate<today?'已逾期':t.dueDate===today?'今天':t.dueDate:'无截止日期')+'</span></li>').join('')+'</ul>':'<p class="home2-quiet muted">待办已清空。想到新安排时，随时记下来。</p>'}<p id="homeTaskError" class="form-error" role="alert"></p></section></div><div class="home2-side" role="complementary" aria-label="学习与生活"><section class="card home2-checkins">${head('每天，向前一点','打卡记录','checkins')}<div class="home2-checkin-list">${Object.entries(CHECKIN_KINDS).map(([key,label])=>{const done=checks.some(x=>x.id===today+':'+key);return '<div><label class="checkin-toggle"><input type="checkbox" data-daily-checkin="'+key+'" data-completion-label="'+label+'" '+(done?'checked':'')+'></label><span class="muted" data-checkin-state="'+key+'">'+(done?'已打卡':'未打卡')+'</span></div>';}).join('')}</div><p id="checkinError" class="form-error" role="alert"></p><div class="home2-practice-links"><button class="btn" data-nav="vocabulary">英语练习${sentences||words?'<small>今日 '+[sentences?sentences+' 句':'',words?words+' 词':''].filter(Boolean).join(' / ')+'</small>':''}</button><button class="btn" data-nav="fitness">居家健身${training?'<small>今日 '+training+' 次训练</small>':''}</button></div></section><section class="card home2-goals">${head('把目光放远','年度计划','annualPlans')}${plans.length?plans.map(x=>'<button class="workspace-surface-action home2-goal" data-nav="annualPlans"><span>'+esc(x.title)+'</span><strong>'+x.progress+'%</strong><progress aria-label="'+esc(x.title)+'完成进度" value="'+x.progress+'" max="100"></progress></button>').join(''):'<p class="home2-quiet muted">还没有进行中的年度目标。给想做的事留一个位置。</p>'}</section><section class="card home2-leisure">${head('正在玩与看','娱乐记录','completedGames')}${playing.length?'<div class="home2-cover-shelf">'+playing.map(g=>'<button class="workspace-surface-action home2-media" data-nav="completedGames"><span class="home2-media-art"><span class="home2-media-mark" aria-hidden="true">'+esc((g.mediaType||'game')==='game'?'玩':'看')+'</span>'+(g.coverUrl?'<img src="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game'))+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true">':'')+'</span><span><strong>'+esc(g.title)+'</strong><small class="muted">进行中'+(g.platform?' · '+esc(g.platform):'')+'</small></span><span aria-hidden="true">↗</span></button>').join('')+'</div>':'<p class="home2-quiet muted">添加想玩或想看的作品，封面会出现在这里。</p>'}</section></div></div>${(state.dailyRoutines||[]).length?dailyRoutineCard():''}<div id="workspaceTasks" data-tasks-root></div></div>`;
@@ -7127,7 +7135,7 @@ document.addEventListener('workspace-segment-change',event=>{
 });
 function onWorkspaceContent(type,handler,options){document.addEventListener(type,event=>{if(event.target instanceof Element&&event.target.closest('#content,#workspaceNativeActions'))handler(event);},options);}
 function render(){if(view==='requirements')view='home';if(isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing())return;window.WorkspacePageActions?.restore();const pageAdd=$('add');if(pageAdd)document.querySelector('.header-actions').append(pageAdd);if(view==='fitness'&&scope==='personal'){renderFitness();return;}disposeFitness();if(view==='vocabulary'&&scope==='personal'){renderWordPractice();return;}disposeWordPractice();if(view==='annualPlans'&&scope==='personal'){renderAnnualPlans();return;}disposeAnnualPlans();if(view==='personalInfo'){renderPersonalInfo();return;}disposePersonalInfo();document.body.dataset.workspaceView=view;disposeWorkspaceTasks();if(isCalendarEditing()){calendarDeferredRender=true;return;}disposeWorkspaceCalendar();document.body.classList.toggle('project-view',view==='projects');stopWordAudio();renderTaskBadge();renderNotifications();const today=day(),open=state.tasks.filter(t=>!t.done),overdue=open.filter(t=>t.dueDate&&t.dueDate<today),todayEvents=eventsOn(today,state.events).sort((a,b)=>a.start.localeCompare(b.start));$('heading').textContent=view==='tasks'?'待办事项':view==='home'?(scope==='work'?'工作概览':'我的一天'):(scope==='personal'&&['completedGames','upcoming'].includes(view)?'娱乐':titles[view]);$('add').textContent='＋ 新建'+(view==='maintenance'?'设备':view==='completedGames'?'记录':view==='drive'?'常用文件':view==='notes'?'笔记':['calendar','home'].includes(view)?'日程':'待办');document.querySelectorAll('.nav-group').forEach(g=>g.classList.toggle('group-active',!!g.querySelector('[data-view="'+view+'"]')));document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',(b.dataset.view===view||(b.dataset.view==='home'&&view==='tasks')||(scope==='personal'&&b.dataset.view==='completedGames'&&view==='upcoming')));b.setAttribute('aria-current',(b.dataset.view===view||(b.dataset.view==='home'&&view==='tasks')||(scope==='personal'&&b.dataset.view==='completedGames'&&view==='upcoming'))?'page':'false');});$('add').classList.toggle('hidden',view==='home'||view==='calendar'||view==='checkins'||view==='today'||view==='tasks'||view==='projects'||view==='drive'||view==='vocabularyLibrary'||view==='wardrobe'||view==='upcoming');$('status').classList.toggle('hidden',view==='projects'||!$('status').classList.contains('error'));$('projectPanel').classList.toggle('hidden',view!=='projects');if(view==='projects'&&!$('projectFrame').getAttribute('src'))$('projectFrame').src='/projects?embedded=1';let html='';if(view==='checkins'&&scope==='personal'){html=checkinPage();}else if(view==='today'){html=todayTasksPage();}else if(view==='upcoming'){html=upcomingHomeCard();}else if(view==='maintenance'){html='<div class="filters"><input id="search" aria-label="搜索设备" placeholder="搜索设备名称、位置或维保内容" value="'+esc(query)+'"></div><div id="results"></div>';}else if(view==='completedGames'){html='<div class="filters"><input id="search" aria-label="搜索娱乐记录" placeholder="搜索名称、平台或感想" value="'+esc(query)+'"></div><div id="results"></div>';}else if(view==='drive'){html=drivePage();}else if(view==='wardrobe'){html=wardrobePage();}else if(view==='vocabularyLibrary'){html='<div class="card"><div class="card-head workspace-page-hero"><h2>我的英语词汇库</h2><div data-page-toolbar><button class="btn primary" type="button" data-word-practice>英语练习</button><label class="btn" for="vocabImport">导入词汇<input id="vocabImport" type="file" accept="application/json,.json" class="hidden"></label></div></div><details class="secondary-help"><summary>导入说明</summary>导入时合并新单词，保留已有释义、例句与学习记录。</details><div class="filters" style="margin-top:16px"><input id="search" aria-label="搜索英语词汇" placeholder="搜索单词、中文释义、例句或课程" value="'+esc(query)+'"><select id="vocabFilter" aria-label="熟练度筛选"><option value="all">全部熟练度</option><option value="unknown">不会</option><option value="mastered">已掌握</option></select></div><div id="vocabularySync" class="vocabulary-sync" role="status"></div><div id="results"></div></div>';}else if(view==='projects'){html='';}else if(view==='home'){html=productHome();}else if(view==='tasks'){html='<div id="workspaceTasks" data-tasks-root></div>';}
-else{html='<div class="filters"><input id="search" aria-label="搜索'+titles[view]+'" placeholder="搜索'+(view==='tasks'?'待办标题和详情':view==='notes'?'笔记标题和内容':'日程、地点和详情')+'" value="'+esc(query)+'">'+(view==='tasks'?'<select id="filter" aria-label="待办状态"><option value="open">未完成</option><option value="done">已完成</option><option value="all">全部</option><option value="overdue">已逾期</option>'+ (scope==='personal'?'<option value="games">想玩的游戏</option><option value="gamesDone">已玩游戏</option>':'')+'</select>':'')+'</div><div id="results"></div>';}const tabs=scope==='personal'&&['completedGames','upcoming'].includes(view)?[['completedGames','我的记录'],['upcoming','即将发售']]:[];if(scope==='personal'&&['notes','maintenance','wardrobe'].includes(view)){const intro={notes:['生活与记录','我的笔记','留下想法，也留住值得记住的片刻。'],maintenance:['生活与记录','设备维保','把维护安排清楚，让常用设备保持状态。'],wardrobe:['生活与收藏','我的衣橱','整理四季衣物，找到今天的搭配。']}[view];html='<header class="workspace-page-hero"><div><h2>'+intro[1]+'</h2><p class="muted">'+intro[2]+'</p></div></header>'+html;}$('content').innerHTML=(tabs.length?segmentControl('pages','记录页面',view,tabs.map(([value,label])=>({value,label})),'wb-segment-page-tabs'):'')+html;if(view==='home'){renderCalendar();if(scope==='personal')mountWorkspaceTasks();}if(view!=='home')renderResults();setBusy(busy);if(view==='upcoming')loadReleaseGames('upcoming');if(view==='drive'&&!projectCoreInfo&&!projectCoreLoading&&!projectCoreError)loadProjectCoreInfo();}
+else{html='<div class="filters"><input id="search" aria-label="搜索'+titles[view]+'" placeholder="搜索'+(view==='tasks'?'待办标题和详情':view==='notes'?'笔记标题和内容':'日程、地点和详情')+'" value="'+esc(query)+'">'+(view==='tasks'?'<select id="filter" aria-label="待办状态"><option value="open">未完成</option><option value="done">已完成</option><option value="all">全部</option><option value="overdue">已逾期</option>'+ (scope==='personal'?'<option value="games">想玩的游戏</option><option value="gamesDone">已玩游戏</option>':'')+'</select>':'')+'</div><div id="results"></div>';}const tabs=scope==='personal'&&['completedGames','upcoming'].includes(view)?[['completedGames','我的记录'],['upcoming','即将发售']]:[];if(scope==='personal'&&['notes','maintenance','wardrobe'].includes(view)){const intro={notes:['生活与记录','我的笔记','留下想法，也留住值得记住的片刻。'],maintenance:['生活与记录','设备维保','把维护安排清楚，让常用设备保持状态。'],wardrobe:['生活与收藏','我的衣橱','整理四季衣物，找到今天的搭配。']}[view];html='<header class="workspace-page-hero"><div><h2>'+intro[1]+'</h2><p class="muted">'+intro[2]+'</p></div></header>'+html;}$('content').innerHTML=(tabs.length?segmentControl('pages','记录页面',view,tabs.map(([value,label])=>({value,label})),'wb-segment-page-tabs'):'')+html;if(view==='home'){renderCalendar();if(scope==='personal')mountWorkspaceTasks();else{renderTodayTaskResults();refreshTodayTasks();}}if(view!=='home')renderResults();setBusy(busy);if(view==='upcoming')loadReleaseGames('upcoming');if(view==='drive'&&!projectCoreInfo&&!projectCoreLoading&&!projectCoreError)loadProjectCoreInfo();}
 
 const releaseData={},releasePending={},releaseErrors={};
 function releaseCards(items){items=items.map(g=>({...g,coverUrl:/^\d+$/.test(g.id)?'https://cdn.akamai.steamstatic.com/steam/apps/'+g.id+'/library_600x900.jpg':''}));return '<div class="release-list">'+items.map(g=>'<a class="release-item" href="'+esc(g.url)+'" target="_blank" rel="noopener noreferrer">'+(g.coverUrl?'<img class="game-cover-thumb" data-official-portrait="true" loading="lazy" src="'+esc(g.coverUrl)+'" alt="'+esc(g.title)+' 封面">':'')+'<div><h3>'+esc(g.title)+'</h3>'+(g.platformReleases||[{platform:g.platform,releaseDate:g.releaseDate,releaseLabel:g.releaseLabel}]).map(p=>'<p class="muted">'+esc(p.platform||'平台待确认')+' · '+esc(p.releaseDate||p.releaseLabel||'日期待定')+'</p>').join('')+'</div></a>').join('')+'</div>';}
@@ -7275,7 +7283,7 @@ function mountWorkspaceCalendar(items,tasks,issues){
  workspaceCalendar=window.IlamyCalendarRuntime.mount(host,{scope,events:items,tasks,issues,projectName:displayProject,holiday:holidayInfo,selectedDate,view:workspaceCalendarView,anchor:workspaceCalendarAnchor,
   onIdle:()=>{if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;render();}},
   openSource:(source,id)=>{if(source==='projects'){view='projects';render();}else edit('tasks',id);},
-  persist:async mutation=>{if(busy||!ready)return {ok:false,error:'云端暂不可用，请稍后重试。'};try{const next=structuredClone(state);next.events=applyCalendarMutation(state.events,mutation);const ok=await change(next,{renderPage:false});if(ok){renderTaskBadge();workspaceTasks?.update?.(state.tasks);}return {ok,error:saveError,events:ok?state.events:undefined};}catch(error){return {ok:false,error:error.message};}}
+  persist:async mutation=>{if(busy||!ready)return {ok:false,error:'云端暂不可用，请稍后重试。'};try{const next=structuredClone(state);next.events=applyCalendarMutation(state.events,mutation);const ok=await change(next,{renderPage:false});if(ok){refreshTodayTasks();renderTaskBadge();workspaceTasks?.update?.(state.tasks);}return {ok,error:saveError,events:ok?state.events:undefined};}catch(error){return {ok:false,error:error.message};}}
  });
 }
 

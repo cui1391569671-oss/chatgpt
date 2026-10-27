@@ -233,9 +233,6 @@
   --semantic-secondary-muted: var(--radix-cyan-a5);
 
 /* Homepage and selected navigation GradientText: shared blue palette. */
-  --heading-gradient-start: var(--accent-12);
-  --heading-gradient-middle: var(--radix-cyan-12);
-  --heading-gradient-end: var(--accent-12);
 
   /* Surface Colors (Layered light surfaces) */
   --semantic-surface: var(--gray-1);

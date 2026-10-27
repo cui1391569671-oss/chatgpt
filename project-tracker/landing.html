@@ -850,9 +850,6 @@ SOFTWARE.
   --semantic-secondary-muted: var(--radix-cyan-a5);
 
 
-  --heading-gradient-start: var(--accent-12);
-  --heading-gradient-middle: var(--radix-cyan-12);
-  --heading-gradient-end: var(--accent-12);
 
 
   --semantic-surface: var(--gray-1);
@@ -3073,9 +3070,6 @@ body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-contr
 .shadcn-workbench #workbenchShell [data-slot=sidebar-container] {
   padding: 16px 12px 16px 16px;
 }
-.shadcn-workbench #workbenchShell [data-slot=sidebar-inner] {
-  border-radius: 24px;
-}
 .shadcn-workbench #workbenchShell [data-slot=sidebar-header],.shadcn-workbench #workbenchShell [data-slot=sidebar-footer] {
   padding: 12px;
 }
@@ -3466,7 +3460,7 @@ body.shadcn-workbench.project-view #projectFrame {
   max-height: 100%;
 }
 body.shadcn-workbench .home-calendar {
-  height: calc(100dvh - 124px);
+  height: var(--home-calendar-height,calc(100dvh - 124px));
   min-height: 200px;
   max-height: 100%;
   min-width: 0;
@@ -3582,7 +3576,7 @@ body.modern-project .table-wrapper {
     flex: 1;
   }
   body.shadcn-workbench .home-calendar {
-    height: calc(100dvh - 112px);
+    height: var(--home-calendar-height,calc(100dvh - 112px));
     min-height: 0;
   }
   body.shadcn-workbench.shared-workspace .calendar-full-surface {
@@ -3649,6 +3643,7 @@ body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button {
   flex: none;
   padding: 10px;
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
 }
 body.shadcn-workbench .wb-topbar-actions {
   flex-shrink: 0;
@@ -3708,13 +3703,15 @@ body.shadcn-workbench :is([data-shell-root],[data-tasks-root],[data-ui-root]),bo
 body.shadcn-workbench #workbenchShell [data-slot=sidebar-inner] {
   background: var(--sidebar-bg);
   border: 1px solid var(--sidebar-border);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   box-shadow: var(--sidebar-glow);
   backdrop-filter: blur(var(--sidebar-backdrop-blur));
   -webkit-backdrop-filter: blur(var(--sidebar-backdrop-blur));
 }
-body.shadcn-workbench #workbenchShell [data-sidebar=menu-button] {
-  border-radius: var(--radius-md);
+body.shadcn-workbench #workbenchShell [data-sidebar=menu-button],body [data-shell-portal] [data-sidebar=menu-button] {
+  border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   color: var(--semantic-text);
   transition: background var(--duration-fast),color var(--duration-fast);
 }
@@ -3777,6 +3774,7 @@ body.shadcn-workbench .wb-icon-button {
   color: var(--btn-secondary-text);
   border: 1px solid var(--btn-secondary-border);
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   box-shadow: none;
 }
 body.shadcn-workbench .wb-icon-button:not(:disabled):hover {
@@ -3905,7 +3903,8 @@ body [data-shell-portal][data-slot=sidebar] {
   inset: 12px auto 12px 12px;
   height: calc(100dvh - 24px);
   max-width: calc(100vw - 36px);
-  border-radius: var(--radius-xl);
+  border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   background: var(--sidebar-bg);
   border: 1px solid var(--sidebar-border);
   backdrop-filter: blur(var(--blur-lg));
@@ -4088,8 +4087,10 @@ body.shadcn-workbench,body.modern-project,body.glass-login {
   --soft: var(--semantic-primary-subtle);
   --border: var(--semantic-border);
   --card: var(--card-bg);
+  --home-calendar-height: calc(100dvh - 124px);
   --control-height: 44px;
-  --control-radius: 10px;
+  --control-radius: 24px;
+  --control-corner-shape: superellipse(1.5);
   --control-font-size: 14px;
   --control-line-height: 20px;
   --control-button-padding-x: 14px;
@@ -4100,6 +4101,7 @@ body :is(.workspace-input,.workspace-textarea,.workspace-select,[data-slot=butto
   min-height: var(--control-height);
   box-sizing: border-box;
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   font-size: var(--control-font-size);
 }
 body :is(.workspace-input,.workspace-select,[data-slot=input],[data-slot=select-trigger],[data-ui-control=input],[data-slot=button],[data-ui-control=button]),body.modern-project .btn {
@@ -4182,6 +4184,7 @@ body .ui-business-dialog :is(.dialog-actions,.modal-actions,.issue-details-actio
   background: transparent;
   border: 0;
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   color: var(--semantic-text-muted);
   cursor: pointer;
 }
@@ -4245,6 +4248,7 @@ input[data-ui-date-native],body [data-workspace-file-native] {
   border: 0;
   background: transparent;
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   color: var(--semantic-text);
   font-size: 14px;
 }
@@ -4278,6 +4282,7 @@ input[data-ui-date-native],body [data-workspace-file-native] {
   padding: 14px 18px;
   border: 1px solid var(--semantic-border);
   border-radius: var(--control-radius);
+  corner-shape: var(--control-corner-shape);
   background: var(--dropdown-bg);
   color: var(--semantic-text);
   box-shadow: var(--shadow);
@@ -4519,11 +4524,8 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 
 /* Shared horizontal choice controls. Business adapters keep their source nodes. */
 .wb-segment-scroll { min-width: 0; max-width: 100%; overflow-x: auto; padding: 3px; }
-.wb-segment-navigation { min-width: 0; max-width: 100%; margin-right: auto; }
 .wb-segment-native { min-width: 0; max-width: 100%; }
 .wb-segment-page-tabs { margin: 0; }
-@media (max-width: 1100px) { .wb-segment-personal { display: none; } }
-@media (max-width: 1023px) { .wb-segment-work { display: none; } }
 </style><!-- GLASS_PUBLIC_END --></head>
 <body class="glass-public">
 <a class="skip" href="#main">跳到主要内容</a>
