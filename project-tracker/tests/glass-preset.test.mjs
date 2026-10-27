@@ -6,7 +6,7 @@ const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 test('pinned upstream Light preset remains unchanged and retains its license',()=>{
  const base='theme-presets/shadcn-glass-ui/';
  const source=JSON.parse(read(base+'UPSTREAM.json'));
- for(const [file,hash] of Object.entries(source.presetHashes))assert.equal(createHash('sha256').update(read(base+file)).digest('hex'),hash,file+' changed; update provenance deliberately');
+ for(const [file,hash] of Object.entries(source.presetHashes))assert.equal(createHash('sha256').update(read(base+file).replace(/\r\n/g,'\n')).digest('hex'),hash,file+' changed; update provenance deliberately');
  assert.match(read(base+'LICENSE.txt'),/Apache License/);
  assert.doesNotMatch(read('glass-preset.css'),/\*\s*:focus\s*\{/,'Do not inherit upstream global focus suppression');
 });

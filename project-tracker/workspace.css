@@ -1481,7 +1481,7 @@ body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-contr
 }
 .shadcn-workbench #workbenchShell [data-slot=sidebar-menu-button] {
   border-radius: 12px;
-  min-height: 38px;
+  min-height: 44px;
   transition: background-color var(--duration-fast) ease,box-shadow var(--duration-fast) ease;
 }
 .shadcn-workbench #workbenchTopbar {
@@ -2589,6 +2589,7 @@ input[data-ui-date-native],body [data-workspace-file-native] {
   min-width: 0;
 }
 .workspace-date-grid {
+  /* Seven columns may narrow below 44px on phones; keep >=32px wide and 44px tall. */
   display: grid;
   gap: 4px;
 }
@@ -2604,7 +2605,7 @@ input[data-ui-date-native],body [data-workspace-file-native] {
   padding: 6px 0;
 }
 .workspace-date-week button {
-  height: 40px;
+  height: 44px;
   min-width: 0;
   border: 0;
   background: transparent;

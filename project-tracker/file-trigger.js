@@ -12,7 +12,7 @@ export function enhanceFileInput(input){
  after.after(button);if(after!==input){after.hidden=true;after.dataset.workspaceFileNative='';after.classList.remove('btn');}
  input.hidden=true;input.dataset.workspaceFileNative='';input.tabIndex=-1;
  button.addEventListener('click',()=>{if(!input.matches(':disabled'))input.click();});
- const sync=()=>{button.disabled=input.matches(':disabled');button.setAttribute('aria-required',String(input.required));};
- const observer=new MutationObserver(sync);observer.observe(input,{attributes:true,attributeFilter:['disabled','required']});const fieldset=input.closest('fieldset');if(fieldset)observer.observe(fieldset,{attributes:true,attributeFilter:['disabled']});sync();
+ const sync=()=>{button.disabled=input.matches(':disabled');button.setAttribute('aria-required',String(input.required));for(const name of ['aria-invalid','aria-describedby']){const value=input.getAttribute(name);if(value===null)button.removeAttribute(name);else button.setAttribute(name,value);}};
+ const observer=new MutationObserver(sync);observer.observe(input,{attributes:true,attributeFilter:['disabled','required','aria-invalid','aria-describedby']});const fieldset=input.closest('fieldset');if(fieldset)observer.observe(fieldset,{attributes:true,attributeFilter:['disabled']});sync();
  const result={button,observer};triggers.set(input,result);return result;
 }

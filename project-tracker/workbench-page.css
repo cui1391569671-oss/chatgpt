@@ -2213,7 +2213,9 @@ dialog[open]::backdrop {
 .media-controls{display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;margin-bottom:8px}
 .media-library-summary{margin:8px 0 12px}
 .media-library-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0}
-.media-library-toolbar label{display:flex;align-items:center;gap:6px;min-width:0;margin:0}
+.media-library-toolbar label{display:flex;align-items:center;gap:6px;min-width:0;margin:0;flex:1 1 180px}
+.media-library-toolbar label>span{flex:none;white-space:nowrap}
+.media-library-toolbar label>.ui-select-mount{flex:1;min-width:0}
 .media-record-info{display:flex;flex-direction:column;gap:6px;min-width:0;margin-top:0;overflow-wrap:anywhere}
 .media-record-info h3,.media-record-info p{margin:0}
 .media-record-info .tag{align-self:flex-start}
