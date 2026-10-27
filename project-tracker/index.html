@@ -5318,7 +5318,6 @@ const verifiedProjectNames=[
 function projectNameOnly(value){return String(value||'').replace(/^\s*(?:PM|P)\s*\d+\s*[-—:：|｜]?\s*/i,'').trim();}
 const projectNameKey=value=>projectNameOnly(value).replace(/\s+/g,'').toLowerCase();
 const verifiedProjectKeys=verifiedProjectNames.map(names=>new Set(names.map(projectNameKey)));
-const namesWithoutLegacyCode=new Set(['杭州中策','杭州中策项目','四川达州','四川达州项目'].map(projectNameKey));
 function projectLabel(value,items=[]){
  const original=String(value||'').trim(),name=projectNameOnly(value),key=projectNameKey(value);
  if(!key)return original;
@@ -5327,7 +5326,7 @@ function projectLabel(value,items=[]){
   return aliases.includes(key)||verifiedProjectKeys.some(group=>group.has(key)&&aliases.some(alias=>group.has(alias)));
  });
  if(matches.length===1&&matches[0].projectCode)return matches[0].projectCode.trim()+' '+name;
- return namesWithoutLegacyCode.has(key)?name:original;
+ return name;
 }
 // Sort by the labels users see, so hidden legacy prefixes cannot put an
 // unnumbered project between information-sheet codes.

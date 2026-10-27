@@ -1,7 +1,7 @@
 import {readBoundedText,RequestBodyLimitError} from './request-body.mjs';
 export function validProjectCoreInfo(value){
  const text=(v,max)=>typeof v==='string'&&v.length<=max;
- return !!value&&value.sourceSpreadsheetId==='1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM'&&text(value.sourceTitle,200)&&/^\d{4}-\d{2}-\d{2}$/.test(value.syncedAt)&&Array.isArray(value.items)&&value.items.length<=200&&new Set(value.items.map(x=>x?.projectCode)).size===value.items.length&&value.items.every(x=>x&&text(x.projectCode,80)&&x.projectCode.trim()&&text(x.projectName,300)&&x.projectName.trim()&&['supplyScope','transport','palletSize','equipmentLoad'].every(k=>text(x[k],5000))&&(x.efficiency===undefined||text(x.efficiency,5000))&&text(x.sourceSheet,300)&&Number.isInteger(x.sourceSheetId)&&x.sourceSheetId>=0&&text(x.sourceUpdatedAt,40));
+ return !!value&&value.sourceSpreadsheetId==='1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM'&&text(value.sourceTitle,200)&&/^\d{4}-\d{2}-\d{2}$/.test(value.syncedAt)&&Array.isArray(value.items)&&value.items.length<=200&&new Set(value.items.map(x=>x?.projectCode)).size===value.items.length&&new Set(value.items.map(x=>x?.sourceSheetId)).size===value.items.length&&value.items.every(x=>x&&text(x.projectCode,80)&&x.projectCode.trim()&&text(x.projectName,300)&&x.projectName.trim()&&['supplyScope','transport','palletSize','equipmentLoad'].every(k=>text(x[k],5000))&&(x.efficiency===undefined||text(x.efficiency,5000))&&text(x.sourceSheet,300)&&Number.isInteger(x.sourceSheetId)&&x.sourceSheetId>=0&&text(x.sourceUpdatedAt,40));
 }
 
 export async function projectCoreInfoRoute(request,env){

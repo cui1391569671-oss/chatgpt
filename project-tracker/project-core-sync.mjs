@@ -25,8 +25,9 @@ export async function projectCorePushRoute(request,env){
   const previous=await env.DB.prepare('SELECT payload FROM project_core_information WHERE id=1').first();
   const stored=previous?JSON.parse(previous.payload):null,stamp=Number(timestamp);
   if(stored?.syncVersion>=stamp){if(stored.syncVersion===stamp&&stored.syncHash===hash)return reply({ok:true,skipped:true});return reply({error:'此同步已过期，原数据已保留'},409);}
-  const incoming=new Set(payload.items.map(item=>item.projectCode));
-  if(stored?.items?.some(item=>!incoming.has(item.projectCode)))return reply({error:'源表缺少已有项目，请核对原表后重试；原数据已保留'},409);
+  // Sheet IDs survive source code edits; a renumber is not a project deletion.
+  const incomingSheets=new Set(payload.items.map(item=>item.sourceSheetId)),incomingCodes=new Set(payload.items.map(item=>item.projectCode));
+  if(stored?.items?.some(item=>Number.isInteger(item.sourceSheetId)?!incomingSheets.has(item.sourceSheetId):!incomingCodes.has(item.projectCode)))return reply({error:'源表缺少已有项目，请核对原表后重试；原数据已保留'},409);
   Object.assign(payload,{syncMode:'apps-script',syncVersion:stamp,syncHash:hash,lastSyncedAt:new Date().toISOString(),automationInstalled:source.automationInstalled});
   const result=await env.DB.prepare('INSERT INTO project_core_information (id,payload) VALUES (1,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload WHERE project_core_information.payload=? AND COALESCE(json_extract(project_core_information.payload,\'$.syncVersion\'),0)<?').bind(JSON.stringify(payload),previous?.payload||'',stamp).run();
   if(!result.meta?.changes)return reply({error:'数据已更新，请重新同步；原数据已保留'},409);
