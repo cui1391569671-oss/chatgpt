@@ -1,6 +1,5 @@
 import {useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
-import SpotlightCard from './vendor/react-bits/SpotlightCard';
 import Magnet from './vendor/react-bits/Magnet';
 import AnimatedContent from './vendor/react-bits/AnimatedContent';
 import BlurText from './vendor/react-bits/BlurText';
@@ -48,7 +47,7 @@ export function WorkspaceReactBits(){
    setTargets(old=>same(cards,old.cards)&&same(buttons,old.buttons)&&same(covers,old.covers)&&title===old.title&&view===old.view?old:{cards,buttons,covers,title,view});
   };
   const queue=(records:MutationRecord[])=>{
-   if(records.every(record=>(record.target as Element).closest?.('[data-rb-decoration],.wb-spotlight-card__light,.wb-spotlight-card__grain,.wb-spotlight-card__edge')))return;
+   if(records.every(record=>(record.target as Element).closest?.('[data-rb-decoration]')))return;
    if(!frame)frame=requestAnimationFrame(scan);
   };
   const observer=new MutationObserver(queue);
@@ -66,7 +65,6 @@ export function WorkspaceReactBits(){
  return <>
   {complete&&createPortal(<div className='wb-day-complete' role='status'><BlurText text='今日英语与健身，全部打卡完成 ✓' trigger='load' animateBy='letters' delay={16} stepDuration={.14} distance={6} blur={5}/></div>,document.body)}
   {targets.view&&<AnimatedCards key={targets.view} cards={targets.cards} view={targets.view}/>}
-  {targets.cards.map(target=><SpotlightCard key={'card-'+nodeKey(target)} target={target} theme='light' spotlightColor='var(--semantic-primary)' intensity={.55} borderGlow={.7} spotlightSize={280} proximity={0} smoothing={.3} grain={0} ambient={false}/>)}
   {targets.buttons.map(target=><Magnet key={'button-'+nodeKey(target)} target={target} padding={12} maxOffset={2} magnetStrength={12} spring={{stiffness:170,damping:22}}/>)}
   {targets.covers.map(target=><Magnet key={'cover-'+nodeKey(target)} target={target} motionTarget={target.querySelector<HTMLElement>('img')||target} padding={0} maxOffset={0} tilt={7} scale={1.025} exclusive={false} spring={{stiffness:170,damping:22}}/>)}
   {targets.title&&<AnimatedHeading key={nodeKey(targets.title)} target={targets.title} view={targets.view}/>}

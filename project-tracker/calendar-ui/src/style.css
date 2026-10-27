@@ -21,13 +21,3 @@
 .ilamy-attachments{min-width:0}.ilamy-attachments label{display:grid;gap:8px;font-weight:500}.ilamy-attachments p{font-size:12px;color:var(--semantic-text-muted);margin:8px 0}.ilamy-attachment-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.ilamy-attachment-list figure{margin:0;min-width:0}.ilamy-attachment-list img{width:100%;height:120px;object-fit:contain;border:1px solid var(--semantic-border);border-radius:var(--radius-md)}.ilamy-attachment-list button{width:100%;min-height:44px}.ilamy-attachments input[type=file]{max-width:100%;width:100%}
 
 .ilamy-resize-handle{position:absolute;top:0;bottom:0;width:12px;min-height:0;padding:0;background:transparent;touch-action:none;cursor:ew-resize}.ilamy-resize-start{left:0}.ilamy-resize-end{right:0}.ilamy-resize-handle::after{content:"";position:absolute;top:25%;bottom:25%;left:5px;border-left:2px solid currentColor;opacity:.6}.ilamy-resize-handle:focus-visible{outline:2px solid currentColor;outline-offset:-2px}.ilamy-gesture-preview{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:90;max-width:calc(100vw - 32px);padding:12px 16px;border-radius:14px;background:var(--semantic-surface);color:var(--semantic-text);box-shadow:0 4px 24px var(--semantic-border);pointer-events:none}
-
-[data-view="month"].ilamy-weekend{
- --calendar-cell-background:linear-gradient(145deg,var(--semantic-surface-muted),color-mix(in srgb,var(--semantic-surface-muted) 35%,transparent));
- box-shadow:inset 0 1px color-mix(in srgb,var(--semantic-surface) 85%,transparent),inset 0 -1px var(--semantic-border-muted);
-}
-[data-view="month"].ilamy-weekend-start{border-left:1px solid var(--semantic-border)}
-[data-view="month"].ilamy-weekend::before{
- content:"周末";position:absolute;bottom:7px;right:7px;font-size:12px;line-height:1.5;color:var(--semantic-text-muted);pointer-events:none;
-}
-@media(max-width:640px){[data-view="month"].ilamy-weekend::before{right:4px;bottom:4px}}
