@@ -1,0 +1,8 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {whenWorkspaceToolbarReady} from '../workspace-toolbar-host.js';
+function fixture(initial=null){let host=initial,callback=null,disconnected=0,observed=0;return {env:{getHost:()=>host,observe:fn=>{observed++;callback=fn;return()=>disconnected++;}},arrive(value){host=value;callback?.();},notify(){callback?.();},get counts(){return {observed,disconnected};}};}
+test('shell first connects immediately without a body observer',()=>{const host={},f=fixture(host),connected=[];const stop=whenWorkspaceToolbarReady(value=>connected.push(value),f.env);assert.deepEqual(connected,[host]);assert.deepEqual(f.counts,{observed:0,disconnected:0});stop();});
+test('page first recovers when the toolbar arrives and connects exactly once',()=>{const f=fixture(),connected=[],host={};const stop=whenWorkspaceToolbarReady(value=>connected.push(value),f.env);assert.deepEqual(connected,[]);f.notify();f.arrive(host);f.notify();f.arrive({});assert.deepEqual(connected,[host]);assert.deepEqual(f.counts,{observed:1,disconnected:1});stop();assert.equal(f.counts.disconnected,1);});
+test('leaving before shell readiness prevents late controls from appearing',()=>{const f=fixture(),connected=[];const stop=whenWorkspaceToolbarReady(value=>connected.push(value),f.env);stop();f.arrive({});assert.deepEqual(connected,[]);assert.equal(f.counts.disconnected,1);});
+test('readiness arriving during observer installation still disconnects',()=>{const host={},connected=[];let current=null,stops=0;whenWorkspaceToolbarReady(value=>connected.push(value),{getHost:()=>current,observe:notify=>{current=host;notify();return()=>stops++;}});assert.deepEqual(connected,[host]);assert.equal(stops,1);});

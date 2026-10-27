@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-27",
+  "environment": "isolated local synthetic data only",
+  "baseline": {
+    "delayedShellMs": 1200,
+    "defaultHeader": 1,
+    "topbarCalendar": 0
+  },
+  "after": [
+    {
+      "port": 8904,
+      "scope": "work",
+      "view": "home",
+      "calendarToolbars": 1,
+      "contentToolbars": 0,
+      "oldCalendarHeader": 0,
+      "pageToolbars": 0,
+      "pageWidth": 1280,
+      "width": 1280
+    },
+    {
+      "port": 8904,
+      "scope": "personal",
+      "view": "calendar",
+      "calendarToolbars": 1,
+      "contentToolbars": 0,
+      "oldCalendarHeader": 0,
+      "pageToolbars": 0,
+      "pageWidth": 1280,
+      "width": 1280
+    },
+    {
+      "port": 8904,
+      "scope": "work",
+      "view": "tasks",
+      "calendarToolbars": 0,
+      "contentToolbars": 0,
+      "oldCalendarHeader": 0,
+      "pageToolbars": 1,
+      "pageWidth": 1280,
+      "width": 1280
+    },
+    {
+      "port": 8906,
+      "scope": "work",
+      "view": "home",
+      "calendarToolbars": 1,
+      "contentToolbars": 0,
+      "oldCalendarHeader": 0,
+      "pageToolbars": 0,
+      "pageWidth": 1280,
+      "width": 1280
+    },
+    {
+      "port": 8906,
+      "scope": "personal",
+      "view": "calendar",
+      "calendarToolbars": 1,
+      "contentToolbars": 0,
+      "oldCalendarHeader": 0,
+      "pageToolbars": 0,
+      "pageWidth": 1280,
+      "width": 1280
+    },
+    {
+      "port": 8906,
+      "scope": "work",
+      "view": "tasks",
+      "calendarToolbars": 0,
+      "contentToolbars": 0,
+      "oldCalendarHeader": 0,
+      "pageToolbars": 1,
+      "pageWidth": 1280,
+      "width": 1280
+    },
+    {
+      "port": 8906,
+      "scope": "work",
+      "view": "home",
+      "calendarToolbars": 1,
+      "oldCalendarHeader": 0,
+      "pageWidth": 390,
+      "width": 390
+    },
+    {
+      "port": 8906,
+      "scope": "personal",
+      "view": "calendar",
+      "calendarToolbars": 1,
+      "oldCalendarHeader": 0,
+      "pageWidth": 390,
+      "width": 390
+    }
+  ],
+  "checks": [
+    "New calendar dialog opens and cancels after delayed toolbar readiness",
+    "No duplicate calendar or task toolbar after normal and late shell mounting",
+    "Observed console errors: none"
+  ],
+  "production": "Reported via user screenshots; production browser session and cookies not read, no production writes",
+  "status": "fixed locally; not deployed"
+}
