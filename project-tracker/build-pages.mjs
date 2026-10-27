@@ -5,8 +5,8 @@ import {calendarSourceHash} from './calendar-ui/fingerprint.mjs';
 import {readFileSync,writeFileSync as writeGeneratedFile} from 'node:fs';
 // Assemble generated sources in memory; write each file once to avoid repeated Windows file locks.
 const generatedFiles=new Map();
-const wallpaper=readFileSync(new URL('assets/morning-mist.webp',import.meta.url));
-writeGeneratedFile(new URL('wallpaper-assets.mjs',import.meta.url),'// Generated from assets/morning-mist.webp by build-pages.mjs.\nexport const WALLPAPER='+JSON.stringify(wallpaper.toString('base64'))+';\n');
+const wallpaper=readFileSync(new URL('assets/workspace-amg-gt63.webp',import.meta.url));
+writeGeneratedFile(new URL('wallpaper-assets.mjs',import.meta.url),'// Generated from assets/workspace-amg-gt63.webp by build-pages.mjs.\nexport const WALLPAPER='+JSON.stringify(wallpaper.toString('base64'))+';\n');
 function writeFileSync(path,content){generatedFiles.set(String(path),{path,content});}
 const load=name=>(generatedFiles.get(String(new URL(name,import.meta.url)))?.content??readFileSync(new URL(name,import.meta.url),'utf8')).replace(/\r\n/g,'\n');
 if(load('tasks-assets.mjs').match(/export const TASKS_SOURCE_HASH="([a-f0-9]+)"/)?.[1]!==tasksSourceHash())throw Error('Tasks sources changed. Run npm run build:tasks before build:pages.');
