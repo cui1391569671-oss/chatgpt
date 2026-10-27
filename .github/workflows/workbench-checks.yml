@@ -1,5 +1,16 @@
 name: Workbench checks
 on:
+  workflow_dispatch:
+    inputs:
+      test_scope:
+        description: Node test scope (auto uses changed files)
+        type: choice
+        options: [full, auto]
+        default: full
+      database_checks:
+        description: Also run D1 and recovery checks
+        type: boolean
+        default: false
   pull_request:
     paths: ['project-tracker/**', '.github/workflows/workbench-checks.yml']
   push:
@@ -15,6 +26,8 @@ jobs:
         working-directory: project-tracker
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -24,10 +37,25 @@ jobs:
             project-tracker/tasks-ui/package-lock.json
             project-tracker/calendar-ui/package-lock.json
       - run: npm ci
+      - name: Select checks from changed files
+        id: plan
+        env:
+          CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          CI_TEST_SCOPE: ${{ inputs.test_scope || 'auto' }}
+          CI_DATABASE_CHECKS: ${{ inputs.database_checks || false }}
+        run: node scripts/ci-plan.mjs --base "$CI_BASE" --head HEAD --plan "$RUNNER_TEMP/workbench-test-plan.json"
       - run: npm run build:ui
       - run: npm run build:pages
-      - run: npm run verify
-      - run: npm run test:d1
-      - run: python3 scripts/rehearse-recovery.py
+      - run: npm run check:assets
       - name: Check committed generated resources
         run: node scripts/check-generated.mjs
+      - run: npm run lint:strict
+      - run: npm run typecheck:strict
+      - name: Run selected Node tests
+        run: node scripts/ci-test.mjs "$RUNNER_TEMP/workbench-test-plan.json"
+      - name: Check D1
+        if: steps.plan.outputs.database_checks == 'true'
+        run: npm run test:d1
+      - name: Rehearse recovery
+        if: steps.plan.outputs.database_checks == 'true'
+        run: python3 scripts/rehearse-recovery.py
