@@ -1,6 +1,167 @@
-/* Project Daylight theme. Component aliases derived from pinned shadcn-glass-ui (Apache-2.0); see theme-presets/shadcn-glass-ui/LICENSE.txt. This is the app theme owner; the upstream snapshot remains unchanged. */
+/* Project Radix Colors light theme. Blue/Slate + Green/Amber/Red semantic scales (MIT); see theme-presets/radix-colors/LICENSE.
+   Palette steps: 1-2 canvas, 3-5 UI states, 6-8 borders, 9-10 solid accents, 11-12 text.
+   White-label solid buttons explicitly use steps 11/12 to meet WCAG AA 4.5:1 at 14px.
+   Project Daylight theme. Component aliases derived from pinned shadcn-glass-ui (Apache-2.0); see theme-presets/shadcn-glass-ui/LICENSE.txt. This is the app theme owner; the upstream snapshot remains unchanged. */
 
 :root {
+  /* Fixed Radix Colors 3.0.0 sRGB primitives -> semantic scale aliases. */
+  --theme-white: #ffffff;
+  --theme-black: #000000;
+  --accent-1: var(--radix-blue-1);
+  --accent-2: var(--radix-blue-2);
+  --accent-3: var(--radix-blue-3);
+  --accent-4: var(--radix-blue-4);
+  --accent-5: var(--radix-blue-5);
+  --accent-6: var(--radix-blue-6);
+  --accent-7: var(--radix-blue-7);
+  --accent-8: var(--radix-blue-8);
+  --accent-9: var(--radix-blue-9);
+  --accent-10: var(--radix-blue-10);
+  --accent-11: var(--radix-blue-11);
+  --accent-12: var(--radix-blue-12);
+  --accent-a1: var(--radix-blue-a1);
+  --accent-a2: var(--radix-blue-a2);
+  --accent-a3: var(--radix-blue-a3);
+  --accent-a4: var(--radix-blue-a4);
+  --accent-a5: var(--radix-blue-a5);
+  --accent-a6: var(--radix-blue-a6);
+  --accent-a7: var(--radix-blue-a7);
+  --accent-a8: var(--radix-blue-a8);
+  --accent-a9: var(--radix-blue-a9);
+  --accent-a10: var(--radix-blue-a10);
+  --accent-a11: var(--radix-blue-a11);
+  --accent-a12: var(--radix-blue-a12);
+  --gray-1: var(--radix-slate-1);
+  --gray-2: var(--radix-slate-2);
+  --gray-3: var(--radix-slate-3);
+  --gray-4: var(--radix-slate-4);
+  --gray-5: var(--radix-slate-5);
+  --gray-6: var(--radix-slate-6);
+  --gray-7: var(--radix-slate-7);
+  --gray-8: var(--radix-slate-8);
+  --gray-9: var(--radix-slate-9);
+  --gray-10: var(--radix-slate-10);
+  --gray-11: var(--radix-slate-11);
+  --gray-12: var(--radix-slate-12);
+  --gray-a1: var(--radix-slate-a1);
+  --gray-a2: var(--radix-slate-a2);
+  --gray-a3: var(--radix-slate-a3);
+  --gray-a4: var(--radix-slate-a4);
+  --gray-a5: var(--radix-slate-a5);
+  --gray-a6: var(--radix-slate-a6);
+  --gray-a7: var(--radix-slate-a7);
+  --gray-a8: var(--radix-slate-a8);
+  --gray-a9: var(--radix-slate-a9);
+  --gray-a10: var(--radix-slate-a10);
+  --gray-a11: var(--radix-slate-a11);
+  --gray-a12: var(--radix-slate-a12);
+  --success-1: var(--radix-green-1);
+  --success-2: var(--radix-green-2);
+  --success-3: var(--radix-green-3);
+  --success-4: var(--radix-green-4);
+  --success-5: var(--radix-green-5);
+  --success-6: var(--radix-green-6);
+  --success-7: var(--radix-green-7);
+  --success-8: var(--radix-green-8);
+  --success-9: var(--radix-green-9);
+  --success-10: var(--radix-green-10);
+  --success-11: var(--radix-green-11);
+  --success-12: var(--radix-green-12);
+  --success-a1: var(--radix-green-a1);
+  --success-a2: var(--radix-green-a2);
+  --success-a3: var(--radix-green-a3);
+  --success-a4: var(--radix-green-a4);
+  --success-a5: var(--radix-green-a5);
+  --success-a6: var(--radix-green-a6);
+  --success-a7: var(--radix-green-a7);
+  --success-a8: var(--radix-green-a8);
+  --success-a9: var(--radix-green-a9);
+  --success-a10: var(--radix-green-a10);
+  --success-a11: var(--radix-green-a11);
+  --success-a12: var(--radix-green-a12);
+  --warning-1: var(--radix-amber-1);
+  --warning-2: var(--radix-amber-2);
+  --warning-3: var(--radix-amber-3);
+  --warning-4: var(--radix-amber-4);
+  --warning-5: var(--radix-amber-5);
+  --warning-6: var(--radix-amber-6);
+  --warning-7: var(--radix-amber-7);
+  --warning-8: var(--radix-amber-8);
+  --warning-9: var(--radix-amber-9);
+  --warning-10: var(--radix-amber-10);
+  --warning-11: var(--radix-amber-11);
+  --warning-12: var(--radix-amber-12);
+  --warning-a1: var(--radix-amber-a1);
+  --warning-a2: var(--radix-amber-a2);
+  --warning-a3: var(--radix-amber-a3);
+  --warning-a4: var(--radix-amber-a4);
+  --warning-a5: var(--radix-amber-a5);
+  --warning-a6: var(--radix-amber-a6);
+  --warning-a7: var(--radix-amber-a7);
+  --warning-a8: var(--radix-amber-a8);
+  --warning-a9: var(--radix-amber-a9);
+  --warning-a10: var(--radix-amber-a10);
+  --warning-a11: var(--radix-amber-a11);
+  --warning-a12: var(--radix-amber-a12);
+  --danger-1: var(--radix-red-1);
+  --danger-2: var(--radix-red-2);
+  --danger-3: var(--radix-red-3);
+  --danger-4: var(--radix-red-4);
+  --danger-5: var(--radix-red-5);
+  --danger-6: var(--radix-red-6);
+  --danger-7: var(--radix-red-7);
+  --danger-8: var(--radix-red-8);
+  --danger-9: var(--radix-red-9);
+  --danger-10: var(--radix-red-10);
+  --danger-11: var(--radix-red-11);
+  --danger-12: var(--radix-red-12);
+  --danger-a1: var(--radix-red-a1);
+  --danger-a2: var(--radix-red-a2);
+  --danger-a3: var(--radix-red-a3);
+  --danger-a4: var(--radix-red-a4);
+  --danger-a5: var(--radix-red-a5);
+  --danger-a6: var(--radix-red-a6);
+  --danger-a7: var(--radix-red-a7);
+  --danger-a8: var(--radix-red-a8);
+  --danger-a9: var(--radix-red-a9);
+  --danger-a10: var(--radix-red-a10);
+  --danger-a11: var(--radix-red-a11);
+  --danger-a12: var(--radix-red-a12);
+  --info-1: var(--radix-blue-1);
+  --info-2: var(--radix-blue-2);
+  --info-3: var(--radix-blue-3);
+  --info-4: var(--radix-blue-4);
+  --info-5: var(--radix-blue-5);
+  --info-6: var(--radix-blue-6);
+  --info-7: var(--radix-blue-7);
+  --info-8: var(--radix-blue-8);
+  --info-9: var(--radix-blue-9);
+  --info-10: var(--radix-blue-10);
+  --info-11: var(--radix-blue-11);
+  --info-12: var(--radix-blue-12);
+  --info-a1: var(--radix-blue-a1);
+  --info-a2: var(--radix-blue-a2);
+  --info-a3: var(--radix-blue-a3);
+  --info-a4: var(--radix-blue-a4);
+  --info-a5: var(--radix-blue-a5);
+  --info-a6: var(--radix-blue-a6);
+  --info-a7: var(--radix-blue-a7);
+  --info-a8: var(--radix-blue-a8);
+  --info-a9: var(--radix-blue-a9);
+  --info-a10: var(--radix-blue-a10);
+  --info-a11: var(--radix-blue-a11);
+  --info-a12: var(--radix-blue-a12);
+  --accent-solid: var(--accent-9);
+  --accent-solid-hover: var(--accent-10);
+  --accent-solid-accessible: var(--accent-11);
+  --accent-solid-accessible-hover: var(--accent-12);
+  --semantic-primary-selected: var(--accent-5);
+  --semantic-control-hover: var(--gray-4);
+  --semantic-control-active: var(--gray-5);
+  --semantic-divider: var(--gray-6);
+  --semantic-interactive-border: var(--gray-7);
+  --semantic-interactive-border-hover: var(--gray-8);
+
   /* Shared motion contract: read by workspace-motion-policy.ts and native CSS. */
   --workspace-motion-card: 500ms;
   --workspace-motion-heading: 480ms;
@@ -13,124 +174,125 @@
   /* ========================================
      BASE COLORS (HSL format)
      ======================================== */
-  --background-base: 214 100% 98%;
-  --foreground-base: 222 35% 16%;
+  --background-base: var(--radix-slate-1-hsl);
+  --foreground-base: var(--radix-slate-12-hsl);
 
   --card-base: 0 0% 100%;
-  --card-fg-base: 222 35% 16%;
+  --card-fg-base: var(--radix-slate-12-hsl);
 
   --popover-base: 0 0% 100%;
-  --popover-fg-base: 222 35% 16%;
+  --popover-fg-base: var(--radix-slate-12-hsl);
 
-  --primary-base: 221 83% 53%;
-  --primary-fg-base: 210 40% 98%;
+  --primary-base: var(--radix-blue-11-hsl);
+  --primary-fg-base: 0 0% 100%;
 
-  --secondary-base: 210 40% 96%;
-  --secondary-fg-base: 222 47% 11%;
+  --secondary-base: var(--radix-slate-3-hsl);
+  --secondary-fg-base: var(--radix-slate-12-hsl);
 
-  --muted-base: 210 40% 96%;
-  --muted-fg-base: 215 16% 47%;
+  --muted-base: var(--radix-slate-2-hsl);
+  --muted-fg-base: var(--radix-slate-11-hsl);
 
-  --accent-base: 210 40% 96%;
-  --accent-fg-base: 222 47% 11%;
+  --accent-base: var(--radix-blue-3-hsl);
+  --accent-fg-base: var(--radix-blue-12-hsl);
 
-  --destructive-base: 0 84% 60%;
-  --destructive-fg-base: 210 40% 98%;
+  --destructive-base: var(--radix-red-11-hsl);
+  --destructive-fg-base: 0 0% 100%;
 
-  --border-base: 214 32% 91%;
-  --input-base: 214 32% 91%;
-  --ring-base: 221 83% 53%;
+  --border-base: var(--radix-slate-6-hsl);
+  --input-base: var(--radix-slate-7-hsl);
+  --ring-base: var(--radix-blue-11-hsl);
 
   /* Chart Colors */
-  --chart-1-base: 221 83% 53%;
-  --chart-2-base: 199 89% 48%;
-  --chart-3-base: 186 94% 43%;
-  --chart-4-base: 142 76% 36%;
-  --chart-5-base: 43 96% 56%;
+  --chart-1-base: var(--radix-blue-9-hsl);
+  --chart-2-base: var(--radix-cyan-9-hsl);
+  --chart-3-base: var(--radix-slate-9-hsl);
+  --chart-4-base: var(--radix-green-9-hsl);
+  --chart-5-base: var(--radix-amber-9-hsl);
 
   /* Status Colors */
-  --success-base: 142 76% 36%;
-  --warning-base: 43 74% 49%;
-  --error-base: 0 72% 51%;
-  --info-base: 217 91% 60%;
+  --success-base: var(--radix-green-11-hsl);
+  --warning-base: var(--radix-amber-11-hsl);
+  --error-base: var(--radix-red-11-hsl);
+  --info-base: var(--radix-blue-11-hsl);
 
   /* ========================================
      SEMANTIC COLOR TOKENS (Layer 2)
      Map primitive tokens to semantic roles (Daylight)
-     Primitives defined in: src/styles/tokens/oklch-primitives.css
+     Primitives: fixed Radix Colors light scales, namespaced and bundled by build-glass-preset.mjs
      ======================================== */
 
-  /* Primary Accent (Blue on white) */
-  --semantic-primary: #2563eb;
-  --semantic-primary-hover: #1d4ed8;
-  --semantic-primary-muted: rgb(37 99 235 / .2);
-  --semantic-primary-subtle: rgb(37 99 235 / .08);
-  --semantic-primary-text: #1d4ed8;
+  /* Primary contrast variant. Standard solid emphasis remains --accent-solid (Blue 9). */
+  --semantic-primary: var(--accent-solid-accessible);
+  --semantic-primary-hover: var(--accent-solid-accessible-hover);
+  --semantic-primary-muted: var(--accent-a5);
+  --semantic-primary-subtle: var(--accent-3);
+  --semantic-primary-text: var(--accent-12);
 
   /* Secondary Accent (Deep sky blue) */
-  --semantic-secondary: #0369a1;
-  --semantic-secondary-muted: rgb(3 105 161 / .14);
+  --semantic-secondary: var(--radix-cyan-11);
+  --semantic-secondary-muted: var(--radix-cyan-a5);
 
 /* Homepage and selected navigation GradientText: shared blue palette. */
-  --heading-gradient-start: #1d4ed8;
-  --heading-gradient-middle: #0369a1;
-  --heading-gradient-end: #2563eb;
+  --heading-gradient-start: var(--accent-12);
+  --heading-gradient-middle: var(--radix-cyan-12);
+  --heading-gradient-end: var(--accent-12);
 
   /* Surface Colors (Layered light surfaces) */
-  --semantic-surface: #f7fbff;
-  --semantic-surface-muted: #eff6ff;
-  --semantic-surface-elevated: #ffffff;
-  --semantic-surface-overlay: rgb(239 246 255 / .8);
-  --semantic-surface-strong: #ffffff;
-  /* Surface hover states (slate-100 for hover/interactive elements) */
-  --semantic-surface-medium: #e5effc;
-  --semantic-surface-intense: #dbeafe;
+  --semantic-surface: var(--gray-1);
+  --semantic-surface-muted: var(--gray-2);
+  --semantic-surface-elevated: var(--theme-white);
+  --semantic-surface-overlay: var(--radix-white-a11);
+  --semantic-surface-strong: var(--theme-white);
+  /* Radix Slate 4/5: hover and active component surfaces. */
+  --semantic-surface-medium: var(--gray-4);
+  --semantic-surface-intense: var(--gray-5);
 
-  /* Border Colors (Slate-200) */
-  --semantic-border: #d5e3f4;
-  --semantic-border-muted: rgb(91 111 145 / .18);
-  --semantic-border-strong: #8796af;
-  --semantic-border-subtle: rgb(91 111 145 / .12);
+  /* Radix Slate 6-8: separators, interactive borders, hovered borders. */
+  --semantic-border: var(--semantic-divider);
+  --semantic-border-muted: var(--gray-a6);
+  --semantic-border-strong: var(--semantic-interactive-border-hover);
+  --semantic-border-subtle: var(--gray-a6);
 
-  /* Text Colors (Slate text hierarchy) */
-  --semantic-text: #243047;
-  --semantic-text-muted: #56647b;
-  --semantic-text-subtle: #627087;
-  --semantic-text-disabled: #69778d;
-  --semantic-text-inverse: #ffffff;
+  /* Radix Slate 11/12: secondary and primary text. */
+  --semantic-text: var(--gray-12);
+  --semantic-text-muted: var(--gray-11);
+  --semantic-text-subtle: var(--gray-11);
+  --semantic-text-disabled: var(--gray-10);
+  --semantic-text-inverse: var(--theme-white);
 
-  /* Status Colors - Success (Emerald) */
-  --semantic-success: #16815e;
-  --semantic-success-muted: var(--oklch-emerald-500-20);
-  --semantic-success-subtle: var(--oklch-emerald-500-10);
-  --semantic-success-text: #116c4d;
+  /* Status text uses 12 over tinted backgrounds; 11 is reserved for white surfaces. */
+  /* Status Colors - Success (Green) */
+  --semantic-success: var(--success-11);
+  --semantic-success-muted: var(--success-a6);
+  --semantic-success-subtle: var(--success-3);
+  --semantic-success-text: var(--success-12);
 
   /* Status Colors - Warning (Amber) */
-  --semantic-warning: #a3660c;
-  --semantic-warning-muted: var(--oklch-amber-400-20);
-  --semantic-warning-subtle: var(--oklch-amber-400-10);
-  --semantic-warning-text: #85520a;
+  --semantic-warning: var(--warning-11);
+  --semantic-warning-muted: var(--warning-a6);
+  --semantic-warning-subtle: var(--warning-3);
+  --semantic-warning-text: var(--warning-12);
 
   /* Status Colors - Error/Destructive (Red) */
-  --semantic-error: #b83254;
-  --semantic-error-muted: var(--oklch-red-500-20);
-  --semantic-error-subtle: var(--oklch-red-500-10);
-  --semantic-error-text: #a32b49;
+  --semantic-error: var(--danger-11);
+  --semantic-error-muted: var(--danger-a6);
+  --semantic-error-subtle: var(--danger-3);
+  --semantic-error-text: var(--danger-12);
 
   /* Status Colors - Info (Blue) */
-  --semantic-info: #2471a4;
-  --semantic-info-muted: var(--oklch-blue-500-20);
-  --semantic-info-subtle: var(--oklch-blue-400-10);
-  --semantic-info-text: #1d658f;
+  --semantic-info: var(--info-11);
+  --semantic-info-muted: var(--info-a6);
+  --semantic-info-subtle: var(--info-3);
+  --semantic-info-text: var(--info-12);
 
   /* Shadow for components */
-  --semantic-shadow: rgb(45 61 91 / .12);
+  --semantic-shadow: var(--gray-a3);
 
   /* Glass-specific Effects (Light theme - high opacity) */
-  --semantic-glass-bg: rgb(255 255 255 / .86);
-  --semantic-glass-bg-subtle: rgb(255 255 255 / .66);
-  --semantic-glass-bg-medium: rgb(255 255 255 / .9);
-  --semantic-glass-bg-strong: rgb(255 255 255 / .96);
+  --semantic-glass-bg: var(--radix-white-a11);
+  --semantic-glass-bg-subtle: var(--radix-white-a9);
+  --semantic-glass-bg-medium: var(--radix-white-a11);
+  --semantic-glass-bg-strong: var(--radix-white-a12);
 
   /* ========================================
      GLASS EFFECTS (Layer 3 Component Tokens)
@@ -152,34 +314,34 @@
      SEMANTIC GLOWS (Layer 3 Component Tokens)
      ======================================== */
   --glow-primary: 0 0 20px var(--semantic-primary-muted);
-  --glow-secondary: 0 0 15px var(--oklch-blue-500-25);
-  --glow-success: 0 0 20px var(--oklch-emerald-500-50);
-  --glow-warning: 0 0 20px var(--oklch-amber-500-50);
-  --glow-error: 0 0 20px var(--oklch-red-500-50);
+  --glow-secondary: 0 0 15px var(--radix-cyan-a5);
+  --glow-success: 0 0 20px var(--success-a5);
+  --glow-warning: 0 0 20px var(--warning-a5);
+  --glow-error: 0 0 20px var(--danger-a5);
 
   /* Additional color glows */
-  --glow-blue: 0 0 15px var(--oklch-blue-500-25);
-  --glow-violet: 0 0 15px var(--oklch-violet-500-25);
-  --glow-cyan: 0 0 15px var(--oklch-cyan-500-25);
-  --glow-neutral: 0 4px 12px var(--oklch-black-8);
+  --glow-blue: 0 0 15px var(--accent-a5);
+  --glow-violet: 0 0 15px var(--accent-a5);
+  --glow-cyan: 0 0 15px var(--radix-cyan-a5);
+  --glow-neutral: 0 4px 12px var(--radix-black-a2);
 
   /* ========================================
      BACKGROUND ORBS (Layer 3 Component Tokens)
      ======================================== */
-  --orb-1: rgb(82 120 255 / .12);
-  --orb-2: rgb(37 99 235 / .1);
-  --orb-3: rgb(59 196 230 / .08);
+  --orb-1: var(--accent-a2);
+  --orb-2: var(--accent-a3);
+  --orb-3: var(--radix-cyan-a2);
   --orb-4: var(--semantic-primary-subtle);
   --orb-5: transparent;
 
   /* ========================================
      SHADOWS
      ======================================== */
-  --shadow-sm: 0 4px 16px rgb(45 61 91 / .06);
-  --shadow: 0 12px 36px rgb(45 61 91 / .1);
-  --shadow-md: 0 12px 32px rgb(45 61 91 / .1);
-  --shadow-lg: 0 20px 56px rgb(45 61 91 / .14);
-  --shadow-xl: 0 24px 64px rgb(45 61 91 / .16);
+  --shadow-sm: 0 4px 16px var(--gray-a2);
+  --shadow: 0 12px 36px var(--gray-a3);
+  --shadow-md: 0 12px 32px var(--gray-a3);
+  --shadow-lg: 0 20px 56px var(--gray-a4);
+  --shadow-xl: 0 24px 64px var(--gray-a4);
 
   /* ========================================
      BUTTON VARIABLES (Layer 3 Component Tokens)
@@ -188,33 +350,33 @@
   --btn-primary-bg: var(--semantic-primary);
   --btn-primary-text: var(--semantic-text-inverse);
   --btn-primary-hover-bg: var(--semantic-primary-hover);
-  --btn-primary-glow: 0 4px 12px var(--semantic-primary-muted), inset 0 1px 0 rgb(255 255 255 / .2);
-  --btn-secondary-bg: var(--semantic-glass-bg-strong);
+  --btn-primary-glow: 0 4px 12px var(--accent-a4), inset 0 1px 0 var(--radix-white-a4);
+  --btn-secondary-bg: var(--gray-3);
   --btn-secondary-text: var(--semantic-text);
-  --btn-secondary-border: var(--semantic-border);
-  --btn-secondary-hover-bg: var(--semantic-surface-medium);
-  --btn-secondary-glow: 0 3px 8px rgb(45 61 91 / .12), inset 0 1px 0 rgb(255 255 255 / .8);
+  --btn-secondary-border: var(--semantic-interactive-border);
+  --btn-secondary-hover-bg: var(--semantic-control-hover);
+  --btn-secondary-glow: 0 3px 8px var(--gray-a3), inset 0 1px 0 var(--radix-white-a10);
   --btn-ghost-bg: transparent;
   --btn-ghost-text: var(--semantic-text-muted);
-  --btn-ghost-hover-bg: var(--semantic-surface-medium);
-  --btn-destructive-bg: #9f2344;
-  --btn-destructive-text: var(--oklch-white);
+  --btn-ghost-hover-bg: var(--gray-3);
+  --btn-destructive-bg: var(--danger-11);
+  --btn-destructive-text: var(--theme-white);
   --btn-destructive-glow: var(--glow-error);
-  --btn-success-bg: linear-gradient(135deg, var(--semantic-success), var(--semantic-success-text));
+  --btn-success-bg: var(--success-11);
   --btn-success-text: var(--semantic-text-inverse);
   --btn-success-glow: var(--glow-success);
   /* Outline variant (shadcn/ui compatible) */
-  --btn-outline-border: var(--semantic-border);
+  --btn-outline-border: var(--semantic-interactive-border);
   --btn-outline-text: var(--semantic-text);
-  --btn-outline-hover-bg: var(--semantic-surface-muted);
-  --btn-outline-glow: 0 2px 6px rgb(45 61 91 / .1);
+  --btn-outline-hover-bg: var(--semantic-control-hover);
+  --btn-outline-glow: 0 2px 6px var(--gray-a2);
   /* Link variant (shadcn/ui compatible) */
-  --btn-link-text: var(--semantic-primary);
+  --btn-link-text: var(--accent-11);
   /* Button shadow fallbacks (for non-hover state) */
-  --btn-primary-shadow: 0 2px 5px var(--semantic-primary-muted), inset 0 1px 0 rgb(255 255 255 / .18);
+  --btn-primary-shadow: 0 2px 5px var(--accent-a4), inset 0 1px 0 var(--radix-white-a3);
   --btn-destructive-shadow: 0 4px 15px var(--semantic-error-muted);
   --btn-success-shadow: 0 4px 15px var(--semantic-success-muted);
-  --btn-glow-radial: radial-gradient(circle, var(--oklch-white-15) 0%, transparent 70%);
+  --btn-glow-radial: radial-gradient(circle, var(--radix-white-a3) 0%, transparent 70%);
 
   /* ========================================
      BADGE VARIABLES (Layer 3 Component Tokens)
@@ -229,36 +391,36 @@
   --badge-secondary-border: var(--semantic-border);
   --badge-destructive-bg: var(--semantic-error-subtle);
   --badge-destructive-text: var(--semantic-error-text);
-  --badge-destructive-border: var(--semantic-error-muted);
+  --badge-destructive-border: var(--danger-6);
   --badge-outline-bg: transparent;
   --badge-outline-text: var(--semantic-text);
   --badge-outline-border: var(--semantic-border-strong);
   /* Glass UI extended variants */
   --badge-success-bg: var(--semantic-success-subtle);
   --badge-success-text: var(--semantic-success-text);
-  --badge-success-border: var(--semantic-success-muted);
+  --badge-success-border: var(--success-6);
   --badge-warning-bg: var(--semantic-warning-subtle);
   --badge-warning-text: var(--semantic-warning-text);
-  --badge-warning-border: var(--semantic-warning-muted);
+  --badge-warning-border: var(--warning-6);
   --badge-info-bg: var(--semantic-info-subtle);
   --badge-info-text: var(--semantic-info-text);
-  --badge-info-border: var(--semantic-info-muted);
+  --badge-info-border: var(--info-6);
 
   /* ========================================
      INPUT VARIABLES (Layer 3 Component Tokens)
      Using semantic and primitive tokens
      ======================================== */
   --input-bg: var(--semantic-surface-strong);
-  --input-border: var(--semantic-border);
+  --input-border: var(--semantic-interactive-border);
   --input-text: var(--semantic-text);
-  --input-placeholder: var(--semantic-text-disabled);
-  --input-focus-border: var(--semantic-primary);
+  --input-placeholder: var(--gray-11);
+  --input-focus-border: var(--accent-8);
 
   /* ========================================
      FOCUS RING VARIABLES (Layer 3 Component Tokens)
      Unified focus glow for all components
      ======================================== */
-  --focus-glow: 0 0 0 2px var(--semantic-primary-muted), 0 0 12px var(--semantic-primary-subtle);
+  --focus-glow: 0 0 0 2px var(--theme-white), 0 0 0 4px var(--accent-11);
 
   /* ========================================
      ALERT VARIABLES (Layer 3 Component Tokens)
@@ -287,17 +449,17 @@
      TOGGLE/CHECKBOX VARIABLES (Layer 3 Component Tokens)
      Using semantic and primitive tokens
      ======================================== */
-  --toggle-bg: var(--semantic-border);
-  --toggle-active-bg: linear-gradient(135deg, var(--semantic-primary), var(--semantic-secondary));
-  --toggle-knob: var(--semantic-text-inverse);
+  --toggle-bg: var(--gray-7);
+  --toggle-active-bg: var(--accent-solid);
+  --toggle-knob: var(--theme-white);
   --toggle-glow: var(--glow-primary);
   /* Toggle outline variant (shadcn/ui compatible) */
   --toggle-outline-border: var(--semantic-border-strong);
   --toggle-outline-active-border: var(--semantic-primary);
   --toggle-outline-active-bg: var(--semantic-primary-subtle);
   --checkbox-bg: var(--semantic-surface-strong);
-  --checkbox-border: var(--semantic-border-strong);
-  --checkbox-checked-bg: var(--semantic-primary);
+  --checkbox-border: var(--gray-8);
+  --checkbox-checked-bg: var(--accent-solid);
   --checkbox-glow: 0 0 0 3px var(--semantic-primary-subtle);
 
   /* ========================================
@@ -305,10 +467,10 @@
      Using semantic and primitive tokens
      ======================================== */
   --tab-bg: transparent;
-  --tab-active-bg: var(--semantic-primary-subtle);
-  --tab-active-text: var(--semantic-primary);
+  --tab-active-bg: var(--accent-5);
+  --tab-active-text: var(--accent-12);
   --tab-border: var(--semantic-border);
-  --tab-indicator: var(--semantic-primary);
+  --tab-indicator: var(--accent-solid);
   --tab-container-bg: var(--semantic-surface-muted);
   --tab-container-border: var(--semantic-border);
 
@@ -346,15 +508,15 @@
      ======================================== */
   --modal-bg: var(--semantic-surface-strong);
   --modal-border: var(--semantic-border);
-  --modal-overlay: var(--oklch-black-50);
+  --modal-overlay: var(--radix-black-a7);
   --modal-glow: 0 25px 50px var(--semantic-shadow);
   --modal-glow-effect: none;
-  --modal-close-btn-bg: var(--semantic-surface-muted);
+  --modal-close-btn-bg: var(--gray-3);
   --modal-close-btn-border: none;
   --modal-close-btn-hover-glow: 0 0 10px var(--semantic-primary-muted);
   --dropdown-bg: var(--semantic-surface-strong);
   --dropdown-border: var(--semantic-border);
-  --dropdown-item-hover: var(--semantic-surface-intense);
+  --dropdown-item-hover: var(--gray-4);
   --dropdown-item-text: var(--semantic-text);
   --dropdown-icon: var(--semantic-text-muted);
   --dropdown-icon-hover: var(--semantic-primary);
@@ -366,10 +528,10 @@
   --separator-glow: none;
 
   /* ScrollArea Variables */
-  --scroll-thumb-bg: var(--semantic-surface-intense);
-  --scroll-thumb-hover-bg: var(--semantic-primary-muted);
+  --scroll-thumb-bg: var(--gray-8);
+  --scroll-thumb-hover-bg: var(--gray-9);
   --scroll-thumb-border: var(--semantic-border);
-  --scroll-track-bg: var(--semantic-surface-muted);
+  --scroll-track-bg: var(--gray-2);
 
   /* Popover Variables */
   --popover-bg: var(--semantic-surface-strong);
@@ -384,9 +546,9 @@
   --hovercard-arrow-bg: var(--semantic-surface-strong);
 
   /* Select Variables - Used by ComboBoxGlass */
-  --select-item-hover-bg: var(--semantic-surface-intense);
-  --select-item-selected-bg: var(--semantic-primary-subtle);
-  --select-item-selected-text: var(--semantic-primary);
+  --select-item-hover-bg: var(--gray-4);
+  --select-item-selected-bg: var(--accent-5);
+  --select-item-selected-text: var(--accent-12);
 
   /* ========================================
      TEXT VARIABLES (Layer 3 Component Tokens)
@@ -438,16 +600,16 @@
      SEGMENTED CONTROL VARIABLES (Layer 3 Component Tokens)
      Using semantic and primitive tokens
      ======================================== */
-  --segmented-container-bg: var(--semantic-surface-muted);
+  --segmented-container-bg: var(--gray-3);
   --segmented-container-border: var(--semantic-border);
-  --segmented-active-bg: var(--semantic-surface-strong);
-  --segmented-active-text: var(--semantic-text-inverse);
+  --segmented-active-bg: var(--accent-5);
+  --segmented-active-text: var(--accent-12);
   --segmented-inactive-text: var(--semantic-text-muted);
 
   /* ========================================
      RAINBOW PROGRESS VARIABLES (Layer 3 Component Tokens)
      ======================================== */
-  --rainbow-glow: inset 0 1px 2px var(--oklch-black-10);
+  --rainbow-glow: inset 0 1px 2px var(--radix-black-a2);
   --rainbow-animation: none;
 
   /* ========================================
@@ -490,11 +652,11 @@
      CARD VARIABLES (Layer 3 Component Tokens)
      Using semantic and primitive tokens
      ======================================== */
-  --card-shadow: 0 4px 16px rgb(45 61 91 / .06);
+  --card-shadow: 0 4px 16px var(--gray-a2);
   --card-bg: var(--semantic-glass-bg);
   --card-border: var(--semantic-border);
-  --card-hover-bg: var(--semantic-surface-strong);
-  --card-hover-border: var(--semantic-border-strong);
+  --card-hover-bg: var(--gray-2);
+  --card-hover-border: var(--gray-7);
   --card-hover-glow: 0 8px 24px var(--semantic-primary-subtle);
   --card-subtle-bg: var(--semantic-glass-bg-subtle);
   --card-subtle-border: var(--semantic-border-subtle);
@@ -509,14 +671,14 @@
      PROGRESS VARIABLES (Layer 3 Component Tokens)
      Using semantic and primitive tokens
      ======================================== */
-  --progress-bg: var(--semantic-border);
+  --progress-bg: var(--gray-5);
   --progress-glow: var(--glow-primary);
-  --progress-glow-violet: 0 0 8px var(--oklch-violet-500-30);
-  --progress-glow-blue: 0 0 8px var(--oklch-blue-500-30);
-  --progress-glow-cyan: 0 0 8px var(--oklch-cyan-500-30);
-  --progress-glow-amber: 0 0 8px var(--oklch-amber-500-30);
-  --progress-glow-emerald: 0 0 8px var(--oklch-emerald-500-30);
-  --progress-glow-rose: 0 0 8px var(--oklch-rose-400-30);
+  --progress-glow-violet: 0 0 8px var(--accent-a5);
+  --progress-glow-blue: 0 0 8px var(--accent-a5);
+  --progress-glow-cyan: 0 0 8px var(--radix-cyan-a5);
+  --progress-glow-amber: 0 0 8px var(--warning-a5);
+  --progress-glow-emerald: 0 0 8px var(--success-a5);
+  --progress-glow-rose: 0 0 8px var(--danger-a5);
 
   /* ========================================
      METRIC CARD VARIABLES (Layer 3 Component Tokens)
@@ -559,12 +721,12 @@
      BACKGROUND VARIABLES (using primitive tokens)
      Page background gradients and grid
      ======================================== */
-  --bg-from: #f7fbff;
-  --bg-via: #eff6ff;
-  --bg-to: #ffffff;
-  --grid-color: var(--oklch-black-10);
+  --bg-from: var(--theme-white);
+  --bg-via: var(--accent-2);
+  --bg-to: var(--gray-1);
+  --grid-color: var(--gray-a3);
   --grid-opacity: 0.015;
-  --footer-text: var(--oklch-slate-400-60);
+  --footer-text: var(--gray-11);
 
   /* ========================================
      NOTE: Demo-specific tokens (year-card, ai-card, header,
@@ -578,12 +740,12 @@
   --sidebar-width: 16rem;
   --sidebar-width-mobile: 18rem;
   --sidebar-width-icon: 3rem;
-  --sidebar-bg: var(--semantic-surface-muted);
+  --sidebar-bg: var(--gray-2);
   --sidebar-border: var(--semantic-border);
   --sidebar-primary: var(--semantic-primary);
   --sidebar-primary-foreground: var(--semantic-text-inverse);
-  --sidebar-accent: var(--semantic-surface-elevated);
-  --sidebar-accent-foreground: var(--semantic-text);
+  --sidebar-accent: var(--accent-5);
+  --sidebar-accent-foreground: var(--accent-12);
   --sidebar-ring: var(--semantic-primary-muted);
   --sidebar-glow: 0 4px 20px var(--semantic-shadow);
   --sidebar-backdrop-blur: var(--blur-md);

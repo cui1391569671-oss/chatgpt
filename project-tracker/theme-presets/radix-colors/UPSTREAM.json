@@ -1,0 +1,25 @@
+{
+  "package": "@radix-ui/colors",
+  "version": "3.0.0",
+  "source": "https://registry.npmjs.org/@radix-ui/colors/3.0.0",
+  "repository": "https://github.com/radix-ui/colors",
+  "integrity": "sha512-FUOsGBkHrYJwCSEtWRCIfQbZG7q1e6DgxCIOe1SUQzDe/7rXXeA47s8yCn6fuTNQAj1Zq4oTFi9Yjp3wzElcxg==",
+  "files": {
+    "blue.css": "01862cc2b3c61bc4d7724d764b919124ae83fb2b00c0aaa55bf9c7d94557459f",
+    "blue-alpha.css": "359da590e653bc3624ed0584d28756fd667b9c4c61fc6ab7f247dbf3011c0aa3",
+    "slate.css": "bb43cc7c9d444eead943972afb8926e73878b2df5b98f06f6e8b46c6d2e662d8",
+    "slate-alpha.css": "b9cc7516fa13193ce6270368cfea52540925732a573d2b4a6275589dbbc253d9",
+    "green.css": "65e22a890eeacb3ac9853430fdd0233f0b86bcaa74a786763fb3069d283d95aa",
+    "green-alpha.css": "7c798b416ea83cae66ae64c7d4c3fb8e04f59f36f7edddb0a80f97d52c29bdc8",
+    "amber.css": "18ec7c43c6f21b3747aeecbac362ae0096dabef0a9f68095f676b57be7af6150",
+    "amber-alpha.css": "265c8db0bf4a7440e3e2b30539858ffcc531da723d46fd2c63c54e06cd2f1a3f",
+    "red.css": "b6ff5723edb3161efb8e0217ee373d0d4f844f63f921f0fd88fe970754a9b7a2",
+    "red-alpha.css": "8603cfc7c0044db2fbe75e08635606ee3cf29ffb0bc44e1cf56e6b6d80b944e8",
+    "cyan.css": "8f94f1846f8f2a28e07f3ad4121a57de050569ebbace4f053984016937fb0e20",
+    "cyan-alpha.css": "d0d2b9c32f3bb1426437e1bd288f00d3b7489134fc537720593ac575d3aa214e",
+    "black-alpha.css": "e6b71542a09980c154a1eb0e6d34ccf6401af0781076087478572d6bee4f6098",
+    "white-alpha.css": "52474300017ba6f0537943b81397632a17556f9fc1525926fffe4dbe78f66b48",
+    "LICENSE": "9c400881b9139571aa7acc3bd6e422a4f05223b4519169fb661298fb44bf228e"
+  },
+  "usage": "Unmodified light sRGB scales; build-glass-preset.mjs namespaces variables as --radix-* and bundles locally. P3 overrides are intentionally not applied."
+}

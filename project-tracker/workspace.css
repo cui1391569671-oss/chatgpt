@@ -2107,10 +2107,10 @@ body.shadcn-workbench #workbenchShell [data-sidebar=menu-button] {
   transition: background var(--duration-fast),color var(--duration-fast);
 }
 body.shadcn-workbench #workbenchShell [data-sidebar=menu-button]:hover {
-  background: var(--semantic-surface-elevated);
+  background: var(--gray-3);
 }
 body.shadcn-workbench #workbenchShell [data-sidebar=menu-button][data-active=true] {
-  background: var(--semantic-primary-subtle);
+  background: var(--semantic-primary-selected);
   color: var(--semantic-primary-text);
   box-shadow: none;
 }
@@ -2213,6 +2213,7 @@ body :is([data-ui-control=button],[data-slot=button]),body.modern-project .btn {
   transition: background var(--duration-fast),box-shadow var(--duration-fast);
 }
 body :is([data-ui-control=button],[data-slot=button]):not(:disabled):hover,body.modern-project .btn:not(:disabled):hover {
+  --btn-secondary-border: var(--semantic-interactive-border-hover);
   background: var(--btn-secondary-hover-bg);
   box-shadow: var(--btn-secondary-glow);
 }
@@ -2282,6 +2283,10 @@ body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal],[data-ilamy-po
 }
 body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal],[data-ilamy-portal]) :is([role=option],[role=menuitem]):is(:hover,[data-highlighted]) {
   background: var(--dropdown-item-hover);
+}
+body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal],[data-ilamy-portal]) [role=option][data-state=checked] {
+  background: var(--select-item-selected-bg);
+  color: var(--select-item-selected-text);
 }
 body [data-shell-portal][data-slot=sidebar] {
   inset: 12px auto 12px 12px;
@@ -2495,6 +2500,10 @@ body [data-workspace-size=icon] {
   padding: 10px;
 }
 body :is([data-ui-control=button],[data-slot=button]):not(:disabled):active {
+  --btn-secondary-bg: var(--semantic-control-active);
+  --btn-secondary-hover-bg: var(--semantic-control-active);
+  --btn-ghost-bg: var(--semantic-control-active);
+  --btn-ghost-hover-bg: var(--semantic-control-active);
   scale: .98;
 }
 body :is([data-ui-control=button],[data-slot=button]):disabled {
