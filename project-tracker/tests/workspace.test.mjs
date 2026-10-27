@@ -87,7 +87,7 @@ test('simultaneous work and personal saves merge without lost updates',async()=>
 });
 
 test('embedded project table stays authenticated and only allows same-origin framing',async()=>{
- const e=env();const r=await worker.fetch(request('/projects?embedded=1'),e);assert.equal(r.status,200);assert.equal(r.headers.get('X-Frame-Options'),'SAMEORIGIN');assert.match(await r.text(),/\.header,\.footer\{display:none\}/);
+ const e=env();const r=await worker.fetch(request('/projects?embedded=1'),e);assert.equal(r.status,200);assert.equal(r.headers.get('X-Frame-Options'),'SAMEORIGIN');assert.match(await r.text(),/<body class="modern-project" data-project-embedded>/);const standalone=await worker.fetch(request('/projects'),e);assert.equal(standalone.headers.get('X-Frame-Options'),'DENY');assert.doesNotMatch(await standalone.text(),/<body[^>]*data-project-embedded/);
  assert.equal((await worker.fetch(new Request('https://test.local/projects?embedded=1'),e)).status,401);
  assert.equal((await worker.fetch(request('/projects'),e)).headers.get('X-Frame-Options'),'DENY');
 });

@@ -571,6 +571,9 @@ thead th:first-child,tbody td:first-child {
     min-height: 44px;
   }
 }
+/* Embedded pages fill the host; standalone pages retain their page inset. */
+body[data-project-embedded]{--project-page-padding:0px;--project-table-bottom-space:0px}
+body[data-project-embedded] :is(.header,.footer){display:none}
 /* Keep controls outside the table's scroll area and freeze column headers. */
 .container {
   max-width: none;
@@ -599,7 +602,7 @@ thead th:first-child,tbody td:first-child {
 }
 .table-wrapper {
   overflow-x: auto;
-  margin-bottom: 12px;
+  margin-bottom: var(--project-table-bottom-space,12px);
   flex: 1;
   min-height: 120px;
   overflow: auto;

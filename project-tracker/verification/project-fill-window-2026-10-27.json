@@ -1,0 +1,188 @@
+{
+  "date": "2026-10-27",
+  "environment": "local isolated preview 127.0.0.1:8904",
+  "metrics": [
+    {
+      "size": {
+        "width": 1171,
+        "height": 827
+      },
+      "parent": {
+        "frame": {
+          "bottom": 807,
+          "height": 711,
+          "left": 300,
+          "right": 1143,
+          "top": 96,
+          "width": 843,
+          "x": 300,
+          "y": 96
+        },
+        "height": 827,
+        "main": {
+          "bottom": 807,
+          "height": 727,
+          "left": 292,
+          "right": 1151,
+          "top": 80,
+          "width": 859,
+          "x": 292,
+          "y": 80
+        },
+        "pageWidth": 1171,
+        "width": 1171
+      },
+      "embedded": {
+        "clientWidth": 841,
+        "container": {
+          "bottom": 711,
+          "height": 711,
+          "left": 0,
+          "right": 843,
+          "top": 0,
+          "width": 843,
+          "x": 0,
+          "y": 0
+        },
+        "height": 711,
+        "pageWidth": 843,
+        "scrollWidth": 1080,
+        "table": {
+          "bottom": 711,
+          "height": 711,
+          "left": 0,
+          "right": 843,
+          "top": 0,
+          "width": 843,
+          "x": 0,
+          "y": 0
+        },
+        "width": 843
+      }
+    },
+    {
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "parent": {
+        "frame": {
+          "bottom": 832,
+          "height": 656,
+          "left": 12,
+          "right": 378,
+          "top": 176,
+          "width": 366,
+          "x": 12,
+          "y": 176
+        },
+        "height": 844,
+        "main": {
+          "bottom": 832,
+          "height": 668,
+          "left": 12,
+          "right": 378,
+          "top": 164,
+          "width": 366,
+          "x": 12,
+          "y": 164
+        },
+        "pageWidth": 390,
+        "width": 390
+      },
+      "embedded": {
+        "clientWidth": 364,
+        "container": {
+          "bottom": 656,
+          "height": 656,
+          "left": 0,
+          "right": 366,
+          "top": 0,
+          "width": 366,
+          "x": 0,
+          "y": 0
+        },
+        "height": 656,
+        "pageWidth": 366,
+        "scrollWidth": 1080,
+        "table": {
+          "bottom": 656,
+          "height": 656,
+          "left": 0,
+          "right": 366,
+          "top": 0,
+          "width": 366,
+          "x": 0,
+          "y": 0
+        },
+        "width": 366
+      }
+    },
+    {
+      "size": {
+        "width": 320,
+        "height": 640
+      },
+      "parent": {
+        "frame": {
+          "bottom": 628,
+          "height": 452,
+          "left": 12,
+          "right": 308,
+          "top": 176,
+          "width": 296,
+          "x": 12,
+          "y": 176
+        },
+        "height": 640,
+        "main": {
+          "bottom": 628,
+          "height": 464,
+          "left": 12,
+          "right": 308,
+          "top": 164,
+          "width": 296,
+          "x": 12,
+          "y": 164
+        },
+        "pageWidth": 320,
+        "width": 320
+      },
+      "embedded": {
+        "clientWidth": 294,
+        "container": {
+          "bottom": 452,
+          "height": 452,
+          "left": 0,
+          "right": 296,
+          "top": 0,
+          "width": 296,
+          "x": 0,
+          "y": 0
+        },
+        "height": 452,
+        "pageWidth": 296,
+        "scrollWidth": 1080,
+        "table": {
+          "bottom": 452,
+          "height": 452,
+          "left": 0,
+          "right": 296,
+          "top": 0,
+          "width": 296,
+          "x": 0,
+          "y": 0
+        },
+        "width": 296
+      }
+    }
+  ],
+  "checks": [
+    "Work quick navigation contains only home/today; both routes work",
+    "Sidebar project resources and work notes retained",
+    "Embedded frame and table surface match remaining main height at all three sizes",
+    "320px short screen retains internal horizontal and vertical scrolling; last row and right completion column reachable",
+    "Standalone vs embedded markers and authentication/frame headers covered by route test"
+  ],
+  "scope": "Only work home/today and project layout plus standalone route compatibility; no full-site repeat or production writes"
+}

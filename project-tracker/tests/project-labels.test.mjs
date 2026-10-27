@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {projectLabel,projectNameOnly,displayProject,loadProjectLabels} from '../project-labels.mjs';
+import {projectLabel,projectNameOnly,displayProject,loadProjectLabels,compareProjectLabels} from '../project-labels.mjs';
 const items=[{projectCode:'PM001',projectName:'台湾相洋项目',sourceSheet:'PM001 台湾相洋项目',aliases:['P001 台湾桃园项目']},{projectCode:'PM006',projectName:'意大利 Pierrel 项目',aliases:['P006 意大利pirrel项目']}];
 test('labels use the information-sheet code only for an exact name or verified alias',()=>{
  assert.equal(projectLabel('P001 台湾桃园项目',items),'PM001 台湾桃园项目');
@@ -67,4 +67,18 @@ test('label refresh reports only label changes and preserves a valid mapping on 
  assert.equal(displayProject('P001 同名测试项目'),'PM042 同名测试项目');
  globalThis.fetch=async()=>Response.json({}, {status:503});assert.equal(await loadProjectLabels(),false);
  assert.equal(displayProject('P001 同名测试项目'),'PM042 同名测试项目');
+});
+
+test('numbered projects precede unnumbered ones using visible codes and natural ordering',()=>{
+ const names=['P007｜杭州中策项目','P009｜哈萨克斯坦项目','P008｜四川达州项目','P010 未建档项目','P002 测试项目'];
+ const source=[{projectCode:'PM007',projectName:'哈萨克斯坦项目'}];
+ const sorted=[...names].sort((a,b)=>compareProjectLabels(a,b,source));
+ assert.deepEqual(sorted,['P002 测试项目','P010 未建档项目','P009｜哈萨克斯坦项目','P007｜杭州中策项目','P008｜四川达州项目']);
+ assert.deepEqual(names,['P007｜杭州中策项目','P009｜哈萨克斯坦项目','P008｜四川达州项目','P010 未建档项目','P002 测试项目']);
+});
+test('project sort follows the current source code rather than a stored legacy number',()=>{
+ const names=['P099 乙项目','P001 甲项目','无编号项目'];
+ const source=[{projectCode:'PM2',projectName:'乙项目'},{projectCode:'PM10',projectName:'甲项目'}];
+ assert.deepEqual([...names].sort((a,b)=>compareProjectLabels(a,b,source)),['P099 乙项目','P001 甲项目','无编号项目']);
+ assert.equal(compareProjectLabels('相同项目','相同项目',source),0);
 });

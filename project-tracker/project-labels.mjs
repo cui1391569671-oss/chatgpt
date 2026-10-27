@@ -22,6 +22,13 @@ export function projectLabel(value,items=[]){
  if(matches.length===1&&matches[0].projectCode)return matches[0].projectCode.trim()+' '+name;
  return namesWithoutLegacyCode.has(key)?name:original;
 }
+// Sort by the labels users see, so hidden legacy prefixes cannot put an
+// unnumbered project between information-sheet codes.
+export function compareProjectLabels(a,b,items=projectLabelItems){
+ const left=projectLabel(a,items),right=projectLabel(b,items);
+ const leftNumbered=projectNameOnly(left)!==left,rightNumbered=projectNameOnly(right)!==right;
+ return Number(rightNumbered)-Number(leftNumbered)||left.localeCompare(right,'zh-CN',{numeric:true});
+}
 let projectLabelItems=[];
 export function displayProject(value){return projectLabel(value,projectLabelItems);}
 export async function loadProjectLabels(){

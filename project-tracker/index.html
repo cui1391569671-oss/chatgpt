@@ -1748,6 +1748,9 @@ thead th:first-child,tbody td:first-child {
     min-height: 44px;
   }
 }
+/* Embedded pages fill the host; standalone pages retain their page inset. */
+body[data-project-embedded]{--project-page-padding:0px;--project-table-bottom-space:0px}
+body[data-project-embedded] :is(.header,.footer){display:none}
 /* Keep controls outside the table's scroll area and freeze column headers. */
 .container {
   max-width: none;
@@ -1776,7 +1779,7 @@ thead th:first-child,tbody td:first-child {
 }
 .table-wrapper {
   overflow-x: auto;
-  margin-bottom: 12px;
+  margin-bottom: var(--project-table-bottom-space,12px);
   flex: 1;
   min-height: 120px;
   overflow: auto;
@@ -2004,7 +2007,7 @@ body {
   font-size: 16px;
 }
 .shared-workspace .filters {
-  margin-bottom: 20px;
+  margin: 0;
   gap: 10px;
 }
 .shared-workspace .filters input,.shared-workspace .filters select {
@@ -2558,10 +2561,6 @@ body {
 .modern-stat-hint {
   font-size: 13px;
   color: var(--muted);
-}
-.modern-project .container {
-  padding: 20px;
-  gap: 0;
 }
 .modern-project .header h1 {
   font-size: 27px;
@@ -3220,13 +3219,6 @@ body.shadcn-workbench.shared-workspace h2 {
 body.shadcn-workbench.shared-workspace .page-footer {
   display: none;
 }
-body.shadcn-workbench.project-view main {
-  display: block;
-  overflow: visible;
-}
-body.shadcn-workbench.project-view #projectPanel:not(.hidden) {
-  display: block;
-}
 body.shadcn-workbench :focus-visible {
   outline: 2px solid var(--admin-ring);
   outline-offset: 2px;
@@ -3386,8 +3378,10 @@ body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-contr
   border-radius: 20px;
 }
 .shadcn-workbench .wb-topbar {
-  height: 64px;
-  padding: 0 18px;
+  min-height: 64px;
+  height: auto;
+  flex-wrap: wrap;
+  padding: 10px 18px;
 }
 body.shadcn-workbench.shared-workspace .header-title h1 {
   font-size: 26px;
@@ -3511,6 +3505,9 @@ body .ui-dialog-body {
   max-width: 100%;
   overflow-wrap: anywhere;
 }
+.workspace-form-stack{display:grid;gap:8px;min-width:0}
+.workspace-form-stack>:is(input,textarea,.ui-select-mount,.workspace-date-input){width:100%}
+.workspace-form-stack>label{display:block;margin:8px 0 0}
 body [data-ui-portal] :is(.actions,.card-head,.drive-preview-tools),body [data-tasks-portal] [data-slot=sheet-footer] {
   display: flex;
   flex-wrap: wrap;
@@ -3607,9 +3604,6 @@ body.shadcn-workbench :is(.row,.word-row) {
   body.shadcn-workbench .wb-header-divider {
     display: none;
   }
-  body.modern-project .container {
-    padding: 8px;
-  }
   body.modern-project .toolbar-row {
     display: flex;
     width: 100%;
@@ -3620,10 +3614,6 @@ body.shadcn-workbench :is(.row,.word-row) {
   body.modern-project .toolbar-row .ui-select-mount {
     flex: 1 1 120px;
     min-width: 0;
-  }
-  body.shadcn-workbench.project-view #projectFrame {
-    height: calc(100dvh - 240px);
-    min-height: 420px;
   }
 }
 @media(max-width:420px) {
@@ -3752,6 +3742,7 @@ body.shadcn-workbench #projectPanel:not(.hidden) {
   overflow: hidden;
 }
 body.shadcn-workbench.project-view #projectFrame {
+  display: block;
   height: 100%;
   min-height: 0;
   width: 100%;
@@ -3851,7 +3842,7 @@ body.modern-project {
   overflow: hidden;
 }
 body.modern-project .container {
-  padding: 16px;
+  padding: var(--project-page-padding,16px);
   gap: 0;
   height: 100dvh;
   min-height: 0;
@@ -4047,6 +4038,25 @@ body.shadcn-workbench .wb-topbar {
   padding: 0 8px;
   background: transparent;
 }
+
+/* Canonical page-action slot: controls remain owned by their source pages. */
+.wb-sidebar-heading{display:flex;align-items:center;gap:4px;min-width:0}
+.wb-sidebar-heading>[data-sidebar=menu]{flex:1;min-width:0}
+.wb-page-actions-mount{flex:1 1 320px;min-width:0}
+.wb-page-actions-mount--wide{order:2;flex-basis:100%}
+.wb-calendar-date{width:160px;max-width:100%;flex:none}
+.wb-page-actions,.wb-page-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0;max-width:100%}
+.wb-page-actions>:empty{display:none}
+.wb-page-actions [hidden]{display:none!important}
+.wb-page-toolbar:empty{display:none}
+.wb-calendar-view-compact{display:none}
+@media(max-width:1300px){.wb-calendar-view-wide{display:none}.wb-calendar-view-compact{display:block}}
+.wb-page-toolbar>.workspace-search{flex:1 1 180px;min-width:120px;max-width:320px}
+.wb-page-toolbar>:is(button,label,.ui-select-mount){flex-shrink:0}
+.wb-page-toolbar button{white-space:nowrap}
+.wb-page-toolbar .project-search-box{flex:1 1 180px;min-width:120px}
+@media(min-width:768px){[data-collapsible=icon] .wb-sidebar-heading{flex-direction:column}}
+@media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%}.wb-page-toolbar{width:100%}.wb-page-toolbar>.workspace-search{max-width:none;flex-basis:100%}.wb-page-toolbar>.ui-select-mount{flex:1;min-width:120px}}
 
 body.shadcn-workbench .wb-icon-button {
   background: var(--btn-secondary-bg);
@@ -4783,7 +4793,7 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 .wb-segment-scroll { min-width: 0; max-width: 100%; overflow-x: auto; padding: 3px; }
 .wb-segment-navigation { min-width: 0; max-width: 100%; margin-right: auto; }
 .wb-segment-native { min-width: 0; max-width: 100%; }
-.wb-segment-page-tabs { margin-bottom: 16px; }
+.wb-segment-page-tabs { margin: 0; }
 @media (max-width: 1100px) { .wb-segment-personal { display: none; } }
 @media (max-width: 1023px) { .wb-segment-work { display: none; } }
 </style><!-- PRODUCT_DESIGN_END --></head>
@@ -4824,7 +4834,7 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 
 <!-- Add Issue Modal -->
 <dialog id="addModal" aria-labelledby="modalTitle">
-  <div class="workspace-panel-body">
+  <div class="workspace-form-stack">
     <h3 id="modalTitle">添加新问题</h3>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px"><label style="margin:0">所属项目</label><button type="button" class="btn btn-outline" onclick="manageProjects()">项目管理</button></div>
     <select id="addProject" aria-label="所属项目"></select>
@@ -4851,6 +4861,7 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 <div class="toast" id="toast"></div>
 
 <dialog id="issueDetails" aria-labelledby="issueDetailsTitle"><div class="issue-details-head"><span id="issueProjectName"></span><button id="issueClose" type="button" aria-label="关闭问题详情">×</button></div><form id="issueDetailsForm" novalidate><h2 id="issueDetailsTitle">问题详情</h2><label for="issue-task">项目问题 / 跟进事项</label><input id="issue-task" maxlength="2000" required><div class="issue-field-pair"><div><label for="issue-status">当前状态</label><select id="issue-status"><option>进行中</option><option>暂停</option><option>已完成</option></select></div><div><label for="issue-plannedDate">计划日期</label><input id="issue-plannedDate" type="date"></div></div><label for="issue-reason">问题原因</label><textarea class="resize-none" id="issue-reason" maxlength="10000"></textarea><label for="issue-note">跟进备注</label><textarea class="resize-none" id="issue-note" maxlength="10000"></textarea><p id="issueDetailsError" class="form-error" role="alert"></p><div class="issue-details-actions"><button class="btn" id="issueCancel" type="button">取消</button><button class="btn btn-primary" type="submit">保存</button></div></form></dialog><script>
+const projectToolbar=document.querySelector('.toolbar');
 /* PROJECT_LABELS_START */
 // Project identities confirmed by the user on 2026-10-27. Codes always come
 // from the information-sheet snapshot, never from the legacy numeric prefix.
@@ -4875,6 +4886,13 @@ function projectLabel(value,items=[]){
  });
  if(matches.length===1&&matches[0].projectCode)return matches[0].projectCode.trim()+' '+name;
  return namesWithoutLegacyCode.has(key)?name:original;
+}
+// Sort by the labels users see, so hidden legacy prefixes cannot put an
+// unnumbered project between information-sheet codes.
+function compareProjectLabels(a,b,items=projectLabelItems){
+ const left=projectLabel(a,items),right=projectLabel(b,items);
+ const leftNumbered=projectNameOnly(left)!==left,rightNumbered=projectNameOnly(right)!==right;
+ return Number(rightNumbered)-Number(leftNumbered)||left.localeCompare(right,'zh-CN',{numeric:true});
 }
 let projectLabelItems=[];
 function displayProject(value){return projectLabel(value,projectLabelItems);}
@@ -5073,8 +5091,8 @@ function closePriorityDropdown() {
 async function init() {
   // 设置 SVG 图标
   document.getElementById('titleIcon').innerHTML = ICON.clipboard;
-  document.getElementById('btnAdd').innerHTML = ICON.plus + ' 添加';
-  document.getElementById('btnDel').innerHTML = ICON.trash + ' 归档完成';
+  projectToolbar.querySelector('#btnAdd').innerHTML = ICON.plus + ' 添加';
+  projectToolbar.querySelector('#btnDel').innerHTML = ICON.trash + ' 归档完成';
   document.getElementById('modalTitle').innerHTML = ICON.plus + ' 添加新问题';
 
   await loadProjectLabels();
@@ -5082,7 +5100,7 @@ async function init() {
   await loadPriorities();
   console.log("[init] data length:", data.length); renderTable();
   updateStats();
-  const searchInput=document.getElementById('searchInput'),filterSearch=debounce(renderTable,300);searchInput.addEventListener('input',event=>{if(event.isComposing)return;if(!searchInput.value){filterSearch.cancel();renderTable();}else filterSearch();});searchInput.addEventListener('compositionend',filterSearch);
+  const searchInput=projectToolbar.querySelector('#searchInput'),filterSearch=debounce(renderTable,300);searchInput.addEventListener('input',event=>{if(event.isComposing)return;if(!searchInput.value){filterSearch.cancel();renderTable();}else filterSearch();});searchInput.addEventListener('compositionend',filterSearch);
 }
 
 async function loadData() {
@@ -5095,7 +5113,7 @@ async function loadData() {
     inspectPending();
   } catch(e) {
     ready=false; data=[]; setSync('云端读取失败，请刷新重试。已停止编辑，避免覆盖数据');
-    document.querySelectorAll('.toolbar button').forEach(b=>b.disabled=true);
+    projectToolbar.querySelectorAll('button').forEach(b=>b.disabled=true);
   }
 }
 
@@ -5200,10 +5218,10 @@ function getOverdueDays(dateStr) {
 }
 
 function getFilteredData() {
-  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  const search = projectToolbar.querySelector('#searchInput').value.toLowerCase().trim();
   const statusFilter = (document.getElementById('filterStatus')?.value||'');
   const overdueFilter = (document.getElementById('filterOverdue')?.value||'');
-  const priorityFilter = (document.getElementById('filterPriority')?.value||'');
+  const priorityFilter = (projectToolbar.querySelector('#filterPriority')?.value||'');
 
   return data.map((item, idx) => ({...item, _idx: idx})).filter(item => {
     if (statusFilter === '未完成' && item.done) return false;
@@ -5232,7 +5250,7 @@ function getFilteredData() {
 let quickIssueFilter='all',issueEditingId=null,issueBaseline=null,issueSubmitting=false;
 function emptyProjectNames(){
  if(quickIssueFilter!=='all'||(document.getElementById('filterStatus')?.value||'')||(document.getElementById('filterOverdue')?.value||''))return [];
- const q=document.getElementById('searchInput').value.trim().toLowerCase(),pri=(document.getElementById('filterPriority')?.value||'');
+ const q=projectToolbar.querySelector('#searchInput').value.trim().toLowerCase(),pri=(projectToolbar.querySelector('#filterPriority')?.value||'');
  return projectNames().filter(name=>!data.some(x=>x.project===name)&&(!q||name.toLowerCase().includes(q))&&(!pri||(pri==='none'?!getPriority(name):getPriority(name)===pri)));
 }
 function projectPriorityCell(name){const cell=document.createElement('td'),button=document.createElement('button'),info=getPriorityInfo(getPriority(name));button.type='button';button.className='priority-badge project-priority '+info.cls;button.textContent=info.label;button.setAttribute('aria-label','项目紧急程度：'+displayProject(name)+'，'+info.label);button.onclick=()=>showPriorityDropdown(name,button);cell.append(button);return cell;}
@@ -5241,7 +5259,7 @@ function renderTable(){
  const tbody=document.getElementById('tableBody');tbody.replaceChildren();const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'});
  const filtered=getFilteredData().filter(x=>quickIssueFilter==='all'||!x.done&&(quickIssueFilter==='overdue'?x.plannedDate&&x.plannedDate<today:x.plannedDate===today));
  const grouped=new Map(emptyProjectNames().map(name=>[name,[]]));for(const item of filtered){if(!grouped.has(item.project))grouped.set(item.project,[]);grouped.get(item.project).push(item);}
- for(const [projectName,rows] of [...grouped].sort(([a],[b])=>a.localeCompare(b,'zh-CN',{numeric:true}))){
+ for(const [projectName,rows] of [...grouped].sort(([a],[b])=>compareProjectLabels(a,b))){
  if(!rows.length){tbody.append(emptyProjectRow(projectName));continue;}
  for(const item of rows){const status=item.done?'已完成':item.status;const row=document.createElement('tr');row.className='compact-issue';
  if(item===rows[0]){row.classList.add('project-group-start');const project=document.createElement('td');project.className='issue-project-name project-merged';project.dataset.priority=getPriority(projectName);project.setAttribute('aria-label',displayProject(projectName)+'，'+getPriorityInfo(getPriority(projectName)).label);project.rowSpan=rows.length;project.textContent=displayProject(projectName);const count=document.createElement('small');count.textContent=rows.length+' 项问题';project.append(count);row.append(project);}
@@ -5261,7 +5279,7 @@ document.getElementById('issueDetailsForm').onsubmit=async e=>{e.preventDefault(
  issueSubmitting=true;document.querySelectorAll('#issueDetails button,#issueDetails input,#issueDetails select,#issueDetails textarea').forEach(x=>x.disabled=true);error.textContent='';const item={...data[idx],task:title};for(const k of fields.filter(k=>k!=='task'))item[k]=document.getElementById('issue-'+k).value;item.done=item.status==='已完成';data[idx]=item;
  try{if(await saveData()){document.getElementById('issueDetails').close();renderTable();updateStats();}else {issueBaseline=structuredClone(data.find(x=>x.id===issueEditingId));error.textContent='保存未成功，输入仍保留。请按页面提示核对或重试。';}}catch(err){error.textContent=err.message;}finally{issueSubmitting=false;document.querySelectorAll('#issueDetails button,#issueDetails input,#issueDetails select,#issueDetails textarea').forEach(x=>x.disabled=false);}
 };
-const searchToggle=document.getElementById('projectSearchToggle'),searchBox=document.getElementById('projectSearchBox'),projectSearch=document.getElementById('searchInput');
+const searchToggle=projectToolbar.querySelector('#projectSearchToggle'),searchBox=projectToolbar.querySelector('#projectSearchBox'),projectSearch=projectToolbar.querySelector('#searchInput');
 function closeProjectSearch(){projectSearch.value='';searchBox.hidden=true;searchToggle.setAttribute('aria-expanded','false');renderTable();searchToggle.focus();}
 searchToggle.onclick=()=>{if(!searchBox.hidden){closeProjectSearch();return;}searchBox.hidden=false;searchToggle.setAttribute('aria-expanded','true');projectSearch.focus();};
 projectSearch.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeProjectSearch();}});
@@ -5270,7 +5288,7 @@ projectSearch.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefau
 document.getElementById('tableBody').addEventListener('input',e=>{
  if(!e.target.closest('[contenteditable="true"]'))return;
  dataDirty=true;
- const button=document.getElementById('btnSave');if(button){button.textContent='保存';button.title='当前单元格编辑完成后自动保存，也可点击保存';}
+ const button=projectToolbar.querySelector('#btnSave');if(button){button.textContent='保存';button.title='当前单元格编辑完成后自动保存，也可点击保存';}
 });
 function handleCellEdit(e) {
   const idx=Number(e.target.dataset.idx),field=e.target.dataset.field,val=e.target.textContent.trim();
@@ -5347,7 +5365,7 @@ function showProjectCreate(onCreated=null,returnFocus=null){projectCreateFocusTa
 document.getElementById('projectCreateCancel').onclick=()=>{if(!creatingProject)document.getElementById('projectCreate').close();};
 document.getElementById('projectCreate').addEventListener('cancel',e=>{if(creatingProject)e.preventDefault();});
 document.getElementById('projectCreate').addEventListener('close',()=>{const target=projectCreateFocusTarget;projectCreateFocusTarget=null;projectCreatedCallback=null;queueMicrotask(()=>{if(target?.isConnected)target.focus();});});
-document.getElementById('projectCreateForm').onsubmit=async e=>{e.preventDefault();if(creatingProject||saving||!ready||conflicted)return;const input=document.getElementById('projectCreateName'),error=document.getElementById('projectCreateError'),name=input.value.trim();error.textContent='';input.removeAttribute('aria-invalid');if(!name||name.length>120||projectNames().includes(name)&&projectCreatePendingName!==name){error.textContent=!name?'请输入项目名称。':name.length>120?'项目名称不能超过120字。':'已有同名项目，请使用其他名称。';input.setAttribute('aria-invalid','true');input.focus();return;}creatingProject=true;document.querySelectorAll('#projectCreate input,#projectCreate button').forEach(x=>x.disabled=true);if(!projects.includes(name))projects.push(name);projectCreatePendingName=name;try{if(await saveData()){projectCreatePendingName=null;const callback=projectCreatedCallback;projectCreatedCallback=null;document.getElementById('projectCreate').close();showToast('项目已创建','success');if(callback)callback(name);else document.getElementById('btnAdd').focus();}else error.textContent='保存未成功，项目名称仍保留，请检查连接后重试。';}catch(e){error.textContent=e.message;}finally{creatingProject=false;document.querySelectorAll('#projectCreate input,#projectCreate button').forEach(x=>x.disabled=false);}};
+document.getElementById('projectCreateForm').onsubmit=async e=>{e.preventDefault();if(creatingProject||saving||!ready||conflicted)return;const input=document.getElementById('projectCreateName'),error=document.getElementById('projectCreateError'),name=input.value.trim();error.textContent='';input.removeAttribute('aria-invalid');if(!name||name.length>120||projectNames().includes(name)&&projectCreatePendingName!==name){error.textContent=!name?'请输入项目名称。':name.length>120?'项目名称不能超过120字。':'已有同名项目，请使用其他名称。';input.setAttribute('aria-invalid','true');input.focus();return;}creatingProject=true;document.querySelectorAll('#projectCreate input,#projectCreate button').forEach(x=>x.disabled=true);if(!projects.includes(name))projects.push(name);projectCreatePendingName=name;try{if(await saveData()){projectCreatePendingName=null;const callback=projectCreatedCallback;projectCreatedCallback=null;document.getElementById('projectCreate').close();showToast('项目已创建','success');if(callback)callback(name);else projectToolbar.querySelector('#btnAdd').focus();}else error.textContent='保存未成功，项目名称仍保留，请检查连接后重试。';}catch(e){error.textContent=e.message;}finally{creatingProject=false;document.querySelectorAll('#projectCreate input,#projectCreate button').forEach(x=>x.disabled=false);}};
 
 function showAddModal(projectName) {
   delete document.getElementById('addModal').dataset.draftId;
@@ -5428,7 +5446,7 @@ function sameTracker(a,b){return JSON.stringify(stableValue(trackerSnapshot(a)))
 function validPending(s){return !!s&&Array.isArray(s.data)&&Array.isArray(s.archive)&&Array.isArray(s.projects)&&Array.isArray(s.deletedProjects)&&s.priorities&&typeof s.priorities==='object'&&!Array.isArray(s.priorities);}
 // PENDING_HELPERS_END
 function currentTracker(){return trackerSnapshot({data,priorities:projectPriorities,archive,projects,deletedProjects});}
-function lockPendingEditing(locked){document.querySelectorAll('.toolbar button').forEach(b=>b.disabled=locked);document.getElementById('tableBody').style.pointerEvents=locked?'none':'';document.getElementById('tableBody').inert=locked;}
+function lockPendingEditing(locked){projectToolbar.querySelectorAll('button').forEach(b=>b.disabled=locked);document.getElementById('tableBody').style.pointerEvents=locked?'none':'';document.getElementById('tableBody').inert=locked;}
 function inspectPending(){
  try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(PRIORITY_STORAGE_KEY);}catch{}
  const raw=localStorage.getItem(PENDING_KEY);if(!raw)return;legacyPendingRaw=raw;
@@ -5458,7 +5476,7 @@ async function openPendingReview(){
  button('稍后处理',()=>overlay.remove());panel.appendChild(actions);overlay.appendChild(panel);document.body.appendChild(overlay);window.WorkspacePrimitives.openDialog(overlay);
 }
 function setSync(msg){
- const button=document.getElementById('btnSave');
+ const button=projectToolbar.querySelector('#btnSave');
  if(button){button.textContent=msg==='正在保存…'?'保存中…':msg==='已保存至云端'?'已保存':'保存';button.title=msg;}
  if(/失败|暂停|未同步|仍保留|尚未保存/.test(msg))showToast(msg,'error');
 }

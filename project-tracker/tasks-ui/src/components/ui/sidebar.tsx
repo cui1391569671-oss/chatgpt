@@ -183,10 +183,11 @@ function Sidebar({
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
         <SheetContent
+          showCloseButton={false}
           data-sidebar='sidebar'
           data-slot='sidebar'
           data-mobile='true'
-          className='w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:flex'
+          className='w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground'
           style={
             {
               '--sidebar-width': SIDEBAR_WIDTH_MOBILE,

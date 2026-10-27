@@ -55,7 +55,7 @@ function renderMediaLibrary(resolve=true){
  $('mediaTrackingFilter').onchange=e=>{mediaStatusFilter=e.target.value;saveMediaView();renderCompletedGames(false);};$('mediaTrackingSort').onchange=e=>{mediaSort=e.target.value;saveMediaView();renderCompletedGames(false);};
  $('results').insertAdjacentHTML('beforeend','<details class="media-source-credits secondary-help"><summary>数据来源与致谢</summary><p><a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer"><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" width="80" height="58" alt="TMDB"></a></p><p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p><p>游戏资料：IGDB / Steam；动漫资料：Bangumi / MyAnimeList。</p></details>');if(resolve){resolveSavedGameCovers();resolveSteamReviews();}
 }
-$('content').addEventListener('click',async e=>{
+onWorkspaceContent('click',async e=>{
  const button=e.target.closest('button');if(!button)return;
  if(button.dataset.mediaLayout){mediaLayout=button.dataset.mediaLayout;saveMediaView();renderCompletedGames(false);}
  if(button.dataset.mediaPage){mediaPage+=Number(button.dataset.mediaPage);renderCompletedGames(false);}

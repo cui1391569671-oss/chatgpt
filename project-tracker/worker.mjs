@@ -166,7 +166,7 @@ async function fetchRoute(request,env){
    }
    if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET'){
     const embedded=url.pathname==='/projects'&&url.searchParams.get('embedded')==='1';
-    const projectHtml=embedded?HTML.replace('</head>','<style>.header,.footer{display:none}.container{padding:8px;max-width:none}</style></head>'):HTML;
+    const projectHtml=embedded?HTML.replace('<body class="modern-project">','<body class="modern-project" data-project-embedded>'):HTML;
     return new Response(url.pathname==='/projects'?projectHtml:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':embedded?'SAMEORIGIN':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Content-Type-Options':'nosniff'}});
    }
    if(url.pathname.startsWith('/api/calendar-images/'))return await calendarImagesRoute(request,env);

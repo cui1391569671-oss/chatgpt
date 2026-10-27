@@ -10,7 +10,16 @@ import {WorkspaceDateInput} from '@/components/workspace-date';
 import {WorkspaceSelect} from '@/components/workspace-select';
 import {enhanceFileInput} from '../../file-trigger.js';
 const dialogs=new WeakMap(),selects=new Map(),forms=new WeakSet(),dates=new Map();
+let dialogReturnTarget:HTMLElement|null=null;
+function captureDialogOpener(){
+ let active=document.activeElement as HTMLElement|null;
+ if(window.parent!==window){const parentActive=window.parent.document.activeElement as HTMLElement|null;if(parentActive&&parentActive!==window.frameElement&&parentActive!==window.parent.document.body)active=parentActive;}
+ if(!active?.getClientRects().length||active===document.body)active=dialogReturnTarget;
+ if(active&&!active.closest('dialog[data-ui-dialog],[role=dialog]'))dialogReturnTarget=active;
+ return active;
+}
 const excluded='[data-ilamy-portal],.ilamy-surface,[data-tasks-root],[data-tasks-portal],[data-shell-root],[data-shell-portal],[data-ui-owner]';
+function isExternalControl(element:Element){return element.closest('#workspaceNativeActions')?!!element.closest('[data-ui-owner]'):!!element.closest(excluded);}
 function ExistingDialog({element,parking,open,dismiss,closed}){
  const host=useRef(null);
  const attach=useCallback(node=>{host.current=node;if(node){element.removeAttribute('aria-hidden');element.removeAttribute('data-aria-hidden');node.append(element);}else parking.after(element);},[element,parking]);
@@ -29,16 +38,16 @@ function enhanceDialog(element:HTMLDialogElement){
  const parking=document.createComment('shadcn dialog '+element.id);element.before(parking);
  const mount=document.createElement('div');mount.dataset.uiOwner='dialog';document.body.append(mount);const root=createRoot(mount);
  let opener=null,opened=false;
- const finishFocus=()=>{if(opener?.isConnected)opener.focus();};
+ const finishFocus=()=>queueMicrotask(()=>{if(!document.querySelector('dialog[open]')&&opener?.isConnected)opener.focus();});
  const close=(value='')=>{if(!opened)return;opened=false;element.removeAttribute('open');element.returnValue=value||'';parking.after(element);flushSync(()=>root.render(null));element.dispatchEvent(new Event('close'));finishFocus();};
  const dismiss=()=>{const cancel=new Event('cancel',{cancelable:true});if(element.dispatchEvent(cancel))close();};
  element.dataset.uiDialog='';element.setAttribute('role','presentation');element.removeAttribute('aria-labelledby');element.removeAttribute('aria-label');element.removeAttribute('aria-modal');
- element.showModal=()=>{if(opened)return;opener=document.activeElement;opened=true;element.setAttribute('open','');flushSync(()=>root.render(<ExistingDialog element={element} parking={parking} open dismiss={dismiss} closed={finishFocus}/>));scan(element);element.querySelectorAll('input[data-ui-date-native]').forEach(input=>dates.get(input)?.render());element.querySelectorAll('select[data-ui-native]').forEach(select=>selects.get(select)?.render());};
+ element.showModal=()=>{if(opened)return;opener=captureDialogOpener();opened=true;element.setAttribute('open','');flushSync(()=>root.render(<ExistingDialog element={element} parking={parking} open dismiss={dismiss} closed={finishFocus}/>));scan(element);element.querySelectorAll('input[data-ui-date-native]').forEach(input=>dates.get(input)?.render());element.querySelectorAll('select[data-ui-native]').forEach(select=>selects.get(select)?.render());};
  const originalRemove=element.remove.bind(element);element.remove=()=>{close();root.unmount();mount.remove();parking.remove();originalRemove();dialogs.delete(element);};
  element.close=close;dialogs.set(element,{root,close});
 }
 function enhanceSelect(element:HTMLSelectElement){
- if(selects.has(element)||element.multiple||element.closest(excluded)||element.dataset.uiNative!==undefined)return;
+ if(selects.has(element)||element.multiple||isExternalControl(element)||element.dataset.uiNative!==undefined)return;
  const mount=document.createElement('span');mount.dataset.uiRoot='';mount.dataset.uiOwner='select';mount.className='ui-select-mount';element.after(mount);const root=createRoot(mount);
  const triggerId=(element.id||'select-'+crypto.randomUUID())+'-control';
  const label=()=>element.getAttribute('aria-label')||element.labels?.[0]?.textContent||'选择选项';
@@ -50,7 +59,7 @@ function enhanceSelect(element:HTMLSelectElement){
  selects.set(element,{root,mount,observer,onReset,render});render();
 }
 function enhanceDate(element:HTMLInputElement){
- if(dates.has(element)||element.closest(excluded)||element.type!=='date')return;
+ if(dates.has(element)||isExternalControl(element)||element.type!=='date')return;
  const mount=document.createElement('span');mount.dataset.uiOwner='date';mount.className='workspace-date-mount';element.after(mount);const root=createRoot(mount);
  const id=(element.id||'date-'+crypto.randomUUID())+'-control';
  const render=()=>{mount.hidden=element.hidden||element.classList.contains('hidden');root.render(<WorkspaceDateInput id={id} value={element.value} disabled={element.disabled} min={element.min} max={element.max} required={element.required} aria-label={element.getAttribute('aria-label')||element.labels?.[0]?.textContent||element.previousElementSibling?.textContent||'选择日期'} aria-invalid={element.getAttribute('aria-invalid')==='true'} aria-describedby={element.getAttribute('aria-describedby')||undefined} onChange={event=>{element.value=event.target.value;element.dispatchEvent(new Event('input',{bubbles:true}));element.dispatchEvent(new Event('change',{bubbles:true}));render();}}/>);};
@@ -59,18 +68,18 @@ function enhanceDate(element:HTMLInputElement){
  const observer=new MutationObserver(render);observer.observe(element,{attributes:true});dates.set(element,{root,mount,render,observer});render();
 }
 function enhanceForm(form:HTMLFormElement){
- if(forms.has(form)||form.closest(excluded))return;forms.add(form);form.noValidate=true;
+ if(forms.has(form)||isExternalControl(form))return;forms.add(form);form.noValidate=true;
  form.addEventListener('submit',event=>{const invalid=Array.from(form.elements).find((field):field is HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement=>(field instanceof HTMLInputElement||field instanceof HTMLSelectElement||field instanceof HTMLTextAreaElement)&&field.willValidate&&!field.validity.valid);if(!invalid)return;event.preventDefault();event.stopImmediatePropagation();let error=form.querySelector('.form-error');if(!error){error=document.createElement('p');error.className='form-error';error.setAttribute('role','alert');form.append(error);}if(!error.id)error.id='form-error-'+crypto.randomUUID();invalid.setAttribute('aria-invalid','true');invalid.setAttribute('aria-describedby',error.id);const label=invalid.labels?.[0]?.textContent||'内容';error.textContent=invalid.validity.valueMissing?'请填写'+label:invalid.validity.typeMismatch?'请填写有效的'+label:invalid.validity.rangeUnderflow||invalid.validity.rangeOverflow?label+'不在允许范围内，请检查后重试。':label+'格式不正确，请检查后重试。';(document.getElementById(invalid.id+'-control')||invalid).focus();},true);
  const clear=event=>{const field=event.target;if(field.validity?.valid){const error=document.getElementById(field.getAttribute('aria-describedby'));if(error?.classList.contains('form-error'))error.textContent='';field.removeAttribute?.('aria-invalid');if(error?.classList.contains('form-error'))field.removeAttribute?.('aria-describedby');}};form.addEventListener('input',clear);form.addEventListener('change',clear);
 }
 function scan(scope:ParentNode=document){
  scope.querySelectorAll('form').forEach(enhanceForm);
  scope.querySelectorAll('input[type=date]').forEach(enhanceDate);
- scope.querySelectorAll<HTMLInputElement>('input[type=file]').forEach(el=>{if(!el.closest(excluded))enhanceFileInput(el);});
+ scope.querySelectorAll<HTMLInputElement>('input[type=file]').forEach(el=>{if(!isExternalControl(el))enhanceFileInput(el);});
  scope.querySelectorAll('input').forEach(el=>{if(el.type==='search'||/搜索/.test((el.getAttribute('aria-label')||'')+(el.placeholder||'')))enhanceWorkspaceSearch(el);});
- scope.querySelectorAll<HTMLDialogElement>('dialog:not([data-ui-dialog])').forEach(el=>{if(!el.closest(excluded))enhanceDialog(el);});
+ scope.querySelectorAll<HTMLDialogElement>('dialog:not([data-ui-dialog])').forEach(el=>{if(!isExternalControl(el))enhanceDialog(el);});
  scope.querySelectorAll('select:not([data-ui-native])').forEach(enhanceSelect);
- scope.querySelectorAll<HTMLElement>('button.btn,a.btn,.actions>button,.card-head>button,input:not([type=checkbox]):not([type=file]):not([type=hidden]),textarea').forEach(el=>{if(!el.closest(excluded)){const kind=el.tagName==='TEXTAREA'?'textarea':el.matches('input')?'input':'button';if(el.dataset.uiControl!==kind)el.dataset.uiControl=kind;}});
+ scope.querySelectorAll<HTMLElement>('button.btn,a.btn,.actions>button,.card-head>button,input:not([type=checkbox]):not([type=file]):not([type=hidden]),textarea').forEach(el=>{if(!isExternalControl(el)){const kind=el.tagName==='TEXTAREA'?'textarea':el.matches('input')?'input':'button';if(el.dataset.uiControl!==kind)el.dataset.uiControl=kind;}});
 }
 let installed=false;
 export const workspacePrimitives={groupFields(container,ids){
@@ -79,7 +88,7 @@ export const workspacePrimitives={groupFields(container,ids){
  const row=document.createElement('div');row.className='workspace-field-row';fields[0].label.before(row);
  for(const {control,label} of fields){const cell=document.createElement('div');cell.append(label,control);row.append(cell);}
  },openDialog(element){enhanceDialog(element);element.showModal();scan(element);},install(){if(installed)return;installed=true;document.body.classList.add('shadcn-controls');scan();let queued=false;const observer=new MutationObserver(records=>{if(!records.some(r=>Array.from(r.addedNodes).some(n=>n instanceof Element&&!n.closest('[data-ui-owner]'))||r.removedNodes.length))return;if(queued)return;queued=true;queueMicrotask(()=>{queued=false;for(const [element,adapter] of dates){if(!element.isConnected){adapter.observer.disconnect();adapter.root.unmount();adapter.mount.remove();dates.delete(element);}}for(const [element,adapter] of selects){if(!element.isConnected){adapter.observer.disconnect();adapter.root.unmount();adapter.mount.remove();selects.delete(element);}}scan();});});observer.observe(document.body,{childList:true,subtree:true});},
- confirm({title='确认删除',description='',action='删除',input=false,initialValue=''}){return new Promise(resolve=>{const mount=document.createElement('div');mount.dataset.uiRoot='';mount.dataset.uiOwner='confirmation';document.body.append(mount);const root=createRoot(mount);const opener=document.activeElement;function finish(result){flushSync(()=>root.render(null));mount.remove();opener instanceof HTMLElement&&opener.isConnected&&opener.focus();resolve(result);}function Confirmation(){const field=useRef(null);return <Dialog open onOpenChange={v=>{if(!v)finish(input?null:false);}}><DialogContent className='ui-confirm-dialog' showCloseButton={false} onOpenAutoFocus={e=>{if(!input){e.preventDefault();document.getElementById('ui-confirm-cancel')?.focus();}}}><DialogTitle>{title}</DialogTitle><DialogDescription>{description}</DialogDescription>{input&&<label className='ui-confirm-field'>名称<input ref={field} data-ui-control='input' defaultValue={initialValue} maxLength={100} autoFocus onKeyDown={e=>{if(e.key==='Enter'&&!e.nativeEvent.isComposing&&field.current.value.trim())finish(field.current.value.trim());}}/></label>}<DialogFooter><Button id='ui-confirm-cancel' variant='outline' onClick={()=>finish(input?null:false)}>取消</Button><Button variant={input?'default':'destructive'} onClick={()=>{if(input&&!field.current.value.trim()){field.current.focus();return;}finish(input?field.current.value.trim():true);}}>{action}</Button></DialogFooter></DialogContent></Dialog>;}flushSync(()=>root.render(<Confirmation/>));});}
+ confirm({title='确认删除',description='',action='删除',input=false,initialValue=''}){return new Promise(resolve=>{const mount=document.createElement('div');mount.dataset.uiRoot='';mount.dataset.uiOwner='confirmation';document.body.append(mount);const root=createRoot(mount);const opener=captureDialogOpener();function finish(result){flushSync(()=>root.render(null));mount.remove();queueMicrotask(()=>{if(opener?.isConnected&&opener.getClientRects().length)opener.focus();});resolve(result);}function Confirmation(){const field=useRef(null);return <Dialog open onOpenChange={v=>{if(!v)finish(input?null:false);}}><DialogContent className='ui-confirm-dialog' showCloseButton={false} onOpenAutoFocus={e=>{if(!input){e.preventDefault();document.getElementById('ui-confirm-cancel')?.focus();}}}><DialogTitle>{title}</DialogTitle><DialogDescription>{description}</DialogDescription>{input&&<label className='ui-confirm-field'>名称<input ref={field} data-ui-control='input' defaultValue={initialValue} maxLength={100} autoFocus onKeyDown={e=>{if(e.key==='Enter'&&!e.nativeEvent.isComposing&&field.current.value.trim())finish(field.current.value.trim());}}/></label>}<DialogFooter><Button id='ui-confirm-cancel' variant='outline' onClick={()=>finish(input?null:false)}>取消</Button><Button variant={input?'default':'destructive'} onClick={()=>{if(input&&!field.current.value.trim()){field.current.focus();return;}finish(input?field.current.value.trim():true);}}>{action}</Button></DialogFooter></DialogContent></Dialog>;}flushSync(()=>root.render(<Confirmation/>));});}
 };
 
 window.WorkspacePrimitives=workspacePrimitives;

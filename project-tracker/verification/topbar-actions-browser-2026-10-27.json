@@ -1,0 +1,727 @@
+{
+  "date": "2026-10-27",
+  "environment": "local isolated fixtures at 127.0.0.1:8904; no production writes",
+  "routes": [
+    {
+      "space": "work",
+      "view": "home",
+      "actions": "2026-10-27\n今天\n月\n导出日历\n新建日程",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "工作概览 · 工作台",
+      "width": 1171
+    },
+    {
+      "space": "work",
+      "view": "today",
+      "actions": "返回概览\n刷新",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "今日任务 · 工作台",
+      "width": 1171
+    },
+    {
+      "space": "work",
+      "view": "projects",
+      "actions": "添加\n保存\n归档完成\n查看已完成记录",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "项目问题 · 工作台",
+      "width": 1171
+    },
+    {
+      "space": "work",
+      "view": "tasks",
+      "actions": "全部状态\n全部优先级\n新建待办",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "待办事项 · 工作台",
+      "width": 1171
+    },
+    {
+      "space": "work",
+      "view": "drive",
+      "actions": "打开信息表\n刷新",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "项目资料 · 工作台",
+      "width": 1171
+    },
+    {
+      "space": "work",
+      "view": "notes",
+      "actions": "＋ 新建笔记",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "工作笔记 · 工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "home",
+      "actions": "＋ 新建待办\n自定义布局",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "我的一天 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "calendar",
+      "actions": "2026-10-27\n今天\n月\n导出日历\n新建日程",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "生活日历 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "annualPlans",
+      "actions": "＋ 新增事项\n切换时间轴\n2026 年\n全部分类",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "年度计划 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "tasks",
+      "actions": "切换表格\n全部状态\n全部优先级\n新建待办",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "待办事项 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "notes",
+      "actions": "＋ 新建笔记",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "我的笔记 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "checkins",
+      "actions": "",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "打卡记录 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "vocabulary",
+      "actions": "词汇库",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "英语学习 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "vocabularyLibrary",
+      "actions": "英语练习\n导入词汇\n全部熟练度",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "词汇库 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "fitness",
+      "actions": "开始训练\n重置安排",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "居家健身 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "completedGames",
+      "actions": "＋ 新建记录\n全部 0\n游戏 0\n电影 0\n电视剧 0\n动漫 0\n全部 0\n游戏 0\n电影 0\n电视剧 0\n动漫 0\n状态\n全部状态\n排序\n最近更新\n切换列表",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "娱乐记录 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "upcoming",
+      "actions": "",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "即将发售 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "wardrobe",
+      "actions": "我的衣服\n四季穿搭\n我的衣服\n四季穿搭\n＋ 添加衣服\n春季",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "我的衣橱 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "maintenance",
+      "actions": "＋ 新建设备",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "设备维保 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "personal",
+      "view": "personalInfo",
+      "actions": "",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 1171,
+      "title": "个人信息 · 私人工作台",
+      "width": 1171
+    },
+    {
+      "space": "work",
+      "view": "home",
+      "actions": "2026-10-27\n今天\n月\n导出日历\n新建日程",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "工作概览 · 工作台",
+      "width": 390
+    },
+    {
+      "space": "work",
+      "view": "today",
+      "actions": "返回概览\n刷新",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "今日任务 · 工作台",
+      "width": 390
+    },
+    {
+      "space": "work",
+      "view": "projects",
+      "actions": "添加\n保存\n归档完成\n查看已完成记录",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "项目问题 · 工作台",
+      "width": 390
+    },
+    {
+      "space": "work",
+      "view": "tasks",
+      "actions": "全部状态\n全部优先级\n新建待办",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "待办事项 · 工作台",
+      "width": 390
+    },
+    {
+      "space": "work",
+      "view": "drive",
+      "actions": "打开信息表\n刷新",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "项目资料 · 工作台",
+      "width": 390
+    },
+    {
+      "space": "work",
+      "view": "notes",
+      "actions": "＋ 新建笔记",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "工作笔记 · 工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "home",
+      "actions": "＋ 新建待办\n自定义布局",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "我的一天 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "calendar",
+      "actions": "2026-10-27\n今天\n月\n导出日历\n新建日程",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "生活日历 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "annualPlans",
+      "actions": "＋ 新增事项\n切换时间轴\n2026 年\n全部分类",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "年度计划 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "tasks",
+      "actions": "切换表格\n全部状态\n全部优先级\n新建待办",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "待办事项 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "notes",
+      "actions": "＋ 新建笔记",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "我的笔记 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "checkins",
+      "actions": "",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "打卡记录 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "vocabulary",
+      "actions": "词汇库",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "英语学习 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "vocabularyLibrary",
+      "actions": "英语练习\n导入词汇\n全部熟练度",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "词汇库 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "fitness",
+      "actions": "开始训练\n重置安排",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "居家健身 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "completedGames",
+      "actions": "＋ 新建记录\n全部 0\n游戏 0\n电影 0\n电视剧 0\n动漫 0\n全部 0\n游戏 0\n电影 0\n电视剧 0\n动漫 0\n状态\n全部状态\n排序\n最近更新\n切换列表",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "娱乐记录 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "upcoming",
+      "actions": "",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "即将发售 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "wardrobe",
+      "actions": "我的衣服\n四季穿搭\n我的衣服\n四季穿搭\n＋ 添加衣服\n春季",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "我的衣橱 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "maintenance",
+      "actions": "＋ 新建设备",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "设备维保 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "personal",
+      "view": "personalInfo",
+      "actions": "",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 390,
+      "title": "个人信息 · 私人工作台",
+      "width": 390
+    },
+    {
+      "space": "work",
+      "view": "home",
+      "actions": "2026-10-27\n今天\n月\n导出日历\n新建日程",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "工作概览 · 工作台",
+      "width": 320
+    },
+    {
+      "space": "work",
+      "view": "today",
+      "actions": "返回概览\n刷新",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "今日任务 · 工作台",
+      "width": 320
+    },
+    {
+      "space": "work",
+      "view": "projects",
+      "actions": "添加\n保存\n归档完成\n查看已完成记录",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "项目问题 · 工作台",
+      "width": 320
+    },
+    {
+      "space": "work",
+      "view": "tasks",
+      "actions": "全部状态\n全部优先级\n新建待办",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "待办事项 · 工作台",
+      "width": 320
+    },
+    {
+      "space": "work",
+      "view": "drive",
+      "actions": "打开信息表\n刷新",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "项目资料 · 工作台",
+      "width": 320
+    },
+    {
+      "space": "work",
+      "view": "notes",
+      "actions": "＋ 新建笔记",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "工作笔记 · 工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "home",
+      "actions": "＋ 新建待办\n自定义布局",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "我的一天 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "calendar",
+      "actions": "2026-10-27\n今天\n月\n导出日历\n新建日程",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "生活日历 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "annualPlans",
+      "actions": "＋ 新增事项\n切换时间轴\n2026 年\n全部分类",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "年度计划 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "tasks",
+      "actions": "切换表格\n全部状态\n全部优先级\n新建待办",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "待办事项 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "notes",
+      "actions": "＋ 新建笔记",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "我的笔记 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "checkins",
+      "actions": "",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "打卡记录 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "vocabulary",
+      "actions": "词汇库",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "英语学习 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "vocabularyLibrary",
+      "actions": "英语练习\n导入词汇\n全部熟练度",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "词汇库 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "fitness",
+      "actions": "开始训练\n重置安排",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "居家健身 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "completedGames",
+      "actions": "＋ 新建记录\n全部 0\n游戏 0\n电影 0\n电视剧 0\n动漫 0\n全部 0\n游戏 0\n电影 0\n电视剧 0\n动漫 0\n状态\n全部状态\n排序\n最近更新\n切换列表",
+      "overflowButtons": [
+        {
+          "label": "动漫 0",
+          "r": {
+            "bottom": 222,
+            "height": 44,
+            "left": 299.09375,
+            "right": 363.8671875,
+            "top": 178,
+            "width": 64.7734375,
+            "x": 299.09375,
+            "y": 178
+          }
+        }
+      ],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "娱乐记录 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "upcoming",
+      "actions": "",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "即将发售 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "wardrobe",
+      "actions": "我的衣服\n四季穿搭\n我的衣服\n四季穿搭\n＋ 添加衣服\n春季",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "我的衣橱 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "maintenance",
+      "actions": "＋ 新建设备",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "设备维保 · 私人工作台",
+      "width": 320
+    },
+    {
+      "space": "personal",
+      "view": "personalInfo",
+      "actions": "",
+      "overflowButtons": [],
+      "overlap": [],
+      "pageWidth": 320,
+      "title": "个人信息 · 私人工作台",
+      "width": 320
+    }
+  ],
+  "finalToolbarRetests": [
+    {
+      "view": "completedGames",
+      "bodyPageTabs": 0,
+      "pageWidth": 1171,
+      "visibleSaveButtons": [],
+      "width": 1171
+    },
+    {
+      "view": "upcoming",
+      "bodyPageTabs": 0,
+      "pageWidth": 1171,
+      "visibleSaveButtons": [],
+      "width": 1171
+    },
+    {
+      "view": "wardrobe",
+      "bodyPageTabs": 0,
+      "pageWidth": 1171,
+      "visibleSaveButtons": [
+        {
+          "inTopbar": true,
+          "label": "保存所选搭配（0）"
+        }
+      ],
+      "width": 1171
+    },
+    {
+      "view": "completedGames",
+      "bodyPageTabs": 0,
+      "pageWidth": 390,
+      "visibleSaveButtons": [],
+      "width": 390
+    },
+    {
+      "view": "upcoming",
+      "bodyPageTabs": 0,
+      "pageWidth": 390,
+      "visibleSaveButtons": [],
+      "width": 390
+    },
+    {
+      "view": "wardrobe",
+      "bodyPageTabs": 0,
+      "pageWidth": 390,
+      "visibleSaveButtons": [
+        {
+          "inTopbar": true,
+          "label": "保存所选搭配（0）"
+        }
+      ],
+      "width": 390
+    },
+    {
+      "view": "completedGames",
+      "bodyPageTabs": 0,
+      "pageWidth": 320,
+      "visibleSaveButtons": [],
+      "width": 320
+    },
+    {
+      "view": "upcoming",
+      "bodyPageTabs": 0,
+      "pageWidth": 320,
+      "visibleSaveButtons": [],
+      "width": 320
+    },
+    {
+      "view": "wardrobe",
+      "bodyPageTabs": 0,
+      "pageWidth": 320,
+      "visibleSaveButtons": [
+        {
+          "inTopbar": true,
+          "label": "保存所选搭配（0）"
+        }
+      ],
+      "width": 320
+    }
+  ],
+  "removedPageEvidence": [
+    {
+      "requirementNavigation": 0,
+      "title": "工作概览 · 工作台",
+      "url": "http://127.0.0.1:8904/work?view=home"
+    },
+    {
+      "requirementNavigation": 0,
+      "title": "我的一天 · 私人工作台",
+      "url": "http://127.0.0.1:8904/personal?view=home"
+    }
+  ],
+  "manualChecks": [
+    "Project create via relocated toolbar saves synthetic issue; search filters and Escape clears",
+    "Project add choice → add issue → cancel returns focus to btnAdd",
+    "Archive confirmation → cancel returns focus to btnDel; project actions inert while child dialog open",
+    "Mobile project dialog fields fit, note and footer scroll into view; confirm reachable",
+    "Mobile navigation has one close action beside workspace switch; desktop collapse and expand work",
+    "Calendar view changes to week and new action opens official ilamy form; cancel works",
+    "Vocabulary library → practice → library → notes → tasks → maintenance leaves no file trigger or old action buttons",
+    "Task save 503 keeps changed title, re-enables Save and Cancel, drawer cancels",
+    "320px entertainment classification scrolls to last item using End; own scroll container, no page overflow"
+  ],
+  "limits": [
+    "No production or deployment UI checks",
+    "No full business CRUD audit or D1 recovery rerun for this UI change"
+  ]
+}

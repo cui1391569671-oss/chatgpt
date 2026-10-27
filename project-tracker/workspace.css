@@ -107,7 +107,7 @@ body {
   font-size: 16px;
 }
 .shared-workspace .filters {
-  margin-bottom: 20px;
+  margin: 0;
   gap: 10px;
 }
 .shared-workspace .filters input,.shared-workspace .filters select {
@@ -661,10 +661,6 @@ body {
 .modern-stat-hint {
   font-size: 13px;
   color: var(--muted);
-}
-.modern-project .container {
-  padding: 20px;
-  gap: 0;
 }
 .modern-project .header h1 {
   font-size: 27px;
@@ -1323,13 +1319,6 @@ body.shadcn-workbench.shared-workspace h2 {
 body.shadcn-workbench.shared-workspace .page-footer {
   display: none;
 }
-body.shadcn-workbench.project-view main {
-  display: block;
-  overflow: visible;
-}
-body.shadcn-workbench.project-view #projectPanel:not(.hidden) {
-  display: block;
-}
 body.shadcn-workbench :focus-visible {
   outline: 2px solid var(--admin-ring);
   outline-offset: 2px;
@@ -1489,8 +1478,10 @@ body.shadcn-controls [data-ui-control=input],body.shadcn-controls [data-ui-contr
   border-radius: 20px;
 }
 .shadcn-workbench .wb-topbar {
-  height: 64px;
-  padding: 0 18px;
+  min-height: 64px;
+  height: auto;
+  flex-wrap: wrap;
+  padding: 10px 18px;
 }
 body.shadcn-workbench.shared-workspace .header-title h1 {
   font-size: 26px;
@@ -1614,6 +1605,9 @@ body .ui-dialog-body {
   max-width: 100%;
   overflow-wrap: anywhere;
 }
+.workspace-form-stack{display:grid;gap:8px;min-width:0}
+.workspace-form-stack>:is(input,textarea,.ui-select-mount,.workspace-date-input){width:100%}
+.workspace-form-stack>label{display:block;margin:8px 0 0}
 body [data-ui-portal] :is(.actions,.card-head,.drive-preview-tools),body [data-tasks-portal] [data-slot=sheet-footer] {
   display: flex;
   flex-wrap: wrap;
@@ -1710,9 +1704,6 @@ body.shadcn-workbench :is(.row,.word-row) {
   body.shadcn-workbench .wb-header-divider {
     display: none;
   }
-  body.modern-project .container {
-    padding: 8px;
-  }
   body.modern-project .toolbar-row {
     display: flex;
     width: 100%;
@@ -1723,10 +1714,6 @@ body.shadcn-workbench :is(.row,.word-row) {
   body.modern-project .toolbar-row .ui-select-mount {
     flex: 1 1 120px;
     min-width: 0;
-  }
-  body.shadcn-workbench.project-view #projectFrame {
-    height: calc(100dvh - 240px);
-    min-height: 420px;
   }
 }
 @media(max-width:420px) {
@@ -1855,6 +1842,7 @@ body.shadcn-workbench #projectPanel:not(.hidden) {
   overflow: hidden;
 }
 body.shadcn-workbench.project-view #projectFrame {
+  display: block;
   height: 100%;
   min-height: 0;
   width: 100%;
@@ -1954,7 +1942,7 @@ body.modern-project {
   overflow: hidden;
 }
 body.modern-project .container {
-  padding: 16px;
+  padding: var(--project-page-padding,16px);
   gap: 0;
   height: 100dvh;
   min-height: 0;
@@ -2150,6 +2138,25 @@ body.shadcn-workbench .wb-topbar {
   padding: 0 8px;
   background: transparent;
 }
+
+/* Canonical page-action slot: controls remain owned by their source pages. */
+.wb-sidebar-heading{display:flex;align-items:center;gap:4px;min-width:0}
+.wb-sidebar-heading>[data-sidebar=menu]{flex:1;min-width:0}
+.wb-page-actions-mount{flex:1 1 320px;min-width:0}
+.wb-page-actions-mount--wide{order:2;flex-basis:100%}
+.wb-calendar-date{width:160px;max-width:100%;flex:none}
+.wb-page-actions,.wb-page-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0;max-width:100%}
+.wb-page-actions>:empty{display:none}
+.wb-page-actions [hidden]{display:none!important}
+.wb-page-toolbar:empty{display:none}
+.wb-calendar-view-compact{display:none}
+@media(max-width:1300px){.wb-calendar-view-wide{display:none}.wb-calendar-view-compact{display:block}}
+.wb-page-toolbar>.workspace-search{flex:1 1 180px;min-width:120px;max-width:320px}
+.wb-page-toolbar>:is(button,label,.ui-select-mount){flex-shrink:0}
+.wb-page-toolbar button{white-space:nowrap}
+.wb-page-toolbar .project-search-box{flex:1 1 180px;min-width:120px}
+@media(min-width:768px){[data-collapsible=icon] .wb-sidebar-heading{flex-direction:column}}
+@media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%}.wb-page-toolbar{width:100%}.wb-page-toolbar>.workspace-search{max-width:none;flex-basis:100%}.wb-page-toolbar>.ui-select-mount{flex:1;min-width:120px}}
 
 body.shadcn-workbench .wb-icon-button {
   background: var(--btn-secondary-bg);
@@ -2886,6 +2893,6 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 .wb-segment-scroll { min-width: 0; max-width: 100%; overflow-x: auto; padding: 3px; }
 .wb-segment-navigation { min-width: 0; max-width: 100%; margin-right: auto; }
 .wb-segment-native { min-width: 0; max-width: 100%; }
-.wb-segment-page-tabs { margin-bottom: 16px; }
+.wb-segment-page-tabs { margin: 0; }
 @media (max-width: 1100px) { .wb-segment-personal { display: none; } }
 @media (max-width: 1023px) { .wb-segment-work { display: none; } }

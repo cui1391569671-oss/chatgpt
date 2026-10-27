@@ -2,6 +2,7 @@
 export {};
 declare global {
  interface Window {
+  WorkspaceCalendarControls:typeof import("./workspace-calendar-controls").workspaceCalendarControls;
   WorkspaceSegments:typeof import("./workspace-segments").workspaceSegments;
   WorkspaceFeedback:typeof import("./workspace-feedback").workspaceFeedback;
   WorkspacePrimitives:typeof import("./workspace-primitives").workspacePrimitives;

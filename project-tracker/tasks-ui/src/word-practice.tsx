@@ -1,3 +1,4 @@
+import {WorkspaceToolbar} from './components/workspace-toolbar';
 import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 import {motion} from 'motion/react';
 import {CheckCircle2} from 'lucide-react';
@@ -59,7 +60,7 @@ function Practice({words,bridge,close,controller}){
  }
  const inputProps={id:'word-practice-input',value:answer,autoComplete:'off',autoCorrect:'off',autoCapitalize:'none',spellCheck:false,placeholder:isSentence?'写出对应的英文句子…':'在这里输入单词…',disabled:pending||!!result,'aria-invalid':!!error,'aria-describedby':'word-practice-feedback',maxLength:isSentence?5000:200,onCompositionStart:()=>{composing.current=true;},onCompositionEnd:()=>{composing.current=false;},onChange:(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=>{setAnswer(e.target.value);if(!pending)setError('');},onKeyDown:(e:React.KeyboardEvent<HTMLInputElement|HTMLTextAreaElement>)=>{if(e.key==='Enter'){if(e.nativeEvent.isComposing||composing.current){e.preventDefault();return;}if(isSentence&&!e.shiftKey){e.preventDefault();submit();}}}};
  return <section className='word-practice-page' aria-label='英语练习'>
-  <header className='word-practice-header workspace-page-hero'><div><h2>{finished?'本轮练习完成':'英语练习'}</h2><p className='muted'>{queue?'先看中文，写出英文，再对照参考表达。':'在自己的词库例句里学习表达。'}</p></div><Button variant='outline' disabled={pending} onClick={()=>void leave()}>词汇库</Button></header>
+  <header className='word-practice-header workspace-page-hero'><div><h2>{finished?'本轮练习完成':'英语练习'}</h2><p className='muted'>{queue?'先看中文，写出英文，再对照参考表达。':'在自己的词库例句里学习表达。'}</p></div><WorkspaceToolbar><Button variant='outline' disabled={pending} onClick={()=>void leave()}>词汇库</Button></WorkspaceToolbar></header>
   <div className='word-practice-body card'>
    <div className='word-practice-session-head'><p className='muted' role='status'>{todaySessions.length?`今日已完成 ${todaySessions.length} 轮练习`:'今日尚未完成整轮练习'}</p>{queue&&!finished&&<Button variant='ghost' disabled={pending} onClick={()=>void leave()}>退出练习</Button>}</div>
    {!queue?<>
