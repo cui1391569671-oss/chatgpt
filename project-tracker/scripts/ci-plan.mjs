@@ -18,7 +18,7 @@ const pageTests=new Map([
 const dataPath=/^(?:worker\.mjs|cloud-records\.mjs|auth\.mjs|calendar-images\.mjs|personal-vault\.mjs|project-core-(?:info|sync|sheet)\.mjs|vocabulary-sheet\.mjs|(?:migrations|database|backups|recovery)\/|.*\.sql$|wrangler[^/]*\.(?:jsonc?|toml)$|configure\.mjs|package(?:-lock)?\.json$|google-apps-script\/|scripts\/(?:.*d1.*|.*recovery.*|verify-restored-app\.mjs)$)/;
 const knownBusiness=/^(?:annual-plans|calendar-sources|checkin-records|daily-vocabulary|event-recurrence|fitness|focus-return|game-covers|game-releases|game-task-links|holidays|maintenance-audit|media-cover-resolver|media-image|media-sources|media-tracking|project-core-summary|project-labels|project-validation|request-body|requirements|security-policy|static-assets|steam-artwork|steam-reviews|today-tasks|vocabulary|wardrobe|word-practice)\.mjs$/;
 const sharedUi=/^(?:tasks-ui\/|calendar-ui\/|.*\.html$|.*-adapter\.js$|workbench-shell\.js$|media-(?:library|cover-picker)\.js$|today-tasks-page\.js$|workspace-[^/]+\.js$|file-trigger\.js$|build-[^/]+\.mjs$|theme-presets\/|assets\/)/;
-const pipelinePath=/^(?:\.github\/workflows\/workbench-checks\.yml|scripts\/ci-(?:plan|test)\.mjs)$/;
+const pipelinePath=/^(?:\.github\/workflows\/workbench-checks\.yml|scripts\/ci-(?:plan|run)\.mjs)$/;
 
 export function selectCiPlan(changedFiles,{changesKnown=true,forceFull=false,forceDatabase=false,derivedOnly=[]}={}){
  const tests=new Set(),reasons=new Set();let fullTests=forceFull,databaseChecks=forceDatabase;

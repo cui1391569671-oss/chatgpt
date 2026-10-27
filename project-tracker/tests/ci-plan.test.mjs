@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {selectCiPlan,changedFilesBetween,authoredHtml,generatedHtmlChanges} from '../scripts/ci-plan.mjs';
-import {testArguments} from '../scripts/ci-test.mjs';
+import {testArguments} from '../scripts/ci-run.mjs';
 const project=path=>'project-tracker/'+path;
 const select=(paths,options)=>selectCiPlan(paths.map(project),options);
 
@@ -24,7 +24,7 @@ test('storage, sync, runtime configuration and recovery select D1 and recovery',
  for(const path of ['worker.mjs','cloud-records.mjs','auth.mjs','calendar-images.mjs','personal-vault.mjs','project-core-sync.mjs','project-core-sheet.mjs','vocabulary-sheet.mjs','migrations/002.sql','wrangler.json','package-lock.json','google-apps-script/vocabulary-sync.gs','scripts/rehearse-recovery.py','scripts/verify-local-d1.mjs','scripts/verify-restored-app.mjs']){const plan=select([path]);assert.equal(plan.fullTests,true,path);assert.equal(plan.databaseChecks,true,path);}
 });
 test('workflow and selector modifications validate the complete pipeline',()=>{
- for(const path of ['.github/workflows/workbench-checks.yml',project('scripts/ci-plan.mjs'),project('scripts/ci-test.mjs')]){const plan=selectCiPlan([path]);assert.equal(plan.fullTests,true,path);assert.equal(plan.databaseChecks,true,path);}
+ for(const path of ['.github/workflows/workbench-checks.yml',project('scripts/ci-plan.mjs'),project('scripts/ci-run.mjs')]){const plan=selectCiPlan([path]);assert.equal(plan.fullTests,true,path);assert.equal(plan.databaseChecks,true,path);}
 });
 test('unknown source files are conservative and never silently skipped',()=>{for(const path of ['new-service.mjs','new-config.json','new-module/feature.ts']){const plan=select([path]);assert.equal(plan.fullTests,true);assert.equal(plan.databaseChecks,true);}});
 test('generated-only changes run full tests and cannot pretend to be a small style edit',()=>{const plan=select(['tasks-assets.mjs','pages.mjs']);assert.equal(plan.fullTests,true);assert.equal(plan.databaseChecks,false);});

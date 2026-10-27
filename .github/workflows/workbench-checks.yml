@@ -52,7 +52,7 @@ jobs:
       - run: npm run lint:strict
       - run: npm run typecheck:strict
       - name: Run selected Node tests
-        run: node scripts/ci-test.mjs "$RUNNER_TEMP/workbench-test-plan.json"
+        run: node scripts/ci-run.mjs "$RUNNER_TEMP/workbench-test-plan.json"
       - name: Check D1
         if: steps.plan.outputs.database_checks == 'true'
         run: npm run test:d1
