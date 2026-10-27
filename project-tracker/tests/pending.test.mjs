@@ -7,10 +7,11 @@ const helpers=html.split('// PENDING_HELPERS_START')[1].split('// PENDING_HELPER
 function setup(saved){
  const elements=new Map();const element=id=>{if(!elements.has(id))elements.set(id,{style:{},textContent:''});return elements.get(id);};
  const storage=new Map(saved===undefined?[]:[['pending',typeof saved==='string'?saved:JSON.stringify(saved)]]);
+ const buttons=[{disabled:false},{disabled:false}];
  const state={data:[{project:'A',task:'原问题'}],archive:[],projects:['A'],deletedProjects:[],priorities:{A:'high'}};
- const context=vm.createContext({JSON,Object,Array,localStorage:{getItem:k=>storage.get(k),removeItem:k=>storage.delete(k)},document:{getElementById:element,querySelectorAll:()=>[]}});
+ const context=vm.createContext({projectToolbar:{querySelectorAll:()=>buttons},JSON,Object,Array,localStorage:{getItem:k=>storage.get(k),removeItem:k=>storage.delete(k)},document:{getElementById:element,querySelectorAll:()=>[]}});
  vm.runInContext(helpers+`\nlet data=${JSON.stringify(state.data)},archive=[],projects=['A'],deletedProjects=[],projectPriorities={A:'high'},unresolvedPending=null,pendingCloud=null;const PENDING_KEY='pending';`+html.slice(html.indexOf('function currentTracker()'),html.indexOf('function reviewPending()')),context);
- return {context,storage,elements,state};
+ return {context,storage,elements,state,buttons};
 }
 test('matching local snapshot clears despite object-key order and ignores version metadata',()=>{
  const {context,storage}=setup({priorities:{A:'high'},deletedProjects:[],projects:['A'],archive:[],data:[{task:'原问题',project:'A'}],version:9});
@@ -18,8 +19,8 @@ test('matching local snapshot clears despite object-key order and ignores versio
 });
 test('different snapshot remains intact and prevents editing while awaiting review',()=>{
  const saved={data:[{project:'A',task:'未同步问题'}],archive:[],projects:['A'],deletedProjects:[],priorities:{A:'high'}};
- const {context,storage,elements}=setup(saved);vm.runInContext('inspectPending()',context);
- assert.deepEqual(JSON.parse(storage.get('pending')),saved);assert.equal(elements.get('tableBody').inert,true);assert.equal(elements.get('pendingNotice').style.display,'block');assert.equal(vm.runInContext('data[0].task',context),'原问题');
+ const {context,storage,elements,buttons}=setup(saved);vm.runInContext('inspectPending()',context);
+ assert.deepEqual(JSON.parse(storage.get('pending')),saved);assert.equal(elements.get('tableBody').inert,true);assert.ok(buttons.every(button=>button.disabled));assert.equal(elements.get('pendingNotice').style.display,'block');assert.equal(vm.runInContext('data[0].task',context),'原问题');
 });
 test('malformed snapshot is preserved for inspection rather than discarded',()=>{
  const {context,storage}=setup('{broken');vm.runInContext('inspectPending()',context);assert.equal(storage.get('pending'),'{broken');assert.equal(vm.runInContext('unresolvedPending.invalid',context),true);
