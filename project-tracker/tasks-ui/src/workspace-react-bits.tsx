@@ -1,6 +1,5 @@
 import {useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
-import ClickSpark,{type ClickSparkHandle} from './vendor/react-bits/ClickSpark';
 import SpotlightCard from './vendor/react-bits/SpotlightCard';
 import Magnet from './vendor/react-bits/Magnet';
 import AnimatedContent from './vendor/react-bits/AnimatedContent';
@@ -34,7 +33,7 @@ function AnimatedHeading({target,view}:{target:HTMLElement;view:string}){
 }
 
 export function WorkspaceReactBits(){
- const off=useWorkspaceMotionOff(),spark=useRef<ClickSparkHandle>(null);
+ const off=useWorkspaceMotionOff();
  const [complete,setComplete]=useState(false);
  const completeTimer=useRef(0);
  const [targets,setTargets]=useState<Targets>({cards:[],buttons:[],covers:[],title:null,view:''});
@@ -60,24 +59,15 @@ export function WorkspaceReactBits(){
  },[]);
  useEffect(()=>{
   if(off)return;
-  const click=(event:MouseEvent)=>{
-   if(!(event.target instanceof Element))return;
-   const target=event.target.closest<HTMLElement>('button,.btn,a[href]');
-   if(!target||target.matches(':disabled,[aria-disabled=true]')||target.closest('[inert]')||target.matches('[role=checkbox]'))return;
-   const rect=target.getBoundingClientRect();
-   spark.current?.spark(event.detail?event.clientX:rect.left+rect.width/2,event.detail?event.clientY:rect.top+rect.height/2);
-  };
-  const celebrate=(event:Event)=>{const {rect,complete}=(event as CustomEvent<{rect:DOMRect;complete:boolean}>).detail;spark.current?.spark(rect.left+rect.width/2,rect.top+rect.height/2);if(complete){setComplete(true);clearTimeout(completeTimer.current);completeTimer.current=window.setTimeout(()=>setComplete(false),2200);}};
-  document.addEventListener('click',click);window.addEventListener('workspace-celebrate',celebrate);
-  return()=>{document.removeEventListener('click',click);window.removeEventListener('workspace-celebrate',celebrate);clearTimeout(completeTimer.current);setComplete(false);};
+  const celebrate=(event:Event)=>{const {complete}=(event as CustomEvent<{complete:boolean}>).detail;if(complete){setComplete(true);clearTimeout(completeTimer.current);completeTimer.current=window.setTimeout(()=>setComplete(false),2200);}};
+  window.addEventListener('workspace-celebrate',celebrate);
+  return()=>{window.removeEventListener('workspace-celebrate',celebrate);clearTimeout(completeTimer.current);setComplete(false);};
  },[off]);
  const headingGradient=targets.view==='home'&&targets.title?.matches('.home2-intro h1')&&<WorkspaceGradientText target={targets.title}/>;
  if(off)return headingGradient;
- const sparkColor=getComputedStyle(document.body).getPropertyValue('--semantic-primary').trim()||getComputedStyle(document.body).color;
  return <>
   {complete&&createPortal(<div className='wb-day-complete' role='status'><BlurText text='今日英语与健身，全部打卡完成 ✓' trigger='load' animateBy='letters' delay={16} stepDuration={.14} distance={6} blur={5}/></div>,document.body)}
   {targets.view&&<AnimatedCards key={targets.view} cards={targets.cards} view={targets.view}/>}
-  {createPortal(<ClickSpark ref={spark} sparkColor={sparkColor} sparkCount={10} sparkRadius={28} sparkSize={8} duration={480} shape='star' ring glow={.4} style={{position:'fixed',inset:0,pointerEvents:'none',zIndex:1000}}/>,document.body)}
   {targets.cards.map(target=><SpotlightCard key={'card-'+nodeKey(target)} target={target} theme='light' spotlightColor='var(--semantic-primary)' intensity={.55} borderGlow={.7} spotlightSize={280} proximity={0} smoothing={.3} grain={0} ambient={false}/>)}
   {targets.buttons.map(target=><Magnet key={'button-'+nodeKey(target)} target={target} padding={12} maxOffset={2} magnetStrength={12} spring={{stiffness:170,damping:22}}/>)}
   {targets.covers.map(target=><Magnet key={'cover-'+nodeKey(target)} target={target} motionTarget={target.querySelector<HTMLElement>('img')||target} padding={0} maxOffset={0} tilt={7} scale={1.025} exclusive={false} spring={{stiffness:170,damping:22}}/>)}

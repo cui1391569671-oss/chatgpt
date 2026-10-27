@@ -354,7 +354,7 @@
   --workspace-motion-distance: 18px;
   --workspace-motion-ease: cubic-bezier(.22,1,.36,1);
   
-  --background-base: 220 35% 97%;
+  --background-base: 214 100% 98%;
   --foreground-base: 222 35% 16%;
 
   --card-base: 0 0% 100%;
@@ -363,7 +363,7 @@
   --popover-base: 0 0% 100%;
   --popover-fg-base: 222 35% 16%;
 
-  --primary-base: 263 70% 50%;
+  --primary-base: 221 83% 53%;
   --primary-fg-base: 210 40% 98%;
 
   --secondary-base: 210 40% 96%;
@@ -380,11 +380,11 @@
 
   --border-base: 214 32% 91%;
   --input-base: 214 32% 91%;
-  --ring-base: 263 70% 50%;
+  --ring-base: 221 83% 53%;
 
   
-  --chart-1-base: 263 70% 50%;
-  --chart-2-base: 217 91% 60%;
+  --chart-1-base: 221 83% 53%;
+  --chart-2-base: 199 89% 48%;
   --chart-3-base: 186 94% 43%;
   --chart-4-base: 142 76% 36%;
   --chart-5-base: 43 96% 56%;
@@ -398,33 +398,33 @@
   
 
   
-  --semantic-primary: #6554c0;
-  --semantic-primary-hover: #5744b3;
-  --semantic-primary-muted: rgb(101 84 192 / .2);
-  --semantic-primary-subtle: rgb(101 84 192 / .08);
-  --semantic-primary-text: #5945b0;
+  --semantic-primary: #2563eb;
+  --semantic-primary-hover: #1d4ed8;
+  --semantic-primary-muted: rgb(37 99 235 / .2);
+  --semantic-primary-subtle: rgb(37 99 235 / .08);
+  --semantic-primary-text: #1d4ed8;
 
   
-  --semantic-secondary: #7353ba;
-  --semantic-secondary-muted: rgb(115 83 186 / .14);
+  --semantic-secondary: #0369a1;
+  --semantic-secondary-muted: rgb(3 105 161 / .14);
 
 
-  --heading-gradient-start: #5227FF;
-  --heading-gradient-middle: #FF9FFC;
-  --heading-gradient-end: #B497CF;
+  --heading-gradient-start: #1d4ed8;
+  --heading-gradient-middle: #0369a1;
+  --heading-gradient-end: #2563eb;
 
   
-  --semantic-surface: #f5f7fc;
-  --semantic-surface-muted: #edf1f8;
+  --semantic-surface: #f7fbff;
+  --semantic-surface-muted: #eff6ff;
   --semantic-surface-elevated: #ffffff;
-  --semantic-surface-overlay: rgb(234 239 249 / .8);
+  --semantic-surface-overlay: rgb(239 246 255 / .8);
   --semantic-surface-strong: #ffffff;
   
-  --semantic-surface-medium: #e8edf7;
-  --semantic-surface-intense: #dde5f2;
+  --semantic-surface-medium: #e5effc;
+  --semantic-surface-intense: #dbeafe;
 
   
-  --semantic-border: #d3dbe9;
+  --semantic-border: #d5e3f4;
   --semantic-border-muted: rgb(91 111 145 / .18);
   --semantic-border-strong: #8796af;
   --semantic-border-subtle: rgb(91 111 145 / .12);
@@ -483,7 +483,7 @@
   
 
   
-  --glow-primary: 0 0 20px var(--oklch-violet-600-30);
+  --glow-primary: 0 0 20px var(--semantic-primary-muted);
   --glow-secondary: 0 0 15px var(--oklch-blue-500-25);
   --glow-success: 0 0 20px var(--oklch-emerald-500-50);
   --glow-warning: 0 0 20px var(--oklch-amber-500-50);
@@ -497,9 +497,9 @@
 
   
   --orb-1: rgb(82 120 255 / .12);
-  --orb-2: rgb(140 90 255 / .1);
+  --orb-2: rgb(37 99 235 / .1);
   --orb-3: rgb(59 196 230 / .08);
-  --orb-4: var(--oklch-violet-600-10);
+  --orb-4: var(--semantic-primary-subtle);
   --orb-5: transparent;
 
   
@@ -513,7 +513,7 @@
   --btn-primary-bg: var(--semantic-primary);
   --btn-primary-text: var(--semantic-text-inverse);
   --btn-primary-hover-bg: var(--semantic-primary-hover);
-  --btn-primary-glow: 0 4px 12px rgb(101 84 192 / .24), inset 0 1px 0 rgb(255 255 255 / .2);
+  --btn-primary-glow: 0 4px 12px var(--semantic-primary-muted), inset 0 1px 0 rgb(255 255 255 / .2);
   --btn-secondary-bg: var(--semantic-glass-bg-strong);
   --btn-secondary-text: var(--semantic-text);
   --btn-secondary-border: var(--semantic-border);
@@ -536,7 +536,7 @@
   
   --btn-link-text: var(--semantic-primary);
   
-  --btn-primary-shadow: 0 2px 5px rgb(101 84 192 / .2), inset 0 1px 0 rgb(255 255 255 / .18);
+  --btn-primary-shadow: 0 2px 5px var(--semantic-primary-muted), inset 0 1px 0 rgb(255 255 255 / .18);
   --btn-destructive-shadow: 0 4px 15px var(--semantic-error-muted);
   --btn-success-shadow: 0 4px 15px var(--semantic-success-muted);
   --btn-glow-radial: radial-gradient(circle, var(--oklch-white-15) 0%, transparent 70%);
@@ -817,9 +817,9 @@
   --profile-avatar-glow: 0 8px 24px var(--semantic-primary-muted);
 
   
-  --bg-from: #f4f7fc;
-  --bg-via: #eef1fa;
-  --bg-to: #f8f9fd;
+  --bg-from: #f7fbff;
+  --bg-via: #eff6ff;
+  --bg-to: #ffffff;
   --grid-color: var(--oklch-black-10);
   --grid-opacity: 0.015;
   --footer-text: var(--oklch-slate-400-60);
