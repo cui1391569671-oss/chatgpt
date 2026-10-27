@@ -4852,15 +4852,41 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 
 <dialog id="issueDetails" aria-labelledby="issueDetailsTitle"><div class="issue-details-head"><span id="issueProjectName"></span><button id="issueClose" type="button" aria-label="关闭问题详情">×</button></div><form id="issueDetailsForm" novalidate><h2 id="issueDetailsTitle">问题详情</h2><label for="issue-task">项目问题 / 跟进事项</label><input id="issue-task" maxlength="2000" required><div class="issue-field-pair"><div><label for="issue-status">当前状态</label><select id="issue-status"><option>进行中</option><option>暂停</option><option>已完成</option></select></div><div><label for="issue-plannedDate">计划日期</label><input id="issue-plannedDate" type="date"></div></div><label for="issue-reason">问题原因</label><textarea class="resize-none" id="issue-reason" maxlength="10000"></textarea><label for="issue-note">跟进备注</label><textarea class="resize-none" id="issue-note" maxlength="10000"></textarea><p id="issueDetailsError" class="form-error" role="alert"></p><div class="issue-details-actions"><button class="btn" id="issueCancel" type="button">取消</button><button class="btn btn-primary" type="submit">保存</button></div></form></dialog><script>
 /* PROJECT_LABELS_START */
-function projectNameOnly(value){return String(value||'').replace(/^\s*(?:PM|P)\s*\d+\s*[-—:：]?\s*/i,'').trim();}
+// Project identities confirmed by the user on 2026-10-27. Codes always come
+// from the information-sheet snapshot, never from the legacy numeric prefix.
+const verifiedProjectNames=[
+ ['台湾相洋项目','台湾桃园项目'],
+ ['北起旭创泰国四向车立库项目','北起旭创泰国项目','北起泰国项目'],
+ ['韩国 Altiall Samsung Gwangju 四向车项目','韩国Altiall Samsung Gwangju项目','韩国三星项目'],
+ ['林德马来西亚CEL四向车项目','林德马来西亚CEL项目','林德马来西亚项目'],
+ ['林德香港邦泰流浮山六向车立体库项目','林德香港邦泰流浮山项目','林德香港项目'],
+ ['意大利 Logivia Pierrel Capua 医药四向车项目','意大利Logivia Pierrel Capua项目','意大利 pirrel 项目']
+];
+function projectNameOnly(value){return String(value||'').replace(/^\s*(?:PM|P)\s*\d+\s*[-—:：|｜]?\s*/i,'').trim();}
+const projectNameKey=value=>projectNameOnly(value).replace(/\s+/g,'').toLowerCase();
+const verifiedProjectKeys=verifiedProjectNames.map(names=>new Set(names.map(projectNameKey)));
+const namesWithoutLegacyCode=new Set(['杭州中策','杭州中策项目','四川达州','四川达州项目'].map(projectNameKey));
 function projectLabel(value,items=[]){
- const original=String(value||'').trim(),name=projectNameOnly(value),key=name.replace(/\s+/g,'').toLowerCase();
- const matches=items.filter(item=>[item.projectName,item.sourceSheet,...(item.aliases||[])].some(alias=>projectNameOnly(alias).replace(/\s+/g,'').toLowerCase()===key));
- return matches.length===1&&matches[0].projectCode?matches[0].projectCode+' '+name:original;
+ const original=String(value||'').trim(),name=projectNameOnly(value),key=projectNameKey(value);
+ if(!key)return original;
+ const matches=items.filter(item=>{
+  const aliases=[item.projectName,item.sourceSheet,...(item.aliases||[])].filter(Boolean).map(projectNameKey);
+  return aliases.includes(key)||verifiedProjectKeys.some(group=>group.has(key)&&aliases.some(alias=>group.has(alias)));
+ });
+ if(matches.length===1&&matches[0].projectCode)return matches[0].projectCode.trim()+' '+name;
+ return namesWithoutLegacyCode.has(key)?name:original;
 }
 let projectLabelItems=[];
 function displayProject(value){return projectLabel(value,projectLabelItems);}
-async function loadProjectLabels(){try{const response=await fetch('/api/project-core-information',{cache:'no-store'});if(!response.ok)throw Error();const payload=await response.json();if(!Array.isArray(payload.items)||!payload.items.every(item=>item&&typeof item.projectCode==='string'&&item.projectCode.trim()&&typeof item.projectName==='string'&&(item.aliases===undefined||Array.isArray(item.aliases)&&item.aliases.every(alias=>typeof alias==='string'))))throw Error();projectLabelItems=payload.items;}catch{/* A failed refresh must retain the last successfully loaded labels. */}}
+async function loadProjectLabels(){
+ try{
+  const response=await fetch('/api/project-core-information',{cache:'no-store'});if(!response.ok)throw Error();
+  const payload=await response.json();
+  if(!Array.isArray(payload.items)||!payload.items.every(item=>item&&typeof item.projectCode==='string'&&item.projectCode.trim()&&typeof item.projectName==='string'&&(item.sourceSheet===undefined||typeof item.sourceSheet==='string')&&(item.aliases===undefined||Array.isArray(item.aliases)&&item.aliases.every(alias=>typeof alias==='string'))))throw Error();
+  const next=payload.items.map(item=>({projectCode:item.projectCode.trim(),projectName:item.projectName,sourceSheet:item.sourceSheet,aliases:item.aliases}));
+  const changed=JSON.stringify(projectLabelItems)!==JSON.stringify(next);projectLabelItems=next;return changed;
+ }catch{return false;/* A failed refresh retains the last successfully loaded labels. */}
+}
 
 /* PROJECT_LABELS_END */
 /* CLOUD_RECORDS_START */
@@ -5073,12 +5099,12 @@ async function loadData() {
   }
 }
 
-let projectRefreshing=false;
+let projectRefreshing=false,projectLabelsDirty=false;
 async function refreshProjectTable(){
  if(!ready||conflicted||unresolvedPending||dataDirty||pendingState||saving||projectRefreshing||document.querySelector('.modal-overlay.active,#issueDetails[open]')||document.activeElement?.closest('[contenteditable="true"],.date-cell input'))return;
  projectRefreshing=true;const priorVersion=cloudVersion;
- try{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)throw Error('云端更新检查失败 '+r.status);const latest=await r.json();if(dataDirty||pendingState||saving||cloudVersion!==priorVersion||document.querySelector('.modal-overlay.active,#issueDetails[open]')||document.activeElement?.closest('[contenteditable="true"],.date-cell input'))return;
-  if(latest.version!==cloudVersion){const changed=!sameTracker(latest,currentTracker());data=latest.data;archive=latest.archive;projectPriorities=latest.priorities;projects=latest.projects;deletedProjects=latest.deletedProjects;cloudVersion=latest.version;cloudBase=structuredClone(currentTracker());if(changed){renderTable();updateStats();if(window.parent!==window)window.parent.postMessage({type:'project-saved'},location.origin);}}
+ try{projectLabelsDirty=(await loadProjectLabels())||projectLabelsDirty;const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)throw Error('云端更新检查失败 '+r.status);const latest=await r.json();if(dataDirty||pendingState||saving||cloudVersion!==priorVersion||document.querySelector('.modal-overlay.active,#issueDetails[open]')||document.activeElement?.closest('[contenteditable="true"],.date-cell input'))return;
+  let changed=projectLabelsDirty;if(latest.version!==cloudVersion){changed=changed||!sameTracker(latest,currentTracker());data=latest.data;archive=latest.archive;projectPriorities=latest.priorities;projects=latest.projects;deletedProjects=latest.deletedProjects;cloudVersion=latest.version;cloudBase=structuredClone(currentTracker());}if(changed){renderTable();updateStats();if(projectLabelsDirty)populateProjectSelect();projectLabelsDirty=false;if(window.parent!==window)window.parent.postMessage({type:'project-saved'},location.origin);}
  }catch(e){setSync(e.message+'；当前数据仍保留');}finally{projectRefreshing=false;}
 }
 setInterval(()=>{if(!document.hidden){if(pendingState&&!conflicted&&!unresolvedPending)flushSave();else refreshProjectTable();}},30000);

@@ -7,7 +7,7 @@ test('labels use the information-sheet code only for an exact name or verified a
  assert.equal(projectLabel('PM001 台湾相洋项目',items),'PM001 台湾相洋项目');
  assert.equal(projectLabel('P006 意大利pirrel项目',items),'PM006 意大利pirrel项目');
  assert.equal(projectLabel('P011 意大利LOGVIA-SPA项目',items),'P011 意大利LOGVIA-SPA项目');
- assert.equal(projectLabel('P007 杭州中策项目',items),'P007 杭州中策项目');
+ assert.equal(projectLabel('P007 杭州中策项目',items),'杭州中策项目');
  assert.equal(projectLabel('台湾相洋项目',items),'PM001 台湾相洋项目');
  assert.equal(projectLabel('P001 其他项目',items),'P001 其他项目');
 });
@@ -37,4 +37,34 @@ test('failed or malformed label refresh retains the last successful mapping',asy
  assert.equal(displayProject('P001 台湾桃园项目'),'PM002 台湾桃园项目');
  globalThis.fetch=async()=>Response.json({items:[]});await loadProjectLabels();
  assert.equal(displayProject('P001 台湾桃园项目'),'P001 台湾桃园项目');
+});
+
+test('confirmed unmatched projects show names until the information sheet assigns a code',()=>{
+ for(const [legacy,name] of [['P007｜杭州中策项目','杭州中策项目'],['P008｜四川达州项目','四川达州项目']]){
+  assert.equal(projectLabel(legacy),name);
+  assert.equal(projectLabel(legacy,[{projectCode:'PM007',projectName:'哈萨克斯坦项目'},{projectCode:'PM008',projectName:'意大利Pozzuoli Euromed项目'}]),name);
+  assert.equal(projectLabel(legacy,[{projectCode:'PM021',projectName:name}]),'PM021 '+name);
+ }
+ assert.equal(projectLabel('P099｜未核实项目'), 'P099｜未核实项目');
+});
+test('verified aliases resolve current information-sheet codes without relying on the old number',()=>{
+ const pairs=[['台湾桃园项目','台湾相洋项目'],['北起泰国项目','北起旭创泰国四向车立库项目'],['韩国三星项目','韩国 Altiall Samsung Gwangju 四向车项目'],['林德马来西亚项目','林德马来西亚CEL四向车项目'],['林德香港项目','林德香港邦泰流浮山六向车立体库项目'],['意大利 pirrel 项目','意大利 Logivia Pierrel Capua 医药四向车项目']];
+ for(const [legacy,canonical] of pairs){
+  const source=[{projectCode:'PM123',projectName:canonical}];
+  assert.equal(projectLabel('P099｜'+legacy,source),'PM123 '+legacy);
+  assert.equal(projectLabel('P099｜'+legacy,[...source,{projectCode:'PM124',projectName:canonical}]),'P099｜'+legacy);
+ }
+ assert.equal(projectNameOnly(' PM001｜台湾相洋项目 '),'台湾相洋项目');
+ assert.equal(projectNameOnly('PM001|台湾相洋项目'),'台湾相洋项目');
+});
+test('label refresh reports only label changes and preserves a valid mapping on failure',async t=>{
+ let payload={items:[{projectCode:'PM041',projectName:'同名测试项目',efficiency:'a'}]};
+ t.mock.method(globalThis,'fetch',async()=>Response.json(payload));
+ assert.equal(await loadProjectLabels(),true);
+ assert.equal(await loadProjectLabels(),false);
+ payload.items[0].efficiency='b';assert.equal(await loadProjectLabels(),false);
+ payload.items[0].projectCode='PM042';assert.equal(await loadProjectLabels(),true);
+ assert.equal(displayProject('P001 同名测试项目'),'PM042 同名测试项目');
+ globalThis.fetch=async()=>Response.json({}, {status:503});assert.equal(await loadProjectLabels(),false);
+ assert.equal(displayProject('P001 同名测试项目'),'PM042 同名测试项目');
 });
