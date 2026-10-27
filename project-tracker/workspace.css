@@ -2036,7 +2036,7 @@ body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button {
   min-height: 44px;
   flex: none;
   padding: 10px;
-  border-radius: 13px;
+  border-radius: var(--control-radius);
 }
 body.shadcn-workbench .wb-topbar-actions {
   flex-shrink: 0;
@@ -2164,8 +2164,8 @@ body.shadcn-workbench .wb-icon-button {
   background: var(--btn-secondary-bg);
   color: var(--btn-secondary-text);
   border: 1px solid var(--btn-secondary-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--control-radius);
+  box-shadow: none;
 }
 body.shadcn-workbench .wb-icon-button:not(:disabled):hover {
   background: var(--btn-secondary-hover-bg);
@@ -2201,8 +2201,9 @@ body.shadcn-workbench .tasks-table-scroll :is(th,td),body.shadcn-workbench .proj
   border-color: var(--semantic-border);
 }
 body :is([data-ui-control=button],[data-slot=button]),body.modern-project .btn {
-  padding: 8px 14px;
+  padding: 0 var(--control-button-padding-x);
   gap: 8px;
+  line-height: var(--control-line-height);
   font-weight: 500;
   cursor: pointer;
   scale: 1;
@@ -2478,15 +2479,18 @@ body.shadcn-workbench,body.modern-project,body.glass-login {
   --control-height: 44px;
   --control-radius: 10px;
   --control-font-size: 14px;
+  --control-line-height: 20px;
+  --control-button-padding-x: 14px;
   --dialog-radius: 20px;
   --dialog-gap: 16px;
 }
 body :is(.workspace-input,.workspace-textarea,.workspace-select,[data-slot=button],[data-slot=input],[data-slot=textarea],[data-slot=select-trigger],[data-ui-control=input],[data-ui-control=textarea],[data-ui-control=button]),body.shadcn-workbench .filters :is(input,select),body.modern-project .btn {
   min-height: var(--control-height);
+  box-sizing: border-box;
   border-radius: var(--control-radius);
   font-size: var(--control-font-size);
 }
-body :is(.workspace-input,.workspace-select,[data-slot=input],[data-slot=select-trigger],[data-ui-control=input]) {
+body :is(.workspace-input,.workspace-select,[data-slot=input],[data-slot=select-trigger],[data-ui-control=input],[data-slot=button],[data-ui-control=button]),body.modern-project .btn {
   height: var(--control-height);
 }
 body :is(.workspace-textarea,[data-slot=textarea],[data-ui-control=textarea]) {
@@ -2497,7 +2501,8 @@ body :is(.workspace-textarea,[data-slot=textarea],[data-ui-control=textarea]) {
 body [data-workspace-size=icon] {
   width: var(--control-height);
   min-width: var(--control-height);
-  padding: 10px;
+  height: var(--control-height);
+  padding: 0;
 }
 body :is([data-ui-control=button],[data-slot=button]):not(:disabled):active {
   --btn-secondary-bg: var(--semantic-control-active);

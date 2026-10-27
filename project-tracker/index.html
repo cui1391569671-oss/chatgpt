@@ -4362,7 +4362,7 @@ body.shadcn-workbench .wb-trigger,body.shadcn-workbench .wb-icon-button {
   min-height: 44px;
   flex: none;
   padding: 10px;
-  border-radius: 13px;
+  border-radius: var(--control-radius);
 }
 body.shadcn-workbench .wb-topbar-actions {
   flex-shrink: 0;
@@ -4490,8 +4490,8 @@ body.shadcn-workbench .wb-icon-button {
   background: var(--btn-secondary-bg);
   color: var(--btn-secondary-text);
   border: 1px solid var(--btn-secondary-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--control-radius);
+  box-shadow: none;
 }
 body.shadcn-workbench .wb-icon-button:not(:disabled):hover {
   background: var(--btn-secondary-hover-bg);
@@ -4527,8 +4527,9 @@ body.shadcn-workbench .tasks-table-scroll :is(th,td),body.shadcn-workbench .proj
   border-color: var(--semantic-border);
 }
 body :is([data-ui-control=button],[data-slot=button]),body.modern-project .btn {
-  padding: 8px 14px;
+  padding: 0 var(--control-button-padding-x);
   gap: 8px;
+  line-height: var(--control-line-height);
   font-weight: 500;
   cursor: pointer;
   scale: 1;
@@ -4804,15 +4805,18 @@ body.shadcn-workbench,body.modern-project,body.glass-login {
   --control-height: 44px;
   --control-radius: 10px;
   --control-font-size: 14px;
+  --control-line-height: 20px;
+  --control-button-padding-x: 14px;
   --dialog-radius: 20px;
   --dialog-gap: 16px;
 }
 body :is(.workspace-input,.workspace-textarea,.workspace-select,[data-slot=button],[data-slot=input],[data-slot=textarea],[data-slot=select-trigger],[data-ui-control=input],[data-ui-control=textarea],[data-ui-control=button]),body.shadcn-workbench .filters :is(input,select),body.modern-project .btn {
   min-height: var(--control-height);
+  box-sizing: border-box;
   border-radius: var(--control-radius);
   font-size: var(--control-font-size);
 }
-body :is(.workspace-input,.workspace-select,[data-slot=input],[data-slot=select-trigger],[data-ui-control=input]) {
+body :is(.workspace-input,.workspace-select,[data-slot=input],[data-slot=select-trigger],[data-ui-control=input],[data-slot=button],[data-ui-control=button]),body.modern-project .btn {
   height: var(--control-height);
 }
 body :is(.workspace-textarea,[data-slot=textarea],[data-ui-control=textarea]) {
@@ -4823,7 +4827,8 @@ body :is(.workspace-textarea,[data-slot=textarea],[data-ui-control=textarea]) {
 body [data-workspace-size=icon] {
   width: var(--control-height);
   min-width: var(--control-height);
-  padding: 10px;
+  height: var(--control-height);
+  padding: 0;
 }
 body :is([data-ui-control=button],[data-slot=button]):not(:disabled):active {
   --btn-secondary-bg: var(--semantic-control-active);
@@ -5245,7 +5250,7 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 
 <div class="toolbar">
     <div class="toolbar-row">
-      <button type="button" class="btn btn-outline project-search-toggle" id="projectSearchToggle" aria-label="搜索项目问题" title="搜索" aria-expanded="false" aria-controls="projectSearchBox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></button>
+      <button type="button" class="btn btn-outline project-search-toggle" id="projectSearchToggle" data-workspace-size="icon" aria-label="搜索项目问题" title="搜索" aria-expanded="false" aria-controls="projectSearchBox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></button>
       <div class="search-box project-search-box" id="projectSearchBox" hidden><input type="search" id="searchInput" aria-label="搜索项目问题" placeholder="搜索问题 / 原因 / 备注 / 项目…"></div>
       <button class="btn btn-add" onclick="showAddChoice()" title="添加项目或问题" id="btnAdd"></button>
       <button class="btn btn-outline" id="btnSave" type="button" onmousedown="event.preventDefault()" onclick="manualSave()" title="将当前修改保存到云端">保存</button>
