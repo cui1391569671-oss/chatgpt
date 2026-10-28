@@ -2304,7 +2304,7 @@ dialog[open]::backdrop {
 .checkin-list{list-style:none;padding:0;margin:0}.checkin-list li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--semantic-border)}.checkin-list li:last-child{border-bottom:0}.checkin-toggle{flex:1;min-width:0}.checkin-toggle span{overflow-wrap:anywhere}
 
 /* Immersive home and editorial inner pages: desktop reference layout. */
-.site-home{max-width:1370px;width:100%;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:40px;padding:72px 16px 0;min-width:0}
+.site-home{max-width:1370px;width:100%;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:40px;padding:72px 16px 24px;min-width:0}
 .site-home-intro{--workspace-title-size:clamp(48px,5.6vw,88px);--workspace-title-weight:650;min-width:0}
 .site-home-date{margin:0 0 24px;font-size:18px}
 .site-home-intro h1{margin:0 0 24px;line-height:1.3;letter-spacing:-2px;overflow-wrap:anywhere}
@@ -2316,7 +2316,6 @@ dialog[open]::backdrop {
 .site-home-stat{display:grid;gap:8px;min-width:120px;min-height:80px;padding:0;background:transparent;border:0;text-align:left}
 .site-home-stat strong{font-size:44px;line-height:1.2;font-weight:500;font-variant-numeric:tabular-nums}
 .site-home-stat span{font-size:16px}
-.site-home-footer{padding:24px 0;font-size:14px}
 .site-task-list{max-width:1240px;width:100%;margin:0 auto}
 .site-task-summary{margin:0 0 24px;font-size:18px}
 .site-list-controls{display:flex;justify-content:space-between;gap:24px;align-items:center;padding-bottom:12px;flex-wrap:wrap}

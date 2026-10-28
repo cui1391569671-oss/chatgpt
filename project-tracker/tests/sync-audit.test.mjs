@@ -37,7 +37,7 @@ test('queued project edits submit only changes against the acknowledged cloud st
 });
 const workHtml=readFileSync(new URL('../workbench.html',import.meta.url),'utf8');
 test('workspace background refresh updates data but ignores responses racing a local save',async()=>{
- let respond;const document={querySelector:()=>null};const context=vm.createContext({JSON,Error,ready:true,busy:false,workspaceRefreshing:false,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,state:{tasks:[],notes:[],events:[]},version:1,api:'/api/workspace?scope=work',document,render:()=>{},status:()=>{},fetch:()=>new Promise(r=>respond=r)});
+ let respond;const document={querySelector:()=>null};const context=vm.createContext({JSON,Error,ready:true,busy:false,workspaceRefreshing:false,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,state:{tasks:[],notes:[],events:[]},version:1,api:'/api/workspace?scope=work',document,$:()=>({dataset:{}}),render:()=>{},status:()=>{},fetch:()=>new Promise(r=>respond=r)});
  vm.runInContext(workHtml.slice(workHtml.indexOf('async function refreshWorkspace()'),workHtml.indexOf('setInterval(()=>{if(!document.hidden)refreshWorkspace();}')),context);
  const running=context.refreshWorkspace();respond({ok:true,json:async()=>({workspace:{tasks:[task('remote')],notes:[],events:[]},version:2})});await running;assert.equal(context.state.tasks[0].id,'remote');
  const delayed=context.refreshWorkspace();context.version=3;context.state.tasks=[task('local-save')];respond({ok:true,json:async()=>({workspace:{tasks:[],notes:[],events:[]},version:2})});await delayed;assert.equal(context.state.tasks[0].id,'local-save');assert.equal(context.version,3);
@@ -63,4 +63,30 @@ test('archive does not remove a task reopened by another device and enforces ori
  assert.equal((await worker.fetch(request('/api/state/archive',{ids:[id]}),env)).status,409);assert.equal((await read(env)).data.length,1);assert.equal((await read(env)).archive.length,0);
  assert.equal((await worker.fetch(request('/api/state/archive',{ids:[]}),env)).status,400);
  const foreign=request('/api/state/archive',{ids:[id]});foreign.headers.set('Origin','https://foreign.local');assert.equal((await worker.fetch(foreign,env)).status,403);
+});
+
+function refreshFixture(){
+ const nodes=new Map();
+ const $=id=>{if(!nodes.has(id)){const classes=new Set();nodes.set(id,{dataset:{},textContent:'',setAttribute(){},classList:{contains:value=>classes.has(value),toggle(value,on){if(on)classes.add(value);else classes.delete(value);}}});}return nodes.get(id);};
+ let result;
+ const context=vm.createContext({ready:true,busy:false,workspaceRefreshing:false,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,state:{tasks:[task('retained')],notes:[],events:[]},version:1,view:'home',api:'/api/workspace?scope=work',document:{querySelector:()=>null},$,render(){},fetch:async()=>{if(result instanceof Error)throw result;return result;}});
+ vm.runInContext(workHtml.slice(workHtml.indexOf('function status('),workHtml.indexOf('async function workspaceConfirm(')),context);
+ vm.runInContext(workHtml.slice(workHtml.indexOf('async function refreshWorkspace()'),workHtml.indexOf('setInterval(()=>{if(!document.hidden)refreshWorkspace();}')),context);
+ return {context,$,respond(value){result=value;},async refresh(){await context.refreshWorkspace();}};
+}
+test('background connection error clears after recovery even when the cloud version is unchanged',async()=>{
+ const f=refreshFixture();f.respond(new TypeError('Failed to fetch'));await f.refresh();
+ assert.equal(f.$('status').classList.contains('error'),true);assert.equal(f.context.state.tasks[0].id,'retained');assert.equal(f.context.workspaceRefreshing,false);
+ f.respond({ok:true,json:async()=>({version:1,workspace:{tasks:[]}})});await f.refresh();
+ assert.equal(f.$('status').classList.contains('hidden'),true);assert.equal(f.$('status').classList.contains('error'),false);assert.equal(f.context.state.tasks[0].id,'retained');
+});
+test('background polling never replaces or clears a save error',async()=>{
+ const f=refreshFixture();f.context.status('保存失败，输入已保留',true);f.respond(new TypeError('Failed to fetch'));await f.refresh();
+ assert.equal(f.$('statusText').textContent,'保存失败，输入已保留');
+ f.respond({ok:true,json:async()=>({version:1,workspace:{tasks:[]}})});await f.refresh();
+ assert.equal(f.$('statusText').textContent,'保存失败，输入已保留');assert.equal(f.$('status').classList.contains('error'),true);
+});
+test('failed HTTP refresh preserves records and remains retryable',async()=>{
+ const f=refreshFixture();f.respond({ok:false,status:503});await f.refresh();assert.match(f.$('statusText').textContent,/503/);assert.equal(f.context.state.tasks[0].id,'retained');
+ f.respond({ok:true,json:async()=>({version:2,workspace:{tasks:[task('updated')]}})});await f.refresh();assert.equal(f.context.state.tasks[0].id,'updated');assert.equal(f.$('status').classList.contains('hidden'),true);
 });

@@ -4169,7 +4169,7 @@ dialog[open]::backdrop {
 .checkin-list{list-style:none;padding:0;margin:0}.checkin-list li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--semantic-border)}.checkin-list li:last-child{border-bottom:0}.checkin-toggle{flex:1;min-width:0}.checkin-toggle span{overflow-wrap:anywhere}
 
 /* Immersive home and editorial inner pages: desktop reference layout. */
-.site-home{max-width:1370px;width:100%;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:40px;padding:72px 16px 0;min-width:0}
+.site-home{max-width:1370px;width:100%;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:40px;padding:72px 16px 24px;min-width:0}
 .site-home-intro{--workspace-title-size:clamp(48px,5.6vw,88px);--workspace-title-weight:650;min-width:0}
 .site-home-date{margin:0 0 24px;font-size:18px}
 .site-home-intro h1{margin:0 0 24px;line-height:1.3;letter-spacing:-2px;overflow-wrap:anywhere}
@@ -4181,7 +4181,6 @@ dialog[open]::backdrop {
 .site-home-stat{display:grid;gap:8px;min-width:120px;min-height:80px;padding:0;background:transparent;border:0;text-align:left}
 .site-home-stat strong{font-size:44px;line-height:1.2;font-weight:500;font-variant-numeric:tabular-nums}
 .site-home-stat span{font-size:16px}
-.site-home-footer{padding:24px 0;font-size:14px}
 .site-task-list{max-width:1240px;width:100%;margin:0 auto}
 .site-task-summary{margin:0 0 24px;font-size:18px}
 .site-list-controls{display:flex;justify-content:space-between;gap:24px;align-items:center;padding-bottom:12px;flex-wrap:wrap}
@@ -6251,39 +6250,34 @@ body.shadcn-workbench .wb-topbar {
 
 /* Top navigation and grouped menus share page metadata with page search. */
 body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;min-width:0;margin:var(--app-top-gap) var(--app-gutter) 0;background:transparent;border:0}
-/* Three balanced header zones keep navigation centered independently of brand/actions. */
+/* Three balanced header zones keep navigation centered independently of the right-side actions. */
 .wb-navigation-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px;min-width:0;width:100%;max-width:1370px;margin:0 auto;padding:0 0 16px}
-.wb-site-brand{justify-self:start;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-height:44px;padding:0;color:var(--semantic-primary-text);background:transparent;border:0;box-shadow:none}
-.wb-primary-navigation{position:relative;min-width:0;isolation:isolate}
+.wb-primary-navigation{grid-column:2;position:relative;min-width:0;isolation:isolate}
 .wb-top-navigation{display:flex;justify-content:center;gap:24px;min-width:0;list-style:none;margin:0;padding:0}
 .wb-top-navigation>li{list-style:none;margin:0;padding:0;display:flex}
-.wb-nav-chevron{margin-left:4px;transition:rotate var(--duration-base)}
-.wb-site-nav-link[data-state=open] .wb-nav-chevron{rotate:180deg}
-.wb-navigation-panel-anchor{position:absolute;top:100%;left:0;width:100%;display:flex;justify-content:center;pointer-events:none;padding-top:10px;z-index:90}
-.wb-navigation-viewport{position:relative;isolation:isolate;width:var(--radix-navigation-menu-viewport-width);height:var(--radix-navigation-menu-viewport-height);max-width:calc(100vw - 32px);max-height:calc(100dvh - 110px);overflow:hidden;pointer-events:auto;background:var(--semantic-surface-strong);color:var(--semantic-text);border:1px solid var(--semantic-border-muted);border-radius:20px;box-shadow:var(--popover-shadow)}
+.wb-navigation-panel-anchor{position:absolute;top:100%;left:0;width:100%;display:flex;justify-content:center;pointer-events:none;padding-top:12px;z-index:90}
+.wb-navigation-viewport{position:relative;isolation:isolate;width:var(--radix-navigation-menu-viewport-width);height:var(--radix-navigation-menu-viewport-height);max-width:calc(100vw - 32px);max-height:calc(100dvh - 110px);overflow:hidden;pointer-events:auto;background:var(--semantic-surface);color:var(--semantic-text);border:1px solid var(--semantic-border-muted);border-radius:12px;box-shadow:none}
 .wb-navigation-viewport[data-state=closed]{pointer-events:none}
-.wb-navigation-content{position:absolute;top:0;left:0;max-width:calc(100vw - 32px);padding:8px;max-height:calc(100dvh - 110px);overflow-y:auto;box-sizing:border-box}
+.wb-navigation-content{position:absolute;top:0;left:0;max-width:calc(100vw - 32px);padding:12px;max-height:calc(100dvh - 110px);overflow-y:auto;box-sizing:border-box}
 .wb-navigation-links{display:grid;gap:2px;isolation:isolate}
-.wb-navigation-link{position:relative;display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:10px 12px;border:0;border-radius:var(--control-radius);color:var(--semantic-text);background:transparent;text-align:left;font-size:14px;line-height:20px;cursor:pointer;isolation:isolate;text-decoration:none}
+.wb-navigation-link{position:relative;display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:10px 16px;border:0;border-radius:0;color:var(--semantic-text-muted);background:transparent;text-align:left;font-size:16px;line-height:20px;cursor:pointer;isolation:isolate;text-decoration:none}
 .wb-navigation-link>span{flex:1;min-width:0}
-.wb-navigation-link:hover,.wb-navigation-link:focus-visible{background:var(--semantic-primary-subtle);color:var(--semantic-primary-text)}
+.wb-navigation-link:hover,.wb-navigation-link:focus-visible{background:transparent;color:var(--semantic-primary-text)}
 .wb-navigation-link[data-active]{color:var(--semantic-primary-text)}
 .wb-primary-navigation :focus-visible,.wb-nav-menu-item:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:-2px}
-@media(prefers-reduced-motion:reduce){.wb-nav-chevron{transition:none}}
 .wb-site-nav-link{position:relative;display:inline-flex;align-items:center;justify-content:center;padding:0 8px;min-height:44px;font-size:16px;background:transparent;border:0;box-shadow:none;color:var(--semantic-text-muted);border-radius:0;text-decoration:none}
 .wb-site-nav-link[data-active=true]{color:var(--semantic-primary-text)}
 .wb-site-nav-link[data-active=true]::after{content:'';position:absolute;left:8px;right:8px;bottom:0;height:2px;background:var(--semantic-primary)}
-.wb-site-nav-link:hover,.wb-site-nav-link:focus-visible,.wb-site-brand:hover{background:var(--semantic-primary-subtle)}
+.wb-site-nav-link:hover,.wb-site-nav-link:focus-visible{background:transparent;color:var(--semantic-primary-text)}
 .wb-navigation-row>.wb-topbar-actions{justify-self:end}
 .wb-page-row{width:100%;max-width:1290px;margin:28px auto 16px;display:flex;align-items:center;justify-content:space-between;gap:32px;min-width:0}
 .wb-page-row[hidden]{display:none}
 /* Selected black/gold personal-site home, shared with inner-page typography. */
 .site-home h1{color:var(--semantic-text)}
 .site-home h1 span,.site-home-stat:first-child strong{color:var(--semantic-primary-text)}
-.site-home-date,.site-home-motto,.site-home-stat strong,.site-home-footer{color:var(--semantic-text-muted)}
+.site-home-date,.site-home-motto,.site-home-stat strong{color:var(--semantic-text-muted)}
 .site-home-stat span,.site-home-link{color:var(--semantic-text)}
 .site-home-link:hover,.site-home-stat:hover strong{color:var(--semantic-primary-text)}
-.site-home-footer{border-top:1px solid var(--semantic-border-muted)}
 .wb-page-location{flex:1;min-width:260px;color:var(--semantic-text);--workspace-title-size:40px;--workspace-title-weight:650}.wb-page-location p{margin:0 0 16px;font-size:16px;color:var(--semantic-text-muted)}.wb-page-location h1{font-size:40px;line-height:1.3;letter-spacing:-1px;margin:0 0 12px}.wb-page-location h1 span{color:var(--semantic-primary-text)}.wb-page-location p:last-child{margin:0}.wb-page-location p:empty{display:none}
 .wb-nav-menu{min-width:200px;max-width:calc(100vw - 32px);max-height:var(--radix-dropdown-menu-content-available-height);overflow-y:auto;padding:8px;isolation:isolate;border:1px solid var(--semantic-border-muted);border-radius:20px;background:var(--semantic-surface-strong);color:var(--semantic-text);box-shadow:var(--popover-shadow)}
 .wb-nav-menu[data-state=closed]{pointer-events:none}
@@ -6293,7 +6287,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-nav-menu-item[data-disabled]{pointer-events:none;opacity:.5}
 .wb-nav-menu [aria-current=page]{color:var(--semantic-primary-text)}
 @media(max-width:900px){.wb-navigation-row{gap:12px}.wb-top-navigation{gap:12px}}
-@media(max-width:640px){.wb-navigation-row{grid-template-columns:minmax(0,1fr) auto;gap:16px 8px}.wb-top-navigation{grid-column:1/-1;grid-row:2;width:100%;gap:24px}.wb-page-row{flex-direction:column;align-items:stretch;gap:8px}.wb-page-row>.wb-page-location{padding-left:4px}.wb-topbar-actions{justify-content:flex-end}}
+@media(max-width:640px){.wb-primary-navigation{grid-column:1/-1;grid-row:2}.wb-navigation-row{grid-template-columns:minmax(0,1fr) auto;gap:16px 8px}.wb-top-navigation{grid-column:1/-1;grid-row:2;width:100%;gap:24px}.wb-page-row{flex-direction:column;align-items:stretch;gap:8px}.wb-page-row>.wb-page-location{padding-left:4px}.wb-topbar-actions{justify-content:flex-end}}
 
 .site-task-group h2,.workspace-note-index h2{color:var(--semantic-text)}
 .site-task-summary,.site-task-group h2 small,.site-task-title span,.site-task-title small,.site-list-footer,.site-empty p{color:var(--semantic-text-muted)}
@@ -6680,7 +6674,6 @@ body .ui-business-dialog :is(.dialog-actions,.modal-actions,.issue-details-actio
   margin-top: var(--dialog-gap);
 }
 /* Search: one owner for React fields and enhanced DOM fields. */
-.wb-search-trigger { margin-left: auto; }
 .workspace-search {
   --workspace-field-inset-start: 36px;
   --workspace-field-inset-end: 48px;
@@ -7239,13 +7232,25 @@ const day=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'});
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=d=>d?d.replace('T',' '):'未设置日期';
 const priority=p=>({high:'高优先级',normal:'普通',low:'低优先级'}[p]||'普通');
-function status(text,error=false){$('status').setAttribute('role',error?'alert':'status');$('statusText').textContent=text;$('status').classList.toggle('error',error);$('status').classList.toggle('hidden',!error||view==='projects');$('recover').classList.toggle('hidden',!error);}
+function status(text,error=false,source=''){$('status').dataset.source=source;$('status').setAttribute('role',error?'alert':'status');$('statusText').textContent=text;$('status').classList.toggle('error',error);$('status').classList.toggle('hidden',!error||view==='projects');$('recover').classList.toggle('hidden',!error);}
 async function workspaceConfirm(description){if(!window.WorkspacePrimitives){toast('确认组件加载失败，请刷新页面后重试。');return false;}return window.WorkspacePrimitives.confirm({title:'确认操作',description,action:description.includes('移除')?'移除':'删除'});}
 function toast(text,tone){const kind=tone||(/失败|无法|错误|未保存|不支持|请先|需要/.test(text)?'error':/已保存|已更新|已删除|成功/.test(text)?'success':'info');if(window.WorkspaceFeedback)return window.WorkspaceFeedback.show($('toast'),text,kind);$('toast').textContent=text;$('toast').hidden=false;}
 function setBusy(value){busy=value;renderNotifications();document.querySelectorAll('[data-workspace-segment]').forEach(node=>{node.dataset.segmentDisabled=String(value||!ready||conflict);});$('add').disabled=value||!ready||conflict;$('submit').disabled=value;document.querySelectorAll('#content button,#content input[type=checkbox],#workspaceNativeActions button').forEach(x=>{if(!x.closest('#workspaceCalendar,#workspaceTasks,#workspacePersonalInfo,#workspaceAnnualPlans,#workspaceWordPractice,#workspaceFitness'))x.disabled=value||!ready||conflict;});}
 async function load(){setBusy(true);try{if(scope==='work')await loadProjectLabels();const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const s=await r.json();state=s.workspace;state.driveLinks??=[];version=s.version;ready=true;conflict=false;refreshProjectCalendar();refreshReminders();const target=new URLSearchParams(location.search);const allowedViews=scope==='work'?['today','home','tasks','projects','drive','notes','personalInfo']:['home','calendar','checkins','tasks','annualPlans','notes','vocabulary','vocabularyLibrary','fitness','completedGames','upcoming','wardrobe','maintenance','personalInfo'];if(allowedViews.includes(target.get('view')))view=target.get('view');else if(target.get('view')==='requirements')history.replaceState(null,'',location.pathname+'?view=home');status('已连接云端 · '+(scope==='work'?'工作':'私人')+'数据独立保存');render();if(target.has('task')){const task=state.tasks.find(t=>t.id===target.get('task'));if(task){setBusy(false);edit('tasks',task.id);}else toast('该任务已移除，请查看最新待办。');}}catch(e){ready=false;status(e.message+'，请重新加载。',true);}finally{setBusy(false);$('content').setAttribute('aria-busy','false');}}
 let workspaceRefreshing=false;
-async function refreshWorkspace(){if(!ready||busy||workspaceRefreshing||(document.querySelector('#editor[open],#clothingEditor[open]')||isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()))return;workspaceRefreshing=true;const priorVersion=version;try{const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const latest=await r.json();if(busy||version!==priorVersion||(document.querySelector('#editor[open],#clothingEditor[open]')||isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()))return;if(latest.version!==version){state=latest.workspace;state.driveLinks??=[];version=latest.version;render();}}catch(e){status('云端更新检查失败：'+e.message+'，当前数据保留。',true);}finally{workspaceRefreshing=false;}}
+async function refreshWorkspace(){
+ if(!ready||busy||workspaceRefreshing||(document.querySelector('#editor[open],#clothingEditor[open]')||isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()))return;
+ workspaceRefreshing=true;const priorVersion=version;
+ try{
+  const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const latest=await r.json();
+  if(busy||version!==priorVersion||(document.querySelector('#editor[open],#clothingEditor[open]')||isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()))return;
+  if(latest.version!==version){state=latest.workspace;state.driveLinks??=[];version=latest.version;render();}
+  if($('status').dataset.source==='refresh')status('已连接云端');
+ }catch(e){
+  // Background polling must not replace a persistent save or conflict error.
+  if(!$('status').classList.contains('error')||$('status').dataset.source==='refresh')status('云端更新检查失败：'+e.message+'，当前数据保留，将自动重试。',true,'refresh');
+ }finally{workspaceRefreshing=false;}
+}
 setInterval(()=>{if(!document.hidden)refreshWorkspace();},30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshWorkspace();});
 // WORKSPACE_MERGE_START
 function mergeWorkspace(base,local,remote){
@@ -7329,7 +7334,7 @@ function productHome(){
  const today=day(),date=new Date(today+'T12:00:00+08:00'),events=eventsOn(today,state.events),open=state.tasks.filter(t=>!t.done),count=n=>String(n).padStart(2,'0');
  const dateLabel=date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',month:'long',day:'numeric'})+' · '+date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',weekday:'long'});
  const stats=[['今日安排',events.length,scope==='work'?'today':'calendar'],['待办事项',open.length,'tasks'],[scope==='work'?'项目问题':'打卡记录',scope==='work'?projectSummary?.openIssues:state.checkins?.length,scope==='work'?'projects':'checkins'],[scope==='work'?'工作笔记':'生活记录',state.notes.length,'notes']];
- return `<article class="site-home" data-scope="${scope}" aria-label="${scope==='work'?'工作':'私人'}首页"><div class="site-home-intro"><p class="site-home-date"><time datetime="${today}">${esc(dateLabel)}</time></p><h1>今天，也<span>从容</span>一点。</h1><p class="site-home-motto">安排好重要的事，<br>留一点时间给自己。</p><div class="site-home-actions"><button class="btn primary" data-add-task>新建待办</button><button class="site-home-link" data-nav="${scope==='work'?'today':'calendar'}">查看今日安排 →</button></div></div><nav class="site-home-stats" aria-label="工作台摘要">${stats.map(([label,value,target])=>'<button class="site-home-stat" data-nav="'+target+'"><strong'+(target==='projects'?' data-home-project-count':'')+'>'+esc(value==null?'—':count(value))+'</strong><span>'+label+'</span></button>').join('')}</nav><footer class="site-home-footer">把时间留给重要的人和事。</footer><div id="workspaceTasks" data-tasks-root></div></article>`;
+ return `<article class="site-home" data-scope="${scope}" aria-label="${scope==='work'?'工作':'私人'}首页"><div class="site-home-intro"><p class="site-home-date"><time datetime="${today}">${esc(dateLabel)}</time></p><h1>今天，也<span>从容</span>一点。</h1><p class="site-home-motto">安排好重要的事，<br>留一点时间给自己。</p><div class="site-home-actions"><button class="btn primary" data-add-task>新建待办</button><button class="site-home-link" data-nav="${scope==='work'?'today':'calendar'}">查看今日安排 →</button></div></div><div id="workspaceTasks" data-tasks-root></div><nav class="site-home-stats" aria-label="工作台摘要">${stats.map(([label,value,target])=>'<button class="site-home-stat" data-nav="'+target+'"><strong'+(target==='projects'?' data-home-project-count':'')+'>'+esc(value==null?'—':count(value))+'</strong><span>'+label+'</span></button>').join('')}</nav></article>`;
 }
 function openHomeEvent(id){view='calendar';render();history.replaceState(null,'',location.pathname+'?view=calendar');let attempts=0;const open=()=>{if(view!=='calendar')return;if(workspaceCalendar?.api){openCalendarEvent(id);return;}if(attempts++<30)requestAnimationFrame(open);else toast('日历尚未加载，请稍后重试。');};requestAnimationFrame(open);}
 
