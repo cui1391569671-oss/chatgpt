@@ -173,6 +173,15 @@
   --workspace-motion-card: 500ms;
   --workspace-motion-heading: 480ms;
   --workspace-motion-control: 240ms;
+  --workspace-motion-navigation: 240ms;
+  --workspace-motion-navigation-content: 320ms;
+  --workspace-motion-navigation-close-delay: 120ms;
+  --workspace-motion-navigation-heading-delay: 80ms;
+  --workspace-motion-navigation-item-delay: 120ms;
+  --workspace-motion-navigation-group: 80ms;
+  --workspace-motion-navigation-group-step: 40ms;
+  --workspace-motion-navigation-item-step: 20ms;
+  --workspace-motion-navigation-ease: cubic-bezier(.4,0,.6,1);
   --workspace-motion-exit: 180ms;
   --workspace-motion-stagger: 70ms;
   --workspace-motion-stagger-max: 280ms;

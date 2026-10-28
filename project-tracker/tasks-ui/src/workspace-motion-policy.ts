@@ -1,7 +1,9 @@
 import {useEffect,useState} from 'react';
 const token=(name:string,fallback:number)=>typeof document==='undefined'?fallback:parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--workspace-motion-'+name))||fallback;
 // Assets load before the page theme; read tokens at use time, not module evaluation.
-export const motionTiming={get card(){return token('card',500);},get heading(){return token('heading',480);},get control(){return token('control',240);},get exit(){return token('exit',180);},get stagger(){return token('stagger',70);},get staggerMax(){return token('stagger-max',280);},get distance(){return token('distance',18);}};
+export const motionTiming={get card(){return token('card',500);},get heading(){return token('heading',480);},get control(){return token('control',240);},get navigation(){return token('navigation',240);},get exit(){return token('exit',180);},get stagger(){return token('stagger',70);},get staggerMax(){return token('stagger-max',280);},get distance(){return token('distance',18);}};
+// Apple global navigation timing observed on 2026-10-29; values remain theme-owned.
+export const navigationTiming={get content(){return token('navigation-content',320);},get closeDelay(){return token('navigation-close-delay',120);},get headingDelay(){return token('navigation-heading-delay',80);},get itemDelay(){return token('navigation-item-delay',120);},get group(){return token('navigation-group',80);},get groupStep(){return token('navigation-group-step',40);},get itemStep(){return token('navigation-item-step',20);}};
 export const motionEase={get css(){return typeof document==='undefined'?'cubic-bezier(.22,1,.36,1)':getComputedStyle(document.documentElement).getPropertyValue('--workspace-motion-ease').trim()||'cubic-bezier(.22,1,.36,1)';},gsap:'power3.out'};
 export const workspaceCardSelector='.card,.workspace-board-card,.workspace-goal-note,.workspace-note-reader,.tasks-empty-board';
 const active=new Set<{element:HTMLElement;animation:Animation}>();

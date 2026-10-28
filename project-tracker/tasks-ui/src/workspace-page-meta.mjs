@@ -8,8 +8,11 @@ export function workspaceNavigation(scope){return scope==='work'?[{title:'工作
 export function workspaceNavView(view){return view==='vocabularyLibrary'?'vocabulary':view==='upcoming'?'completedGames':view;}
 
 // Personal-site navigation preserves each route's workspace and source record ownership.
-export function workspaceSiteNavigation(){return [
- {title:'工作',items:[['work','projects'],['work','tasks'],['work','today'],['work','calendar'],['work','drive']]},
- {title:'记录',items:[['work','notes'],['personal','notes']]},
- {title:'生活',items:[['personal','calendar'],['personal','annualPlans'],['personal','tasks'],['personal','checkins'],['personal','vocabulary'],['personal','fitness'],['personal','completedGames'],['personal','wardrobe'],['personal','maintenance']]}
-];}
+export function workspaceSiteNavigation(){
+ const column=(title,space,views,primary=false)=>({title,space,views,primary});
+ return [
+  {title:'工作',columns:[column('项目与待办','work',['projects','tasks'],true),column('今日与日历','work',['today','calendar']),column('项目资料','work',['drive'])]},
+  {title:'记录',columns:[column('工作记录','work',['notes'],true),column('私人记录','personal',['notes'],true)]},
+  {title:'生活',columns:[column('日程与计划','personal',['calendar','annualPlans','tasks'],true),column('成长与习惯','personal',['checkins','vocabulary','fitness']),column('生活管理','personal',['completedGames','wardrobe','maintenance'])]}
+ ].map(group=>({...group,items:group.columns.flatMap(column=>column.views.map(view=>[column.space,view]))}));
+}

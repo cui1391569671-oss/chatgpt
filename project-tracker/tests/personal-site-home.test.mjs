@@ -8,16 +8,13 @@ const page=read('workbench.html'),source=page.slice(page.indexOf('function produ
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function home(scope='work',tasks=[],events=[],summary=null){const context=vm.createContext({scope,state:{tasks,events,notes:[],checkins:[]},projectSummary:summary,day:()=> '2026-10-28',eventsOn:(_day,rows)=>rows,esc});vm.runInContext(source,context);return context.productHome();}
 test('both home spaces use the immersive hero and preserve original task editor entry',()=>{
- for(const scope of ['work','personal']){const html=home(scope);assert.match(html,/今天，也<span>从容/);assert.match(html,/10月28日 · 星期三/);assert.match(html,/data-add-task/);assert.match(html,/data-tasks-root/);assert.match(html,/site-home-stats/);assert.doesNotMatch(html,/class="card|homeCalendar|home2-columns|workspace-mosaic/);}
+ for(const scope of ['work','personal']){const html=home(scope);assert.match(html,/今天，也<span>从容/);assert.match(html,/10月28日 · 星期三/);assert.match(html,/data-add-task/);assert.match(html,/data-tasks-root/);assert.doesNotMatch(html,/site-home-stats|data-home-project-count/);assert.doesNotMatch(html,/class="card|homeCalendar|home2-columns|workspace-mosaic/);}
 });
-test('home statistics derive only unfinished tasks and the authenticated project summary',()=>{
- const html=home('work',[{id:'a',done:false},{id:'b',done:true}],[{id:'event'}],{openIssues:7});assert.match(html,/>01<\/strong><span>待办事项/);assert.match(html,/data-home-project-count>07/);assert.match(home('work'),/data-home-project-count>—/);
-});
-test('home summary routes retain workspace-specific owners without sample record text',()=>{
- const work=home('work'),personal=home('personal');assert.match(work,/data-nav="projects"/);assert.match(work,/data-nav="today"/);assert.match(personal,/data-nav="checkins"/);assert.match(personal,/data-nav="calendar"/);assert.doesNotMatch(work,/DEMO|星河|XH001/);
+test('home daily action retains workspace-specific owners without sample record text',()=>{
+ const work=home('work'),personal=home('personal');assert.match(work,/data-nav="today"/);assert.match(personal,/data-nav="calendar"/);assert.doesNotMatch(work,/DEMO|星河|XH001/);
 });
 test('site menus retain owning workspace and cover both spaces without duplicate route pairs',()=>{
- const groups=workspaceSiteNavigation();assert.deepEqual(groups.map(g=>g.title),['工作','记录','生活']);const pairs=groups.flatMap(g=>g.items.map(([scope,view])=>scope+':'+view));assert.equal(new Set(pairs).size,pairs.length);for(const route of ['work:projects','work:calendar','work:notes','personal:notes','personal:checkins','personal:fitness','personal:maintenance'])assert(pairs.includes(route),route);
+ const groups=workspaceSiteNavigation();assert.deepEqual(groups.map(g=>g.title),['工作','记录','生活']);const pairs=groups.flatMap(g=>g.items.map(([scope,view])=>scope+':'+view));assert.equal(new Set(pairs).size,pairs.length);for(const group of groups){assert(group.columns.length>=2);assert.deepEqual(group.items,group.columns.flatMap(column=>column.views.map(view=>[column.space,view])));}for(const route of ['work:projects','work:calendar','work:notes','personal:notes','personal:checkins','personal:fitness','personal:maintenance'])assert(pairs.includes(route),route);
 });
 test('home editing uses the same task editor in both spaces and daily stream polling stays on its own page',()=>{
  assert.match(read('tasks-adapter.js'),/editorOnly:view==='home'/);assert.doesNotMatch(read('tasks-adapter.js'),/view==='home'&&scope==='personal'/);assert.match(read('today-tasks-page.js'),/function todayTasksVisible\(\)\{return view==='today';\}/);assert.doesNotMatch(read('tasks-ui/src/workspace-personal.tsx'),/enhanceHomeLayout/);

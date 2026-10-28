@@ -2312,10 +2312,6 @@ dialog[open]::backdrop {
 .site-home-actions{display:flex;align-items:center;gap:32px;margin-top:40px}
 .site-home-actions>.btn{min-width:160px}
 .site-home-link{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:transparent;font-size:16px}
-.site-home-stats{display:flex;gap:80px;margin-top:auto;padding-top:48px;flex-wrap:wrap}
-.site-home-stat{display:grid;gap:8px;min-width:120px;min-height:80px;padding:0;background:transparent;border:0;text-align:left}
-.site-home-stat strong{font-size:44px;line-height:1.2;font-weight:500;font-variant-numeric:tabular-nums}
-.site-home-stat span{font-size:16px}
 .site-task-list{max-width:1240px;width:100%;margin:0 auto}
 .site-task-summary{margin:0 0 24px;font-size:18px}
 .site-list-controls{display:flex;justify-content:space-between;gap:24px;align-items:center;padding-bottom:12px;flex-wrap:wrap}

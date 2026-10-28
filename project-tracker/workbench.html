@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>我的工作台</title>
+<head><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=workbench-mark-1"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>我的工作台</title>
 <link rel="stylesheet" href="/assets/ilamy-3.2.1.css"><script src="/assets/ilamy-3.2.1.js"></script><link rel="stylesheet" href="/assets/tasks.css"><script src="/assets/tasks.js"></script><!-- PRODUCT_DESIGN_START --><style>/* Radix Colors 3.0.0 (MIT)
 MIT License
 
@@ -1045,6 +1045,15 @@ SOFTWARE.
   --workspace-motion-card: 500ms;
   --workspace-motion-heading: 480ms;
   --workspace-motion-control: 240ms;
+  --workspace-motion-navigation: 240ms;
+  --workspace-motion-navigation-content: 320ms;
+  --workspace-motion-navigation-close-delay: 120ms;
+  --workspace-motion-navigation-heading-delay: 80ms;
+  --workspace-motion-navigation-item-delay: 120ms;
+  --workspace-motion-navigation-group: 80ms;
+  --workspace-motion-navigation-group-step: 40ms;
+  --workspace-motion-navigation-item-step: 20ms;
+  --workspace-motion-navigation-ease: cubic-bezier(.4,0,.6,1);
   --workspace-motion-exit: 180ms;
   --workspace-motion-stagger: 70ms;
   --workspace-motion-stagger-max: 280ms;
@@ -4177,10 +4186,6 @@ dialog[open]::backdrop {
 .site-home-actions{display:flex;align-items:center;gap:32px;margin-top:40px}
 .site-home-actions>.btn{min-width:160px}
 .site-home-link{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:transparent;font-size:16px}
-.site-home-stats{display:flex;gap:80px;margin-top:auto;padding-top:48px;flex-wrap:wrap}
-.site-home-stat{display:grid;gap:8px;min-width:120px;min-height:80px;padding:0;background:transparent;border:0;text-align:left}
-.site-home-stat strong{font-size:44px;line-height:1.2;font-weight:500;font-variant-numeric:tabular-nums}
-.site-home-stat span{font-size:16px}
 .site-task-list{max-width:1240px;width:100%;margin:0 auto}
 .site-task-summary{margin:0 0 24px;font-size:18px}
 .site-list-controls{display:flex;justify-content:space-between;gap:24px;align-items:center;padding-bottom:12px;flex-wrap:wrap}
@@ -5524,7 +5529,7 @@ body.shadcn-workbench .header-title .eyebrow {
 }
 body.shadcn-workbench.shared-workspace h2 {
   font-size: var(--workspace-heading-size,18px);
-  font-weight: 600;
+  font-weight: var(--workspace-heading-weight,600);
   line-height: var(--workspace-heading-leading,28px);
   letter-spacing: var(--workspace-heading-tracking,-.3px);
 }
@@ -6255,15 +6260,24 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-primary-navigation{grid-column:2;position:relative;min-width:0;isolation:isolate}
 .wb-top-navigation{display:flex;justify-content:center;gap:24px;min-width:0;list-style:none;margin:0;padding:0}
 .wb-top-navigation>li{list-style:none;margin:0;padding:0;display:flex}
-.wb-navigation-panel-anchor{position:absolute;top:100%;left:0;width:100%;display:flex;justify-content:center;pointer-events:none;padding-top:12px;z-index:90}
-.wb-navigation-viewport{position:relative;isolation:isolate;width:var(--radix-navigation-menu-viewport-width);height:var(--radix-navigation-menu-viewport-height);max-width:calc(100vw - 32px);max-height:calc(100dvh - 110px);overflow:hidden;pointer-events:auto;background:var(--semantic-surface);color:var(--semantic-text);border:1px solid var(--semantic-border-muted);border-radius:12px;box-shadow:none}
-.wb-navigation-viewport[data-state=closed]{pointer-events:none}
-.wb-navigation-content{position:absolute;top:0;left:0;max-width:calc(100vw - 32px);padding:12px;max-height:calc(100dvh - 110px);overflow-y:auto;box-sizing:border-box}
-.wb-navigation-links{display:grid;gap:2px;isolation:isolate}
-.wb-navigation-link{position:relative;display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:10px 16px;border:0;border-radius:0;color:var(--semantic-text-muted);background:transparent;text-align:left;font-size:16px;line-height:20px;cursor:pointer;isolation:isolate;text-decoration:none}
-.wb-navigation-link>span{flex:1;min-width:0}
-.wb-navigation-link:hover,.wb-navigation-link:focus-visible{background:transparent;color:var(--semantic-primary-text)}
-.wb-navigation-link[data-active]{color:var(--semantic-primary-text)}
+.wb-site-logo{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0;border:0;background:transparent;text-decoration:none;border-radius:0}
+.wb-site-logo img{display:block;width:28px;height:28px;flex:none}
+.wb-navigation-backdrop{position:fixed;inset:var(--navigation-top) 0 0;z-index:1;background:var(--modal-overlay);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.wb-navigation-panel-anchor{position:fixed;top:var(--navigation-top);left:0;width:100%;z-index:2;pointer-events:none}
+.wb-navigation-panel-anchor[data-open=true]{pointer-events:auto}
+.wb-navigation-viewport{position:relative;width:100%;height:0;overflow:hidden;background:var(--semantic-surface);color:var(--semantic-text);border:0;border-radius:0;box-shadow:none;transition:height var(--navigation-duration) var(--workspace-motion-navigation-ease);transition-delay:var(--navigation-close-delay)}
+.wb-navigation-panel-anchor[data-open=true] .wb-navigation-viewport{height:var(--radix-navigation-menu-viewport-height)}
+.wb-navigation-content{position:absolute;top:0;left:0;width:100%;max-height:calc(100dvh - var(--navigation-top) - 24px);overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box}
+.wb-navigation-columns{display:grid;grid-template-columns:minmax(240px,1.35fr) repeat(2,minmax(180px,1fr));gap:64px;width:100%;max-width:1370px;margin:0 auto;padding:40px 8px 48px;min-height:264px;box-sizing:border-box}
+.wb-navigation-column{--workspace-heading-size:12px;--workspace-heading-leading:20px;--workspace-heading-weight:400;--workspace-heading-tracking:0;min-width:0}
+.wb-navigation-column h2{margin:0 0 12px;font-size:12px;font-weight:400;line-height:20px;color:var(--semantic-text-muted)}
+.wb-navigation-links{display:grid;gap:0}
+.wb-navigation-link{display:flex;align-items:center;gap:12px;width:fit-content;max-width:100%;min-height:44px;padding:6px 0;border:0;border-radius:0;color:var(--semantic-text);background:transparent;text-align:left;font-size:16px;line-height:24px;cursor:pointer;text-decoration:none}
+.wb-navigation-column[data-primary=true] .wb-navigation-link{font-size:24px;line-height:32px;font-weight:600}
+.wb-navigation-link>span{min-width:0;overflow-wrap:anywhere}
+.wb-navigation-link:hover,.wb-navigation-link:focus-visible,.wb-navigation-link[data-active]{background:transparent;color:var(--semantic-primary-text)}
+@media(max-width:1440px){.wb-navigation-columns{padding-left:calc(var(--app-gutter) + 8px);padding-right:calc(var(--app-gutter) + 8px)}}
+@media(max-width:800px){.wb-navigation-columns{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.wb-navigation-column[data-primary=true] .wb-navigation-link{font-size:20px}}
 .wb-primary-navigation :focus-visible,.wb-nav-menu-item:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:-2px}
 .wb-site-nav-link{position:relative;display:inline-flex;align-items:center;justify-content:center;padding:0 8px;min-height:44px;font-size:16px;background:transparent;border:0;box-shadow:none;color:var(--semantic-text-muted);border-radius:0;text-decoration:none}
 .wb-site-nav-link[data-active=true]{color:var(--semantic-primary-text)}
@@ -6274,10 +6288,10 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-page-row[hidden]{display:none}
 /* Selected black/gold personal-site home, shared with inner-page typography. */
 .site-home h1{color:var(--semantic-text)}
-.site-home h1 span,.site-home-stat:first-child strong{color:var(--semantic-primary-text)}
-.site-home-date,.site-home-motto,.site-home-stat strong{color:var(--semantic-text-muted)}
-.site-home-stat span,.site-home-link{color:var(--semantic-text)}
-.site-home-link:hover,.site-home-stat:hover strong{color:var(--semantic-primary-text)}
+.site-home h1 span{color:var(--semantic-primary-text)}
+.site-home-date,.site-home-motto{color:var(--semantic-text-muted)}
+.site-home-link{color:var(--semantic-text)}
+.site-home-link:hover{color:var(--semantic-primary-text)}
 .wb-page-location{flex:1;min-width:260px;color:var(--semantic-text);--workspace-title-size:40px;--workspace-title-weight:650}.wb-page-location p{margin:0 0 16px;font-size:16px;color:var(--semantic-text-muted)}.wb-page-location h1{font-size:40px;line-height:1.3;letter-spacing:-1px;margin:0 0 12px}.wb-page-location h1 span{color:var(--semantic-primary-text)}.wb-page-location p:last-child{margin:0}.wb-page-location p:empty{display:none}
 .wb-nav-menu{min-width:200px;max-width:calc(100vw - 32px);max-height:var(--radix-dropdown-menu-content-available-height);overflow-y:auto;padding:8px;isolation:isolate;border:1px solid var(--semantic-border-muted);border-radius:20px;background:var(--semantic-surface-strong);color:var(--semantic-text);box-shadow:var(--popover-shadow)}
 .wb-nav-menu[data-state=closed]{pointer-events:none}
@@ -7331,10 +7345,9 @@ function checkinPage(){
  return '<div class="checkin-layout"><section class="card checkin-page" aria-label="今日打卡"><div class="card-head workspace-page-hero"><div><h2>今日打卡</h2><p class="muted">每天，向前一点。完成后勾选即可。</p></div><time>'+date+'</time></div><ul class="checkin-list">'+Object.entries(CHECKIN_KINDS).map(([key,label])=>{const checked=rows.some(r=>r.id===date+':'+key);return '<li><label class="checkin-toggle"><input type="checkbox" data-daily-checkin="'+key+'" data-completion-label="'+label+'" '+(checked?'checked':'')+'></label><span class="muted" data-checkin-state="'+key+'">'+(checked?'已打卡':'未打卡')+'</span></li>';}).join('')+'</ul><p id="checkinError" class="form-error" role="alert"></p></section><section class="card checkin-week" aria-label="近七天打卡记录"><div class="card-head"><h2>近七天</h2><span class="muted">英语 · 健身</span></div><ol class="workspace-week-strip">'+recent+'</ol></section></div>';
 }
 function productHome(){
- const today=day(),date=new Date(today+'T12:00:00+08:00'),events=eventsOn(today,state.events),open=state.tasks.filter(t=>!t.done),count=n=>String(n).padStart(2,'0');
+ const today=day(),date=new Date(today+'T12:00:00+08:00');
  const dateLabel=date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',month:'long',day:'numeric'})+' · '+date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',weekday:'long'});
- const stats=[['今日安排',events.length,scope==='work'?'today':'calendar'],['待办事项',open.length,'tasks'],[scope==='work'?'项目问题':'打卡记录',scope==='work'?projectSummary?.openIssues:state.checkins?.length,scope==='work'?'projects':'checkins'],[scope==='work'?'工作笔记':'生活记录',state.notes.length,'notes']];
- return `<article class="site-home" data-scope="${scope}" aria-label="${scope==='work'?'工作':'私人'}首页"><div class="site-home-intro"><p class="site-home-date"><time datetime="${today}">${esc(dateLabel)}</time></p><h1>今天，也<span>从容</span>一点。</h1><p class="site-home-motto">安排好重要的事，<br>留一点时间给自己。</p><div class="site-home-actions"><button class="btn primary" data-add-task>新建待办</button><button class="site-home-link" data-nav="${scope==='work'?'today':'calendar'}">查看今日安排 →</button></div></div><div id="workspaceTasks" data-tasks-root></div><nav class="site-home-stats" aria-label="工作台摘要">${stats.map(([label,value,target])=>'<button class="site-home-stat" data-nav="'+target+'"><strong'+(target==='projects'?' data-home-project-count':'')+'>'+esc(value==null?'—':count(value))+'</strong><span>'+label+'</span></button>').join('')}</nav></article>`;
+ return `<article class="site-home" data-scope="${scope}" aria-label="${scope==='work'?'工作':'私人'}首页"><div class="site-home-intro"><p class="site-home-date"><time datetime="${today}">${esc(dateLabel)}</time></p><h1>今天，也<span>从容</span>一点。</h1><p class="site-home-motto">安排好重要的事，<br>留一点时间给自己。</p><div class="site-home-actions"><button class="btn primary" data-add-task>新建待办</button><button class="site-home-link" data-nav="${scope==='work'?'today':'calendar'}">查看今日安排 →</button></div></div><div id="workspaceTasks" data-tasks-root></div></article>`;
 }
 function openHomeEvent(id){view='calendar';render();history.replaceState(null,'',location.pathname+'?view=calendar');let attempts=0;const open=()=>{if(view!=='calendar')return;if(workspaceCalendar?.api){openCalendarEvent(id);return;}if(attempts++<30)requestAnimationFrame(open);else toast('日历尚未加载，请稍后重试。');};requestAnimationFrame(open);}
 
@@ -7444,9 +7457,8 @@ if(view==='notes'){
  $('results').innerHTML='<div class="workspace-notebook"><nav class="workspace-note-index" aria-label="笔记目录"><h2>笔记目录</h2><div class="workspace-note-search"></div>'+items.map(n=>'<button class="workspace-note-link" data-read-note="'+esc(n.id)+'" aria-current="'+(n.id===selected?.id?'true':'false')+'"><strong>'+esc(n.title)+'</strong><small>'+esc(noteDate(n.updatedAt))+'</small></button>').join('')+'<p class="muted">共 '+items.length+' 篇笔记</p></nav><article class="workspace-note-reader">'+(selected?'<header><small class="muted">笔记 · '+esc(noteDate(selected.updatedAt))+'</small><h2 tabindex="-1">'+esc(selected.title)+'</h2><p class="muted">更新于 '+esc(noteDate(selected.updatedAt,true))+'</p>'+controls('notes',selected.id)+'</header><div class="workspace-note-body">'+esc(selected.body)+'</div>':'<div class="site-empty"><h2>'+(query?'没有符合条件的笔记':'写下第一篇笔记')+'</h2><p>'+(query?'调整搜索文字，或清空搜索。':'点击上方“新建笔记”，记录想法与进展。')+'</p></div>')+'</article></div>';if(search){document.querySelector('.workspace-note-search').append(search);if(wasSearch){$('search').focus();$('search').setSelectionRange(start,start);}}return;
 }
 if(view==='maintenance')renderMaintenance();if(view==='completedGames')renderCompletedGames();if(view==='drive')renderDrive();if(view==='wardrobe')renderWardrobe();if(view==='vocabularyLibrary'){renderVocabulary();renderVocabularySync();}if(view==='calendar')renderCalendar();}
-let projectSummary=null;
 let projectCalendar=[],projectCalendarLoading=false,projectCalendarError='',projectCalendarLoaded=false,projectCalendarPending=false;
-async function refreshProjectCalendar(){if(scope!=='work')return;if(projectCalendarLoading){projectCalendarPending=true;return;}projectCalendarLoading=true;if(view==='calendar')renderCalendar();try{const r=await fetch('/api/project-calendar',{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const payload=await r.json();projectCalendar=payload.items;projectSummary=payload.summary;projectCalendarLoaded=true;projectCalendarError='';}catch(e){projectCalendarError='项目问题同步失败：'+e.message;}finally{projectCalendarLoading=false;if(view==='home'){const countNode=document.querySelector('[data-home-project-count]');if(countNode)countNode.textContent=projectSummary?String(projectSummary.openIssues).padStart(2,'0'):'—';}if(ready&&view==='calendar'){renderCalendar();setBusy(busy);}if(projectCalendarPending){projectCalendarPending=false;refreshProjectCalendar();}}}
+async function refreshProjectCalendar(){if(scope!=='work')return;if(projectCalendarLoading){projectCalendarPending=true;return;}projectCalendarLoading=true;if(view==='calendar')renderCalendar();try{const r=await fetch('/api/project-calendar',{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const payload=await r.json();projectCalendar=payload.items;projectCalendarLoaded=true;projectCalendarError='';}catch(e){projectCalendarError='项目问题同步失败：'+e.message;}finally{projectCalendarLoading=false;if(ready&&view==='calendar'){renderCalendar();setBusy(busy);}if(projectCalendarPending){projectCalendarPending=false;refreshProjectCalendar();}}}
 function projectIssueRows(items){return items.map(x=>'<article class="row"><div class="row-content"><div class="row-title">'+esc(x.title||'未命名问题')+'</div><div class="row-meta"><span class="tag">项目问题</span>'+esc(displayProject(x.project))+' · '+esc(x.status)+(x.date<day()?' · 已逾期':'')+'</div>'+(x.reason?'<p class="row-meta">原因：'+esc(x.reason)+'</p>':'')+(x.note?'<p class="row-meta">备注：'+esc(x.note)+'</p>':'')+'</div><button class="btn" data-nav="projects">查看问题表</button></article>').join('');}
 document.querySelector('nav').addEventListener('click',e=>{if(e.target.closest('button[data-view="calendar"]')){refreshProjectCalendar();refreshWorkspace();}});
 window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===$('projectFrame').contentWindow&&e.data?.type==='project-saved')refreshProjectCalendar();});
