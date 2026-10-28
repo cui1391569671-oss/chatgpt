@@ -2,11 +2,13 @@ import * as React from 'react'
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import {DropdownMenu as AnimatedMenu} from '@animate-ui/react/primitives/radix-ui'
+import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy'
+const TopbarMenuContext=React.createContext(false)
 
-function DropdownMenu({
-  ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-  return <DropdownMenuPrimitive.Root data-slot='dropdown-menu' {...props} />
+function DropdownMenu({variant='default',...props}:React.ComponentProps<typeof DropdownMenuPrimitive.Root>&{variant?:'default'|'topbar'}) {
+ const Root=variant==='topbar'?AnimatedMenu.Root:DropdownMenuPrimitive.Root
+ return <TopbarMenuContext.Provider value={variant==='topbar'}><Root data-slot='dropdown-menu' {...props}/></TopbarMenuContext.Provider>
 }
 
 function DropdownMenuPortal({
@@ -20,8 +22,9 @@ function DropdownMenuPortal({
 function DropdownMenuTrigger({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
+  const Trigger=React.useContext(TopbarMenuContext)?AnimatedMenu.Trigger:DropdownMenuPrimitive.Trigger
   return (
-    <DropdownMenuPrimitive.Trigger
+    <Trigger
       data-slot='dropdown-menu-trigger'
       {...props}
     />
@@ -33,6 +36,8 @@ function DropdownMenuContent({
   sideOffset = 4,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+  const topbar=React.useContext(TopbarMenuContext),reduce=useWorkspaceMotionOff()
+  if(topbar)return <AnimatedMenu.Portal><AnimatedMenu.Content data-shell-portal='' data-slot='dropdown-menu-content' data-menu-variant='topbar' sideOffset={8} collisionPadding={16} transition={reduce?{duration:0}:{type:'spring',visualDuration:motionTiming.control/1000,bounce:.08}} exitTransition={{duration:reduce?0:motionTiming.exit/1000}} className={cn('wb-nav-menu',className)} {...props}/></AnimatedMenu.Portal>
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
@@ -65,6 +70,8 @@ function DropdownMenuItem({
   inset?: boolean
   variant?: 'default' | 'destructive'
 }) {
+  const topbar=React.useContext(TopbarMenuContext)
+  if(topbar)return <AnimatedMenu.Item data-slot='dropdown-menu-item' data-inset={inset} data-variant={variant} className={cn('wb-nav-menu-item',className)} {...props}/>
   return (
     <DropdownMenuPrimitive.Item
       data-slot='dropdown-menu-item'
