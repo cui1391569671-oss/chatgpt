@@ -1,0 +1,21 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import ts from 'typescript';
+import assert from 'node:assert/strict';
+import test from 'node:test';
+const code=ts.transpileModule(fs.readFileSync(new URL('../tasks-ui/src/workspace-ocean.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
+test('ocean respects motion preference, hidden documents, context recovery and GPU disposal',()=>{
+let cleanup,callback,raf=0,draws=0,deleted=0,disconnected=false,generation=0,vertices=0,clock=0;
+const handlers={},canvasHandlers={},media={matches:true,addEventListener:(n,f)=>handlers.motion=f,removeEventListener:()=>deleted++};
+const gl=new Proxy({getShaderParameter:()=>true,getProgramParameter:()=>true,createShader:()=>({}),createProgram:()=>({}),createBuffer:()=>({}),getAttribLocation:()=>0,getUniformLocation:(program,name)=>name,uniform1f:(name,value)=>{if(name==='time')clock=value;},drawArrays:(mode,start,count)=>{draws++;vertices=count;},deleteBuffer:()=>deleted++,deleteProgram:()=>deleted++,deleteShader:()=>deleted++},{get:(t,k)=>k in t?t[k]:k===k.toUpperCase()?1:()=>{}});
+const canvas={dataset:{},getContext:()=>gl,getBoundingClientRect:()=>({width:1248,height:576}),addEventListener:(n,f)=>canvasHandlers[n]=f,removeEventListener:()=>deleted++};
+const doc={hidden:false,documentElement:{},body:{},addEventListener:(n,f)=>handlers.visibility=f,removeEventListener:()=>deleted++};
+const sandbox={exports:{},console,require:n=>n==='react'?{useRef:()=>({current:canvas}),useState:()=>[0,f=>generation=f(0)],useEffect:f=>cleanup=f()}:n==='react-dom'?{createPortal:n=>n}:{jsx:()=>({})},matchMedia:()=>media,getComputedStyle:()=>({getPropertyValue:()=> '#f6b665'}),document:doc,devicePixelRatio:1.5,performance:{now:()=>0},requestAnimationFrame:f=>{callback=f;return ++raf;},cancelAnimationFrame(){},ResizeObserver:class{constructor(f){this.f=f;}observe(){this.f();}disconnect(){disconnected=true;}}};
+vm.runInNewContext(code,sandbox);sandbox.exports.WorkspaceOcean();
+assert.equal(canvas.dataset.oceanRenderer,'webgl');assert.equal(vertices,196608);assert.equal(draws,1);assert.equal(raf,0);
+media.matches=false;handlers.motion();assert.ok(raf);const before=draws;for(let i=1;i<=120;i++)callback(i*1000/120);assert.equal(draws,before+120);assert.ok(Math.abs(clock-2)<1e-8,'120 Hz draws must preserve two seconds of simulation per real second');
+const next=draws;for(let i=1;i<=60;i++)callback(1000+i*1000/60);assert.equal(draws,next+60);assert.ok(Math.abs(clock-4)<1e-8,'60 Hz must have the same propagation speed');
+doc.hidden=true;const scheduled=raf;handlers.visibility();assert.equal(raf,scheduled);
+let prevented=false;canvasHandlers.webglcontextlost({preventDefault(){prevented=true;}});assert.ok(prevented);canvasHandlers.webglcontextrestored();assert.equal(generation,1);
+cleanup();assert.ok(disconnected);assert.equal(deleted,8);
+});

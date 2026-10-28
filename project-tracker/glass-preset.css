@@ -877,8 +877,10 @@ SOFTWARE.
   --theme-white: #ffffff;
   --theme-black: #000000;
   --theme-canvas: #080808;
-  --theme-gold: #f5bf6b;
-  --theme-gold-hover: #ffdb9e;
+  --theme-gold: #f6b665;
+  --theme-text: #f5f5f5;
+  --theme-text-muted: #a1a1a1;
+  --theme-gold-hover: #ffd398;
   --particle-gold: var(--theme-gold);
   --particle-white: var(--theme-white);
   --accent-1: var(--radix-dark-amber-1);
@@ -1119,9 +1121,9 @@ SOFTWARE.
   --semantic-border-subtle: var(--gray-a6);
 
 
-  --semantic-text: var(--gray-12);
-  --semantic-text-muted: var(--gray-11);
-  --semantic-text-subtle: var(--gray-11);
+  --semantic-text: var(--theme-text);
+  --semantic-text-muted: var(--theme-text-muted);
+  --semantic-text-subtle: var(--theme-text-muted);
   --semantic-text-disabled: var(--gray-10);
   --semantic-text-inverse: var(--theme-black);
 

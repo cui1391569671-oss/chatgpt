@@ -880,8 +880,10 @@ SOFTWARE.
   --theme-white: #ffffff;
   --theme-black: #000000;
   --theme-canvas: #080808;
-  --theme-gold: #f5bf6b;
-  --theme-gold-hover: #ffdb9e;
+  --theme-gold: #f6b665;
+  --theme-text: #f5f5f5;
+  --theme-text-muted: #a1a1a1;
+  --theme-gold-hover: #ffd398;
   --particle-gold: var(--theme-gold);
   --particle-white: var(--theme-white);
   --accent-1: var(--radix-dark-amber-1);
@@ -1122,9 +1124,9 @@ SOFTWARE.
   --semantic-border-subtle: var(--gray-a6);
 
 
-  --semantic-text: var(--gray-12);
-  --semantic-text-muted: var(--gray-11);
-  --semantic-text-subtle: var(--gray-11);
+  --semantic-text: var(--theme-text);
+  --semantic-text-muted: var(--theme-text-muted);
+  --semantic-text-subtle: var(--theme-text-muted);
   --semantic-text-disabled: var(--gray-10);
   --semantic-text-inverse: var(--theme-black);
 
@@ -6250,9 +6252,8 @@ body.shadcn-workbench .wb-topbar {
 /* Top navigation and grouped menus share page metadata with page search. */
 body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;min-width:0;margin:var(--app-top-gap) var(--app-gutter) 0;background:transparent;border:0}
 /* Three balanced header zones keep navigation centered independently of brand/actions. */
-.wb-navigation-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px;min-width:0;width:100%;max-width:1370px;margin:0 auto;padding:0 0 16px;border-bottom:1px solid var(--semantic-border-muted)}
-.wb-site-brand{justify-self:start;display:inline-flex;align-items:center;gap:12px;min-width:0;min-height:44px;padding:0;text-align:left;font-size:24px;font-weight:650;color:var(--semantic-text);background:transparent;border:0;box-shadow:none}
-.wb-site-mark{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:12px;background:var(--semantic-primary);color:var(--semantic-text-inverse)}
+.wb-navigation-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px;min-width:0;width:100%;max-width:1370px;margin:0 auto;padding:0 0 16px}
+.wb-site-brand{justify-self:start;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-height:44px;padding:0;color:var(--semantic-primary-text);background:transparent;border:0;box-shadow:none}
 .wb-top-navigation{display:flex;justify-content:center;gap:24px;min-width:0}
 .wb-site-nav-link{position:relative;padding:0 8px;min-height:44px;font-size:16px;background:transparent;border:0;box-shadow:none;color:var(--semantic-text-muted);border-radius:0}
 .wb-site-nav-link[data-active=true]{color:var(--semantic-primary-text)}
@@ -6272,8 +6273,8 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-nav-menu{min-width:200px;max-width:calc(100vw - 24px)}
 .wb-nav-menu [role=menuitem]{min-height:44px;cursor:pointer;border-radius:var(--control-radius)}
 .wb-nav-menu [aria-current=page]{background:var(--semantic-primary-selected);color:var(--semantic-primary-text)}
-@media(max-width:900px){.wb-navigation-row{gap:12px}.wb-top-navigation{gap:12px}.wb-site-brand{font-size:16px;gap:8px}}
-@media(max-width:640px){.wb-navigation-row{grid-template-columns:minmax(0,1fr) auto;gap:16px 8px}.wb-top-navigation{grid-column:1/-1;grid-row:2;width:100%;gap:24px}.wb-page-row{flex-direction:column;align-items:stretch;gap:8px}.wb-page-row>.wb-page-location{padding-left:4px}.wb-topbar-actions{justify-content:flex-end}.wb-site-brand{font-size:16px}}
+@media(max-width:900px){.wb-navigation-row{gap:12px}.wb-top-navigation{gap:12px}}
+@media(max-width:640px){.wb-navigation-row{grid-template-columns:minmax(0,1fr) auto;gap:16px 8px}.wb-top-navigation{grid-column:1/-1;grid-row:2;width:100%;gap:24px}.wb-page-row{flex-direction:column;align-items:stretch;gap:8px}.wb-page-row>.wb-page-location{padding-left:4px}.wb-topbar-actions{justify-content:flex-end}}
 
 .site-task-group h2,.workspace-note-index h2{color:var(--semantic-text)}
 .site-task-summary,.site-task-group h2 small,.site-task-title span,.site-task-title small,.site-list-footer,.site-empty p{color:var(--semantic-text-muted)}
@@ -7022,7 +7023,7 @@ body.shadcn-workbench {
 body[data-motion-level=off]{--duration-fast:0ms;--duration-base:0ms;--duration-slow:0ms;--control-switch-duration:0ms;--workspace-feedback-duration:0ms}
 
 /* Shared immersive shell; decorative layers never capture interaction. */
-body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:dark;isolation:isolate}.workspace-atmosphere{position:fixed;right:0;bottom:0;width:65vw;height:44vh;z-index:-1;pointer-events:none;overflow:hidden;opacity:.35;contain:strict}.workspace-atmosphere canvas{display:block;width:100%;height:100%}body[data-workspace-view=home] .workspace-atmosphere{width:100vw;height:72vh;opacity:.8}.workspace-page-hero h2{font-weight:650}.workspace-board-lane h3,.workspace-canvas-lane h3{color:var(--semantic-primary-text)}
+body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:dark;isolation:isolate}.workspace-atmosphere{position:fixed;right:0;bottom:0;width:65vw;height:44vh;z-index:-1;pointer-events:none;overflow:hidden;opacity:.35;contain:strict}.workspace-atmosphere canvas{display:block;width:100%;height:100%}body[data-workspace-view=home] .workspace-atmosphere{width:100vw;height:88vh;opacity:1}.workspace-page-hero h2{font-weight:650}.workspace-board-lane h3,.workspace-canvas-lane h3{color:var(--semantic-primary-text)}
 
 .workspace-link{color:var(--semantic-info-text);text-decoration:underline;text-underline-offset:3px}.workspace-link:hover{color:var(--semantic-primary-text)}.workspace-link:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:3px}
 
