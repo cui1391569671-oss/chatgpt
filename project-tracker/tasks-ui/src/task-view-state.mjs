@@ -1,4 +1,4 @@
-const statuses=['all','open','done','overdue','games'];
+const statuses=['all','open','done','overdue','games','today','upcoming'];
 const priorities=['all','high','normal','low'];
 export function readTaskView(search,scope='personal'){
  const params=new URLSearchParams(search),status=params.get('taskStatus'),priority=params.get('taskPriority'),sort=params.get('taskSort')||'',page=Number(params.get('taskPage')||1),size=Number(params.get('taskPageSize')||10);
@@ -7,6 +7,7 @@ export function readTaskView(search,scope='personal'){
 }
 export function taskViewUrl(href,state){
  const url=new URL(href),sort=state.sorting[0];
+ url.searchParams.delete('taskLayout');
  const values={taskQuery:state.query.slice(0,200),taskStatus:state.status==='all'?'':state.status,taskPriority:state.priority==='all'?'':state.priority,taskSort:sort?sort.id+':'+(sort.desc?'desc':'asc'):'',taskPage:state.pagination.pageIndex?String(state.pagination.pageIndex+1):'',taskPageSize:state.pagination.pageSize===10?'':String(state.pagination.pageSize)};
  for(const [key,value]of Object.entries(values)){if(value)url.searchParams.set(key,value);else url.searchParams.delete(key);}
  return url.pathname+url.search+url.hash;

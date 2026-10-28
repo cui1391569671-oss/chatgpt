@@ -42,7 +42,7 @@ export function WorkspaceReactBits(){
    const cards=Array.from(document.querySelectorAll<HTMLElement>(cardSelector)).filter(node=>!node.parentElement?.closest(workspaceCardSelector)&&!node.closest('[role=dialog],dialog,.ilamy-calendar,.annual-chart'));
    const buttons=Array.from(document.querySelectorAll<HTMLElement>(buttonSelector)).filter(node=>!node.closest('dialog,[role=dialog],.annual-chart,.ilamy-calendar')).slice(0,8);
    const covers=Array.from(document.querySelectorAll<HTMLElement>('#content .media-wall-cover'));
-   const title=document.querySelector<HTMLElement>('#content .home2-intro h1,#content .workspace-page-hero h1,#content .workspace-page-hero h2');
+   const title=document.querySelector<HTMLElement>('#content .site-home-intro h1,#content .workspace-page-hero h1,#content .workspace-page-hero h2');
    const view=document.body.dataset.workspaceView||'';
    setTargets(old=>same(cards,old.cards)&&same(buttons,old.buttons)&&same(covers,old.covers)&&title===old.title&&view===old.view?old:{cards,buttons,covers,title,view});
   };

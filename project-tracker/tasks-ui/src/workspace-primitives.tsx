@@ -9,6 +9,7 @@ import {enhanceWorkspaceSearch} from '@/components/workspace-search';
 import {WorkspaceDateInput} from '@/components/workspace-date';
 import {WorkspaceSelect} from '@/components/workspace-select';
 import {enhanceFileInput} from '../../file-trigger.js';
+import {restoreFocusTarget} from '../../focus-return.mjs';
 const dialogs=new WeakMap(),selects=new Map(),forms=new WeakSet(),dates=new Map();
 let dialogReturnTarget:HTMLElement|null=null;
 function captureDialogOpener(){
@@ -37,12 +38,12 @@ function enhanceDialog(element:HTMLDialogElement){
  const heading=element.querySelector('h1,h2,h3');if(heading){heading.classList.add('sr-only');heading.setAttribute('aria-hidden','true');}
  const parking=document.createComment('shadcn dialog '+element.id);element.before(parking);
  const mount=document.createElement('div');mount.dataset.uiOwner='dialog';document.body.append(mount);const root=createRoot(mount);
- let opener=null,opened=false;
- const finishFocus=()=>queueMicrotask(()=>{if(!document.querySelector('dialog[open]')&&opener?.isConnected)opener.focus();});
+ let opener=null,opened=false,focusFrame=0;
+ const finishFocus=()=>{cancelAnimationFrame(focusFrame);let attempts=0;const restore=()=>{if(opened||document.querySelector('dialog[open]'))return;const restored=restoreFocusTarget([()=>opener,()=>element.dataset.returnFocus?document.querySelector(element.dataset.returnFocus):null,()=>element.dataset.returnFocusFallback?document.querySelector(element.dataset.returnFocusFallback):null]);if(!restored&&attempts++<30)focusFrame=requestAnimationFrame(restore);};queueMicrotask(restore);};
  const close=(value='')=>{if(!opened)return;opened=false;element.removeAttribute('open');element.returnValue=value||'';parking.after(element);flushSync(()=>root.render(null));element.dispatchEvent(new Event('close'));finishFocus();};
  const dismiss=()=>{const cancel=new Event('cancel',{cancelable:true});if(element.dispatchEvent(cancel))close();};
  element.dataset.uiDialog='';element.setAttribute('role','presentation');element.removeAttribute('aria-labelledby');element.removeAttribute('aria-label');element.removeAttribute('aria-modal');
- element.showModal=()=>{if(opened)return;opener=captureDialogOpener();opened=true;element.setAttribute('open','');flushSync(()=>root.render(<ExistingDialog element={element} parking={parking} open dismiss={dismiss} closed={finishFocus}/>));scan(element);element.querySelectorAll('input[data-ui-date-native]').forEach(input=>dates.get(input)?.render());element.querySelectorAll('select[data-ui-native]').forEach(select=>selects.get(select)?.render());};
+ element.showModal=()=>{if(opened)return;cancelAnimationFrame(focusFrame);opener=captureDialogOpener();opened=true;element.setAttribute('open','');flushSync(()=>root.render(<ExistingDialog element={element} parking={parking} open dismiss={dismiss} closed={finishFocus}/>));scan(element);element.querySelectorAll('input[data-ui-date-native]').forEach(input=>dates.get(input)?.render());element.querySelectorAll('select[data-ui-native]').forEach(select=>selects.get(select)?.render());};
  const originalRemove=element.remove.bind(element);element.remove=()=>{close();root.unmount();mount.remove();parking.remove();originalRemove();dialogs.delete(element);};
  element.close=close;dialogs.set(element,{root,close});
 }

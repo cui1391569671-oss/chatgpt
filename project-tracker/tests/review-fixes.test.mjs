@@ -4,11 +4,11 @@ import {readTaskView,taskViewUrl,clampTaskPage} from '../tasks-ui/src/task-view-
 import {workspacePageMeta} from '../tasks-ui/src/workspace-page-meta.mjs';
 import {annualPlanFieldError} from '../annual-plans.mjs';
 
-test('task URLs restore filters and paging without touching layout, other views or the hash',()=>{
+test('task URLs restore filters and paging, retire old layouts, and preserve other views and the hash',()=>{
  const state={query:'中文 目标 & 完成',status:'open',priority:'high',sorting:[{id:'dueDate',desc:true}],pagination:{pageIndex:2,pageSize:20}};
  const path=taskViewUrl('https://test.local/personal?view=tasks&taskLayout=table&planYear=2026#list',state);
- const url=new URL(path,'https://test.local');assert.equal(url.searchParams.get('view'),'tasks');assert.equal(url.searchParams.get('taskLayout'),'table');assert.equal(url.searchParams.get('planYear'),'2026');assert.equal(url.hash,'#list');assert.deepEqual(readTaskView(url.search),state);
- const cleared=taskViewUrl(url.href,readTaskView(''));assert(!cleared.includes('taskQuery'));assert(!cleared.includes('taskPage='));assert(cleared.includes('taskLayout=table'));
+ const url=new URL(path,'https://test.local');assert.equal(url.searchParams.get('view'),'tasks');assert.equal(url.searchParams.get('taskLayout'),null);assert.equal(url.searchParams.get('planYear'),'2026');assert.equal(url.hash,'#list');assert.deepEqual(readTaskView(url.search),state);
+ const cleared=taskViewUrl(url.href,readTaskView(''));assert(!cleared.includes('taskQuery'));assert(!cleared.includes('taskPage='));assert(!cleared.includes('taskLayout='));
 });
 test('task route input rejects invalid states and clamps pages after deletion/filter changes',()=>{
  const bad=readTaskView('?taskStatus=games&taskPriority=wrong&taskSort=secret:desc&taskPage=-2&taskPageSize=999','work');assert.equal(bad.status,'all');assert.equal(bad.priority,'all');assert.deepEqual(bad.sorting,[]);assert.deepEqual(bad.pagination,{pageIndex:0,pageSize:10});

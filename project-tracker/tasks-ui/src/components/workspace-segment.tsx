@@ -1,9 +1,9 @@
 import {useLayoutEffect,useRef,useState,type ReactNode} from 'react';
 import RubberSegment from '../vendor/react-bits/RubberSegment';
 
-type SegmentProps={items:{value:string;label:ReactNode}[];value:string;onChange:(value:string)=>void|boolean;label:string;className?:string;disabled?:boolean;transitionFrom?:string;focusSelection?:boolean;onFocusRestored?:()=>void};
+type SegmentProps={items:{value:string;label:ReactNode}[];value:string;onChange:(value:string)=>void|boolean;label:string;className?:string;disabled?:boolean;transitionFrom?:string;appearance?:'pill'|'underline';focusSelection?:boolean;onFocusRestored?:()=>void};
 /** One owner for the themed, 44px radio targets used by horizontal switches. */
-export function WorkspaceSegment({label,className='',focusSelection,onFocusRestored,...props}:SegmentProps){
+export function WorkspaceSegment({label,className='',appearance='pill',focusSelection,onFocusRestored,...props}:SegmentProps){
  const host=useRef<HTMLDivElement>(null);
  const [radius,setRadius]=useState(0);
  useLayoutEffect(()=>{if(host.current)setRadius(parseFloat(getComputedStyle(host.current).getPropertyValue('--control-radius'))||0);},[]);
@@ -14,5 +14,5 @@ export function WorkspaceSegment({label,className='',focusSelection,onFocusResto
   if(focusSelection){viewport?.querySelector<HTMLButtonElement>('button[aria-checked="true"]')?.focus({preventScroll:true});onFocusRestored?.();}
   const observer=new ResizeObserver(reveal);if(viewport)observer.observe(viewport);return()=>observer.disconnect();
  },[props.value,focusSelection,onFocusRestored]);
- return <div ref={host} data-ui-owner="rubber-segment" className={'wb-segment-scroll '+className}><RubberSegment {...props} radius={radius} inset={0} aria-label={label} size='lg' equalSlots={false} trackColor='var(--admin-muted)' thumbColor='var(--tab-active-bg)' textColor='var(--text-muted)' activeTextColor='var(--tab-active-text)' style={{'--rs-h':'var(--control-height)','--rs-inset':'0px','--rs-thumb-radius':'var(--control-radius)','--rs-radius':'var(--control-radius)','--rs-pad':'var(--control-button-padding-x)',fontWeight:500}}/></div>;
+ return <div ref={host} data-ui-owner="rubber-segment" className={'wb-segment-scroll '+(appearance==='underline'?'workspace-segment--underline ':'')+className}><RubberSegment {...props} radius={appearance==='underline'?0:radius} inset={0} aria-label={label} size='lg' equalSlots={false} trackColor={appearance==='underline'?'transparent':'var(--admin-muted)'} thumbColor={appearance==='underline'?'transparent':'var(--tab-active-bg)'} textColor='var(--text-muted)' activeTextColor={appearance==='underline'?'var(--semantic-primary-text)':'var(--tab-active-text)'} style={{'--rs-h':'var(--control-height)','--rs-inset':'0px','--rs-thumb-radius':appearance==='underline'?'0px':'var(--control-radius)','--rs-radius':appearance==='underline'?'0px':'var(--control-radius)','--rs-pad':'var(--control-button-padding-x)',fontWeight:500}}/></div>;
 }

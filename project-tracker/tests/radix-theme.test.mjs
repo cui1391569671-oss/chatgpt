@@ -22,7 +22,7 @@ test('text and semantic status pairs meet WCAG AA after resolving generated pale
  for(const [fg,bg]of pairs)assert(contrast(value(fg),value(bg))>=4.5,fg+' / '+bg+' contrast '+contrast(value(fg),value(bg)));
  assert(contrast(value('--semantic-text-inverse'),value('--checkbox-checked-bg'))>=3,'Completion check is a non-text graphic');
 });
-test('semantic states follow Radix step purpose while white-text buttons use an explicit contrast variant',()=>{
+test('dark semantic states preserve scale roles while primary actions use the reference white surface',()=>{
  for(const [name,role,step]of [['--semantic-surface','gray',1],['--semantic-surface-muted','gray',2],['--btn-secondary-bg','gray',3],['--semantic-control-hover','gray',4],['--semantic-control-active','gray',5],['--semantic-divider','gray',6],['--semantic-interactive-border','gray',7],['--semantic-interactive-border-hover','gray',8],['--accent-solid','accent',9],['--accent-solid-hover','accent',10],['--semantic-text-muted','gray',11],['--semantic-text','gray',12]])assert.equal(value(name),value('--'+role+'-'+step),name);
- assert(contrast(value('--theme-white'),value('--accent-solid'))<4.5,'Official Blue 9 requires the contrast variant for 14px white labels');assert.equal(value('--btn-primary-bg'),value('--accent-11'));
+ assert.equal(value('--btn-primary-bg'),value('--theme-white'));assert.equal(value('--btn-primary-text'),value('--theme-black'));assert.equal(value('--semantic-primary-text'),value('--theme-gold'));assert(contrast(value('--theme-gold'),value('--semantic-surface'))>=4.5);
 });

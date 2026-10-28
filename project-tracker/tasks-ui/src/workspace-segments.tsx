@@ -14,7 +14,7 @@ function attach(source:HTMLElement,mount:HTMLElement,key:string,label:string,rea
  const render=()=>{
   if(!source.isConnected)return;
   const props=read();previous.set(key,props.value);
-  root.render(<WorkspaceSegment {...props} label={label} transitionFrom={transitionFrom} focusSelection={focusRequests.has(key)} onFocusRestored={()=>focusRequests.delete(key)} onChange={next=>{
+  root.render(<WorkspaceSegment {...props} appearance={source.dataset.segmentAppearance==='underline'?'underline':'pill'} label={label} transitionFrom={transitionFrom} focusSelection={focusRequests.has(key)} onFocusRestored={()=>focusRequests.delete(key)} onChange={next=>{
    focusRequests.add(key);previous.set(key,props.value);
    const accepted=change(next);
    if(!accepted)focusRequests.delete(key);

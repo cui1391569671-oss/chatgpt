@@ -1,0 +1,6 @@
+// Presentation derives from the original task records; no shadow status or copied collection.
+export function taskGroup(row,today){return row.done?'done':row.dueDate&&row.dueDate<=today?'today':'next';}
+export function filterTaskList(rows,{query='',status='all',priority='all',sorting=[]},today){
+ const q=query.trim().toLowerCase(),soon=new Date(today+'T12:00:00+08:00');soon.setUTCDate(soon.getUTCDate()+7);const end=soon.toISOString().slice(0,10);
+ return rows.filter(row=>(!q||(row.title+' '+(row.detail||'')).toLowerCase().includes(q))&&(priority==='all'||row.priority===priority)&&(status==='all'||status==='done'&&row.done||status==='open'&&!row.done||status==='overdue'&&!row.done&&row.dueDate&&row.dueDate<today||status==='today'&&!row.done&&row.dueDate===today||status==='upcoming'&&!row.done&&row.dueDate>today&&row.dueDate<=end||status==='games'&&!!row.mediaRecordId)).sort((a,b)=>{const sort=sorting[0];if(sort?.id==='title')return a.title.localeCompare(b.title,'zh-CN')*(sort.desc?-1:1);return Number(!a.dueDate)-Number(!b.dueDate)||(a.dueDate||'9999').localeCompare(b.dueDate||'9999')*(sort?.desc?-1:1)||Number(b.priority==='high')-Number(a.priority==='high')||a.title.localeCompare(b.title,'zh-CN');});
+}

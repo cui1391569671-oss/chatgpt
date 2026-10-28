@@ -19,7 +19,21 @@
     "cyan-alpha.css": "d0d2b9c32f3bb1426437e1bd288f00d3b7489134fc537720593ac575d3aa214e",
     "black-alpha.css": "e6b71542a09980c154a1eb0e6d34ccf6401af0781076087478572d6bee4f6098",
     "white-alpha.css": "52474300017ba6f0537943b81397632a17556f9fc1525926fffe4dbe78f66b48",
-    "LICENSE": "9c400881b9139571aa7acc3bd6e422a4f05223b4519169fb661298fb44bf228e"
+    "LICENSE": "9c400881b9139571aa7acc3bd6e422a4f05223b4519169fb661298fb44bf228e",
+    "blue-dark.css": "6a27324f2ad7d53649d40bddfd397db276d4fad8626945fd54d903190ba58c23",
+    "blue-dark-alpha.css": "3caf78b5282b8c7116d3438b257b30da08328d44c2b19775e5b11d5bf50b89f9",
+    "slate-dark.css": "a51e5cba0956c571c878a698db438209c652c5775e88eabc80f5ab6af34281bd",
+    "slate-dark-alpha.css": "84a67042da22c27221eed09bf6fe2f788bdf7dd147a0388a07b4db93af428632",
+    "gray-dark.css": "f6b0d39917f70f87bfc208ed0cedb407314669e3ca298d34a750ec0da6e99bc1",
+    "gray-dark-alpha.css": "f5150bba9d1326305d92237a8062970a5e988b336f87112d70b2b3eb0031e5d1",
+    "green-dark.css": "2cebb00388fd84a41e39c51c184293b8cf2eeeb4424946e7fa6f9aba9b2b5dec",
+    "green-dark-alpha.css": "8781bb960f4635035fee139d14c43ec5af2ba2cc6919c913239d4e1f78aa1557",
+    "amber-dark.css": "b1f84ce5cb8336b54c926c78bb89787df56d2bbe277dcd6a453d16d074d74013",
+    "amber-dark-alpha.css": "7c20660dcac97f18780b83cf09c6d7e6a56fb3eb056706217a0d52fc6c198834",
+    "red-dark.css": "c65a4340bf310a3f37473a2db1986ec0e7af35fb41541f63b10364240c7825e1",
+    "red-dark-alpha.css": "e55b0c1a98b43cb2fc652c8d28cbfe4438e14d8ee493d47cc3f57ebe59c6c807",
+    "cyan-dark.css": "c6def23aed3b9dfec0293788e062769ee309f9f126a8cb9ec01c4e77ad4a32c8",
+    "cyan-dark-alpha.css": "e568589476d226a04934a5d3ee87225109dbd51ce6b6b612d4d87edb6d1b68cd"
   },
   "usage": "Unmodified light sRGB scales; build-glass-preset.mjs namespaces variables as --radix-* and bundles locally. P3 overrides are intentionally not applied."
 }

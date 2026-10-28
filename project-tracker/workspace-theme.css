@@ -1,4 +1,4 @@
-/* Project Radix Colors light theme. Blue/Slate + Green/Amber/Red semantic scales (MIT); see theme-presets/radix-colors/LICENSE.
+/* Project black/gold theme. Warm gold/neutral dark + Green/Amber/Red semantic scales (MIT); see theme-presets/radix-colors/LICENSE.
    Palette steps: 1-2 canvas, 3-5 UI states, 6-8 borders, 9-10 solid accents, 11-12 text.
    White-label solid buttons explicitly use steps 11/12 to meet WCAG AA 4.5:1 at 14px.
    Project Daylight theme. Component aliases derived from pinned shadcn-glass-ui (Apache-2.0); see theme-presets/shadcn-glass-ui/LICENSE.txt. This is the app theme owner; the upstream snapshot remains unchanged. */
@@ -7,150 +7,155 @@
   /* Fixed Radix Colors 3.0.0 sRGB primitives -> semantic scale aliases. */
   --theme-white: #ffffff;
   --theme-black: #000000;
-  --accent-1: var(--radix-blue-1);
-  --accent-2: var(--radix-blue-2);
-  --accent-3: var(--radix-blue-3);
-  --accent-4: var(--radix-blue-4);
-  --accent-5: var(--radix-blue-5);
-  --accent-6: var(--radix-blue-6);
-  --accent-7: var(--radix-blue-7);
-  --accent-8: var(--radix-blue-8);
-  --accent-9: var(--radix-blue-9);
-  --accent-10: var(--radix-blue-10);
-  --accent-11: var(--radix-blue-11);
-  --accent-12: var(--radix-blue-12);
-  --accent-a1: var(--radix-blue-a1);
-  --accent-a2: var(--radix-blue-a2);
-  --accent-a3: var(--radix-blue-a3);
-  --accent-a4: var(--radix-blue-a4);
-  --accent-a5: var(--radix-blue-a5);
-  --accent-a6: var(--radix-blue-a6);
-  --accent-a7: var(--radix-blue-a7);
-  --accent-a8: var(--radix-blue-a8);
-  --accent-a9: var(--radix-blue-a9);
-  --accent-a10: var(--radix-blue-a10);
-  --accent-a11: var(--radix-blue-a11);
-  --accent-a12: var(--radix-blue-a12);
-  --gray-1: var(--radix-slate-1);
-  --gray-2: var(--radix-slate-2);
-  --gray-3: var(--radix-slate-3);
-  --gray-4: var(--radix-slate-4);
-  --gray-5: var(--radix-slate-5);
-  --gray-6: var(--radix-slate-6);
-  --gray-7: var(--radix-slate-7);
-  --gray-8: var(--radix-slate-8);
-  --gray-9: var(--radix-slate-9);
-  --gray-10: var(--radix-slate-10);
-  --gray-11: var(--radix-slate-11);
-  --gray-12: var(--radix-slate-12);
-  --gray-a1: var(--radix-slate-a1);
-  --gray-a2: var(--radix-slate-a2);
-  --gray-a3: var(--radix-slate-a3);
-  --gray-a4: var(--radix-slate-a4);
-  --gray-a5: var(--radix-slate-a5);
-  --gray-a6: var(--radix-slate-a6);
-  --gray-a7: var(--radix-slate-a7);
-  --gray-a8: var(--radix-slate-a8);
-  --gray-a9: var(--radix-slate-a9);
-  --gray-a10: var(--radix-slate-a10);
-  --gray-a11: var(--radix-slate-a11);
-  --gray-a12: var(--radix-slate-a12);
-  --success-1: var(--radix-green-1);
-  --success-2: var(--radix-green-2);
-  --success-3: var(--radix-green-3);
-  --success-4: var(--radix-green-4);
-  --success-5: var(--radix-green-5);
-  --success-6: var(--radix-green-6);
-  --success-7: var(--radix-green-7);
-  --success-8: var(--radix-green-8);
-  --success-9: var(--radix-green-9);
-  --success-10: var(--radix-green-10);
-  --success-11: var(--radix-green-11);
-  --success-12: var(--radix-green-12);
-  --success-a1: var(--radix-green-a1);
-  --success-a2: var(--radix-green-a2);
-  --success-a3: var(--radix-green-a3);
-  --success-a4: var(--radix-green-a4);
-  --success-a5: var(--radix-green-a5);
-  --success-a6: var(--radix-green-a6);
-  --success-a7: var(--radix-green-a7);
-  --success-a8: var(--radix-green-a8);
-  --success-a9: var(--radix-green-a9);
-  --success-a10: var(--radix-green-a10);
-  --success-a11: var(--radix-green-a11);
-  --success-a12: var(--radix-green-a12);
-  --warning-1: var(--radix-amber-1);
-  --warning-2: var(--radix-amber-2);
-  --warning-3: var(--radix-amber-3);
-  --warning-4: var(--radix-amber-4);
-  --warning-5: var(--radix-amber-5);
-  --warning-6: var(--radix-amber-6);
-  --warning-7: var(--radix-amber-7);
-  --warning-8: var(--radix-amber-8);
-  --warning-9: var(--radix-amber-9);
-  --warning-10: var(--radix-amber-10);
-  --warning-11: var(--radix-amber-11);
-  --warning-12: var(--radix-amber-12);
-  --warning-a1: var(--radix-amber-a1);
-  --warning-a2: var(--radix-amber-a2);
-  --warning-a3: var(--radix-amber-a3);
-  --warning-a4: var(--radix-amber-a4);
-  --warning-a5: var(--radix-amber-a5);
-  --warning-a6: var(--radix-amber-a6);
-  --warning-a7: var(--radix-amber-a7);
-  --warning-a8: var(--radix-amber-a8);
-  --warning-a9: var(--radix-amber-a9);
-  --warning-a10: var(--radix-amber-a10);
-  --warning-a11: var(--radix-amber-a11);
-  --warning-a12: var(--radix-amber-a12);
-  --danger-1: var(--radix-red-1);
-  --danger-2: var(--radix-red-2);
-  --danger-3: var(--radix-red-3);
-  --danger-4: var(--radix-red-4);
-  --danger-5: var(--radix-red-5);
-  --danger-6: var(--radix-red-6);
-  --danger-7: var(--radix-red-7);
-  --danger-8: var(--radix-red-8);
-  --danger-9: var(--radix-red-9);
-  --danger-10: var(--radix-red-10);
-  --danger-11: var(--radix-red-11);
-  --danger-12: var(--radix-red-12);
-  --danger-a1: var(--radix-red-a1);
-  --danger-a2: var(--radix-red-a2);
-  --danger-a3: var(--radix-red-a3);
-  --danger-a4: var(--radix-red-a4);
-  --danger-a5: var(--radix-red-a5);
-  --danger-a6: var(--radix-red-a6);
-  --danger-a7: var(--radix-red-a7);
-  --danger-a8: var(--radix-red-a8);
-  --danger-a9: var(--radix-red-a9);
-  --danger-a10: var(--radix-red-a10);
-  --danger-a11: var(--radix-red-a11);
-  --danger-a12: var(--radix-red-a12);
-  --info-1: var(--radix-blue-1);
-  --info-2: var(--radix-blue-2);
-  --info-3: var(--radix-blue-3);
-  --info-4: var(--radix-blue-4);
-  --info-5: var(--radix-blue-5);
-  --info-6: var(--radix-blue-6);
-  --info-7: var(--radix-blue-7);
-  --info-8: var(--radix-blue-8);
-  --info-9: var(--radix-blue-9);
-  --info-10: var(--radix-blue-10);
-  --info-11: var(--radix-blue-11);
-  --info-12: var(--radix-blue-12);
-  --info-a1: var(--radix-blue-a1);
-  --info-a2: var(--radix-blue-a2);
-  --info-a3: var(--radix-blue-a3);
-  --info-a4: var(--radix-blue-a4);
-  --info-a5: var(--radix-blue-a5);
-  --info-a6: var(--radix-blue-a6);
-  --info-a7: var(--radix-blue-a7);
-  --info-a8: var(--radix-blue-a8);
-  --info-a9: var(--radix-blue-a9);
-  --info-a10: var(--radix-blue-a10);
-  --info-a11: var(--radix-blue-a11);
-  --info-a12: var(--radix-blue-a12);
+  --theme-canvas: #080808;
+  --theme-gold: #f5bf6b;
+  --theme-gold-hover: #ffdb9e;
+  --particle-gold: var(--theme-gold);
+  --particle-white: var(--theme-white);
+  --accent-1: var(--radix-dark-amber-1);
+  --accent-2: var(--radix-dark-amber-2);
+  --accent-3: var(--radix-dark-amber-3);
+  --accent-4: var(--radix-dark-amber-4);
+  --accent-5: var(--radix-dark-amber-5);
+  --accent-6: var(--radix-dark-amber-6);
+  --accent-7: var(--radix-dark-amber-7);
+  --accent-8: var(--radix-dark-amber-8);
+  --accent-9: var(--theme-gold);
+  --accent-10: var(--theme-gold-hover);
+  --accent-11: var(--theme-gold);
+  --accent-12: var(--theme-gold);
+  --accent-a1: var(--radix-dark-amber-a1);
+  --accent-a2: var(--radix-dark-amber-a2);
+  --accent-a3: var(--radix-dark-amber-a3);
+  --accent-a4: var(--radix-dark-amber-a4);
+  --accent-a5: var(--radix-dark-amber-a5);
+  --accent-a6: var(--radix-dark-amber-a6);
+  --accent-a7: var(--radix-dark-amber-a7);
+  --accent-a8: var(--radix-dark-amber-a8);
+  --accent-a9: var(--radix-dark-amber-a9);
+  --accent-a10: var(--radix-dark-amber-a10);
+  --accent-a11: var(--radix-dark-amber-a11);
+  --accent-a12: var(--radix-dark-amber-a12);
+  --gray-1: var(--theme-canvas);
+  --gray-2: var(--radix-dark-gray-2);
+  --gray-3: var(--radix-dark-gray-3);
+  --gray-4: var(--radix-dark-gray-4);
+  --gray-5: var(--radix-dark-gray-5);
+  --gray-6: var(--radix-dark-gray-6);
+  --gray-7: var(--radix-dark-gray-7);
+  --gray-8: var(--radix-dark-gray-8);
+  --gray-9: var(--radix-dark-gray-9);
+  --gray-10: var(--radix-dark-gray-10);
+  --gray-11: var(--radix-dark-gray-11);
+  --gray-12: var(--radix-dark-gray-12);
+  --gray-a1: var(--radix-dark-gray-a1);
+  --gray-a2: var(--radix-dark-gray-a2);
+  --gray-a3: var(--radix-dark-gray-a3);
+  --gray-a4: var(--radix-dark-gray-a4);
+  --gray-a5: var(--radix-dark-gray-a5);
+  --gray-a6: var(--radix-dark-gray-a6);
+  --gray-a7: var(--radix-dark-gray-a7);
+  --gray-a8: var(--radix-dark-gray-a8);
+  --gray-a9: var(--radix-dark-gray-a9);
+  --gray-a10: var(--radix-dark-gray-a10);
+  --gray-a11: var(--radix-dark-gray-a11);
+  --gray-a12: var(--radix-dark-gray-a12);
+  --success-1: var(--radix-dark-green-1);
+  --success-2: var(--radix-dark-green-2);
+  --success-3: var(--radix-dark-green-3);
+  --success-4: var(--radix-dark-green-4);
+  --success-5: var(--radix-dark-green-5);
+  --success-6: var(--radix-dark-green-6);
+  --success-7: var(--radix-dark-green-7);
+  --success-8: var(--radix-dark-green-8);
+  --success-9: var(--radix-dark-green-9);
+  --success-10: var(--radix-dark-green-10);
+  --success-11: var(--radix-dark-green-11);
+  --success-12: var(--radix-dark-green-12);
+  --success-a1: var(--radix-dark-green-a1);
+  --success-a2: var(--radix-dark-green-a2);
+  --success-a3: var(--radix-dark-green-a3);
+  --success-a4: var(--radix-dark-green-a4);
+  --success-a5: var(--radix-dark-green-a5);
+  --success-a6: var(--radix-dark-green-a6);
+  --success-a7: var(--radix-dark-green-a7);
+  --success-a8: var(--radix-dark-green-a8);
+  --success-a9: var(--radix-dark-green-a9);
+  --success-a10: var(--radix-dark-green-a10);
+  --success-a11: var(--radix-dark-green-a11);
+  --success-a12: var(--radix-dark-green-a12);
+  --warning-1: var(--radix-dark-amber-1);
+  --warning-2: var(--radix-dark-amber-2);
+  --warning-3: var(--radix-dark-amber-3);
+  --warning-4: var(--radix-dark-amber-4);
+  --warning-5: var(--radix-dark-amber-5);
+  --warning-6: var(--radix-dark-amber-6);
+  --warning-7: var(--radix-dark-amber-7);
+  --warning-8: var(--radix-dark-amber-8);
+  --warning-9: var(--radix-dark-amber-9);
+  --warning-10: var(--radix-dark-amber-10);
+  --warning-11: var(--radix-dark-amber-11);
+  --warning-12: var(--radix-dark-amber-12);
+  --warning-a1: var(--radix-dark-amber-a1);
+  --warning-a2: var(--radix-dark-amber-a2);
+  --warning-a3: var(--radix-dark-amber-a3);
+  --warning-a4: var(--radix-dark-amber-a4);
+  --warning-a5: var(--radix-dark-amber-a5);
+  --warning-a6: var(--radix-dark-amber-a6);
+  --warning-a7: var(--radix-dark-amber-a7);
+  --warning-a8: var(--radix-dark-amber-a8);
+  --warning-a9: var(--radix-dark-amber-a9);
+  --warning-a10: var(--radix-dark-amber-a10);
+  --warning-a11: var(--radix-dark-amber-a11);
+  --warning-a12: var(--radix-dark-amber-a12);
+  --danger-1: var(--radix-dark-red-1);
+  --danger-2: var(--radix-dark-red-2);
+  --danger-3: var(--radix-dark-red-3);
+  --danger-4: var(--radix-dark-red-4);
+  --danger-5: var(--radix-dark-red-5);
+  --danger-6: var(--radix-dark-red-6);
+  --danger-7: var(--radix-dark-red-7);
+  --danger-8: var(--radix-dark-red-8);
+  --danger-9: var(--radix-dark-red-9);
+  --danger-10: var(--radix-dark-red-10);
+  --danger-11: var(--radix-dark-red-11);
+  --danger-12: var(--radix-dark-red-12);
+  --danger-a1: var(--radix-dark-red-a1);
+  --danger-a2: var(--radix-dark-red-a2);
+  --danger-a3: var(--radix-dark-red-a3);
+  --danger-a4: var(--radix-dark-red-a4);
+  --danger-a5: var(--radix-dark-red-a5);
+  --danger-a6: var(--radix-dark-red-a6);
+  --danger-a7: var(--radix-dark-red-a7);
+  --danger-a8: var(--radix-dark-red-a8);
+  --danger-a9: var(--radix-dark-red-a9);
+  --danger-a10: var(--radix-dark-red-a10);
+  --danger-a11: var(--radix-dark-red-a11);
+  --danger-a12: var(--radix-dark-red-a12);
+  --info-1: var(--radix-dark-blue-1);
+  --info-2: var(--radix-dark-blue-2);
+  --info-3: var(--radix-dark-blue-3);
+  --info-4: var(--radix-dark-blue-4);
+  --info-5: var(--radix-dark-blue-5);
+  --info-6: var(--radix-dark-blue-6);
+  --info-7: var(--radix-dark-blue-7);
+  --info-8: var(--radix-dark-blue-8);
+  --info-9: var(--radix-dark-blue-9);
+  --info-10: var(--radix-dark-blue-10);
+  --info-11: var(--radix-dark-blue-11);
+  --info-12: var(--radix-dark-blue-12);
+  --info-a1: var(--radix-dark-blue-a1);
+  --info-a2: var(--radix-dark-blue-a2);
+  --info-a3: var(--radix-dark-blue-a3);
+  --info-a4: var(--radix-dark-blue-a4);
+  --info-a5: var(--radix-dark-blue-a5);
+  --info-a6: var(--radix-dark-blue-a6);
+  --info-a7: var(--radix-dark-blue-a7);
+  --info-a8: var(--radix-dark-blue-a8);
+  --info-a9: var(--radix-dark-blue-a9);
+  --info-a10: var(--radix-dark-blue-a10);
+  --info-a11: var(--radix-dark-blue-a11);
+  --info-a12: var(--radix-dark-blue-a12);
   --accent-solid: var(--accent-9);
   --accent-solid-hover: var(--accent-10);
   --accent-solid-accessible: var(--accent-11);
@@ -174,46 +179,46 @@
   /* ========================================
      BASE COLORS (HSL format)
      ======================================== */
-  --background-base: var(--radix-slate-1-hsl);
-  --foreground-base: var(--radix-slate-12-hsl);
+  --background-base: var(--radix-dark-gray-1-hsl);
+  --foreground-base: var(--radix-dark-gray-12-hsl);
 
-  --card-base: 0 0% 100%;
-  --card-fg-base: var(--radix-slate-12-hsl);
+  --card-base: var(--radix-dark-gray-2-hsl);
+  --card-fg-base: var(--radix-dark-gray-12-hsl);
 
-  --popover-base: 0 0% 100%;
-  --popover-fg-base: var(--radix-slate-12-hsl);
+  --popover-base: var(--radix-dark-gray-3-hsl);
+  --popover-fg-base: var(--radix-dark-gray-12-hsl);
 
-  --primary-base: var(--radix-blue-11-hsl);
-  --primary-fg-base: 0 0% 100%;
+  --primary-base: 0 0% 100%;
+  --primary-fg-base: var(--radix-dark-gray-1-hsl);
 
-  --secondary-base: var(--radix-slate-3-hsl);
-  --secondary-fg-base: var(--radix-slate-12-hsl);
+  --secondary-base: var(--radix-dark-gray-3-hsl);
+  --secondary-fg-base: var(--radix-dark-gray-12-hsl);
 
-  --muted-base: var(--radix-slate-2-hsl);
-  --muted-fg-base: var(--radix-slate-11-hsl);
+  --muted-base: var(--radix-dark-gray-2-hsl);
+  --muted-fg-base: var(--radix-dark-gray-11-hsl);
 
-  --accent-base: var(--radix-blue-3-hsl);
-  --accent-fg-base: var(--radix-blue-12-hsl);
+  --accent-base: var(--radix-dark-amber-3-hsl);
+  --accent-fg-base: var(--radix-dark-amber-12-hsl);
 
-  --destructive-base: var(--radix-red-11-hsl);
+  --destructive-base: var(--radix-dark-red-11-hsl);
   --destructive-fg-base: 0 0% 100%;
 
-  --border-base: var(--radix-slate-6-hsl);
-  --input-base: var(--radix-slate-7-hsl);
-  --ring-base: var(--radix-blue-11-hsl);
+  --border-base: var(--radix-dark-gray-6-hsl);
+  --input-base: var(--radix-dark-gray-7-hsl);
+  --ring-base: var(--radix-dark-amber-11-hsl);
 
   /* Chart Colors */
-  --chart-1-base: var(--radix-blue-9-hsl);
-  --chart-2-base: var(--radix-cyan-9-hsl);
-  --chart-3-base: var(--radix-slate-9-hsl);
-  --chart-4-base: var(--radix-green-9-hsl);
-  --chart-5-base: var(--radix-amber-9-hsl);
+  --chart-1-base: var(--radix-dark-blue-9-hsl);
+  --chart-2-base: var(--radix-dark-cyan-9-hsl);
+  --chart-3-base: var(--radix-dark-gray-9-hsl);
+  --chart-4-base: var(--radix-dark-green-9-hsl);
+  --chart-5-base: var(--radix-dark-amber-9-hsl);
 
   /* Status Colors */
-  --success-base: var(--radix-green-11-hsl);
-  --warning-base: var(--radix-amber-11-hsl);
-  --error-base: var(--radix-red-11-hsl);
-  --info-base: var(--radix-blue-11-hsl);
+  --success-base: var(--radix-dark-green-11-hsl);
+  --warning-base: var(--radix-dark-amber-11-hsl);
+  --error-base: var(--radix-dark-red-11-hsl);
+  --info-base: var(--radix-dark-blue-11-hsl);
 
   /* ========================================
      SEMANTIC COLOR TOKENS (Layer 2)
@@ -229,17 +234,17 @@
   --semantic-primary-text: var(--accent-12);
 
   /* Secondary Accent (Deep sky blue) */
-  --semantic-secondary: var(--radix-cyan-11);
-  --semantic-secondary-muted: var(--radix-cyan-a5);
+  --semantic-secondary: var(--radix-dark-cyan-11);
+  --semantic-secondary-muted: var(--radix-dark-cyan-a5);
 
 /* Homepage and selected navigation GradientText: shared blue palette. */
 
   /* Surface Colors (Layered light surfaces) */
   --semantic-surface: var(--gray-1);
   --semantic-surface-muted: var(--gray-2);
-  --semantic-surface-elevated: var(--theme-white);
-  --semantic-surface-overlay: var(--radix-white-a11);
-  --semantic-surface-strong: var(--theme-white);
+  --semantic-surface-elevated: var(--gray-3);
+  --semantic-surface-overlay: var(--gray-3);
+  --semantic-surface-strong: var(--gray-2);
   /* Radix Slate 4/5: hover and active component surfaces. */
   --semantic-surface-medium: var(--gray-4);
   --semantic-surface-intense: var(--gray-5);
@@ -255,7 +260,7 @@
   --semantic-text-muted: var(--gray-11);
   --semantic-text-subtle: var(--gray-11);
   --semantic-text-disabled: var(--gray-10);
-  --semantic-text-inverse: var(--theme-white);
+  --semantic-text-inverse: var(--theme-black);
 
   /* Status text uses 12 over tinted backgrounds; 11 is reserved for white surfaces. */
   /* Status Colors - Success (Green) */
@@ -286,10 +291,10 @@
   --semantic-shadow: var(--gray-a3);
 
   /* Glass-specific Effects (Light theme - high opacity) */
-  --semantic-glass-bg: var(--radix-white-a11);
-  --semantic-glass-bg-subtle: var(--radix-white-a9);
-  --semantic-glass-bg-medium: var(--radix-white-a11);
-  --semantic-glass-bg-strong: var(--radix-white-a12);
+  --semantic-glass-bg: var(--gray-2);
+  --semantic-glass-bg-subtle: var(--gray-2);
+  --semantic-glass-bg-medium: var(--gray-2);
+  --semantic-glass-bg-strong: var(--gray-2);
 
   /* ========================================
      GLASS EFFECTS (Layer 3 Component Tokens)
@@ -311,7 +316,7 @@
      SEMANTIC GLOWS (Layer 3 Component Tokens)
      ======================================== */
   --glow-primary: 0 0 20px var(--semantic-primary-muted);
-  --glow-secondary: 0 0 15px var(--radix-cyan-a5);
+  --glow-secondary: 0 0 15px var(--radix-dark-cyan-a5);
   --glow-success: 0 0 20px var(--success-a5);
   --glow-warning: 0 0 20px var(--warning-a5);
   --glow-error: 0 0 20px var(--danger-a5);
@@ -319,7 +324,7 @@
   /* Additional color glows */
   --glow-blue: 0 0 15px var(--accent-a5);
   --glow-violet: 0 0 15px var(--accent-a5);
-  --glow-cyan: 0 0 15px var(--radix-cyan-a5);
+  --glow-cyan: 0 0 15px var(--radix-dark-cyan-a5);
   --glow-neutral: 0 4px 12px var(--radix-black-a2);
 
   /* ========================================
@@ -327,7 +332,7 @@
      ======================================== */
   --orb-1: var(--accent-a2);
   --orb-2: var(--accent-a3);
-  --orb-3: var(--radix-cyan-a2);
+  --orb-3: var(--radix-dark-cyan-a2);
   --orb-4: var(--semantic-primary-subtle);
   --orb-5: transparent;
 
@@ -344,20 +349,20 @@
      BUTTON VARIABLES (Layer 3 Component Tokens)
      Using semantic and primitive tokens
      ======================================== */
-  --btn-primary-bg: var(--semantic-primary);
-  --btn-primary-text: var(--semantic-text-inverse);
-  --btn-primary-hover-bg: var(--semantic-primary-hover);
-  --btn-primary-glow: 0 4px 12px var(--accent-a4), inset 0 1px 0 var(--radix-white-a4);
+  --btn-primary-bg: var(--theme-white);
+  --btn-primary-text: var(--theme-black);
+  --btn-primary-hover-bg: var(--gray-12);
+  --btn-primary-glow: none;
   --btn-secondary-bg: var(--gray-3);
   --btn-secondary-text: var(--semantic-text);
   --btn-secondary-border: var(--semantic-interactive-border);
   --btn-secondary-hover-bg: var(--semantic-control-hover);
   --btn-secondary-glow: 0 3px 8px var(--gray-a3), inset 0 1px 0 var(--radix-white-a10);
   --btn-ghost-bg: transparent;
-  --btn-ghost-text: var(--semantic-text-muted);
+  --btn-ghost-text: var(--semantic-text);
   --btn-ghost-hover-bg: var(--gray-3);
   --btn-destructive-bg: var(--danger-11);
-  --btn-destructive-text: var(--theme-white);
+  --btn-destructive-text: var(--theme-black);
   --btn-destructive-glow: var(--glow-error);
   --btn-success-bg: var(--success-11);
   --btn-success-text: var(--semantic-text-inverse);
@@ -370,7 +375,7 @@
   /* Link variant (shadcn/ui compatible) */
   --btn-link-text: var(--accent-11);
   /* Button shadow fallbacks (for non-hover state) */
-  --btn-primary-shadow: 0 2px 5px var(--accent-a4), inset 0 1px 0 var(--radix-white-a3);
+  --btn-primary-shadow: none;
   --btn-destructive-shadow: 0 4px 15px var(--semantic-error-muted);
   --btn-success-shadow: 0 4px 15px var(--semantic-success-muted);
   --btn-glow-radial: radial-gradient(circle, var(--radix-white-a3) 0%, transparent 70%);
@@ -417,7 +422,7 @@
      FOCUS RING VARIABLES (Layer 3 Component Tokens)
      Unified focus glow for all components
      ======================================== */
-  --focus-glow: 0 0 0 2px var(--theme-white), 0 0 0 4px var(--accent-11);
+  --focus-glow: 0 0 0 2px var(--theme-canvas), 0 0 0 4px var(--accent-11);
 
   /* ========================================
      ALERT VARIABLES (Layer 3 Component Tokens)
@@ -672,7 +677,7 @@
   --progress-glow: var(--glow-primary);
   --progress-glow-violet: 0 0 8px var(--accent-a5);
   --progress-glow-blue: 0 0 8px var(--accent-a5);
-  --progress-glow-cyan: 0 0 8px var(--radix-cyan-a5);
+  --progress-glow-cyan: 0 0 8px var(--radix-dark-cyan-a5);
   --progress-glow-amber: 0 0 8px var(--warning-a5);
   --progress-glow-emerald: 0 0 8px var(--success-a5);
   --progress-glow-rose: 0 0 8px var(--danger-a5);

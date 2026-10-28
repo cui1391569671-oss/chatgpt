@@ -34,7 +34,7 @@ function mountWorkbenchShell(){
   projectActions.hidden=view!=='projects';nativeActions.hidden=view==='projects';reactActions.hidden=view==='projects';
   for(const [node,entry] of moved)if(!entry.marker.isConnected){node.remove();moved.delete(node);}
   const add=$('add');if(add&&!add.classList.contains('hidden')&&!add.closest('#workspacePageActions'))move(add);
-  for(const node of $('content').querySelectorAll('[data-page-toolbar],.filters,.wardrobe-tabs,.media-controls,.wb-segment-page-tabs'))move(node);
+  for(const node of $('content').querySelectorAll('[data-page-toolbar],.filters,.wardrobe-tabs,.media-controls,.wb-segment-page-tabs')){if(view==='notes'&&node.matches('.filters'))continue;move(node);}
  };
  const frame=$('projectFrame');let projectDialogObserver=null;
  frame.addEventListener('load',()=>{

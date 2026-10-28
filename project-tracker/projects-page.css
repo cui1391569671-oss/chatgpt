@@ -268,19 +268,19 @@ td[contenteditable=true]:focus,.proj-name:focus {
   outline: 1px solid currentColor;
 }
 .priority-urgent {
-  background: var(--semantic-error-muted);
+  background: transparent;
   color: var(--danger);
 }
 .priority-high {
-  background: var(--semantic-warning-muted);
+  background: transparent;
   color: var(--semantic-warning-text);
 }
 .priority-medium {
-  background: var(--soft);
+  background: transparent;
   color: var(--accent);
 }
 .priority-low,.priority-none {
-  background: var(--semantic-surface);
+  background: transparent;
   color: var(--text-light);
 }
 .priority-none {
@@ -720,3 +720,8 @@ thead th {
     transform: translateY(0);
   }
 }
+
+/* Page-owned filter layout; shared WorkspaceSegment owns keyboard/selection. */
+.issue-filter-bar{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:8px 0 16px;flex:none}
+
+.issue-table-summary{padding:24px 0;font-size:14px}
