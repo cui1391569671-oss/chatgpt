@@ -4646,7 +4646,7 @@ body.shadcn-workbench .wb-topbar {
 body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;min-width:0;margin:var(--app-top-gap) var(--app-gutter) 0;background:transparent;border:0}
 /* Three balanced header zones keep navigation centered independently of the right-side actions. */
 .wb-navigation-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px;min-width:0;width:100%;max-width:1370px;margin:0 auto;padding:0 0 16px}
-.wb-primary-navigation{grid-column:2;position:relative;min-width:0;isolation:isolate}
+.wb-primary-navigation{--navigation-top:80px;--navigation-duration:var(--workspace-motion-navigation);--navigation-close-delay:0ms;grid-column:2;position:relative;min-width:0;isolation:isolate}
 .wb-top-navigation{display:flex;justify-content:center;gap:24px;min-width:0;list-style:none;margin:0;padding:0}
 .wb-top-navigation>li{list-style:none;margin:0;padding:0;display:flex}
 .wb-site-logo{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0;border:0;background:transparent;text-decoration:none;border-radius:0}
