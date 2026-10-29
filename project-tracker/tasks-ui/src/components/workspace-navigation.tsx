@@ -21,7 +21,7 @@ export function WorkspaceNavigation({bridge,snapshot}){
  valueRef.current=open;
  if(!intentRef.current)intentRef.current=createNavigationIntent({getValue:()=>valueRef.current,onChange:setOpen});
  const {cancel,change,enter,leave,click}=intentRef.current;
- const current=workspaceNavView(snapshot.view),groups=workspaceSiteNavigation();
+ const current=workspaceNavView(snapshot.view),groups=workspaceSiteNavigation(bridge.scope);
  useEffect(()=>cancel,[cancel]);
  useEffect(()=>{change('');},[snapshot.view,bridge.scope,change]);
  useLayoutEffect(()=>{

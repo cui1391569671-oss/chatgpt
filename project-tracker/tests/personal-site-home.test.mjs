@@ -24,3 +24,5 @@ test('legacy navigation decoration cannot overwrite React navigation state',()=>
  assert.match(page,/querySelectorAll\('nav button\[data-view\]'\)/);
  assert.doesNotMatch(page,/querySelectorAll\('nav button'\)\.forEach/);
 });
+
+test('top navigation only contains the current workspace routes',()=>{for(const scope of ['work','personal']){const groups=workspaceSiteNavigation(scope);assert.deepEqual(groups.map(group=>group.title),scope==='work'?['工作','记录']:['记录','生活']);assert(groups.every(group=>group.columns.length>0&&group.items.every(([space])=>space===scope)));assert(groups.flatMap(group=>group.items).some(([,view])=>view==='notes'));}});
