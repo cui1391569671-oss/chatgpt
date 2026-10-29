@@ -17,7 +17,7 @@ function focusNavigationLink(link:HTMLAnchorElement|undefined){
 
 /** One full-width Radix viewport, with shared route ownership and non-modal dismissal. */
 export function WorkspaceNavigation({bridge,snapshot}){
- const [open,setOpen]=useState(''),[top,setTop]=useState(0),root=useRef<HTMLElement>(null),keyboardEntry=useRef<{value:string;last:boolean}|null>(null),valueRef=useRef(open),intentRef=useRef<ReturnType<typeof createNavigationIntent>|null>(null),reduce=useWorkspaceMotionOff();
+ const [open,setOpen]=useState(''),[top,setTop]=useState(0),[left,setLeft]=useState(0),root=useRef<HTMLElement>(null),keyboardEntry=useRef<{value:string;last:boolean}|null>(null),valueRef=useRef(open),intentRef=useRef<ReturnType<typeof createNavigationIntent>|null>(null),reduce=useWorkspaceMotionOff();
  valueRef.current=open;
  if(!intentRef.current)intentRef.current=createNavigationIntent({getValue:()=>valueRef.current,onChange:setOpen});
  const {cancel,change,enter,leave,click}=intentRef.current;
@@ -26,11 +26,11 @@ export function WorkspaceNavigation({bridge,snapshot}){
  useEffect(()=>{change('');},[snapshot.view,bridge.scope,change]);
  useLayoutEffect(()=>{
   const row=root.current?.closest<HTMLElement>('.wb-navigation-row');if(!row)return;
-  const align=()=>setTop(row.getBoundingClientRect().bottom);
+  const align=()=>{setTop(row.getBoundingClientRect().bottom);const trigger=root.current?.querySelector<HTMLElement>('[data-nav-group="'+open+'"]');if(trigger)setLeft(trigger.getBoundingClientRect().left);};
   align();const observer=new ResizeObserver(align);observer.observe(row);window.addEventListener('resize',align);
   row.addEventListener('pointerenter',cancel);row.addEventListener('pointerleave',leave);
   return()=>{observer.disconnect();window.removeEventListener('resize',align);row.removeEventListener('pointerenter',cancel);row.removeEventListener('pointerleave',leave);};
- },[cancel,leave]);
+ },[cancel,leave,open]);
  useEffect(()=>{
   if(!open){keyboardEntry.current=null;return;}if(keyboardEntry.current?.value!==open)return;
   let frame=0,attempts=0;
@@ -39,7 +39,7 @@ export function WorkspaceNavigation({bridge,snapshot}){
  },[open]);
  const reveal=(delay:number)=>({initial:{opacity:reduce?1:0,y:reduce?0:-4},animate:{opacity:open?1:0,y:0},transition:{duration:reduce?0:(open?navigationTiming.content:motionTiming.navigation)/1000,delay:reduce||!open?0:delay/1000,ease:[.25,.1,.25,1] as const}});
  const choose=(event:Event,space:string,next:string)=>{if(navigateWorkspace(bridge,space,next)===false)event.preventDefault();else change('');};
- return <Menu.Root ref={root} className='wb-primary-navigation' style={{'--navigation-top':top+'px','--navigation-duration':(reduce?0:motionTiming.navigation)+'ms','--navigation-close-delay':(reduce||open?0:navigationTiming.closeDelay)+'ms'} as CSSProperties} aria-label='主导航' activationMode='manual' value={open} onValueChange={change} onPointerEnter={cancel} onPointerLeave={event=>{if(event.relatedTarget instanceof Node&&root.current?.closest('.wb-navigation-row')?.contains(event.relatedTarget))cancel();else leave();}} onFocusCapture={cancel} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget))change('');}} onKeyDownCapture={cancel}>
+ return <Menu.Root ref={root} className='wb-primary-navigation' style={{'--navigation-top':top+'px','--navigation-left':left+'px','--navigation-duration':(reduce?0:motionTiming.navigation)+'ms','--navigation-close-delay':(reduce||open?0:navigationTiming.closeDelay)+'ms'} as CSSProperties} aria-label='主导航' activationMode='manual' value={open} onValueChange={change} onPointerEnter={cancel} onPointerLeave={event=>{if(event.relatedTarget instanceof Node&&root.current?.closest('.wb-navigation-row')?.contains(event.relatedTarget))cancel();else leave();}} onFocusCapture={cancel} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget))change('');}} onKeyDownCapture={cancel}>
   <Menu.List className='wb-top-navigation'>
    <Menu.Item><Menu.Link href={'/'+bridge.scope+'?view=home'} className='wb-site-logo' aria-label='我的工作台首页' title='我的工作台' onClick={event=>event.preventDefault()} onSelect={event=>choose(event,bridge.scope,'home')} onPointerEnter={leave}><img src='/favicon.svg?v=workbench-mark-1' width={28} height={28} alt='' aria-hidden='true'/></Menu.Link></Menu.Item>
    <Menu.Item><Menu.Link href={'/'+bridge.scope+'?view=home'} active={current==='home'} className='wb-site-nav-link' data-active={current==='home'} onClick={event=>event.preventDefault()} onSelect={event=>choose(event,bridge.scope,'home')} onPointerEnter={leave}>首页</Menu.Link></Menu.Item>
@@ -47,7 +47,7 @@ export function WorkspaceNavigation({bridge,snapshot}){
     <Menu.Trigger className='wb-site-nav-link' data-nav-group={group.title} data-active={group.items.some(([space,id])=>space===bridge.scope&&id===current)} onPointerEnter={event=>{if(event.pointerType==='mouse')enter(group.title);}} onClick={event=>{if(click(group.title))event.preventDefault();}} onKeyDown={event=>{if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();keyboardEntry.current={value:group.title,last:event.key==='ArrowUp'};if(open===group.title){const links=root.current?.querySelectorAll<HTMLAnchorElement>('[data-nav-panel="'+open+'"] a');focusNavigationLink(links?.[event.key==='ArrowUp'?links.length-1:0]);keyboardEntry.current=null;}else change(group.title);}}}>{group.title}</Menu.Trigger>
     <Menu.Content asChild onPointerEnter={cancel} onPointerLeave={leave}>
      <div className='wb-navigation-content' data-nav-panel={group.title}>
-      <div className='wb-navigation-columns' aria-label={group.title+'页面'}>{group.columns.map((column,columnIndex)=>{const groupDelay=Math.min(navigationTiming.group+(columnIndex-1)*navigationTiming.groupStep,columnIndex*navigationTiming.group);return <section className='wb-navigation-column' data-primary={column.primary} key={column.title} aria-label={column.title}><motion.h2 {...reveal(navigationTiming.headingDelay+groupDelay)}>{column.title}</motion.h2><div className='wb-navigation-links'>{column.views.map((id,itemIndex)=>{const active=column.space===bridge.scope&&current===id,label=workspacePageMeta(column.space,id).label;return <motion.div key={id} {...reveal(navigationTiming.itemDelay+groupDelay+itemIndex*navigationTiming.itemStep)}><Menu.Link href={'/'+column.space+'?view='+encodeURIComponent(id)} className='wb-navigation-link' active={active} aria-current={active?'page':undefined} onClick={event=>event.preventDefault()} onSelect={event=>choose(event,column.space,id)}><span>{label}</span>{active&&<Check size={16} aria-hidden='true'/>}</Menu.Link></motion.div>;})}</div></section>;})}</div>
+      <div className='wb-navigation-columns' style={{'--navigation-column-count':group.columns.length} as CSSProperties} aria-label={group.title+'页面'}>{group.columns.map((column,columnIndex)=>{const groupDelay=Math.min(navigationTiming.group+(columnIndex-1)*navigationTiming.groupStep,columnIndex*navigationTiming.group);return <section className='wb-navigation-column' data-primary={column.primary} key={column.title} aria-label={column.title}><motion.h2 {...reveal(navigationTiming.headingDelay+groupDelay)}>{column.title}</motion.h2><div className='wb-navigation-links'>{column.views.map((id,itemIndex)=>{const active=column.space===bridge.scope&&current===id,label=workspacePageMeta(column.space,id).label;return <motion.div key={id} {...reveal(navigationTiming.itemDelay+groupDelay+itemIndex*navigationTiming.itemStep)}><Menu.Link href={'/'+column.space+'?view='+encodeURIComponent(id)} className='wb-navigation-link' active={active} aria-current={active?'page':undefined} onClick={event=>event.preventDefault()} onSelect={event=>choose(event,column.space,id)}><span>{label}</span>{active&&<Check size={16} aria-hidden='true'/>}</Menu.Link></motion.div>;})}</div></section>;})}</div>
      </div>
     </Menu.Content>
    </Menu.Item>)}

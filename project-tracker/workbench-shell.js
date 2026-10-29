@@ -19,7 +19,7 @@ function mountWorkbenchShell(){
  const header=document.createElement('div');header.id='workbenchTopbar';header.dataset.shellRoot='';
  legacy.after(root,header);
  const canLeave=()=>{if(isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()||isPersonalInfoEditing()||document.querySelector('dialog[open],[data-slot=dialog-content]')||$('projectFrame')?.contentDocument?.querySelector('dialog[open],[data-slot=dialog-content]')){toast('请先关闭编辑面板或处理未保存修改。');return false;}return true;};
- const snapshot=()=>({view,heading:$('heading').textContent,count:dueTaskNotifications(currentReminderTasks(),day()).length,ready:!$('notificationToggle').disabled});
+ const snapshot=()=>({view,heading:$('heading').textContent,overdue:overdueTaskNotifications(currentReminderTasks(),day()),remindersLoading,remindersLoaded,remindersError,busy:busy||conflict,ready:!$('notificationToggle').disabled});
  const actions=document.createElement('div');actions.id='workspacePageActions';actions.className='wb-page-actions';
  const nativeActions=document.createElement('div');nativeActions.id='workspaceNativeActions';nativeActions.className='wb-page-toolbar';
  const reactActions=document.createElement('div');reactActions.id='workspaceReactActions';
@@ -49,7 +49,7 @@ function mountWorkbenchShell(){
  });
  syncLayout();
  const controller=window.WorkspaceShell.mount(root,header,{
-  scope,date:$('today').textContent,snapshot,canLeave,
+  scope,date:$('today').textContent,snapshot,canLeave,openReminder,refreshReminders,
   navigate(next){if(!canLeave())return false;view=next;query='';render();history.replaceState(null,'',location.pathname+'?view='+encodeURIComponent(next));return true;},
   notifications:()=>{if(!frame.contentDocument?.querySelector('dialog[open],[data-slot=dialog-content]'))$('notificationToggle').click();},account:()=>{if(!frame.contentDocument?.querySelector('dialog[open],[data-slot=dialog-content]'))$('accountToggle').click();}
  },actions);

@@ -2305,6 +2305,7 @@ dialog[open]::backdrop {
 
 /* Immersive home and editorial inner pages: desktop reference layout. */
 .site-home{max-width:1370px;width:100%;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:40px;padding:72px 16px 24px;min-width:0}
+.site-home #workspaceHomeReminders{margin-top:auto;min-width:0;align-self:flex-start}
 .site-home-intro{--workspace-title-size:clamp(48px,5.6vw,88px);--workspace-title-weight:650;min-width:0}
 .site-home-date{margin:0 0 24px;font-size:18px}
 .site-home-intro h1{margin:0 0 24px;line-height:1.3;letter-spacing:-2px;overflow-wrap:anywhere}
