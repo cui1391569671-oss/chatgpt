@@ -2600,7 +2600,6 @@ thead th {
 }
 
 /* Page-owned filter layout; shared WorkspaceSegment owns keyboard/selection. */
-.issue-count-bar{display:flex;align-items:center;justify-content:flex-end;padding:8px 0 16px;flex:none}
 
 .issue-table-summary{padding:24px 0;font-size:14px}
 
@@ -4684,7 +4683,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .site-task-priority{color:var(--semantic-primary-text);background:var(--semantic-primary-subtle)}
 .site-task-group time{color:var(--task-date-color,var(--semantic-text-muted))}
 .site-task-overdue{--task-date-color:var(--semantic-error-text)}
-.site-list-controls,.site-list-footer,.issue-count-bar{border-bottom:1px solid var(--semantic-border-muted)}
+.site-list-controls,.site-list-footer{border-bottom:1px solid var(--semantic-border-muted)}
 .workspace-note-index{border-right:1px solid var(--semantic-border-muted)}
 .workspace-note-link{color:var(--semantic-text);background:transparent;border:0;border-left:3px solid transparent}
 .workspace-note-link[aria-current=true]{color:var(--semantic-primary-text);border-left-color:var(--semantic-primary)}
@@ -5445,7 +5444,6 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:dark;iso
     </div>
   </div>
 
-  <div class="issue-count-bar"><span id="issueVisibleCount" class="muted" aria-live="polite"></span></div>
   <div class="table-wrapper">
     <table>
       <thead><tr><th>所属项目</th><th>项目问题 / 跟进事项</th><th>当前状态</th><th>计划日期</th><th>项目优先级</th><th>备注</th><th>完成</th></tr></thead>
@@ -5838,7 +5836,7 @@ function getOverdueDays(dateStr) {
   return diff>0?diff:null;
 }
 
-function getProjectRows(){return data.map((item,idx)=>({...item,_idx:idx}));}
+function getProjectRows(){const completed=new Set((cloudBase?.data||[]).filter(item=>item.done).map(item=>item.id));return data.map((item,idx)=>({...item,_idx:idx})).filter(item=>!item.done||!completed.has(item.id));}
 
 let issueEditingId=null,issueBaseline=null,issueSubmitting=false;
 function emptyProjectNames(){return projectNames().filter(name=>!data.some(item=>item.project===name));}
@@ -5848,7 +5846,6 @@ function emptyProjectRow(name){const row=document.createElement('tr');row.classN
 function renderTable(){
  const tbody=document.getElementById('tableBody');tbody.replaceChildren();
  const filtered=getProjectRows();
- const count=document.getElementById('issueVisibleCount');if(count)count.textContent=filtered.length+' 项问题';
  const grouped=new Map(emptyProjectNames().map(name=>[name,[]]));for(const item of filtered){if(!grouped.has(item.project))grouped.set(item.project,[]);grouped.get(item.project).push(item);}
  const summary=document.getElementById('issueTableSummary');if(summary)summary.textContent='共 '+grouped.size+' 个项目 · '+filtered.length+' 项问题';
  for(const [projectName,rows] of [...grouped].sort(([a],[b])=>compareProjectLabels(a,b))){
@@ -5862,7 +5859,7 @@ function renderTable(){
  const noteCell=document.createElement('td'),noteButton=document.createElement('button');noteButton.type='button';noteButton.className='issue-note-button'+(item.note?'':' empty-note');noteButton.textContent=item.note||'添加备注';noteButton.setAttribute('aria-label',(item.note?'编辑备注：':'添加备注：')+item.task);noteButton.onclick=()=>{openIssueDetails(item.id);if(document.getElementById('issueDetails').open)document.getElementById('issue-note').focus();};noteCell.className='issue-note-cell';noteCell.append(noteButton);row.append(noteCell);
  const complete=document.createElement('td'),checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=item.done;checkbox.dataset.idx=item._idx;checkbox.setAttribute('aria-label','完成问题：'+item.task);checkbox.onchange=handleCheckboxChange;complete.append(checkbox);row.append(complete);tbody.append(row);
  }}
- if(!grouped.size){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.className='issue-empty';td.textContent=ready?'没有匹配的问题，请调整搜索或筛选。':'正在读取项目问题…';tr.append(td);tbody.append(tr);}
+ if(!grouped.size){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.className='issue-empty';td.textContent=ready?'暂无待跟进的问题。':'正在读取项目问题…';tr.append(td);tbody.append(tr);}
 }
 function openIssueDetails(id){if(!ready||conflicted||saving)return;const item=data.find(x=>x.id===id);if(!item)return;issueEditingId=id;issueBaseline=structuredClone(item);document.getElementById('issueDetailsTitle').textContent=item.task||'问题详情';document.getElementById('issueProjectName').textContent=displayProject(item.project);for(const field of ['task','plannedDate','status','reason','note'])document.getElementById('issue-'+field).value=field==='status'&&item.done?'已完成':item[field]||'';document.getElementById('issueDetailsError').textContent='';document.getElementById('issueDetails').showModal();document.getElementById('issueClose').focus();}
 document.getElementById('issueClose').onclick=()=>{if(!issueSubmitting)document.getElementById('issueDetails').close();};document.getElementById('issueCancel').onclick=document.getElementById('issueClose').onclick;

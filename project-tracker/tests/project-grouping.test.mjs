@@ -36,3 +36,14 @@ test('project cell code lines come only from the confirmed display mapping',()=>
  const mapped=node();c.setProjectCellLabel(mapped,'P001 星河冷链项目');assert.equal(mapped.children[0].className,'project-source-code');assert.equal(mapped.children[0].textContent,'XH001');assert.equal(mapped.children[1].textContent,'星河冷链项目');
  const unknown=node();c.setProjectCellLabel(unknown,'P007 杭州中策项目');assert.equal(unknown.textContent,'杭州中策项目');assert.equal(unknown.children.length,0);
 });
+
+
+test('saved completed issues leave the active list while pending or failed completions stay visible with stable indices',()=>{
+ const saved=item('i1','P1 项目','已完成',true),pending=item('i2','P1 项目','已完成',true),open=item('i3','P2 项目','进行中');
+ const c=vm.createContext({data:[saved,pending,open],cloudBase:{data:[saved,{...pending,done:false},open]}});
+ vm.runInContext(html.slice(html.indexOf('function getProjectRows(){'),html.indexOf('let issueEditingId=')),c);
+ assert.deepEqual(Array.from(c.getProjectRows(),row=>[row.id,row._idx]),[['i2',1],['i3',2]]);
+ assert.equal(c.data.length,3);
+ c.cloudBase.data[1]={...pending};assert.deepEqual(Array.from(c.getProjectRows(),row=>row.id),['i3']);
+ assert.equal(c.data[1].done,true);
+});

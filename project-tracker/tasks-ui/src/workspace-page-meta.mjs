@@ -11,7 +11,7 @@ export function workspaceNavView(view){return view==='vocabularyLibrary'?'vocabu
 export function workspaceSiteNavigation(scope){
  const column=(title,space,views,primary=false)=>({title,space,views,primary});
  return [
-  {title:'工作',columns:[column('项目与待办','work',['projects','tasks'],true)]},
+  {title:'项目问题',columns:[column('项目与待办','work',['projects','tasks'],true)]},
   {title:'日历',columns:[column('日历与计划','work',['calendar','today'],true),column('日历与计划','personal',['calendar','today'],true)]},
   {title:'项目资料',columns:[column('项目资料','work',['drive','projectBudget','projectShipping'],true)]},
   {title:'记录',columns:[column('工作记录','work',['notes'],true),column('私人记录','personal',['notes'],true)]},

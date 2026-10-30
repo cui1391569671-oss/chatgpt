@@ -2078,7 +2078,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .site-task-priority{color:var(--semantic-primary-text);background:var(--semantic-primary-subtle)}
 .site-task-group time{color:var(--task-date-color,var(--semantic-text-muted))}
 .site-task-overdue{--task-date-color:var(--semantic-error-text)}
-.site-list-controls,.site-list-footer,.issue-count-bar{border-bottom:1px solid var(--semantic-border-muted)}
+.site-list-controls,.site-list-footer{border-bottom:1px solid var(--semantic-border-muted)}
 .workspace-note-index{border-right:1px solid var(--semantic-border-muted)}
 .workspace-note-link{color:var(--semantic-text);background:transparent;border:0;border-left:3px solid transparent}
 .workspace-note-link[aria-current=true]{color:var(--semantic-primary-text);border-left-color:var(--semantic-primary)}

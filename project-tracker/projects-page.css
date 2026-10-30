@@ -722,6 +722,5 @@ thead th {
 }
 
 /* Page-owned filter layout; shared WorkspaceSegment owns keyboard/selection. */
-.issue-count-bar{display:flex;align-items:center;justify-content:flex-end;padding:8px 0 16px;flex:none}
 
 .issue-table-summary{padding:24px 0;font-size:14px}
