@@ -16,8 +16,8 @@ test('home daily action retains workspace-specific owners without sample record 
 test('site menus retain owning workspace and cover both spaces without duplicate route pairs',()=>{
  const groups=workspaceSiteNavigation();assert.deepEqual(groups.map(g=>g.title),['工作','日历','项目资料','记录','生活']);const pairs=groups.flatMap(g=>g.items.map(([scope,view])=>scope+':'+view));assert.equal(new Set(pairs).size,pairs.length);for(const group of groups){assert(group.columns.length>=1);assert.deepEqual(group.items,group.columns.flatMap(column=>column.views.map(view=>[column.space,view])));}for(const route of ['work:projects','work:calendar','work:notes','personal:notes','personal:checkins','personal:fitness','personal:maintenance'])assert(pairs.includes(route),route);
 });
-test('home editing uses the same task editor in both spaces and daily stream polling stays on its own page',()=>{
- assert.match(read('tasks-adapter.js'),/editorOnly:view==='home'/);assert.doesNotMatch(read('tasks-adapter.js'),/view==='home'&&scope==='personal'/);assert.match(read('today-tasks-page.js'),/function todayTasksVisible\(\)\{return view==='today';\}/);assert.doesNotMatch(read('tasks-ui/src/workspace-personal.tsx'),/enhanceHomeLayout/);
+test('home editing uses the same task editor in both spaces and daily stream polling stays on the two daily-stream surfaces',()=>{
+ assert.match(read('tasks-adapter.js'),/editorOnly:view==='home'/);assert.doesNotMatch(read('tasks-adapter.js'),/view==='home'&&scope==='personal'/);const dailyContext=vm.createContext({view:'home'});vm.runInContext(read('today-tasks-page.js').match(/function todayTasksVisible\(\)\{[^}]+\}/)[0],dailyContext);for(const view of ['today','calendar','home','notes','tasks']){dailyContext.view=view;assert.equal(dailyContext.todayTasksVisible(),['today','calendar'].includes(view),view);}assert.doesNotMatch(read('tasks-ui/src/workspace-personal.tsx'),/enhanceHomeLayout/);
 });
 
 test('legacy navigation decoration cannot overwrite React navigation state',()=>{
