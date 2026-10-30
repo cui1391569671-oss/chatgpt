@@ -2341,3 +2341,15 @@ dialog[open]::backdrop {
 /* Work overview: compact calendar and the canonical daily task stream. */
 
 .workspace-note-index h2{margin:0 0 8px}.workspace-note-index>.muted{margin-top:auto;padding-top:32px}.workspace-note-link{display:grid;gap:10px;text-align:left;min-height:72px;padding:12px;font:inherit;overflow-wrap:anywhere}.workspace-note-link strong{font-size:18px;font-weight:500}.workspace-note-link small{font-size:14px}.workspace-note-reader h2{font-size:32px;line-height:1.4}.workspace-note-reader header>.actions{grid-column:2;grid-row:1/4;justify-self:end;align-self:center}.workspace-note-reader header>small,.workspace-note-reader header>h2,.workspace-note-reader header>p{grid-column:1}.workspace-note-reader header p{margin:0}.workspace-note-search{min-width:0;margin-bottom:12px}
+
+/* Calendar and the existing today-plan feed share one bounded desktop layout. */
+body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direction:column;min-height:0}
+.calendar-with-today{display:grid;grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1fr) 280px;gap:24px;min-width:0;min-height:0;flex:1}
+.calendar-today-panel{min-width:0;min-height:0;overflow:auto;padding:16px 0;scrollbar-gutter:stable;overscroll-behavior:contain}
+.calendar-today-panel>.card-head{gap:12px;align-items:center}
+.calendar-today-panel h2{font-size:18px}
+.calendar-today-panel .row{display:flex;flex-direction:column;align-items:stretch;gap:8px}
+.calendar-today-panel .row-meta{flex-wrap:wrap}
+.calendar-today-panel .actions{align-self:flex-start}
+.calendar-today-panel .row-content{width:100%}
+@media(max-width:1000px){.calendar-with-today{grid-template-columns:minmax(0,1fr) 240px;gap:16px}}
