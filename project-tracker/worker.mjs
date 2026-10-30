@@ -1,3 +1,4 @@
+import {readDingtalkCalendar,dingtalkCalendarPush} from './dingtalk-calendar.mjs';
 import {validCheckin} from './checkin-records.mjs';
 import {WORKSPACE_CSP_REPORT_ONLY,cspReportRoute} from './security-policy.mjs';
 import {maintenanceAudit} from './maintenance-audit.mjs';
@@ -126,6 +127,7 @@ async function fetchRoute(request,env){
   if(url.pathname==='/'&&['GET','HEAD'].includes(request.method))return new Response(null,{status:302,headers:{Location:'/work','Cache-Control':'no-store'}});
   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
   if(url.pathname==='/api/project-core-information/push')return await projectCorePushRoute(request,env);
+  if(url.pathname==='/api/dingtalk-calendar/push')return await dingtalkCalendarPush(request,env);
   if(url.pathname==='/api/vocabulary/push')return await vocabularyPushRoute(request,env,{readState,writeState,validWorkspace});
   if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
   const auth=await authRoute(request,env);if(auth)return auth;
@@ -135,6 +137,7 @@ async function fetchRoute(request,env){
    return json({error:'需要登录'},401);
   }
   try{
+   if(url.pathname==='/api/dingtalk-calendar'&&request.method==='GET'){if(url.searchParams.get('scope')!=='work')return json({error:'仅工作日历支持钉钉同步'},400);return json(await readDingtalkCalendar(env));}
    if(url.pathname==='/api/security/csp-report')return await cspReportRoute(request);
    if(['/api/maintenance/audit','/api/maintenance/images'].includes(url.pathname))return await maintenanceAudit(request,env.DB,await readState(env.DB));
    if(url.pathname.startsWith('/assets/fitness/')){
