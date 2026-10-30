@@ -2600,7 +2600,7 @@ thead th {
 }
 
 /* Page-owned filter layout; shared WorkspaceSegment owns keyboard/selection. */
-.issue-filter-bar{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:8px 0 16px;flex:none}
+.issue-count-bar{display:flex;align-items:center;justify-content:flex-end;padding:8px 0 16px;flex:none}
 
 .issue-table-summary{padding:24px 0;font-size:14px}
 
@@ -3638,30 +3638,6 @@ body {
   color: var(--muted);
 }
 /* Compact project controls and project urgency */
-.modern-project .project-search-toggle {
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-}
-.modern-project .project-search-box {
-  flex: 1;
-  min-width: 180px;
-  width: auto;
-}
-.modern-project .project-search-box[hidden] {
-  display: none;
-}
-.modern-project .project-search-box::before,.modern-project .project-search-box::after {
-  display: none;
-}
-.modern-project .project-search-box input {
-  padding: 10px 12px;
-}
 .modern-project tbody .project-merged[data-priority=urgent] {
   background: var(--semantic-surface);
   color: var(--semantic-text);
@@ -3690,11 +3666,6 @@ body {
   .modern-project .toolbar-row>.btn {
     width: auto;
     flex: none;
-  }
-  .modern-project .project-search-box {
-    order: 5;
-    flex-basis: 100%;
-    width: 100%;
   }
 }
 /* Project notes share the existing details editor and cloud note field. */
@@ -4644,9 +4615,9 @@ body.shadcn-workbench .wb-topbar {
 
 /* Top navigation and grouped menus share page metadata with page search. */
 body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;min-width:0;margin:var(--app-top-gap) var(--app-gutter) 0;background:transparent;border:0}
-/* Three balanced header zones keep navigation centered independently of the right-side actions. */
-.wb-navigation-row{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px;min-width:0;width:100%;max-width:1370px;margin:0 auto;padding:0 0 16px}
-.wb-primary-navigation{--navigation-left:0px;--navigation-top:80px;--navigation-duration:var(--workspace-motion-navigation);--navigation-close-delay:0ms;grid-column:2;position:relative;min-width:0;isolation:isolate}
+/* The complete navigation group, including the account entry, stays centered. */
+.wb-navigation-row{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;gap:24px;min-width:0;width:100%;max-width:1370px;margin:0 auto;padding:0 0 16px}
+.wb-primary-navigation{--navigation-left:0px;--navigation-top:80px;--navigation-duration:var(--workspace-motion-navigation);--navigation-close-delay:0ms;position:relative;min-width:0;isolation:isolate}
 .wb-top-navigation{display:flex;justify-content:center;gap:24px;min-width:0;list-style:none;margin:0;padding:0}
 .wb-top-navigation>li{list-style:none;margin:0;padding:0;display:flex}
 .wb-site-logo{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0;border:0;background:transparent;text-decoration:none;border-radius:0}
@@ -4670,7 +4641,6 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-site-nav-link[data-active=true]{color:var(--semantic-primary-text)}
 .wb-site-nav-link[data-active=true]::after{content:'';position:absolute;left:8px;right:8px;bottom:0;height:2px;background:var(--semantic-primary)}
 .wb-site-nav-link:hover,.wb-site-nav-link:focus-visible{background:transparent;color:var(--semantic-primary-text)}
-.wb-navigation-row>.wb-topbar-actions{justify-self:end}
 .wb-page-row{position:relative;z-index:0;width:100%;max-width:1290px;margin:28px auto 16px;display:flex;align-items:center;justify-content:space-between;gap:32px;min-width:0}
 .wb-page-row[hidden]{display:none}
 /* Selected black/gold personal-site home, shared with inner-page typography. */
@@ -4694,7 +4664,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .workspace-overdue-error{display:flex;align-items:center;gap:8px;color:var(--semantic-error-text);font-size:12px;line-height:20px}
 .workspace-overdue-error p{flex:1;margin:8px 0 0}
 
-.wb-page-location{flex:1;min-width:260px;color:var(--semantic-text);--workspace-title-size:40px;--workspace-title-weight:650}.wb-page-location p{margin:0 0 16px;font-size:16px;color:var(--semantic-text-muted)}.wb-page-location h1{font-size:40px;line-height:1.3;letter-spacing:-1px;margin:0 0 12px}.wb-page-location h1 span{color:var(--semantic-primary-text)}.wb-page-location p:last-child{margin:0}.wb-page-location p:empty{display:none}
+.wb-page-location{flex:1;min-width:260px;color:var(--semantic-text);--workspace-title-size:40px;--workspace-title-weight:650}.wb-page-location p{margin:0 0 16px;font-size:16px;color:var(--semantic-text-muted)}.wb-page-location h1{font-size:40px;line-height:1.3;letter-spacing:-1px;margin:0}.wb-page-location h1 span{color:var(--semantic-primary-text)}
 .wb-nav-menu{min-width:200px;max-width:calc(100vw - 32px);max-height:var(--radix-dropdown-menu-content-available-height);overflow-y:auto;padding:8px;isolation:isolate;border:1px solid var(--semantic-border-muted);border-radius:20px;background:var(--semantic-surface-strong);color:var(--semantic-text);box-shadow:var(--popover-shadow)}
 .wb-nav-menu[data-state=closed]{pointer-events:none}
 .wb-nav-menu [data-slot=dropdown-menu-label]{padding:8px 12px;font-size:12px;color:var(--semantic-text-muted)}
@@ -4703,7 +4673,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-nav-menu-item[data-disabled]{pointer-events:none;opacity:.5}
 .wb-nav-menu [aria-current=page]{color:var(--semantic-primary-text)}
 @media(max-width:900px){.wb-navigation-row{gap:12px}.wb-top-navigation{gap:12px}}
-@media(max-width:640px){.wb-primary-navigation{grid-column:1/-1;grid-row:2}.wb-navigation-row{grid-template-columns:minmax(0,1fr) auto;gap:16px 8px}.wb-top-navigation{grid-column:1/-1;grid-row:2;width:100%;gap:24px}.wb-page-row{flex-direction:column;align-items:stretch;gap:8px}.wb-page-row>.wb-page-location{padding-left:4px}.wb-topbar-actions{justify-content:flex-end}}
+@media(max-width:640px){.wb-navigation-row{gap:8px}.wb-top-navigation{width:100%;gap:24px}.wb-page-row{flex-direction:column;align-items:stretch;gap:8px}.wb-page-row>.wb-page-location{padding-left:4px}.wb-topbar-actions{justify-content:flex-end}}
 
 .site-task-group h2,.workspace-note-index h2{color:var(--semantic-text)}
 .site-task-summary,.site-task-group h2 small,.site-task-title span,.site-task-title small,.site-list-footer,.site-empty p{color:var(--semantic-text-muted)}
@@ -4714,7 +4684,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .site-task-priority{color:var(--semantic-primary-text);background:var(--semantic-primary-subtle)}
 .site-task-group time{color:var(--task-date-color,var(--semantic-text-muted))}
 .site-task-overdue{--task-date-color:var(--semantic-error-text)}
-.site-list-controls,.site-list-footer,.issue-filter-bar{border-bottom:1px solid var(--semantic-border-muted)}
+.site-list-controls,.site-list-footer,.issue-count-bar{border-bottom:1px solid var(--semantic-border-muted)}
 .workspace-note-index{border-right:1px solid var(--semantic-border-muted)}
 .workspace-note-link{color:var(--semantic-text);background:transparent;border:0;border-left:3px solid transparent}
 .workspace-note-link[aria-current=true]{color:var(--semantic-primary-text);border-left-color:var(--semantic-primary)}
@@ -4725,6 +4695,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 
 /* Canonical page-action slot: controls remain owned by their source pages. */
 .wb-page-actions-mount{flex:0 1 auto;min-width:0;max-width:65%}
+.wb-calendar-view{--workspace-select-min-width:72px;width:72px}
 .wb-calendar-date{width:160px;max-width:100%;flex:none}
 .wb-page-actions,.wb-page-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0;max-width:100%}
 .wb-page-actions>:empty{display:none}
@@ -4733,7 +4704,6 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-page-toolbar>.workspace-search{flex:1 1 180px;min-width:120px;max-width:320px}
 .wb-page-toolbar>:is(button,label,.ui-select-mount){flex-shrink:0}
 .wb-page-toolbar button{white-space:nowrap}
-.wb-page-toolbar .project-search-box{flex:1 1 180px;min-width:120px}
 @media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%}.wb-page-toolbar>.workspace-search{max-width:none;flex-basis:100%}.wb-page-toolbar>.ui-select-mount{flex:1;min-width:120px}}
 
 body.shadcn-workbench .wb-icon-button:not(:disabled):hover {
@@ -5424,7 +5394,6 @@ body.shadcn-workbench {
 .word-practice-feedback[data-result=correct]{display:flex;align-items:center;gap:8px;color:var(--semantic-success-text)}
 
 .workspace-progress{height:8px;overflow:hidden;border-radius:999px;background:var(--semantic-primary-subtle);box-shadow:inset 0 1px 2px color-mix(in srgb,var(--semantic-primary) 12%,transparent);margin-block:8px;min-width:0;width:100%}.workspace-progress-fill{display:block;width:100%;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--semantic-primary-muted),var(--semantic-primary));box-shadow:inset 0 1px 0 color-mix(in srgb,var(--semantic-surface) 40%,transparent);transform-origin:left center}
-.workspace-save-button{min-width:calc(4em + 2 * var(--control-button-padding-x))}
 .workspace-save-label{display:grid;align-items:center;justify-items:center}.workspace-save-label>span{grid-area:1/1}.workspace-save-reserve{visibility:hidden;pointer-events:none}
 
 .workspace-surface-action{appearance:none;border:0;background:transparent;color:var(--semantic-text);font:inherit;cursor:pointer}.workspace-surface-action:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:3px}
@@ -5472,16 +5441,11 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:dark;iso
 
 <div class="toolbar">
     <div class="toolbar-row">
-      <button type="button" class="btn btn-outline project-search-toggle" id="projectSearchToggle" data-workspace-size="icon" aria-label="搜索项目问题" title="搜索" aria-expanded="false" aria-controls="projectSearchBox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg></button>
-      <div class="search-box project-search-box" id="projectSearchBox" hidden><input type="search" id="searchInput" aria-label="搜索项目问题" placeholder="搜索问题 / 原因 / 备注 / 项目…"></div>
       <button class="btn btn-add" onclick="showAddChoice()" title="添加项目或问题" id="btnAdd"></button>
-      <button class="btn btn-outline workspace-save-button" id="btnSave" type="button" onmousedown="event.preventDefault()" onclick="manualSave()" title="将当前修改保存到云端">保存</button>
-      <button class="btn btn-del" onclick="deleteCompleted()" title="删除所有已完成的问题" id="btnDel"></button>
-      <button type="button" class="btn btn-outline" onclick="viewArchive()">查看已完成记录</button>
     </div>
   </div>
 
-  <div class="issue-filter-bar"><div data-ui-owner="rubber-segment" data-workspace-segment="issue-status" data-segment-appearance="underline" data-segment-label="项目问题状态" data-segment-value="all" data-segment-items='[{"value":"all","label":"全部"},{"value":"open","label":"进行中"},{"value":"done","label":"已完成"}]'></div><span id="issueVisibleCount" class="muted" aria-live="polite"></span></div>
+  <div class="issue-count-bar"><span id="issueVisibleCount" class="muted" aria-live="polite"></span></div>
   <div class="table-wrapper">
     <table>
       <thead><tr><th>所属项目</th><th>项目问题 / 跟进事项</th><th>当前状态</th><th>计划日期</th><th>项目优先级</th><th>备注</th><th>完成</th></tr></thead>
@@ -5751,7 +5715,6 @@ async function init() {
   // 设置 SVG 图标
   document.getElementById('titleIcon').innerHTML = ICON.clipboard;
   projectToolbar.querySelector('#btnAdd').innerHTML = ICON.plus + ' 添加';
-  projectToolbar.querySelector('#btnDel').innerHTML = ICON.trash + ' 归档完成';
   document.getElementById('modalTitle').innerHTML = ICON.plus + ' 添加新问题';
 
   await loadProjectLabels();
@@ -5759,7 +5722,6 @@ async function init() {
   await loadPriorities();
   console.log("[init] data length:", data.length); renderTable();
   updateStats();
-  const searchInput=projectToolbar.querySelector('#searchInput'),filterSearch=debounce(renderTable,300);searchInput.addEventListener('input',event=>{if(event.isComposing)return;if(!searchInput.value){filterSearch.cancel();renderTable();}else filterSearch();});searchInput.addEventListener('compositionend',filterSearch);
 }
 
 async function loadData() {
@@ -5876,49 +5838,16 @@ function getOverdueDays(dateStr) {
   return diff>0?diff:null;
 }
 
-function getFilteredData() {
-  const search = projectToolbar.querySelector('#searchInput').value.toLowerCase().trim();
-  const statusFilter = (document.getElementById('filterStatus')?.value||'');
-  const overdueFilter = (document.getElementById('filterOverdue')?.value||'');
-  const priorityFilter = (projectToolbar.querySelector('#filterPriority')?.value||'');
+function getProjectRows(){return data.map((item,idx)=>({...item,_idx:idx}));}
 
-  return data.map((item, idx) => ({...item, _idx: idx})).filter(item => {
-    if (statusFilter === '未完成' && item.done) return false;
-    if (statusFilter === '已完成' && !item.done) return false;
-    if (overdueFilter) {
-      const od = getOverdueDays(item.plannedDate);
-      if (overdueFilter === '7' && (!od || od < 7)) return false;
-      if (overdueFilter === '14' && (!od || od < 14)) return false;
-    }
-    if (priorityFilter) {
-      const itemPri = getPriority(item.project);
-      if (priorityFilter === 'none') {
-        if (itemPri) return false;
-      } else {
-        if (itemPri !== priorityFilter) return false;
-      }
-    }
-    if (search) {
-      const haystack = (item.task + item.reason + item.note + displayProject(item.project) + item.status).toLowerCase();
-      if (!haystack.includes(search)) return false;
-    }
-    return true;
-  });
-}
-
-let quickIssueFilter='all',issueEditingId=null,issueBaseline=null,issueSubmitting=false;
-document.addEventListener('workspace-segment-change',event=>{const {key,value}=event.detail||{};if(key!=='issue-status')return;if(!ready||saving||conflicted||!['all','open','done'].includes(value)){event.preventDefault();return;}quickIssueFilter=value;event.target.dataset.segmentValue=value;renderTable();});
-function emptyProjectNames(){
- if(quickIssueFilter!=='all'||(document.getElementById('filterStatus')?.value||'')||(document.getElementById('filterOverdue')?.value||''))return [];
- const q=projectToolbar.querySelector('#searchInput').value.trim().toLowerCase(),pri=(projectToolbar.querySelector('#filterPriority')?.value||'');
- return projectNames().filter(name=>!data.some(x=>x.project===name)&&(!q||name.toLowerCase().includes(q))&&(!pri||(pri==='none'?!getPriority(name):getPriority(name)===pri)));
-}
+let issueEditingId=null,issueBaseline=null,issueSubmitting=false;
+function emptyProjectNames(){return projectNames().filter(name=>!data.some(item=>item.project===name));}
 function projectPriorityCell(name){const cell=document.createElement('td'),button=document.createElement('button'),info=getPriorityInfo(getPriority(name));button.type='button';button.className='priority-badge project-priority '+info.cls;button.textContent=info.label;button.setAttribute('aria-label','项目紧急程度：'+displayProject(name)+'，'+info.label);button.onclick=()=>showPriorityDropdown(name,button);cell.append(button);return cell;}
 function setProjectCellLabel(cell,name){const plain=projectNameOnly(name),label=displayProject(name);if(label!==plain&&label.endsWith(' '+plain)){const code=document.createElement('span');code.className='project-source-code';code.textContent=label.slice(0,-plain.length-1);cell.append(code,document.createTextNode(plain));}else cell.textContent=plain;}
 function emptyProjectRow(name){const row=document.createElement('tr');row.className='project-empty-row project-group-start';const project=document.createElement('td');project.className='issue-project-name project-merged';project.dataset.priority=getPriority(name);project.setAttribute('aria-label',displayProject(name)+'，'+getPriorityInfo(getPriority(name)).label);setProjectCellLabel(project,name);const count=document.createElement('small');count.textContent='0 项问题';project.append(count);const empty=document.createElement('td');empty.colSpan=3;const label=document.createElement('span');label.textContent='暂未添加问题';const add=document.createElement('button');add.type='button';add.className='btn btn-outline';add.textContent='添加问题';add.setAttribute('aria-label','为'+displayProject(name)+'添加问题');add.onclick=()=>showAddModal(name);empty.append(label,add);const complete=document.createElement('td');complete.textContent='—';const note=document.createElement('td');note.textContent='—';row.append(project,empty,projectPriorityCell(name),note,complete);return row;}
 function renderTable(){
- const tbody=document.getElementById('tableBody');tbody.replaceChildren();const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'});
- const filtered=getFilteredData().filter(x=>quickIssueFilter==='all'||(quickIssueFilter==='done'?x.done:!x.done&&(quickIssueFilter==='open'||(quickIssueFilter==='overdue'?x.plannedDate&&x.plannedDate<today:x.plannedDate===today))));
+ const tbody=document.getElementById('tableBody');tbody.replaceChildren();
+ const filtered=getProjectRows();
  const count=document.getElementById('issueVisibleCount');if(count)count.textContent=filtered.length+' 项问题';
  const grouped=new Map(emptyProjectNames().map(name=>[name,[]]));for(const item of filtered){if(!grouped.has(item.project))grouped.set(item.project,[]);grouped.get(item.project).push(item);}
  const summary=document.getElementById('issueTableSummary');if(summary)summary.textContent='共 '+grouped.size+' 个项目 · '+filtered.length+' 项问题';
@@ -5942,16 +5871,9 @@ document.getElementById('issueDetailsForm').onsubmit=async e=>{e.preventDefault(
  issueSubmitting=true;document.querySelectorAll('#issueDetails button,#issueDetails input,#issueDetails select,#issueDetails textarea').forEach(x=>x.disabled=true);error.textContent='';const item={...data[idx],task:title};for(const k of fields.filter(k=>k!=='task'))item[k]=document.getElementById('issue-'+k).value;item.done=item.status==='已完成';data[idx]=item;
  try{if(await saveData()){document.getElementById('issueDetails').close();renderTable();updateStats();}else {issueBaseline=structuredClone(data.find(x=>x.id===issueEditingId));error.textContent='保存未成功，输入仍保留。请按页面提示核对或重试。';}}catch(err){error.textContent=err.message;}finally{issueSubmitting=false;document.querySelectorAll('#issueDetails button,#issueDetails input,#issueDetails select,#issueDetails textarea').forEach(x=>x.disabled=false);}
 };
-const searchToggle=projectToolbar.querySelector('#projectSearchToggle'),searchBox=projectToolbar.querySelector('#projectSearchBox'),projectSearch=projectToolbar.querySelector('#searchInput');
-function closeProjectSearch(){projectSearch.value='';searchBox.hidden=true;searchToggle.setAttribute('aria-expanded','false');renderTable();searchToggle.focus();}
-searchToggle.onclick=()=>{if(!searchBox.hidden){closeProjectSearch();return;}searchBox.hidden=false;searchToggle.setAttribute('aria-expanded','true');projectSearch.focus();};
-projectSearch.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeProjectSearch();}});
-
-
 document.getElementById('tableBody').addEventListener('input',e=>{
  if(!e.target.closest('[contenteditable="true"]'))return;
  dataDirty=true;
- const button=projectToolbar.querySelector('#btnSave');if(button){button.textContent='保存';button.title='当前单元格编辑完成后自动保存，也可点击保存';}
 });
 function handleCellEdit(e) {
   const idx=Number(e.target.dataset.idx),field=e.target.dataset.field,val=e.target.textContent.trim();
@@ -6087,11 +6009,6 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-function debounce(fn, ms) {
-  let t;
-  const run=function(...args){clearTimeout(t);t=setTimeout(()=>fn.apply(this,args),ms);};run.cancel=()=>clearTimeout(t);return run;
-}
-
 function showToast(msg,type){const node=document.getElementById('toast');if(window.WorkspaceFeedback)return window.WorkspaceFeedback.show(node,msg,type==='error'?'error':type==='success'?'success':'info');node.textContent=msg;node.hidden=false;}
 
 // 点击遮罩关闭弹窗
@@ -6139,8 +6056,6 @@ async function openPendingReview(){
  button('稍后处理',()=>overlay.remove());panel.appendChild(actions);overlay.appendChild(panel);document.body.appendChild(overlay);window.WorkspacePrimitives.openDialog(overlay);
 }
 function setSync(msg){
- const button=projectToolbar.querySelector('#btnSave');
- if(button){button.textContent=msg==='正在保存…'?'保存中…':msg==='已保存至云端'?'已保存':'保存';button.title=msg;}
  if(/失败|暂停|未同步|仍保留|尚未保存/.test(msg))showToast(msg,'error');
 }
 function viewArchive(){

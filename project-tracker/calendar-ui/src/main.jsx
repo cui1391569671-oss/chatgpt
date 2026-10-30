@@ -1,5 +1,4 @@
 import {whenWorkspaceToolbarReady} from '../../workspace-toolbar-host.js';
-import {downloadCalendar} from './calendar-export.js';
 import {createCalendarFormFocus} from './form-focus.js';
 import {useEventGesture,EventBar,GestureScope} from './event-gesture.jsx';
 import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
@@ -30,7 +29,7 @@ function Observer({controller,onEditing,options}){const api=useIlamyCalendarCont
 function PageCalendarHeader({disabled,controller}){
  const api=useIlamyCalendarContext(),controls=useRef(null);
  const latest=useRef(null);
- const props={date:api.currentDate.format('YYYY-MM-DD'),view:api.view,disabled,exportCalendar:()=>downloadCalendar(api,dayjs()),onDate:value=>api.setCurrentDate(dayjs.tz(value+'T09:00','Asia/Shanghai')),onView:value=>api.setView(value),previous:()=>api.prevPeriod(),next:()=>api.nextPeriod(),today:()=>api.today(),create:()=>{controller.focus.capture(document.activeElement);api.openEventForm();}};
+ const props={date:api.currentDate.format('YYYY-MM-DD'),view:api.view,disabled,onDate:value=>api.setCurrentDate(dayjs.tz(value+'T09:00','Asia/Shanghai')),onView:value=>api.setView(value),previous:()=>api.prevPeriod(),next:()=>api.nextPeriod(),today:()=>api.today(),create:()=>{controller.focus.capture(document.activeElement);api.openEventForm();}};
  latest.current=props;
  useLayoutEffect(()=>{
   const stopWaiting=whenWorkspaceToolbarReady(host=>{controls.current=window.WorkspaceCalendarControls.mount(host,latest.current);});

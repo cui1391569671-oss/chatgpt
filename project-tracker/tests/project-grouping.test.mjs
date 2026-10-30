@@ -6,7 +6,7 @@ import {readFileSync} from 'node:fs';
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const render=html.slice(html.indexOf('function emptyProjectNames(){'),html.indexOf('function openIssueDetails('));
 function node(){const element={children:[],dataset:{},append(...items){this.children.push(...items);},replaceChildren(){this.children=[];},setAttribute(){}};element.classList={add(value){element.className+=' '+value;}};return element;}
-function table(items,{names=[],values={},all=items}={}){const tbody=node();const context=vm.createContext({projectNameOnly:value=>value,compareProjectLabels,projectToolbar:{querySelector:selector=>({value:values[selector.slice(1)]||''})},document:{getElementById:id=>id==='tableBody'?tbody:{value:values[id]||''},createElement:node},displayProject:value=>value,data:all,projectNames:()=>names,getFilteredData:()=>items,quickIssueFilter:values.quick||'all',ready:true,getOverdueDays:()=>0,getPriority:()=>'',getPriorityInfo:()=>({label:'未设置',cls:''}),handleCheckboxChange(){},Date});vm.runInContext(render,context);context.renderTable();return tbody.children;}
+function table(items,{names=[],values={},all=items}={}){const tbody=node();const context=vm.createContext({projectNameOnly:value=>value,compareProjectLabels,projectToolbar:{querySelector:selector=>({value:values[selector.slice(1)]||''})},document:{getElementById:id=>id==='tableBody'?tbody:{value:values[id]||''},createElement:node},displayProject:value=>value,data:all,projectNames:()=>names,getProjectRows:()=>items,ready:true,getOverdueDays:()=>0,getPriority:()=>'',getPriorityInfo:()=>({label:'未设置',cls:''}),handleCheckboxChange(){},Date});vm.runInContext(render,context);context.renderTable();return tbody.children;}
 const item=(id,project,status,done=false)=>({id,project,task:id,status,done,plannedDate:'',_idx:Number(id.slice(1))});
 test('interleaved projects stay together even when their issue statuses differ',()=>{
  const rows=table([item('i1','P10 后续项目','进行中'),item('i2','P2 当前项目','暂停'),item('i3','P10 后续项目','进行中',true),item('i4','P2 当前项目','进行中')]);
@@ -21,10 +21,8 @@ test('project group counts use visible records and no-result state has no empty 
  const empty=table([]);assert.equal(empty.length,1);assert.equal(empty[0].children[0].className,'issue-empty');
 });
 
-test('a project with zero active issues is visible without a fabricated issue and excluded by issue-specific filters',()=>{
+test('a project with zero active issues stays visible without a fabricated issue',()=>{
  const names=['P5 空项目'];const rows=table([],{names});assert.equal(rows.length,1);assert.equal(rows[0].children[0].textContent,names[0]);assert.equal(rows[0].children[0].children[0].textContent,'0 项问题');assert.equal(rows[0].children[1].colSpan,3);assert.equal(rows[0].children[1].children[1].textContent,'添加问题');assert.equal(rows[0].children.at(-1).textContent,'—');
- for(const values of [{filterStatus:'未完成'},{filterOverdue:'7'},{quick:'overdue'},{searchInput:'其他项目'}])assert.equal(table([],{names,values})[0].children[0].className,'issue-empty');
- assert.equal(table([],{names,values:{searchInput:'空项目'}})[0].children[0].textContent,names[0]);
  const active=item('i1','P1 有问题项目','暂停');const mixed=table([],{names:['P1 有问题项目',...names],all:[active]});assert.equal(mixed.length,1);assert.equal(mixed[0].children[0].textContent,names[0]);
 });
 

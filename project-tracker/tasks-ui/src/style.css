@@ -43,7 +43,7 @@
 
 .ui-confirm-field{display:grid;gap:8px;font-size:14px}
 [data-ui-portal] [data-slot=select-item]{padding-top:8px;padding-bottom:8px;cursor:pointer}[data-ui-portal] [data-slot=select-item][data-highlighted]{background:var(--admin-muted)}
-.ui-select{min-width:100px;max-width:100%;padding:8px 12px;border:1px solid var(--input);background:var(--admin-background);justify-content:space-between;gap:12px;text-align:left;color:var(--admin-foreground);white-space:nowrap}.ui-select:hover{background:var(--admin-secondary)}
+.ui-select{min-width:var(--workspace-select-min-width,100px);max-width:100%;padding:8px 12px;border:1px solid var(--input);background:var(--admin-background);justify-content:space-between;gap:12px;text-align:left;color:var(--admin-foreground);white-space:nowrap}.ui-select:hover{background:var(--admin-secondary)}
 .ui-select-mount{display:block;min-width:0}.ui-select-mount[hidden]{display:none}.ui-select-mount .ui-select{width:100%}
 [data-tasks-root] .ui-select,[data-tasks-portal] .ui-select{width:auto}.tasks-fields .ui-select{width:100%}
 .tasks-toolbar>.ui-select{border-style:solid}.tasks-pagination .ui-select{min-width:64px}
