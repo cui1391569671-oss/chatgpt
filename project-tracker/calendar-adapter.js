@@ -21,19 +21,25 @@ function mountWorkspaceCalendar(items,tasks,issues){
 
 if(typeof window!=='undefined')window.addEventListener('beforeunload',event=>{if(isCalendarEditing()){event.preventDefault();event.returnValue='';}});
 
-let dingtalkEvents=[],dingtalkTimer=null,dingtalkRequest=null,dingtalkGeneration=0;
+let dingtalkLastSyncedAt='',dingtalkEvents=[],dingtalkTimer=null,dingtalkRequest=null,dingtalkGeneration=0;
 function stopDingtalkRefresh(){clearInterval(dingtalkTimer);dingtalkTimer=null;dingtalkRequest?.abort();dingtalkRequest=null;dingtalkGeneration++;document.removeEventListener('visibilitychange',refreshDingtalkCalendar);}
 function startDingtalkRefresh(){stopDingtalkRefresh();refreshDingtalkCalendar();dingtalkTimer=setInterval(refreshDingtalkCalendar,30000);document.addEventListener('visibilitychange',refreshDingtalkCalendar);}
 async function refreshDingtalkCalendar(){
  if(document.hidden||dingtalkRequest||isCalendarEditing()||!workspaceCalendar)return;
- const generation=dingtalkGeneration;dingtalkRequest=new AbortController();
+ const retry=$('calendarSyncStatus')?.querySelector('[data-refresh-dingtalk]');if(retry)retry.disabled=true;const generation=dingtalkGeneration;dingtalkRequest=new AbortController();
  try{const response=await fetch('/api/dingtalk-calendar?scope=work',{cache:'no-store',signal:dingtalkRequest.signal});if(!response.ok)throw Error('读取失败');const payload=await response.json();if(!Array.isArray(payload.events))throw Error('格式无效');if(generation!==dingtalkGeneration||!workspaceCalendar)return;
   if(isCalendarEditing())return;
-  const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);dingtalkEvents=payload.events;if(changed)workspaceCalendar.updateExternal?.(dingtalkEvents);
-  setDingtalkStatus(!payload.connected?'钉钉日历尚未同步':payload.stale?'钉钉日历暂未更新，已保留上次日程；请检查同步电脑和授权。':'钉钉主日历 · 最近同步 '+new Date(payload.lastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}));
- }catch(error){if(error.name!=='AbortError'&&generation===dingtalkGeneration)setDingtalkStatus('钉钉日历读取失败，已保留上次显示内容，将自动重试。');}finally{if(generation===dingtalkGeneration)dingtalkRequest=null;}
+  dingtalkLastSyncedAt=payload.lastSyncedAt||'';const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);dingtalkEvents=payload.events;if(changed)workspaceCalendar.updateExternal?.(dingtalkEvents);
+  setDingtalkStatus(!payload.connected?'钉钉日历尚未同步':payload.stale?'钉钉日历暂未更新，已保留上次日程；请检查同步电脑和授权。':'钉钉主日历 · 最近同步 '+new Date(payload.lastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}),payload.stale||!payload.connected?'warning':'success');
+ }catch(error){if(error.name!=='AbortError'&&generation===dingtalkGeneration)setDingtalkStatus('钉钉日历读取失败，已保留上次日程，将自动重试。','error');}finally{if(generation===dingtalkGeneration){dingtalkRequest=null;const button=$('calendarSyncStatus')?.querySelector('[data-refresh-dingtalk]');if(button)button.disabled=false;}}
 }
-function setDingtalkStatus(message){const help=$('workspaceCalendar')?.querySelector('.ilamy-help');if(!help)return;help.textContent=message+' · 钉钉日程只读';help.setAttribute('role','status');}
+function setDingtalkStatus(message,tone='warning'){
+ const host=$('calendarSyncStatus');if(!host)return;
+ const time=dingtalkLastSyncedAt&&!Number.isNaN(Date.parse(dingtalkLastSyncedAt))?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false})+'（北京时间）':'尚无成功同步';
+ host.dataset.tone=tone;
+ host.innerHTML='<div role="status"><strong>'+esc(message)+'</strong><p>最后成功同步：'+esc(time)+' · 钉钉日程只读</p></div><div class="actions"><button type="button" class="btn" data-refresh-dingtalk>重试读取</button>'+(tone!=='success'?'<details><summary>如何恢复同步</summary><p>请确认同步电脑已联网且未休眠，并检查钉钉授权。网页重试只读取已同步的日程，不会启动电脑端同步。</p></details>':'')+'</div>';
+}
+document.addEventListener('click',event=>{if(event.target.closest('[data-refresh-dingtalk]'))refreshDingtalkCalendar();});
 
 function showDingtalkEvent(id){
  const item=dingtalkEvents.find(event=>event.id===id)||todayTaskData?.items.find(event=>event.source==='dingtalk'&&event.id===id);if(!item)return;let dialog=$('dingtalkEventDetails');if(!dialog){dialog=document.createElement('dialog');dialog.id='dingtalkEventDetails';dialog.innerHTML='<h2></h2><p data-dingtalk-time></p><p data-dingtalk-location></p><p data-dingtalk-detail></p><p class="muted">来自钉钉主日历，请在钉钉中修改或取消。</p><button type="button">关闭</button>';document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.close();}

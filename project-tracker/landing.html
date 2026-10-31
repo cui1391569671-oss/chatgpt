@@ -3002,13 +3002,14 @@ body {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-/* Project core information is the single content surface on Materials. */
+/* All project-material tables share one reading surface. */
 .project-core-panel {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 8px;
   overflow: hidden;
 }
+.project-core-heading:empty,.project-core-heading:has(>.project-core-actions:empty){display:none}
 .project-core-heading {
   display: flex;
   align-items: center;
@@ -3040,13 +3041,15 @@ body {
   min-height: var(--control-height,44px);
 }
 .project-core-scroll {
+  background: var(--semantic-surface);
   overflow: auto;
   scrollbar-gutter: stable;
 }
-:where(.project-core-table) {--project-column-1:13%;--project-column-2:21%;--project-column-3:11%;--project-column-4:13%;--project-column-5:19%;--project-column-6:23%;}
+:where(.project-core-table) {--project-column-1:22%;--project-column-2:18%;--project-column-3:13%;--project-column-4:18%;--project-column-5:16%;--project-column-6:13%;}
 .project-core-table {
+  background: var(--semantic-surface);
   width: 100%;
-  min-width: 840px;
+  min-width: 1000px;
   border-collapse: collapse;
   table-layout: fixed;
   text-align: left;
@@ -3071,7 +3074,7 @@ body {
   width: var(--project-column-3, 11%);
 }
 .project-core-table th:nth-child(4) {
-  width: var(--project-column-1, 13%);
+  width: var(--project-column-4, 18%);
 }
 .project-core-table th:nth-child(5) {
   width: var(--project-column-5, 19%);
@@ -3366,6 +3369,7 @@ body.shadcn-workbench :is(img,iframe,video) {
   max-width: 100%;
 }
 body.shadcn-workbench :is(.project-core-scroll,.tasks-table-scroll),body.modern-project .table-wrapper {
+  background: var(--semantic-surface);
   min-width: 0;
   width: 100%;
   max-width: 100%;
@@ -3791,25 +3795,25 @@ body.shadcn-workbench .filters>#add {
   margin-left: auto;
   flex: none;
 }
-body.shadcn-workbench[data-workspace-view=drive] .project-core-panel {
+body.shadcn-workbench .project-core-panel {
   height: 100%;
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
-body.shadcn-workbench[data-workspace-view=drive] .project-core-panel>#results {
+body.shadcn-workbench .project-core-panel>#results {
   display: flex;
   flex: 1;
   flex-direction: column;
   min-height: 0;
 }
-body.shadcn-workbench[data-workspace-view=drive] .project-core-heading {
+body.shadcn-workbench .project-core-heading {
   flex: none;
 }
-body.shadcn-workbench[data-workspace-view=drive] .project-core-sync-status {
+body.shadcn-workbench .project-core-sync-status {
   flex: none;
 }
-body.shadcn-workbench[data-workspace-view=drive] .project-core-scroll {
+body.shadcn-workbench .project-core-scroll {
   flex: 1;
   min-height: 0;
 }
@@ -3966,7 +3970,8 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .site-task-priority{color:var(--semantic-primary-text);background:var(--semantic-primary-subtle)}
 .site-task-group time{color:var(--task-date-color,var(--semantic-text-muted))}
 .site-task-overdue{--task-date-color:var(--semantic-error-text)}
-.site-list-controls,.site-list-footer{border-bottom:1px solid var(--semantic-border-muted)}
+.site-task-group,.workspace-note-reader,.calendar-today-panel{background:var(--semantic-surface)}
+.site-list-controls,.site-list-footer{background:var(--semantic-surface);border-bottom:1px solid var(--semantic-border-muted)}
 .workspace-note-index{border-right:1px solid var(--semantic-border-muted)}
 .workspace-note-link{color:var(--semantic-text);background:transparent;border:0;border-left:3px solid transparent}
 .workspace-note-link[aria-current=true]{color:var(--semantic-primary-text);border-left-color:var(--semantic-primary)}
@@ -3982,10 +3987,31 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-page-actions,.wb-page-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0;max-width:100%}
 .wb-page-actions>:empty{display:none}
 .wb-page-actions [hidden]{display:none!important}
-.wb-page-toolbar:empty{display:none}
+.wb-page-toolbar:empty,.card-head:empty{display:none}
+.workspace-filter-header{display:flex;align-items:center;flex-wrap:wrap;gap:12px 16px;margin:0 0 16px;min-width:0}
+.workspace-filter-header>.filters{flex:1 1 300px;margin:0;min-width:0}
+.workspace-filter-header>.filters>.workspace-search{flex:1;min-width:180px}
+
 .wb-page-toolbar>.workspace-search{flex:1 1 180px;min-width:120px;max-width:320px}
 .wb-page-toolbar>:is(button,label,.ui-select-mount){flex-shrink:0}
 .wb-page-toolbar button{white-space:nowrap}
+.workspace-empty-state{display:grid;justify-items:center;gap:16px;padding:32px 0;text-align:center}
+.workspace-empty-state>.empty{padding:0}
+.workspace-detail-list{display:grid;gap:20px;margin:0}
+.workspace-detail-list>div{display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px}
+.workspace-detail-list dt{color:var(--semantic-text-muted)}
+.workspace-detail-list dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.workspace-detail-list ul{margin:0;padding-left:20px}
+.project-core-detail-trigger{display:block;min-height:44px;border:0;padding:8px 0;background:transparent;color:var(--semantic-primary-text);text-align:left;cursor:pointer;font:inherit}
+.project-core-detail-trigger:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}
+.workspace-sync-status{display:flex;flex:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 16px;margin:0 0 16px;background:var(--semantic-surface);border:1px solid var(--semantic-border);border-radius:var(--radius-xl)}
+.workspace-sync-status strong{font-size:14px;font-weight:500}
+.workspace-sync-status p{margin:4px 0 0;color:var(--semantic-text-muted);font-size:12px}
+.workspace-sync-status[data-tone=warning] strong{color:var(--semantic-warning-text)}
+.workspace-sync-status[data-tone=error] strong{color:var(--semantic-error-text)}
+.workspace-sync-status details{max-width:48ch}
+.workspace-sync-status summary{display:flex;align-items:center;min-height:44px;cursor:pointer;color:var(--semantic-text)}
+
 @media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%}.wb-page-toolbar>.workspace-search{max-width:none;flex-basis:100%}.wb-page-toolbar>.ui-select-mount{flex:1;min-width:120px}}
 
 body.shadcn-workbench .wb-icon-button:not(:disabled):hover {
@@ -4710,7 +4736,6 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:dark;iso
 /* Shared horizontal choice controls. Business adapters keep their source nodes. */
 .wb-segment-scroll { min-width: 0; max-width: 100%; overflow-x: auto; padding: 3px; }
 .wb-segment-native { min-width: 0; max-width: 100%; }
-.wb-segment-page-tabs { margin: 0; }
 </style><!-- GLASS_PUBLIC_END --></head>
 <body class="glass-public">
 <a class="skip" href="#main">跳到主要内容</a>

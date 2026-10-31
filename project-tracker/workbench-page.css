@@ -2154,14 +2154,21 @@ dialog[open]::backdrop {
 }
 
 /* Personal information uses shared materials and controls; only business layout lives here. */
+.personal-toolbar:empty{display:none}
+.vocabulary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:16px;align-items:start;margin-top:16px}
+.vocabulary-entry{display:grid;gap:8px;align-content:start}
+.vocabulary-entry p,.vocabulary-entry .card-head{margin:0}
+.vocabulary-history summary{display:flex;align-items:center;min-height:44px;cursor:pointer}
+.vocabulary-history p{padding-bottom:8px}
+
 .personal-info{min-width:0;display:flex;flex-direction:column;gap:16px}
 .vocabulary-sync{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0;font-size:12px;color:var(--admin-muted-foreground)}
-.word-practice-page{width:100%;max-width:920px;margin:0 auto;min-width:0}
+.word-practice-page{width:100%;min-width:0}
 .word-practice-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
 .word-practice-header h2{margin:0}
 .word-practice-header p{margin:8px 0 0}
 .word-practice-footer{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap;padding:16px 0}.word-practice-footer:empty{display:none}
-.word-practice-body{padding:24px;border:1px solid var(--admin-border);border-radius:20px;min-height:0;min-width:0}
+.word-practice-body{padding:var(--card-padding,24px);border:1px solid var(--admin-border);border-radius:20px;min-height:0;min-width:0}
 .word-practice-settings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .word-practice-settings label{display:grid;gap:8px;min-width:0}
 .word-practice-intro{display:grid;justify-items:start;gap:12px;text-align:left;padding:24px 0;overflow-wrap:anywhere}.word-practice-intro p{margin:0;max-width:64ch}.word-practice-summary{text-align:left;padding:20px 0;overflow-wrap:anywhere;border-top:1px solid var(--admin-border)}.word-practice-summary h3{margin:0 0 8px}
@@ -2210,12 +2217,12 @@ dialog[open]::backdrop {
 .media-wall-item h3{font-size:14px;line-height:1.5;margin:6px 0 2px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .media-wall-item p{margin:0;font-size:12px;overflow-wrap:anywhere}
 @media(max-width:600px){.media-wall{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}}
-.media-controls{display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;margin-bottom:8px}
+.media-controls{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;margin:16px 0}
 .media-library-summary{margin:8px 0 12px}
-.media-library-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0}
-.media-library-toolbar label{display:flex;align-items:center;gap:6px;min-width:0;margin:0;flex:1 1 180px}
+.media-library-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;margin:0}
+.media-library-toolbar label{display:flex;align-items:center;gap:6px;min-width:0;margin:0;flex:none}
 .media-library-toolbar label>span{flex:none;white-space:nowrap}
-.media-library-toolbar label>.ui-select-mount{flex:1;min-width:0}
+.media-library-toolbar label>.ui-select-mount{flex:none;min-width:130px}
 .media-record-info{display:flex;flex-direction:column;gap:6px;min-width:0;margin-top:0;overflow-wrap:anywhere}
 .media-record-info h3,.media-record-info p{margin:0}
 .media-record-info .tag{align-self:flex-start}
@@ -2256,7 +2263,7 @@ dialog[open]::backdrop {
 }
 
 /* Fitness page: layout only; shared controls and surfaces retain workspace tokens. */
-.fitness-page{display:flex;flex-direction:column;gap:24px;min-width:0;max-width:100%;padding-bottom:24px;container:fitness / inline-size;overflow-wrap:anywhere}
+.fitness-page{display:flex;flex-direction:column;gap:16px;min-width:0;max-width:100%;padding-bottom:24px;container:fitness / inline-size;overflow-wrap:anywhere}
 .fitness-header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
 .fitness-header h2,.fitness-exercise-title h3{margin:0}
 .fitness-header p{margin:8px 0 0}
@@ -2356,4 +2363,5 @@ body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direct
 
 .project-shipping-table{--project-column-1:24%;--project-column-2:14%;--project-column-3:30%;--project-column-4:20%;--project-column-5:12%}
 
+.project-budget-table :is(td,thead th):not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
 .project-budget-table{--project-column-1:25%;--project-column-2:15%;--project-column-3:15%;--project-column-4:15%;--project-column-5:15%;--project-column-6:15%}
