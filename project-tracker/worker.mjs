@@ -1,4 +1,5 @@
 import {readDingtalkCalendar,dingtalkCalendarPush} from './dingtalk-calendar.mjs';
+import {validProjectShipping} from './project-shipping.mjs';
 import {validCheckin} from './checkin-records.mjs';
 import {WORKSPACE_CSP_REPORT_ONLY,cspReportRoute} from './security-policy.mjs';
 import {maintenanceAudit} from './maintenance-audit.mjs';
@@ -85,6 +86,7 @@ function validWorkspace(w){
  const time=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)&&date(s.slice(0,10))&&Number(s.slice(11,13))<24&&Number(s.slice(14,16))<60;
  if(!w||typeof w!=='object'||!['tasks','notes','events'].every(k=>Array.isArray(w[k])&&w[k].length<=2000))return false;
  if(w.events.some(event=>!event||!validEventImages(event.images)))return false;
+ if(w.projectShipping!==undefined&&!validProjectShipping(w.projectShipping))return false;
  if(w.requirements!==undefined&&!validRequirements(w.requirements))return false;
  if(w.fitnessProfiles!==undefined&&(!Array.isArray(w.fitnessProfiles)||w.fitnessProfiles.length>1||!w.fitnessProfiles.every(validFitnessProfile)))return false;
  if(w.checkins!==undefined&&(!Array.isArray(w.checkins)||w.checkins.length>10000||new Set(w.checkins.map(x=>x?.id)).size!==w.checkins.length||!w.checkins.every(validCheckin)))return false;
@@ -217,6 +219,7 @@ async function fetchRoute(request,env){
     let input;try{input=JSON.parse(text);}catch{return json({error:'Invalid JSON'},400);}
     const workspace=url.pathname==='/api/workspace/patch',scope=url.searchParams.get('scope');if(workspace&&!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);
     if(workspace&&scope==='work'&&input?.operations?.some(op=>['checkins','annualPlans','wordPracticeSessions','fitnessSessions','fitnessProfiles'].includes(op.collection)))return json({error:'此记录仅限私人空间'},400);
+    if(workspace&&scope==='personal'&&input?.operations?.some(op=>op.collection==='projectShipping'))return json({error:'发货信息仅限工作空间'},400);
     const key=scope==='work'?'workWorkspace':'workspace';
     for(let attempt=0;attempt<5;attempt++){
      const current=await readState(env.DB);let updated;
@@ -241,6 +244,7 @@ async function fetchRoute(request,env){
      const body=await readBoundedText(request,1500000);
      let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
     if(scope==='work'&&(input?.workspace?.checkins!==undefined||input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined||input?.workspace?.fitnessSessions!==undefined||input?.workspace?.fitnessProfiles!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
+     if(scope==='personal'&&input?.workspace?.projectShipping!==undefined)return json({error:'发货信息仅限工作空间'},400);
      if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace)||scope==='work'&&input.workspace.tasks.some(t=>!!t.mediaRecordId)||input.workspace.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);
      for(let attempt=0;attempt<3;attempt++){
       const s=await readState(env.DB),versions=normalizedWorkspaceVersions(s.workspaceVersions);

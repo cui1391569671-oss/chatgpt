@@ -1,3 +1,4 @@
+import {parseProjectBudget} from './project-budget.mjs';
 // Shared parser for the bound Apps Script and isolated Node tests. No source data is embedded.
 export const PROJECT_CORE_SOURCE_ID='1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM';
 export function parseProjectCoreSheets(source,day){
@@ -35,7 +36,8 @@ export function parseProjectCoreSheets(source,day){
   const risks=labels.get('主要风险与限制')||'';
   if(/托盘|货物含托/.test(risks))palletSize+=(palletSize?'\n':'')+'原表风险说明：'+risks;
   const efficiency=labels.get('效率信息')||labels.get('项目目标/验收标准')||'';
-  return {projectCode,projectName,supplyScope:lines.join('\n'),transport,palletSize,equipmentLoad:labels.get('设备负载')||excerpt(/额载|负载|载重|载荷|\d\s*(?:kg|公斤|千克)/i),efficiency,sourceSheet:text(sheet.name),sourceSheetId:sheet.id,sourceUpdatedAt:labels.get('信息更新日期')||''};
+  const budget=parseProjectBudget(sheet.rows);
+  return {...(budget?{budget}:{}),projectCode,projectName,supplyScope:lines.join('\n'),transport,palletSize,equipmentLoad:labels.get('设备负载')||excerpt(/额载|负载|载重|载荷|\d\s*(?:kg|公斤|千克)/i),efficiency,sourceSheet:text(sheet.name),sourceSheetId:sheet.id,sourceUpdatedAt:labels.get('信息更新日期')||''};
  });
  return {sourceSpreadsheetId:source.spreadsheetId,sourceTitle:text(source.title),syncedAt:day,items};
 }

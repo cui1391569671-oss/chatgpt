@@ -18,7 +18,7 @@ export async function projectCorePushRoute(request,env){
  let source;try{source=JSON.parse(body);}catch{return reply({error:'数据格式不正确'},400);}
  if(!validProjectCoreInfo(source)||!source.items.length||typeof source.automationInstalled!=='boolean')return reply({error:'项目信息格式不正确或源表为空，原数据已保留'},400);
  // Only accept the declared source fields, never a client's receipt/version metadata.
- const payload={sourceSpreadsheetId:source.sourceSpreadsheetId,sourceTitle:source.sourceTitle,syncedAt:source.syncedAt,items:source.items.map(item=>Object.fromEntries(['projectCode','projectName','supplyScope','transport','palletSize','equipmentLoad','efficiency','sourceSheet','sourceSheetId','sourceUpdatedAt'].filter(k=>Object.hasOwn(item,k)).map(k=>[k,item[k]])))};
+ const payload={sourceSpreadsheetId:source.sourceSpreadsheetId,sourceTitle:source.sourceTitle,syncedAt:source.syncedAt,items:source.items.map(item=>Object.fromEntries(['projectCode','projectName','supplyScope','transport','palletSize','equipmentLoad','efficiency','budget','sourceSheet','sourceSheetId','sourceUpdatedAt'].filter(k=>Object.hasOwn(item,k)).map(k=>[k,item[k]])))};
  const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(body)))].map(v=>v.toString(16).padStart(2,'0')).join('');
  try{
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS project_core_information (id INTEGER PRIMARY KEY, payload TEXT NOT NULL)').run();
