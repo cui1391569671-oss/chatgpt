@@ -4231,9 +4231,6 @@ body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direct
 .project-shipping-table{--project-column-1:24%;--project-column-2:14%;--project-column-3:30%;--project-column-4:20%;--project-column-5:12%}
 
 .project-budget-table{--project-column-1:25%;--project-column-2:15%;--project-column-3:15%;--project-column-4:15%;--project-column-5:15%;--project-column-6:15%}
-.project-budget-facts{display:grid;gap:12px;margin:16px 0}
-.project-budget-facts div{display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px}
-.project-budget-facts dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 
 /* Canonical workspace layout and materials. Edit owners here; do not append override sheets. */
 :root {
@@ -7440,12 +7437,13 @@ function summarizeProjectCore(item){
 /* PROJECT_SHIPPING_START */
 function validProjectShipping(rows){
  const text=(v,max)=>typeof v==='string'&&v.trim().length>0&&v.length<=max;
- return Array.isArray(rows)&&rows.length<=500&&new Set(rows.map(x=>x?.id)).size===rows.length&&rows.every(x=>x&&/^shipping-\d+$/.test(x.id)&&text(x.title,300)&&text(x.recipient,100)&&text(x.address,1000)&&text(x.contact,200));
+ return Array.isArray(rows)&&rows.length<=500&&new Set(rows.map(x=>x?.id)).size===rows.length&&rows.every(x=>x&&(x.id==='shipping-company'||/^shipping-\d+$/.test(x.id))&&text(x.title,300)&&text(x.recipient,100)&&text(x.address,1000)&&text(x.contact,200));
 }
 function projectShippingRows(items,records){
  const rows=new Map(records.map(x=>[x.id,{...x,linked:false}]));
  for(const item of items){const id='shipping-'+item.sourceSheetId;rows.set(id,{...(rows.get(id)||{}),id,title:item.projectName,projectCode:item.projectCode,linked:true});}
- return [...rows.values()];
+ const company=rows.get('shipping-company');rows.delete('shipping-company');
+ return [{...company,id:'shipping-company',title:'我公司收件信息',projectCode:'',linked:true},...rows.values()];
 }
 
 /* exported renderShipping, openShippingEditor, saveShipping, closeShippingEditor, shippingDirty */
@@ -7462,7 +7460,7 @@ function openShippingEditor(id,adding=false){
  const rows=projectShippingRows(projectCoreInfo?.items||[],state.projectShipping||[]),row=id?rows.find(item=>item.id===id):rows.find(item=>!item.recipient)||rows[0];if(!row){toast(projectCoreLoading?'项目正在加载，请稍后重试。':'请先在项目基础信息中添加项目，再刷新。');return;}
  id=row.id;kind='projectShipping';editing=id;$('editorTitle').textContent=adding?'添加发货信息':'编辑发货信息';$('formError').textContent='';$('deleteEntertainment').classList.add('hidden');
  $('editor').dataset.returnFocus=adding?'[data-shipping-add]':'[data-shipping-edit="'+CSS.escape(id)+'"]';
- $('fields').innerHTML=(adding?'<label for="shippingProject">项目</label><select id="shippingProject" aria-label="项目">'+rows.map(item=>'<option value="'+esc(item.id)+'" '+(item.id===id?'selected':'')+'>'+esc((item.projectCode?item.projectCode+' · ':'')+item.title)+(item.recipient?'（已填写）':'')+'</option>').join('')+'</select>':'<p>'+esc(row.title)+'</p>')+field('recipient','收件人','text',row.recipient||'','maxlength="100" autocomplete="shipping name" aria-required="true"')+textField('address','收件地址',row.address||'',1000)+field('contact','联系方式','text',row.contact||'','maxlength="200" autocomplete="shipping tel" aria-required="true"');
+ $('fields').innerHTML=(adding?'<label for="shippingProject">收件对象</label><select id="shippingProject" aria-label="收件对象">'+rows.map(item=>'<option value="'+esc(item.id)+'" '+(item.id===id?'selected':'')+'>'+esc((item.projectCode?item.projectCode+' · ':'')+item.title)+(item.recipient?'（已填写）':'')+'</option>').join('')+'</select>':'<p>'+esc(row.title)+'</p>')+field('recipient','收件人','text',row.recipient||'','maxlength="100" autocomplete="shipping name" aria-required="true"')+textField('address','收件地址',row.address||'',1000)+field('contact','联系方式','text',row.contact||'','maxlength="200" autocomplete="shipping tel" aria-required="true"');
  $('address').setAttribute('autocomplete','shipping street-address');$('address').setAttribute('aria-required','true');
  shippingBaseline=shippingFormSnapshot();
  if(adding)$('shippingProject').onchange=async event=>{
@@ -7494,31 +7492,16 @@ async function closeShippingEditor(){
 
 /* PROJECT_SHIPPING_END */
 /* PROJECT_BUDGET_START */
-const PROJECT_BUDGET_FIELDS=[['currency','预算币种',300],['basis','金额口径',300],['installation','安装费用',300],['transport','运输费用',300],['warranty','质保费用',300],['implementation','实施费用',300],['risk','风险金',300],['identifiedSubtotal','已识别小计',300],['total','五类合计',300],['review','复核状态',300],['note','预算说明',2000],['source','预算来源',2000]];
-function validProjectBudget(budget){return !!budget&&typeof budget==='object'&&!Array.isArray(budget)&&Object.keys(budget).length===PROJECT_BUDGET_FIELDS.length&&PROJECT_BUDGET_FIELDS.every(([key,,max])=>typeof budget[key]==='string'&&budget[key].length<=max);}
-function parseProjectBudget(rows){
- const text=v=>String(v??'').trim(),start=rows.findIndex(row=>/^\d+\s+项目核心预算$/.test(text(row[0])));if(start<0)return undefined;
- const fields=new Map(PROJECT_BUDGET_FIELDS.map(([key,label])=>[label,key])),values={};
- for(const row of rows.slice(start+1)){
-  if(/^\d+\s+/.test(text(row[0])))break;
-  for(let i=0;i<row.length-1;i++){const key=fields.get(text(row[i]));if(!key)continue;if(Object.hasOwn(values,key))throw Error('预算区块含重复字段，请核对源表');values[key]=text(row[i+1]);}
- }
- // Older project sheets may have a budget heading without the supported financial fields.
- if(!Object.keys(values).length)return undefined;
- const budget=Object.fromEntries(PROJECT_BUDGET_FIELDS.map(([key])=>[key,values[key]||'']));
- if(!validProjectBudget(budget))throw Error('预算字段过长，原数据已保留，请核对源表');return budget;
-}
-
 /* exported renderProjectBudget */
 function renderProjectBudget(){
  if(view!=='projectBudget'||!$('results'))return;
- const host=$('results'),scroll=host.querySelector('.project-core-scroll'),position={left:scroll?.scrollLeft||0,top:scroll?.scrollTop||0},expanded=new Set([...host.querySelectorAll('details[open][data-budget-sheet]')].map(node=>node.dataset.budgetSheet));
+ const host=$('results'),scroll=host.querySelector('.project-core-scroll'),position={left:scroll?.scrollLeft||0,top:scroll?.scrollTop||0};
  const items=projectCoreInfo?.items||[],sync=projectCoreInfo?.sync;
  const toolbar='<div data-page-toolbar><a class="btn" href="https://docs.google.com/spreadsheets/d/1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM/edit" target="_blank" rel="noopener noreferrer">打开项目信息表</a><button type="button" class="btn" data-refresh-core '+(projectCoreLoading?'disabled':'')+'>'+(projectCoreLoading?'正在刷新…':'刷新')+'</button></div>';
  const received=sync?.lastSyncedAt,stamp=received&&!Number.isNaN(Date.parse(received))?new Date(received).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false})+'（北京时间）':projectCoreInfo?.syncedAt||'尚未同步';
- host.innerHTML=toolbar+'<p class="muted" role="status">'+(projectCoreLoading?'正在读取源表同步数据…':'最近同步：'+esc(stamp))+'</p>'+(projectCoreError?'<p class="form-error" role="alert">'+esc(projectCoreError)+'</p>':'')+(!projectCoreInfo&&!projectCoreError?'<p class="muted" role="status">正在加载项目预算…</p>':'')+(items.length?'<div class="project-core-scroll" role="region" aria-label="项目预算成本表，可横向滚动" tabindex="0"><table class="project-core-table project-budget-table"><thead><tr>'+['项目 / 币种','安装费用','运输费用','质保费用','实施费用','风险金'].map(label=>'<th scope="col">'+label+'</th>').join('')+'</tr></thead><tbody>'+items.map(item=>{
-  const budget=item.budget,source='https://docs.google.com/spreadsheets/d/1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM/edit#gid='+item.sourceSheetId;
-  return '<tr><th scope="row">'+esc(item.projectCode+' · '+item.projectName)+(budget?'<p class="muted">'+esc(budget.currency||'币种未填写')+'</p>':'')+'</th>'+(budget?['installation','transport','warranty','implementation','risk'].map(key=>'<td>'+esc(budget[key]||'未填写')+'</td>').join(''):'<td colspan="5">源表预算尚未同步，请检查同步状态后重试。</td>')+'</tr>'+(budget?'<tr><td colspan="6"><details data-budget-sheet="'+item.sourceSheetId+'" '+(expanded.has(String(item.sourceSheetId))?'open':'')+'><summary>'+esc(budget.review||'查看预算口径与说明')+'</summary><dl class="project-budget-facts">'+PROJECT_BUDGET_FIELDS.filter(([key])=>!['installation','transport','warranty','implementation','risk','currency'].includes(key)).map(([key,label])=>'<div><dt>'+label+'</dt><dd>'+esc(budget[key]||'未填写')+'</dd></div>').join('')+'</dl><a class="btn" href="'+source+'" target="_blank" rel="noopener noreferrer">查看本项目原表</a></details></td></tr>':'');
+ host.innerHTML=toolbar+'<p class="muted" role="status">'+(projectCoreLoading?'正在读取源表同步数据…':'最近同步：'+esc(stamp))+'</p>'+(projectCoreError?'<p class="form-error" role="alert">'+esc(projectCoreError)+'</p>':'')+(!projectCoreInfo&&!projectCoreError?'<p class="muted" role="status">正在加载项目预算…</p>':'')+(items.length?'<div class="project-core-scroll" role="region" aria-label="项目预算成本表，可横向滚动" tabindex="0"><table class="project-core-table project-budget-table"><thead><tr>'+['项目 / 币种','安装费用','实施费用','运输费用','质保费用','风险金'].map(label=>'<th scope="col">'+label+'</th>').join('')+'</tr></thead><tbody>'+items.map(item=>{
+  const budget=item.budget;
+  return '<tr><th scope="row">'+esc(item.projectCode+' · '+item.projectName)+(budget?'<p class="muted">'+esc(budget.currency||'币种未填写')+'</p>':'')+'</th>'+(budget?['installation','implementation','transport','warranty','risk'].map(key=>'<td>'+esc(budget[key]||'未填写')+'</td>').join(''):'<td colspan="5">源表预算尚未同步，请检查同步状态后重试。</td>')+'</tr>';
  }).join('')+'</tbody></table></div>':projectCoreInfo?empty('暂无项目预算','请在项目信息表中维护项目及其核心预算区块。'):'');
  const next=host.querySelector('.project-core-scroll');if(next){next.scrollLeft=position.left;next.scrollTop=position.top;}
 }

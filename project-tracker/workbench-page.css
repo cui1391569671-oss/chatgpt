@@ -2357,6 +2357,3 @@ body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direct
 .project-shipping-table{--project-column-1:24%;--project-column-2:14%;--project-column-3:30%;--project-column-4:20%;--project-column-5:12%}
 
 .project-budget-table{--project-column-1:25%;--project-column-2:15%;--project-column-3:15%;--project-column-4:15%;--project-column-5:15%;--project-column-6:15%}
-.project-budget-facts{display:grid;gap:12px;margin:16px 0}
-.project-budget-facts div{display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px}
-.project-budget-facts dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
