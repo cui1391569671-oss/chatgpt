@@ -2210,7 +2210,9 @@ dialog[open]::backdrop {
 .media-wall-cover--game{--media-cover-fit:contain}
 .media-wall-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;overflow-wrap:anywhere;text-align:center}
 .media-wall-status,.media-wall-rating{position:absolute;z-index:2;background:var(--semantic-surface-muted);color:var(--semantic-text);padding:4px 8px;border-radius:7px;font-size:12px;pointer-events:none}
-.media-wall-status{left:8px;bottom:8px}
+.media-wall-status{left:8px;bottom:8px;display:inline-flex;align-items:center;gap:4px;font-weight:600;line-height:18px;background:var(--semantic-surface);color:var(--semantic-text)}
+.media-wall-status[data-status=completed]{background:var(--accent);color:var(--semantic-text-inverse)}
+.record-cover .media-wall-status{bottom:36px}
 .media-wall-rating{right:8px;top:8px}
 
 .media-wall-cover:focus-visible{outline:3px solid var(--accent);outline-offset:3px}

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import worker,{validWorkspace} from './helpers/session-worker.mjs';
 import {recordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
-import {mediaTrackingStatus,mediaTrackingHistory,mediaProgressUnit,mediaTrackingStats} from '../media-tracking.mjs';
+import {mediaDisplayStatus,mediaTrackingStatus,mediaTrackingHistory,mediaProgressUnit,mediaTrackingStats} from '../media-tracking.mjs';
 const base={id:'a',title:'作品',platform:'',completedDate:'2026-10-10',rating:null,detail:''};
 const valid=item=>validWorkspace({tasks:[],notes:[],events:[],completedGames:[item]});
 test('legacy media stays completed; planned and active media can be saved without completion dates',()=>{
@@ -33,4 +33,11 @@ test('new tracking fields round-trip through real record patches, preserve other
  const saved=(await(await worker.fetch(req('/api/workspace?scope=personal'),env)).json()).workspace;assert.deepEqual(saved.completedGames,next.completedGames);assert.equal(payload.workWorkspace.notes[0].body,'保留');
  const changed=structuredClone(saved);changed.completedGames[1].progress=1;changed.completedGames[1].trackingStatus='in_progress';assert.equal((await worker.fetch(req(endpoint,{operations:recordChanges(saved,changed,WORKSPACE_COLLECTIONS)}),env)).status,200);
  const stale=structuredClone(saved);stale.completedGames[1].progress=2;assert.equal((await worker.fetch(req(endpoint,{operations:recordChanges(saved,stale,WORKSPACE_COLLECTIONS)}),env)).status,409);
+});
+
+test('two visible status groups retain legacy records and history without mutation',()=>{
+ const records=[base,...['planned','in_progress','on_hold','dropped','completed'].map(trackingStatus=>({...base,trackingStatus,progress:3,history:[{status:trackingStatus}]}))];
+ const before=structuredClone(records);
+ assert.deepEqual(records.map(mediaDisplayStatus),['completed','planned','planned','planned','planned','completed']);
+ assert.deepEqual(records,before);
 });

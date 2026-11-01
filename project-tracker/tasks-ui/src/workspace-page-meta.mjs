@@ -4,7 +4,7 @@ const work={home:'工作概览',notes:'工作笔记',drive:'项目基础信息',
 export function workspacePageMeta(scope,view){const space=scope==='work'?'工作台':'私人工作台',label=(scope==='work'?work:personal)[view]||common[view]||space;return {label,title:label+' · '+space};}
 
 // Shared by top navigation and page search; labels stay with page metadata.
-export function workspaceNavigation(scope){return scope==='work'?[{title:'工作管理',short:'工作',views:['home','projects','tasks','today','calendar']},{title:'资料与记录',short:'资料',views:['drive','projectBudget','projectShipping','notes']}]:[{title:'安排与记录',short:'安排',views:['home','calendar','today','annualPlans','tasks','notes']},{title:'成长与生活',short:'生活',views:['checkins','vocabulary','fitness','completedGames','wardrobe','maintenance']}];}
+export function workspaceNavigation(scope){return scope==='work'?[{title:'工作管理',short:'工作',views:['home','projects','tasks','today','calendar']},{title:'资料与记录',short:'资料',views:['drive','projectBudget','projectShipping','notes']}]:[{title:'安排与记录',short:'安排',views:['home','calendar','today','annualPlans','tasks','notes']},{title:'成长与生活',short:'生活',views:['checkins','vocabulary','fitness','wardrobe','maintenance']},{title:'娱乐',short:'娱乐',views:['completedGames']}];}
 export function workspaceNavView(view){return view==='vocabularyLibrary'?'vocabulary':view==='upcoming'?'completedGames':view;}
 
 // Personal-site navigation preserves each route's workspace and source record ownership.
@@ -15,6 +15,7 @@ export function workspaceSiteNavigation(scope){
   {title:'日历',columns:[column('日历与计划','work',['calendar','today'],true),column('日历与计划','personal',['calendar','today'],true)]},
   {title:'项目资料',columns:[column('项目资料','work',['drive','projectBudget','projectShipping'],true)]},
   {title:'记录',columns:[column('工作记录','work',['notes'],true),column('私人记录','personal',['notes'],true)]},
-  {title:'生活',columns:[column('日程与计划','personal',['annualPlans','tasks'],true),column('成长与习惯','personal',['checkins','vocabulary','fitness']),column('生活管理','personal',['completedGames','wardrobe','maintenance'])]}
+  {title:'生活',columns:[column('日程与计划','personal',['annualPlans','tasks'],true),column('成长与习惯','personal',['checkins','vocabulary','fitness']),column('生活管理','personal',['wardrobe','maintenance'])]},
+  {title:'娱乐',columns:[column('娱乐作品','personal',['completedGames'],true)]}
  ].map(group=>({...group,columns:group.columns.filter(column=>!scope||column.space===scope)})).filter(group=>group.columns.length).map(group=>({...group,items:group.columns.flatMap(column=>column.views.map(view=>[column.space,view]))}));
 }

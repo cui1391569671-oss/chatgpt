@@ -5,6 +5,8 @@ import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 
 import * as React from 'react'
 import * as DialogPrimitive from '@animate-ui/react/primitives/radix-ui/dialog'
+import {Dialog as RadixDialog} from 'radix-ui'
+import {motion} from 'motion/react'
 import { XIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -59,7 +61,7 @@ function DialogContent({
   returnFocus,
   returnFocusFallback,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & {
+}: React.ComponentProps<typeof RadixDialog.Content> & {
   showCloseButton?: boolean
   returnFocus?: () => HTMLElement | null | undefined
   returnFocusFallback?: () => HTMLElement | null | undefined
@@ -68,8 +70,7 @@ function DialogContent({
   return (
     <DialogPortal data-slot='dialog-portal'>
       <DialogOverlay />
-      <DialogPrimitive.Content
-        transition={{type:"tween",duration:motionOff?0:motionTiming.control/1000}} exitTransition={{type:"tween",duration:motionOff?0:motionTiming.exit/1000}}
+      <RadixDialog.Content forceMount asChild
         data-ui-portal='' data-slot='dialog-content'
         className={cn(
           'workspace-dialog',
@@ -84,6 +85,11 @@ function DialogContent({
           restoreWorkspaceFocus(event,[returnFocus,returnFocusFallback])
         }}
       >
+        <motion.div
+          initial={{opacity:0}}
+          animate={{opacity:1,transition:{duration:motionOff?0:motionTiming.control/1000}}}
+          exit={{opacity:0,transition:{duration:motionOff?0:motionTiming.exit/1000}}}
+        >
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close
@@ -94,7 +100,8 @@ function DialogContent({
             <span className='sr-only'>关闭</span>
           </DialogPrimitive.Close>
         )}
-      </DialogPrimitive.Content>
+        </motion.div>
+      </RadixDialog.Content>
     </DialogPortal>
   )
 }

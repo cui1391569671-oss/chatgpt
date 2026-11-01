@@ -7,6 +7,9 @@ export function validMediaIdentity(item){
 // Yamtrack-inspired tracking concepts, implemented for the existing workspace record API.
 export const MEDIA_STATUSES={planned:'想看 / 想玩',in_progress:'进行中',on_hold:'已暂停',completed:'已完成',dropped:'已弃坑'};
 export function mediaTrackingStatus(item){return item.trackingStatus||'completed';}
+// The two visible groups preserve legacy tracking values and history in storage.
+export const MEDIA_DISPLAY_STATUSES={planned:'想看',completed:'已完成'};
+export function mediaDisplayStatus(item){return mediaTrackingStatus(item)==='completed'?'completed':'planned';}
 export function mediaProgressUnit(item){return ['anime','tv'].includes(item.mediaType)?'集':(item.mediaType||'game')==='game'?'小时':'分钟';}
 export function validMediaTracking(item){
  if(!validMediaIdentity(item))return false;
