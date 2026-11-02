@@ -23,5 +23,5 @@ test('public product homepage does not make workspace routes or APIs public',asy
 test('private workbench and retired homepage are excluded from search indexing',async()=>{
  const robots=await worker.fetch(new Request('https://site.test/robots.txt'),{});assert.equal(robots.status,200);assert.equal(await robots.text(),'User-agent: *\nDisallow: /\n');
  const sitemap=await worker.fetch(new Request('https://site.test/sitemap.xml'),{});assert.equal(sitemap.status,200);assert.doesNotMatch(await sitemap.text(),/<loc>/);
- const login=await worker.fetch(new Request('https://site.test/login'),{TRACKER_USER:'user',TRACKER_PASSWORD:'secret'});assert.equal(login.headers.get('X-Robots-Tag'),'noindex, nofollow');assert.match(await login.text(),/返回工作台/);
+ const login=await worker.fetch(new Request('https://site.test/login'),{TRACKER_USER:'user',TRACKER_PASSWORD:'secret'});assert.equal(login.headers.get('X-Robots-Tag'),'noindex, nofollow');assert.match(await login.text(),/aria-label="我的工作台首页"/);
 });

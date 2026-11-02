@@ -19,5 +19,13 @@ onWorkspaceContent('click',e=>{if(!e.target.closest('[data-word-practice]')||sco
 window.addEventListener('beforeunload',e=>{if(isWordPracticing()){e.preventDefault();e.returnValue='';}});
 
 let vocabularySyncLoading=false;
-async function renderVocabularySync(){const node=$('vocabularySync');if(!node)return;node.textContent='正在读取表格同步状态…';try{const response=await fetch('/api/vocabulary/sync',{cache:'no-store'});if(!response.ok)throw Error();const data=await response.json();if(!node.isConnected)return;node.innerHTML='<span>'+esc((data.status==='running'?'正在同步…':data.message||'等待首次同步')+(data.syncedAt?' · 最近成功 '+new Date(data.syncedAt).toLocaleString('zh-CN'):''))+'</span><a href="'+esc(data.source)+'" target="_blank" rel="noopener noreferrer">打开源表格</a><button type="button" class="btn" data-sync-vocabulary '+(!data.configured?'disabled':'')+'>刷新同步状态</button>';}catch{if(node.isConnected)node.textContent='同步状态暂时无法读取，请刷新页面重试。';}}
+async function renderVocabularySync(){
+ const node=$('vocabularySync');if(!node)return;node.textContent='正在读取同步状态…';
+ try{const response=await fetch('/api/vocabulary/sync',{cache:'no-store'});if(!response.ok)throw Error();const data=await response.json();if(!node.isConnected)return;
+  const stamp=data.syncedAt?new Date(data.syncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}):'';
+  const normal=data.status==='success'||data.status==='idle'&&!!data.syncedAt;
+  const text=data.status==='running'?'正在同步…':normal?'已同步':data.message||'等待首次同步';
+  node.innerHTML='<span>'+esc(text)+(stamp?' · <time title="最后成功同步（北京时间）：'+esc(new Date(data.syncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}))+'">'+esc(stamp)+'</time>':'')+'</span><a class="btn" data-workspace-icon="external" aria-label="打开词汇源表格" href="'+esc(data.source)+'" target="_blank" rel="noopener noreferrer">打开源表格</a><button type="button" class="btn" data-sync-vocabulary '+(!data.configured?'disabled':'')+'>刷新同步状态</button>'+helpDisclosure('词汇同步说明','<p>'+esc(normal?'源表编辑后推送，每5分钟补查；保留已有学习记录。':data.message||'等待首次同步。')+'</p>');
+ }catch{if(node.isConnected)node.innerHTML='<span class="form-error" role="alert">同步状态读取失败</span><button type="button" class="btn" data-sync-vocabulary>重试读取</button>';}
+}
 onWorkspaceContent('click',async e=>{if(!e.target.closest('[data-sync-vocabulary]')||vocabularySyncLoading||busy||scope!=='personal')return;vocabularySyncLoading=true;const button=e.target.closest('button');button.disabled=true;button.textContent='正在刷新…';try{await refreshWorkspace();}finally{vocabularySyncLoading=false;if(view==='vocabularyLibrary')renderVocabularySync();}});

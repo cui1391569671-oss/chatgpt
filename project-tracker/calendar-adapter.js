@@ -39,7 +39,7 @@ function setDingtalkStatus(message,tone='warning'){
  const compactTime=synced?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}):'';
  const successTime=synced?'<time datetime="'+esc(new Date(dingtalkLastSyncedAt).toISOString())+'" title="最后成功同步：'+esc(time)+'" aria-label="最后成功同步：'+esc(time)+'">'+esc(compactTime)+'</time>':'';
  host.dataset.tone=tone;
- host.innerHTML='<div role="status"><strong>'+esc(message)+'</strong>'+(tone==='success'?(successTime?' · '+successTime:''):'<p>最后成功同步：'+esc(time)+' · 钉钉日程只读</p>')+'</div><div class="actions"><button type="button" class="btn" data-refresh-dingtalk>重试读取</button>'+(tone!=='success'?'<details><summary>如何恢复同步</summary><p>请确认同步电脑已联网且未休眠，并检查钉钉授权。网页重试只读取已同步的日程，不会启动电脑端同步。</p></details>':'')+'</div>';
+ host.innerHTML='<div role="status"><strong>'+esc(message)+'</strong>'+(tone==='success'?(successTime?' · '+successTime:''):'<p>最后成功同步：'+esc(time)+' · 钉钉日程只读</p>')+'</div><div class="actions"><button type="button" class="btn" data-workspace-icon="refresh" aria-label="重试读取钉钉日历" data-refresh-dingtalk>重试读取</button>'+(tone!=='success'?'<details><summary>如何恢复同步</summary><p>请确认同步电脑已联网且未休眠，并检查钉钉授权。网页重试只读取已同步的日程，不会启动电脑端同步。</p></details>':'')+'</div>';
 }
 document.addEventListener('click',event=>{if(event.target.closest('[data-refresh-dingtalk]'))refreshDingtalkCalendar();});
 

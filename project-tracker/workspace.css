@@ -1132,7 +1132,13 @@ body {
   border-bottom: 1px solid var(--line);
 }
 .project-core-sync-status {
-  padding: 12px 20px;
+  color: var(--semantic-text-muted);
+  font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 20px;
   margin: 0;
   overflow-wrap: anywhere;
 }
@@ -2075,7 +2081,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 @media(max-width:640px){.wb-navigation-row{gap:8px}.wb-top-navigation{width:100%;gap:24px}.wb-page-row{flex-direction:column;align-items:stretch;gap:8px}.wb-page-row>.wb-page-location{padding-left:4px}.wb-topbar-actions{justify-content:flex-end}}
 
 .site-task-group h2,.workspace-note-index h2{color:var(--semantic-text)}
-.site-task-summary,.site-task-group h2 small,.site-task-title span,.site-task-title small,.site-list-footer,.site-empty p{color:var(--semantic-text-muted)}
+.site-task-group h2 small,.site-task-title small,.site-list-footer,.site-empty p{color:var(--semantic-text-muted)}
 .site-task-title{color:var(--semantic-text);border:0;background:transparent}
 .site-task-title:hover{color:var(--semantic-primary-text)}
 .site-task-group li{border-bottom:1px solid var(--semantic-border-muted)}
@@ -2457,6 +2463,20 @@ body [data-workspace-size=icon] {
   height: var(--control-height);
   padding: 0;
 }
+.workspace-icon-action{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
+.workspace-icon-action>span{display:inline-flex}
+.workspace-icon-action::after{content:attr(data-icon-label);position:absolute;bottom:calc(100% + 8px);right:0;z-index:20;display:none;width:max-content;max-width:220px;padding:6px 10px;border:1px solid var(--semantic-border);border-radius:var(--radius-md);background:var(--semantic-surface-elevated);color:var(--semantic-text);font-size:12px;font-weight:400;line-height:1.5;white-space:normal;pointer-events:none;box-shadow:var(--card-shadow)}
+.workspace-icon-action:not(:disabled):is(:hover,:focus-visible)::after{display:block}
+.workspace-help{position:relative;flex:none;max-width:100%}.workspace-help[open]{width:min(360px,100%)}
+.workspace-help>summary{display:flex;width:44px;margin-left:auto;list-style:none;min-height:44px;min-width:44px;border-radius:var(--control-radius);color:var(--semantic-text-muted)}
+.workspace-help>summary::-webkit-details-marker{display:none}
+.workspace-help>summary:hover{color:var(--semantic-primary-text);background:var(--semantic-control-hover)}
+.workspace-help>summary:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}
+.workspace-help[open]>.workspace-icon-action::after{display:none}
+.workspace-help-content{position:relative;width:100%;margin-top:8px;max-height:40dvh;overflow:auto;padding:16px;background:var(--semantic-surface-elevated);color:var(--semantic-text);border:1px solid var(--semantic-border);border-radius:var(--radius-xl);box-shadow:var(--card-shadow);font-size:14px;line-height:1.7}
+.workspace-help-content p{margin:0}
+.workspace-help-content p+p{margin-top:8px}
+
 body :is([data-ui-control=button],[data-slot=button]):not(:disabled):active {
   --btn-secondary-bg: var(--semantic-control-active);
   --btn-secondary-hover-bg: var(--semantic-control-active);

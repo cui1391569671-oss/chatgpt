@@ -13,3 +13,20 @@ test('DingTalk rows open their read-only source details from the title',async()=
  const {c,node}=setup(async()=>({ok:true,json:async()=>({date:'2026-10-30',items:[{id:'dd-1',source:'dingtalk',title:'今日会议',time:'09:00',status:'只读'}]})}));
  await c.refreshTodayTasks();assert.match(node.innerHTML,/data-dingtalk-event="dd-1"/);assert.match(node.innerHTML,/钉钉会议/);assert.doesNotMatch(node.innerHTML,/data-edit=/);
 });
+
+test('standalone today plan keeps all source actions on titles and preserves details without duplicate controls',async()=>{
+ const {c,node}=setup(async()=>({ok:true,json:async()=>({date:'2026-11-02',items:[
+  {id:'task',source:'tasks',title:'任务标题',time:'全天',status:'未完成',detail:'任务备注'},
+  {id:'issue',source:'projects',title:'问题标题',time:'全天',status:'进行中',project:'项目名称'},
+  {id:'event',source:'events',title:'日程标题',time:'09:00',status:'未完成'},
+  {id:'meeting',source:'dingtalk',title:'会议标题',time:'11:00',status:'只读'}
+ ]})}));
+ node.closest=()=>null;c.view='today';await c.refreshTodayTasks();
+ assert.match(node.innerHTML,/data-edit="tasks" data-id="task">任务标题/);
+ assert.match(node.innerHTML,/data-nav="projects">问题标题/);
+ assert.match(node.innerHTML,/data-today-calendar="2026-11-02">日程标题/);
+ assert.match(node.innerHTML,/data-dingtalk-event="meeting">会议标题/);
+ assert.match(node.innerHTML,/钉钉会议 · 只读/);assert.match(node.innerHTML,/任务备注/);assert.match(node.innerHTML,/项目名称/);
+ assert.equal((node.innerHTML.match(/4 项/g)||[]).length,1);
+ assert.doesNotMatch(node.innerHTML,/<h2>日历安排|>查看待办<|>查看项目<|>查看会议</);
+});

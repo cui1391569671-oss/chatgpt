@@ -2178,7 +2178,7 @@ dialog[open]::backdrop {
 .word-practice-letters{font-size:clamp(24px,5vw,44px);font-weight:600;letter-spacing:.04em;line-height:1.4;overflow-wrap:anywhere}
 .word-practice-meaning{margin:12px 0;font-size:16px;overflow-wrap:anywhere}
 .word-practice-feedback{min-height:48px;margin:12px 0;font-size:14px;overflow-wrap:anywhere}
-.word-practice-session-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.word-practice-session-head>p{margin:0}.word-practice-session-head>button{flex-shrink:0}
+.word-practice-session-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.word-practice-session-head>p{margin:0}.word-practice-session-head>button{flex-shrink:0}
 .word-practice-body form{display:grid;min-width:0}
 .word-practice-actions{display:flex;gap:12px;flex-wrap:wrap}
 .word-practice-example{margin:12px 0;overflow-wrap:anywhere}
@@ -2187,9 +2187,7 @@ dialog[open]::backdrop {
 .word-practice-mistakes span{padding:6px 12px;border:1px solid var(--admin-border);border-radius:8px}
 @media(max-width:600px){.word-practice-settings{grid-template-columns:1fr}.word-practice-body{padding:20px 16px}.word-practice-header{align-items:flex-start}.word-practice-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.word-practice-actions>button{white-space:nowrap}.word-practice-actions>button:first-child{grid-column:1/-1}.word-practice-word{padding-top:16px;min-height:0}}
 .annual-plans{display:flex;flex-direction:column;gap:20px;min-width:0}
-.annual-heading,.annual-caption{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.annual-heading h2{margin:6px 0 0}
-.annual-heading p{margin:0}
+.annual-caption{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .annual-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .annual-toolbar>.workspace-search{flex:1 1 240px;min-width:min(100%,180px)}
 .annual-caption{font-size:12px;color:var(--admin-muted-foreground)}
@@ -2220,7 +2218,6 @@ dialog[open]::backdrop {
 .media-wall-item p{margin:0;font-size:12px;overflow-wrap:anywhere}
 @media(max-width:600px){.media-wall{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}}
 .media-controls{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;margin:16px 0}
-.media-library-summary{margin:8px 0 12px}
 .media-library-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;margin:0}
 .media-library-toolbar label{display:flex;align-items:center;gap:6px;min-width:0;margin:0;flex:none}
 .media-library-toolbar label>span{flex:none;white-space:nowrap}
@@ -2297,6 +2294,8 @@ dialog[open]::backdrop {
 .fitness-history li{display:flex;flex-direction:column;gap:6px;padding:14px 0;border-bottom:1px solid var(--admin-border);overflow-wrap:anywhere}
 .fitness-history li:last-child{border:0}
 .fitness-profile h3{margin:0}
+.fitness-profile-details{margin-top:8px}.fitness-profile-details>summary{min-height:44px;display:list-item;align-content:center;cursor:pointer;color:var(--semantic-text-muted)}.fitness-profile-details>summary:hover{color:var(--semantic-primary-text)}.fitness-profile-details>summary:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}.fitness-profile-details p{margin:8px 0}
+
 .fitness-profile-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;border:0;padding:16px 0;margin:0}
 .fitness-profile-fields>label{display:flex;flex-direction:column;gap:8px;min-width:0}
 .fitness-profile-exclusions{display:flex;gap:12px;flex-wrap:wrap;grid-column:1/-1;border:0;padding:0;margin:0}
@@ -2308,7 +2307,7 @@ dialog[open]::backdrop {
 @container fitness (max-width:760px){.fitness-layout{grid-template-columns:minmax(0,1fr)}.fitness-actions>button{flex:1 1 140px}.fitness-header{align-items:start}}
 
 /* Today task aggregation business layout. */
-.today-task-group{margin-top:16px}.today-task-detail{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:8px}.today-task-date{margin:12px 0}.today-task-group .row-title{overflow-wrap:anywhere}@media(max-width:600px){.today-task-group .row{flex-wrap:wrap}.today-task-group .actions{margin-left:auto}}
+.today-task-group{margin-top:12px;--task-title-height:44px;--task-title-padding:0}.today-task-detail{white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0 0}.today-task-date{margin:8px 0}.today-task-group .row-title{overflow-wrap:anywhere}.today-task-group .row-content{position:relative;padding-right:52px}.today-task-group .row-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.today-task-details>summary{position:absolute;right:0;top:0;list-style:none}.today-task-details>summary::-webkit-details-marker{display:none}.today-task-details>summary:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}.today-task-details>div{margin-top:8px;overflow-wrap:anywhere}.today-task-details p{margin:0}.today-task-details p+p{margin-top:8px}
 
 .checkin-list{list-style:none;padding:0;margin:0}.checkin-list li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--semantic-border)}.checkin-list li:last-child{border-bottom:0}.checkin-toggle{flex:1;min-width:0}.checkin-toggle span{overflow-wrap:anywhere}
 
@@ -2323,7 +2322,6 @@ dialog[open]::backdrop {
 .site-home-actions>.btn{min-width:160px}
 .site-home-link{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:transparent;font-size:16px}
 .site-task-list{max-width:1240px;width:100%;margin:0 auto}
-.site-task-summary{margin:0 0 24px;font-size:18px}
 .site-list-controls{display:flex;justify-content:space-between;gap:24px;align-items:center;padding-bottom:12px;flex-wrap:wrap}
 .site-list-search{display:flex;gap:16px;align-items:center;min-width:0}
 .site-list-search .workspace-search{width:200px;max-width:100%}
@@ -2332,9 +2330,8 @@ dialog[open]::backdrop {
 .site-task-group h2 small{font-size:16px;font-weight:400}
 .site-task-group ul{list-style:none;padding:0;margin:0 0 24px}
 .site-task-group li{display:flex;align-items:center;gap:20px;min-width:0;padding:8px 0}
-.site-task-title{flex:1;min-width:0;min-height:52px;text-align:left;padding:4px 0;display:grid;gap:4px;overflow-wrap:anywhere}
+.site-task-title{flex:1;min-width:0;min-height:var(--task-title-height,52px);text-align:left;padding:var(--task-title-padding,4px 0);display:grid;gap:4px;overflow-wrap:anywhere}
 .site-task-title strong{font-size:18px;font-weight:550}
-.site-task-title span{font-size:14px;white-space:pre-wrap}
 .site-task-group time{font-size:14px;white-space:nowrap}
 .site-task-priority{padding:4px 12px;font-size:12px;border-radius:24px;white-space:nowrap}
 .site-list-footer{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px 0;font-size:14px}
@@ -2349,7 +2346,7 @@ dialog[open]::backdrop {
 
 /* Work overview: compact calendar and the canonical daily task stream. */
 
-.workspace-note-index h2{margin:0 0 8px}.workspace-note-index>.muted{margin-top:auto;padding-top:32px}.workspace-note-link{display:grid;gap:10px;text-align:left;min-height:72px;padding:12px;font:inherit;overflow-wrap:anywhere}.workspace-note-link strong{font-size:18px;font-weight:500}.workspace-note-link small{font-size:14px}.workspace-note-reader h2{font-size:32px;line-height:1.4}.workspace-note-reader header>.actions{grid-column:2;grid-row:1/4;justify-self:end;align-self:center}.workspace-note-reader header>small,.workspace-note-reader header>h2,.workspace-note-reader header>p{grid-column:1}.workspace-note-reader header p{margin:0}.workspace-note-search{min-width:0;margin-bottom:12px}
+.workspace-note-index h2{margin:0 0 8px}.workspace-note-index>.muted{margin-top:auto;padding-top:32px}.workspace-note-link{display:grid;text-align:left;min-height:44px;padding:12px;font:inherit;overflow-wrap:anywhere}.workspace-note-link strong{font-size:18px;font-weight:500}.workspace-note-reader h2{font-size:32px;line-height:1.4}.workspace-note-reader header>.actions{grid-column:2;grid-row:1/3;justify-self:end;align-self:center}.workspace-note-reader header>h2,.workspace-note-reader header>p{grid-column:1}.workspace-note-reader header p{margin:0}.workspace-note-search{min-width:0;margin-bottom:12px}
 
 /* Calendar and the existing today-plan feed share one bounded desktop layout. */
 body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direction:column;min-height:0}
