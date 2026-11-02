@@ -12,15 +12,17 @@ function mountWorkspaceCalendar(items,tasks,issues){
  const host=$('workspaceCalendar');if(!host)return;
  if(!window.IlamyCalendarRuntime){host.innerHTML='<p class="form-error" role="alert">日历加载失败，请刷新页面重试。</p>';return;}
  workspaceCalendar=window.IlamyCalendarRuntime.mount(host,{scope,events:items,tasks,issues,externalEvents:scope==='work'?dingtalkEvents:[],projectName:displayProject,holiday:holidayInfo,selectedDate,view:workspaceCalendarView,anchor:workspaceCalendarAnchor,
-  onIdle:()=>{if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;render();}},
+  onIdle:()=>{if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;if(view==='calendar')renderCalendar();else render();}},
   openSource:(source,id)=>{if(source==='dingtalk'){showDingtalkEvent(id);return;}if(source==='projects'){view='projects';render();}else edit('tasks',id);},
   persist:async mutation=>{if(busy||!ready)return {ok:false,error:'云端暂不可用，请稍后重试。'};try{const next=structuredClone(state);next.events=applyCalendarMutation(state.events,mutation);const ok=await change(next,{renderPage:false});if(ok){refreshTodayTasks();renderTaskBadge();workspaceTasks?.update?.(state.tasks);}return {ok,error:saveError,events:ok?state.events:undefined};}catch(error){return {ok:false,error:error.message};}}
  });
+ workspaceCalendar.host=host;
  if(scope==='work')startDingtalkRefresh();
 }
 
 if(typeof window!=='undefined')window.addEventListener('beforeunload',event=>{if(isCalendarEditing()){event.preventDefault();event.returnValue='';}});
 
+const dingtalkStatusRendered=new WeakMap();
 let dingtalkLastSyncedAt='',dingtalkEvents=[],dingtalkTimer=null,dingtalkRequest=null,dingtalkGeneration=0;
 function stopDingtalkRefresh(){clearInterval(dingtalkTimer);dingtalkTimer=null;dingtalkRequest?.abort();dingtalkRequest=null;dingtalkGeneration++;document.removeEventListener('visibilitychange',refreshDingtalkCalendar);}
 function startDingtalkRefresh(){stopDingtalkRefresh();refreshDingtalkCalendar();dingtalkTimer=setInterval(refreshDingtalkCalendar,30000);document.addEventListener('visibilitychange',refreshDingtalkCalendar);}
@@ -29,12 +31,12 @@ async function refreshDingtalkCalendar(){
  const retry=$('calendarSyncStatus')?.querySelector('[data-refresh-dingtalk]');if(retry)retry.disabled=true;const generation=dingtalkGeneration;dingtalkRequest=new AbortController();
  try{const response=await fetch('/api/dingtalk-calendar?scope=work',{cache:'no-store',signal:dingtalkRequest.signal});if(!response.ok)throw Error('读取失败');const payload=await response.json();if(!Array.isArray(payload.events))throw Error('格式无效');if(generation!==dingtalkGeneration||!workspaceCalendar)return;
   if(isCalendarEditing())return;
-  dingtalkLastSyncedAt=payload.lastSyncedAt||'';const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);dingtalkEvents=payload.events;if(changed)workspaceCalendar.updateExternal?.(dingtalkEvents);
+  dingtalkLastSyncedAt=payload.lastSyncedAt||'';const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);if(changed&&workspaceCalendar.updateExternal?.(payload.events)===false)return;dingtalkEvents=payload.events;
   setDingtalkStatus(!payload.connected?'钉钉日历尚未同步':payload.stale?'钉钉日历暂未更新，已保留上次日程；请检查同步电脑和授权。':'钉钉日历已同步',payload.stale||!payload.connected?'warning':'success');
  }catch(error){if(error.name!=='AbortError'&&generation===dingtalkGeneration)setDingtalkStatus('钉钉日历读取失败，已保留上次日程，将自动重试。','error');}finally{if(generation===dingtalkGeneration){dingtalkRequest=null;const button=$('calendarSyncStatus')?.querySelector('[data-refresh-dingtalk]');if(button)button.disabled=false;}}
 }
 function setDingtalkStatus(message,tone='warning'){
- const host=$('calendarSyncStatus');if(!host)return;
+ const host=$('calendarSyncStatus');if(!host)return;const signature=JSON.stringify([message,tone,dingtalkLastSyncedAt]);if(dingtalkStatusRendered.get(host)===signature)return;dingtalkStatusRendered.set(host,signature);
  const synced=dingtalkLastSyncedAt&&!Number.isNaN(Date.parse(dingtalkLastSyncedAt)),time=synced?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false})+'（北京时间）':'尚无成功同步';
  const compactTime=synced?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}):'';
  const successTime=synced?'<time datetime="'+esc(new Date(dingtalkLastSyncedAt).toISOString())+'" title="最后成功同步：'+esc(time)+'" aria-label="最后成功同步：'+esc(time)+'">'+esc(compactTime)+'</time>':'';

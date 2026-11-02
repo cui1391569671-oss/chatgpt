@@ -7139,6 +7139,7 @@ function setDailyCheckin(rows,kind,date,checked,completedAt){const record={id:da
 /* TODAY_TASKS_START */
 /* exported todayTasksPage */
 let todayTaskData=null,todayTaskLoading=false,todayTaskError='';
+const todayTaskRendered=new WeakMap();
 function todayTasksVisible(){return view==='today'||view==='calendar';}
 function todayTasksPage(embedded=false){
  const sidebar=embedded==='calendar';
@@ -7147,6 +7148,7 @@ function todayTasksPage(embedded=false){
 function todayTaskAction(item){return item.source==='dingtalk'?'data-dingtalk-event="'+esc(item.id)+'"':item.source==='tasks'?'data-edit="tasks" data-id="'+esc(item.id)+'"':item.source==='projects'?'data-nav="projects"':'data-today-calendar="'+esc(todayTaskData.date)+'"';}
 function renderTodayTaskResults(){
  const node=$('todayTaskResults');if(!node)return;
+ const signature=JSON.stringify([todayTaskData,todayTaskError,!todayTaskData&&todayTaskLoading,(todayTaskData?.items||[]).map(item=>item.project?displayProject(item.project):'')]);if(todayTaskRendered.get(node)===signature)return;todayTaskRendered.set(node,signature);
  const expanded=new Set(Array.from(node.querySelectorAll?.('details[open][data-today-details]')||[]).map(element=>element.dataset.todayDetails));
  const focused=node.contains?.(document.activeElement)?document.activeElement?.closest?.('details[data-today-details]')?.dataset.todayDetails:null;
  let html='';if(todayTaskError)html+='<p class="form-error" role="alert">'+esc(todayTaskError)+' 当前内容保留，可点击刷新重试。</p>';
@@ -7346,7 +7348,7 @@ async function refreshWorkspace(){
  try{
   const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const latest=await r.json();
   if(busy||version!==priorVersion||(document.querySelector('#editor[open],#clothingEditor[open]')||isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()))return;
-  if(latest.version!==version){state=latest.workspace;state.driveLinks??=[];version=latest.version;render();}
+  if(latest.version!==version){state=latest.workspace;state.driveLinks??=[];version=latest.version;if(view==='calendar')renderCalendar();else render();}
   if($('status').dataset.source==='refresh')status('已连接云端');
  }catch(e){
   // Background polling must not replace a persistent save or conflict error.
@@ -7644,7 +7646,13 @@ if(view==='notes'){
 }
 if(view==='maintenance')renderMaintenance();if(view==='completedGames')renderCompletedGames();if(view==='drive')renderDrive();if(view==='wardrobe')renderWardrobe();if(view==='vocabularyLibrary'){renderVocabulary();renderVocabularySync();}if(view==='calendar')renderCalendar();}
 let projectCalendar=[],projectCalendarLoading=false,projectCalendarError='',projectCalendarLoaded=false,projectCalendarPending=false;
-async function refreshProjectCalendar(){if(scope!=='work')return;if(projectCalendarLoading){projectCalendarPending=true;return;}projectCalendarLoading=true;if(view==='calendar')renderCalendar();try{const r=await fetch('/api/project-calendar',{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const payload=await r.json();projectCalendar=payload.items;projectCalendarLoaded=true;projectCalendarError='';}catch(e){projectCalendarError='项目问题同步失败：'+e.message;}finally{projectCalendarLoading=false;if(ready&&view==='calendar'){renderCalendar();setBusy(busy);}if(projectCalendarPending){projectCalendarPending=false;refreshProjectCalendar();}}}
+async function refreshProjectCalendar(){
+ if(scope!=='work')return;if(projectCalendarLoading){projectCalendarPending=true;return;}projectCalendarLoading=true;
+ const previous=JSON.stringify(projectCalendar),previousError=projectCalendarError;
+ try{const r=await fetch('/api/project-calendar',{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const payload=await r.json();if(!Array.isArray(payload.items))throw Error('格式无效');projectCalendar=payload.items;projectCalendarLoaded=true;projectCalendarError='';}
+ catch(e){projectCalendarError='项目问题同步失败：'+e.message;}
+ finally{projectCalendarLoading=false;if(ready&&view==='calendar'&&(previous!==JSON.stringify(projectCalendar)||previousError!==projectCalendarError)){renderCalendar();setBusy(busy);}if(projectCalendarPending){projectCalendarPending=false;refreshProjectCalendar();}}
+}
 function projectIssueRows(items){return items.map(x=>'<article class="row"><div class="row-content"><div class="row-title">'+esc(x.title||'未命名问题')+'</div><div class="row-meta"><span class="tag">项目问题</span>'+esc(displayProject(x.project))+' · '+esc(x.status)+(x.date<day()?' · 已逾期':'')+'</div>'+(x.reason?'<p class="row-meta">原因：'+esc(x.reason)+'</p>':'')+(x.note?'<p class="row-meta">备注：'+esc(x.note)+'</p>':'')+'</div><button class="btn" data-nav="projects">查看问题表</button></article>').join('');}
 document.querySelector('nav').addEventListener('click',e=>{if(e.target.closest('button[data-view="calendar"]')){refreshProjectCalendar();refreshWorkspace();}});
 window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===$('projectFrame').contentWindow&&e.data?.type==='project-saved')refreshProjectCalendar();});
@@ -7700,15 +7708,17 @@ function mountWorkspaceCalendar(items,tasks,issues){
  const host=$('workspaceCalendar');if(!host)return;
  if(!window.IlamyCalendarRuntime){host.innerHTML='<p class="form-error" role="alert">日历加载失败，请刷新页面重试。</p>';return;}
  workspaceCalendar=window.IlamyCalendarRuntime.mount(host,{scope,events:items,tasks,issues,externalEvents:scope==='work'?dingtalkEvents:[],projectName:displayProject,holiday:holidayInfo,selectedDate,view:workspaceCalendarView,anchor:workspaceCalendarAnchor,
-  onIdle:()=>{if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;render();}},
+  onIdle:()=>{if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;if(view==='calendar')renderCalendar();else render();}},
   openSource:(source,id)=>{if(source==='dingtalk'){showDingtalkEvent(id);return;}if(source==='projects'){view='projects';render();}else edit('tasks',id);},
   persist:async mutation=>{if(busy||!ready)return {ok:false,error:'云端暂不可用，请稍后重试。'};try{const next=structuredClone(state);next.events=applyCalendarMutation(state.events,mutation);const ok=await change(next,{renderPage:false});if(ok){refreshTodayTasks();renderTaskBadge();workspaceTasks?.update?.(state.tasks);}return {ok,error:saveError,events:ok?state.events:undefined};}catch(error){return {ok:false,error:error.message};}}
  });
+ workspaceCalendar.host=host;
  if(scope==='work')startDingtalkRefresh();
 }
 
 if(typeof window!=='undefined')window.addEventListener('beforeunload',event=>{if(isCalendarEditing()){event.preventDefault();event.returnValue='';}});
 
+const dingtalkStatusRendered=new WeakMap();
 let dingtalkLastSyncedAt='',dingtalkEvents=[],dingtalkTimer=null,dingtalkRequest=null,dingtalkGeneration=0;
 function stopDingtalkRefresh(){clearInterval(dingtalkTimer);dingtalkTimer=null;dingtalkRequest?.abort();dingtalkRequest=null;dingtalkGeneration++;document.removeEventListener('visibilitychange',refreshDingtalkCalendar);}
 function startDingtalkRefresh(){stopDingtalkRefresh();refreshDingtalkCalendar();dingtalkTimer=setInterval(refreshDingtalkCalendar,30000);document.addEventListener('visibilitychange',refreshDingtalkCalendar);}
@@ -7717,12 +7727,12 @@ async function refreshDingtalkCalendar(){
  const retry=$('calendarSyncStatus')?.querySelector('[data-refresh-dingtalk]');if(retry)retry.disabled=true;const generation=dingtalkGeneration;dingtalkRequest=new AbortController();
  try{const response=await fetch('/api/dingtalk-calendar?scope=work',{cache:'no-store',signal:dingtalkRequest.signal});if(!response.ok)throw Error('读取失败');const payload=await response.json();if(!Array.isArray(payload.events))throw Error('格式无效');if(generation!==dingtalkGeneration||!workspaceCalendar)return;
   if(isCalendarEditing())return;
-  dingtalkLastSyncedAt=payload.lastSyncedAt||'';const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);dingtalkEvents=payload.events;if(changed)workspaceCalendar.updateExternal?.(dingtalkEvents);
+  dingtalkLastSyncedAt=payload.lastSyncedAt||'';const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);if(changed&&workspaceCalendar.updateExternal?.(payload.events)===false)return;dingtalkEvents=payload.events;
   setDingtalkStatus(!payload.connected?'钉钉日历尚未同步':payload.stale?'钉钉日历暂未更新，已保留上次日程；请检查同步电脑和授权。':'钉钉日历已同步',payload.stale||!payload.connected?'warning':'success');
  }catch(error){if(error.name!=='AbortError'&&generation===dingtalkGeneration)setDingtalkStatus('钉钉日历读取失败，已保留上次日程，将自动重试。','error');}finally{if(generation===dingtalkGeneration){dingtalkRequest=null;const button=$('calendarSyncStatus')?.querySelector('[data-refresh-dingtalk]');if(button)button.disabled=false;}}
 }
 function setDingtalkStatus(message,tone='warning'){
- const host=$('calendarSyncStatus');if(!host)return;
+ const host=$('calendarSyncStatus');if(!host)return;const signature=JSON.stringify([message,tone,dingtalkLastSyncedAt]);if(dingtalkStatusRendered.get(host)===signature)return;dingtalkStatusRendered.set(host,signature);
  const synced=dingtalkLastSyncedAt&&!Number.isNaN(Date.parse(dingtalkLastSyncedAt)),time=synced?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false})+'（北京时间）':'尚无成功同步';
  const compactTime=synced?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}):'';
  const successTime=synced?'<time datetime="'+esc(new Date(dingtalkLastSyncedAt).toISOString())+'" title="最后成功同步：'+esc(time)+'" aria-label="最后成功同步：'+esc(time)+'">'+esc(compactTime)+'</time>':'';
@@ -7738,9 +7748,15 @@ function showDingtalkEvent(id){
 
 /* ILAMY_ADAPTER_END */
 function renderCalendar(){
- if(view!=='calendar')return;if(isCalendarEditing()){calendarDeferredRender=true;return;}const target=$('results');if(!target)return;disposeWorkspaceCalendar();
+ if(view!=='calendar')return;if(isCalendarEditing()){calendarDeferredRender=true;return;}const target=$('results');if(!target)return;
  const items=state.events,tasks=state.tasks.filter(t=>t.dueDate),issues=scope==='work'?projectCalendar:[];
- target.innerHTML=(scope==='work'&&projectCalendarError?'<p class="form-error" role="alert">'+esc(projectCalendarError)+'</p>':'')+'<div class="calendar-with-today"><section class="card calendar-full-surface"><div id="workspaceCalendar" aria-label="ilamy 日历，时间按北京时间展示"></div></section>'+todayTasksPage('calendar')+'</div>'+(scope==='work'?'<section id="calendarSyncStatus" class="workspace-sync-status" aria-label="钉钉同步状态"><p role="status">正在读取钉钉同步状态…</p></section>':'');
+ if(workspaceCalendar&&$('workspaceCalendar')===workspaceCalendar.host){
+  if(workspaceCalendar.updateSources({events:items,tasks,issues})===false)calendarDeferredRender=true;
+  const error=$('calendarProjectError');if(error){if(error.textContent!==projectCalendarError)error.textContent=projectCalendarError;error.hidden=!projectCalendarError;}
+  return;
+ }
+ disposeWorkspaceCalendar();
+ target.innerHTML=(scope==='work'?'<p id="calendarProjectError" class="form-error" role="alert"'+(projectCalendarError?'':' hidden')+'>'+esc(projectCalendarError)+'</p>':'')+'<div class="calendar-with-today"><section class="card calendar-full-surface"><div id="workspaceCalendar" aria-label="ilamy 日历，时间按北京时间展示"></div></section>'+todayTasksPage('calendar')+'</div>'+(scope==='work'?'<section id="calendarSyncStatus" class="workspace-sync-status" aria-label="钉钉同步状态"><p role="status">正在读取钉钉同步状态…</p></section>':'');
  mountWorkspaceCalendar(items,tasks,issues);renderTodayTaskResults();refreshTodayTasks();
 }
 

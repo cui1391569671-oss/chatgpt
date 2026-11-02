@@ -1,5 +1,6 @@
 /* exported todayTasksPage */
 let todayTaskData=null,todayTaskLoading=false,todayTaskError='';
+const todayTaskRendered=new WeakMap();
 function todayTasksVisible(){return view==='today'||view==='calendar';}
 function todayTasksPage(embedded=false){
  const sidebar=embedded==='calendar';
@@ -8,6 +9,7 @@ function todayTasksPage(embedded=false){
 function todayTaskAction(item){return item.source==='dingtalk'?'data-dingtalk-event="'+esc(item.id)+'"':item.source==='tasks'?'data-edit="tasks" data-id="'+esc(item.id)+'"':item.source==='projects'?'data-nav="projects"':'data-today-calendar="'+esc(todayTaskData.date)+'"';}
 function renderTodayTaskResults(){
  const node=$('todayTaskResults');if(!node)return;
+ const signature=JSON.stringify([todayTaskData,todayTaskError,!todayTaskData&&todayTaskLoading,(todayTaskData?.items||[]).map(item=>item.project?displayProject(item.project):'')]);if(todayTaskRendered.get(node)===signature)return;todayTaskRendered.set(node,signature);
  const expanded=new Set(Array.from(node.querySelectorAll?.('details[open][data-today-details]')||[]).map(element=>element.dataset.todayDetails));
  const focused=node.contains?.(document.activeElement)?document.activeElement?.closest?.('details[data-today-details]')?.dataset.todayDetails:null;
  let html='';if(todayTaskError)html+='<p class="form-error" role="alert">'+esc(todayTaskError)+' 当前内容保留，可点击刷新重试。</p>';

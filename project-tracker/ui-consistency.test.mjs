@@ -16,7 +16,7 @@ test('calendar stale/error feedback preserves the last snapshot and successful t
  const source=adapter.slice(adapter.indexOf('async function refreshDingtalkCalendar'),adapter.indexOf("document.addEventListener('click'"));
  const retry={},host={dataset:{},innerHTML:'',querySelector:()=>retry};let fail=false;
  const sandbox={document:{hidden:false},AbortController,Date,JSON,esc:value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'),$:()=>host,isCalendarEditing:()=>false,fetch:async()=>{if(fail)throw Error('offline');return {ok:true,json:async()=>({events:[{id:'cached'}],connected:true,stale:true,lastSyncedAt:'2026-10-30T04:00:00.000Z'})};}};
- vm.createContext(sandbox);vm.runInContext("let dingtalkLastSyncedAt='',dingtalkEvents=[],dingtalkRequest=null,dingtalkGeneration=0;const workspaceCalendar={updateExternal(){}};"+source,sandbox);
+ vm.createContext(sandbox);vm.runInContext("const dingtalkStatusRendered=new WeakMap();let dingtalkLastSyncedAt='',dingtalkEvents=[],dingtalkRequest=null,dingtalkGeneration=0;const workspaceCalendar={updateExternal(){}};"+source,sandbox);
  await sandbox.refreshDingtalkCalendar();assert.equal(host.dataset.tone,'warning');assert.match(host.innerHTML,/2026\/10\/30/);assert.match(host.innerHTML,/同步电脑/);
  fail=true;await sandbox.refreshDingtalkCalendar();assert.equal(host.dataset.tone,'error');assert.match(host.innerHTML,/2026\/10\/30/);assert.match(host.innerHTML,/已保留/);assert.equal(vm.runInContext('dingtalkEvents[0].id',sandbox),'cached');assert.equal(retry.disabled,false);
 });

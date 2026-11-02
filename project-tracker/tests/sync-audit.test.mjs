@@ -37,10 +37,10 @@ test('queued project edits submit only changes against the acknowledged cloud st
 });
 const workHtml=readFileSync(new URL('../workbench.html',import.meta.url),'utf8');
 test('workspace background refresh updates data but ignores responses racing a local save',async()=>{
- let respond;const document={querySelector:()=>null};const context=vm.createContext({JSON,Error,ready:true,busy:false,workspaceRefreshing:false,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,state:{tasks:[],notes:[],events:[]},version:1,api:'/api/workspace?scope=work',document,$:()=>({dataset:{}}),render:()=>{},status:()=>{},fetch:()=>new Promise(r=>respond=r)});
+ let respond,draws=0;const document={querySelector:()=>null};const context=vm.createContext({JSON,Error,view:'notes',ready:true,busy:false,workspaceRefreshing:false,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,state:{tasks:[],notes:[],events:[]},version:1,api:'/api/workspace?scope=work',document,$:()=>({dataset:{}}),render:()=>draws++,status:()=>{},fetch:()=>new Promise(r=>respond=r)});
  vm.runInContext(workHtml.slice(workHtml.indexOf('async function refreshWorkspace()'),workHtml.indexOf('setInterval(()=>{if(!document.hidden)refreshWorkspace();}')),context);
- const running=context.refreshWorkspace();respond({ok:true,json:async()=>({workspace:{tasks:[task('remote')],notes:[],events:[]},version:2})});await running;assert.equal(context.state.tasks[0].id,'remote');
- const delayed=context.refreshWorkspace();context.version=3;context.state.tasks=[task('local-save')];respond({ok:true,json:async()=>({workspace:{tasks:[],notes:[],events:[]},version:2})});await delayed;assert.equal(context.state.tasks[0].id,'local-save');assert.equal(context.version,3);
+ const running=context.refreshWorkspace();respond({ok:true,json:async()=>({workspace:{tasks:[task('remote')],notes:[],events:[]},version:2})});await running;assert.equal(context.state.tasks[0].id,'remote');assert.equal(draws,1);
+ const delayed=context.refreshWorkspace();context.version=3;context.state.tasks=[task('local-save')];respond({ok:true,json:async()=>({workspace:{tasks:[],notes:[],events:[]},version:2})});await delayed;assert.equal(context.state.tasks[0].id,'local-save');assert.equal(context.version,3);assert.equal(draws,1);
 });
 test('all workspace collections survive round trips and concurrent project saves in their own space',async()=>{
  const {env}=setup(),projectBase=await read(env),image='/api/wardrobe-images/11111111-1111-4111-8111-111111111111';

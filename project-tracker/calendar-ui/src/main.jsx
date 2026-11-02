@@ -51,7 +51,12 @@ function CalendarApp({options,controller}){
    const result=await options.persist(mutation);if(!result.ok)throw Error(result.error||'保存失败，请重试。');options.events=result.events;const canonical=entries(options);base.current=canonical;setEvents(canonical);window.WorkspaceFeedback?.show(document.getElementById('toast'),mutation.action==='delete'?'已删除日程':'已保存日程','success');
   }catch(error){restore();setFailure({mutation,error:error.message});}finally{locked.current=false;setPending(false);}
  }
- controller.updateExternal=items=>{options.externalEvents=items;const canonical=entries(options);base.current=canonical;setEvents(canonical);};
+ controller.updateSources=next=>{
+  if(locked.current||controller.editing||controller.gesturing||controller.gestureScopeOpen||controller.pending||controller.failed)return false;
+  Object.assign(options,next);const canonical=entries(options);
+  if(JSON.stringify(base.current)!==JSON.stringify(canonical)){base.current=canonical;setEvents(canonical);}return true;
+ };
+ controller.updateExternal=items=>controller.updateSources({externalEvents:items});
  controller.open=()=>{if(!pending&&!failure){controller.focus.capture(document.activeElement);controller.api?.openEventForm();}};
  function onMutation(mutation){const normalized=mutation.action==='add'&&!mutation.scope?{...mutation,added:mutation.added.map(event=>({...event,id:crypto.randomUUID()}))}:mutation;commit(normalized);}
  return <div className="ilamy-surface">
