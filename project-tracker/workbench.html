@@ -6363,6 +6363,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .project-core-detail-trigger:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}
 .workspace-sync-status{display:flex;flex:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 16px;margin:16px 0 0;background:var(--semantic-surface);border:1px solid var(--semantic-border);border-radius:var(--radius-xl)}
 .workspace-sync-status strong{font-size:14px;font-weight:500}
+.workspace-sync-status time{color:var(--semantic-text-muted);font-size:12px}
 .workspace-sync-status p{margin:4px 0 0;color:var(--semantic-text-muted);font-size:12px}
 .workspace-sync-status[data-tone=warning] strong{color:var(--semantic-warning-text)}
 .workspace-sync-status[data-tone=error] strong{color:var(--semantic-error-text)}
@@ -7678,14 +7679,16 @@ async function refreshDingtalkCalendar(){
  try{const response=await fetch('/api/dingtalk-calendar?scope=work',{cache:'no-store',signal:dingtalkRequest.signal});if(!response.ok)throw Error('读取失败');const payload=await response.json();if(!Array.isArray(payload.events))throw Error('格式无效');if(generation!==dingtalkGeneration||!workspaceCalendar)return;
   if(isCalendarEditing())return;
   dingtalkLastSyncedAt=payload.lastSyncedAt||'';const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);dingtalkEvents=payload.events;if(changed)workspaceCalendar.updateExternal?.(dingtalkEvents);
-  setDingtalkStatus(!payload.connected?'钉钉日历尚未同步':payload.stale?'钉钉日历暂未更新，已保留上次日程；请检查同步电脑和授权。':'钉钉主日历 · 最近同步 '+new Date(payload.lastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}),payload.stale||!payload.connected?'warning':'success');
+  setDingtalkStatus(!payload.connected?'钉钉日历尚未同步':payload.stale?'钉钉日历暂未更新，已保留上次日程；请检查同步电脑和授权。':'钉钉日历已同步',payload.stale||!payload.connected?'warning':'success');
  }catch(error){if(error.name!=='AbortError'&&generation===dingtalkGeneration)setDingtalkStatus('钉钉日历读取失败，已保留上次日程，将自动重试。','error');}finally{if(generation===dingtalkGeneration){dingtalkRequest=null;const button=$('calendarSyncStatus')?.querySelector('[data-refresh-dingtalk]');if(button)button.disabled=false;}}
 }
 function setDingtalkStatus(message,tone='warning'){
  const host=$('calendarSyncStatus');if(!host)return;
- const time=dingtalkLastSyncedAt&&!Number.isNaN(Date.parse(dingtalkLastSyncedAt))?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false})+'（北京时间）':'尚无成功同步';
+ const synced=dingtalkLastSyncedAt&&!Number.isNaN(Date.parse(dingtalkLastSyncedAt)),time=synced?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false})+'（北京时间）':'尚无成功同步';
+ const compactTime=synced?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}):'';
+ const successTime=synced?'<time datetime="'+esc(new Date(dingtalkLastSyncedAt).toISOString())+'" title="最后成功同步：'+esc(time)+'" aria-label="最后成功同步：'+esc(time)+'">'+esc(compactTime)+'</time>':'';
  host.dataset.tone=tone;
- host.innerHTML='<div role="status"><strong>'+esc(message)+'</strong><p>最后成功同步：'+esc(time)+' · 钉钉日程只读</p></div><div class="actions"><button type="button" class="btn" data-refresh-dingtalk>重试读取</button>'+(tone!=='success'?'<details><summary>如何恢复同步</summary><p>请确认同步电脑已联网且未休眠，并检查钉钉授权。网页重试只读取已同步的日程，不会启动电脑端同步。</p></details>':'')+'</div>';
+ host.innerHTML='<div role="status"><strong>'+esc(message)+'</strong>'+(tone==='success'?(successTime?' · '+successTime:''):'<p>最后成功同步：'+esc(time)+' · 钉钉日程只读</p>')+'</div><div class="actions"><button type="button" class="btn" data-refresh-dingtalk>重试读取</button>'+(tone!=='success'?'<details><summary>如何恢复同步</summary><p>请确认同步电脑已联网且未休眠，并检查钉钉授权。网页重试只读取已同步的日程，不会启动电脑端同步。</p></details>':'')+'</div>';
 }
 document.addEventListener('click',event=>{if(event.target.closest('[data-refresh-dingtalk]'))refreshDingtalkCalendar();});
 

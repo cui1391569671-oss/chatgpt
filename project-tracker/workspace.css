@@ -2119,6 +2119,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .project-core-detail-trigger:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}
 .workspace-sync-status{display:flex;flex:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 16px;margin:16px 0 0;background:var(--semantic-surface);border:1px solid var(--semantic-border);border-radius:var(--radius-xl)}
 .workspace-sync-status strong{font-size:14px;font-weight:500}
+.workspace-sync-status time{color:var(--semantic-text-muted);font-size:12px}
 .workspace-sync-status p{margin:4px 0 0;color:var(--semantic-text-muted);font-size:12px}
 .workspace-sync-status[data-tone=warning] strong{color:var(--semantic-warning-text)}
 .workspace-sync-status[data-tone=error] strong{color:var(--semantic-error-text)}
