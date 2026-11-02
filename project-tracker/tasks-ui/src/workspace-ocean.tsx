@@ -1,9 +1,11 @@
+import {oceanSizing} from './workspace-ocean-sizing.mjs';
 import {useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 // Authored from visual observation, without React Bits Pro source or runtime dependencies.
 const vertex=`
 attribute vec3 seed;
-uniform vec2 viewport;
+uniform vec2 sceneScale;
+uniform float pointScale;
 uniform float time;
 uniform float pixelRatio;
 uniform vec3 gold;
@@ -40,7 +42,7 @@ vec3 sea(vec2 p){
 }
 void main(){
  float depth=3.+seed.y*seed.y*74.;
- float aspect=viewport.x/viewport.y;
+ float aspect=2560./(1440.*.88);
  float x=(seed.x-.5)*(9.+depth*aspect*1.48);
  vec2 p=vec2(x,depth);
  vec3 surface=sea(p);
@@ -57,8 +59,9 @@ void main(){
  float brightness=(.045+crest*.65+reflection*1.45+twinkle*reflection*.5)*(.6+.4*corridor);
  float projection=1.65/(depth+5.);
  vec2 screen=vec2(.53+x*projection/aspect,.225+(4.8-h)*projection);
+ screen=vec2(.53,.225)+(screen-vec2(.53,.225))*sceneScale;
  gl_Position=vec4(screen.x*2.-1.,1.-screen.y*2.,0.,1.);
- gl_PointSize=clamp((.9+grain*.8)*(1.+projection*.4)*pixelRatio,.6,2.6*pixelRatio);
+ gl_PointSize=clamp((.9+grain*.8)*(1.+projection*.4)*pointScale,.6,2.6)*pixelRatio;
  tint=vec4(mix(gold,pearl,clamp(reflection*1.2*(1.-smoothstep(12.,65.,depth)),0.,.92)),brightness);
 }`;
 const fragment=`
@@ -72,7 +75,7 @@ export function WorkspaceOcean(){
  useEffect(()=>{
   const node=canvas.current;if(!node)return;
   const gl=node.getContext('webgl',{alpha:true,antialias:false,premultipliedAlpha:false,powerPreference:'high-performance'});if(!gl){node.dataset.oceanRenderer='unavailable';return;}
-  let frame=0,last=0,time=0,disposed=false,lost=false;
+  let frame=0,last=0,time=0,disposed=false,lost=false,drawCount=0;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),colors=getComputedStyle(document.documentElement);
   // Theme primitives resolve to six-digit sRGB values; no independent shader palette.
   const rgb=(name:string)=>{const value=colors.getPropertyValue(name).trim();return [1,3,5].map(start=>parseInt(value.slice(start,start+2),16)/255);};
@@ -83,22 +86,37 @@ export function WorkspaceOcean(){
   if(!gl.getProgramParameter(program,gl.LINK_STATUS)){node.dataset.oceanRenderer='link-failed';console.warn('Ocean shader link failed:',gl.getProgramInfoLog(program));gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);return;}
   node.dataset.oceanRenderer='webgl';
   const count=512*384,data=new Float32Array(count*3),random=(i:number)=>{const n=Math.sin(i*127.1+31.7)*43758.5453;return n-Math.floor(n);};
-  for(let i=0;i<count;i++){data[i*3]=(i%512+random(i+1))/512;data[i*3+1]=(Math.floor(i/512)+random(i+7))/384;data[i*3+2]=random(i+13);}
+  // A shuffled prefix covers all depths; reducing drawCount cannot remove the far sea.
+  const order=Uint32Array.from({length:count},(_,i)=>i);
+  for(let i=count-1;i>0;i--){const j=Math.floor(random(i+101)*(i+1)),cell=order[i];order[i]=order[j];order[j]=cell;}
+  for(let i=0;i<count;i++){const cell=order[i];data[i*3]=(cell%512+random(cell+1))/512;data[i*3+1]=(Math.floor(cell/512)+random(cell+7))/384;data[i*3+2]=random(cell+13);}
   const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);gl.useProgram(program);
   const position=gl.getAttribLocation(program,'seed');gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,3,gl.FLOAT,false,0,0);
-  const clock=gl.getUniformLocation(program,'time'),viewport=gl.getUniformLocation(program,'viewport'),ratio=gl.getUniformLocation(program,'pixelRatio');
+  const clock=gl.getUniformLocation(program,'time'),sceneScale=gl.getUniformLocation(program,'sceneScale'),pointScale=gl.getUniformLocation(program,'pointScale'),ratio=gl.getUniformLocation(program,'pixelRatio');
   gl.uniform3fv(gl.getUniformLocation(program,'gold'),rgb('--particle-gold'));gl.uniform3fv(gl.getUniformLocation(program,'pearl'),rgb('--particle-white'));
   gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
-  function draw(){if(lost||disposed)return;gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform1f(clock,time);gl.drawArrays(gl.POINTS,0,count);}
+  function draw(){if(lost||disposed||!drawCount)return;gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform1f(clock,time);gl.drawArrays(gl.POINTS,0,drawCount);}
   function tick(now:number){if(disposed||lost||document.hidden||reduced.matches)return;time+=Math.min((now-last)/1000,.1)*2;last=now;draw();frame=requestAnimationFrame(tick);}
   function restart(){cancelAnimationFrame(frame);draw();if(!disposed&&!lost&&!document.hidden&&!reduced.matches){last=performance.now();frame=requestAnimationFrame(tick);}}
-  const resize=new ResizeObserver(()=>{const box=node.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,1.5);node.width=Math.round(box.width*dpr);node.height=Math.round(box.height*dpr);gl.viewport(0,0,node.width,node.height);gl.uniform2f(viewport,box.width,box.height);gl.uniform1f(ratio,dpr);restart();});resize.observe(node);
+  const maxDimension=Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
+  function resizeCanvas(){
+   if(disposed||lost)return;
+   const box=node.getBoundingClientRect(),sizing=oceanSizing(box.width,box.height,devicePixelRatio,maxDimension);if(!sizing){drawCount=0;cancelAnimationFrame(frame);return;}
+   drawCount=sizing.count;node.dataset.oceanParticles=String(drawCount);node.dataset.oceanPixelRatio=String(sizing.ratio);
+   if(node.width!==sizing.width)node.width=sizing.width;if(node.height!==sizing.height)node.height=sizing.height;
+   gl.viewport(0,0,node.width,node.height);gl.uniform2f(sceneScale,sizing.sceneX,sizing.sceneY);gl.uniform1f(pointScale,sizing.pointScale);gl.uniform1f(ratio,sizing.ratio);restart();
+  }
+  const resize=new ResizeObserver(resizeCanvas);resize.observe(node);
+  let densityQuery:MediaQueryList;
+  function densityChanged(){resizeCanvas();watchDensity();}
+  function watchDensity(){densityQuery?.removeEventListener('change',densityChanged);densityQuery=matchMedia('(resolution: '+(devicePixelRatio||1)+'dppx)');densityQuery.addEventListener('change',densityChanged);}
+  watchDensity();
   const contextLost=(event:Event)=>{event.preventDefault();lost=true;cancelAnimationFrame(frame);};
   // A restored canvas is remounted through React, rebuilding every GPU-owned resource.
   const contextRestored=()=>setGeneration(value=>value+1);
   node.addEventListener('webglcontextlost',contextLost);node.addEventListener('webglcontextrestored',contextRestored);
   reduced.addEventListener('change',restart);document.addEventListener('visibilitychange',restart);
-  return()=>{disposed=true;cancelAnimationFrame(frame);resize.disconnect();node.removeEventListener('webglcontextlost',contextLost);node.removeEventListener('webglcontextrestored',contextRestored);reduced.removeEventListener('change',restart);document.removeEventListener('visibilitychange',restart);gl.deleteBuffer(buffer);gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);};
+  return()=>{disposed=true;cancelAnimationFrame(frame);resize.disconnect();densityQuery.removeEventListener('change',densityChanged);node.removeEventListener('webglcontextlost',contextLost);node.removeEventListener('webglcontextrestored',contextRestored);reduced.removeEventListener('change',restart);document.removeEventListener('visibilitychange',restart);gl.deleteBuffer(buffer);gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);};
  },[generation]);
  return createPortal(<div className='workspace-atmosphere' aria-hidden='true'><canvas key={generation} ref={canvas}/></div>,document.body);
 }
