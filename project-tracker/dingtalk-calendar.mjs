@@ -1,5 +1,5 @@
 import {readBoundedText} from './request-body.mjs';
-export const DINGTALK_SYNC_INTERVAL_SECONDS=6*60*60;
+export const DINGTALK_SYNC_INTERVAL_SECONDS=60*60;
 const staleAfterMs=(DINGTALK_SYNC_INTERVAL_SECONDS+15*60)*1000;
 const reply=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 const table='CREATE TABLE IF NOT EXISTS dingtalk_calendar (id INTEGER PRIMARY KEY CHECK(id=1), version INTEGER NOT NULL, payload TEXT NOT NULL)';
