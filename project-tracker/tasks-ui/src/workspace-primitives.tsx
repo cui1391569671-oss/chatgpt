@@ -10,15 +10,27 @@ import {WorkspaceDateInput} from '@/components/workspace-date';
 import {WorkspaceSelect} from '@/components/workspace-select';
 import {enhanceFileInput} from '../../file-trigger.js';
 import {restoreFocusTarget} from '../../focus-return.mjs';
-import {ArrowLeft,CircleHelp,MoreHorizontal,RefreshCw,List,Pencil,Trash2,LayoutGrid,ExternalLink} from 'lucide-react';
-const actionIcons={back:ArrowLeft,help:CircleHelp,details:MoreHorizontal,refresh:RefreshCw,list:List,edit:Pencil,delete:Trash2,grid:LayoutGrid,external:ExternalLink};
-const iconActions=new Map<HTMLElement,{root:ReturnType<typeof createRoot>;mount:HTMLSpanElement}>();
+import {ArrowLeft,ArrowRight,ChevronLeft,ChevronRight,ChevronDown,CircleHelp,RefreshCw,List,Pencil,Trash2,LayoutGrid,ExternalLink,Plus,Volume2} from 'lucide-react';
+const actionIcons={back:ArrowLeft,forward:ArrowRight,previous:ChevronLeft,next:ChevronRight,help:CircleHelp,details:ChevronDown,refresh:RefreshCw,list:List,edit:Pencil,delete:Trash2,grid:LayoutGrid,external:ExternalLink,plus:Plus,volume:Volume2};
+const iconActions=new Map<HTMLElement,{root:ReturnType<typeof createRoot>;mount:HTMLSpanElement;labelNode?:HTMLSpanElement;signature:string;label:string}>();
 function enhanceIconAction(element:HTMLElement){
  const Icon=actionIcons[element.dataset.workspaceIcon];if(!Icon)return;
- const existing=iconActions.get(element);if(existing){if(existing.mount.parentElement!==element)element.replaceChildren(existing.mount);return;}
- const label=element.getAttribute('aria-label')||element.textContent?.trim()||'操作';
- element.setAttribute('aria-label',label);element.dataset.iconLabel=label;element.dataset.workspaceSize='icon';element.classList.add('workspace-icon-action');
- const mount=document.createElement('span');mount.dataset.uiOwner='action-icon';element.replaceChildren(mount);const root=createRoot(mount);iconActions.set(element,{root,mount});root.render(<Icon size={18} aria-hidden='true'/>);
+ let adapter=iconActions.get(element);
+ const labelled=element.dataset.workspaceIconMode==='label',text=element.textContent?.trim().replace(/^[＋+←]\s*|\s*[→↗]$/g,'')||adapter?.label||'操作';
+ const previousLabel=element.dataset.iconAutoLabel,explicitLabel=element.getAttribute('aria-label');
+ const label=labelled?text:explicitLabel||text;
+ if(!explicitLabel||explicitLabel===previousLabel){element.setAttribute('aria-label',label);element.dataset.iconAutoLabel=label;}
+ element.dataset.workspaceSize=labelled?'default':'icon';element.classList.toggle('workspace-icon-action',!labelled);element.classList.toggle('workspace-label-action',labelled);
+ if(!labelled)element.dataset.iconLabel=label;
+ const signature=element.dataset.workspaceIcon+':'+labelled;
+ if(!adapter){const mount=document.createElement('span');mount.dataset.uiOwner='action-icon';adapter={root:createRoot(mount),mount,signature:'',label};iconActions.set(element,adapter);}
+ if(labelled){
+  if(!adapter.labelNode){adapter.labelNode=document.createElement('span');adapter.labelNode.dataset.uiOwner='action-label';}
+  if(adapter.labelNode.textContent!==label)adapter.labelNode.textContent=label;
+  if(adapter.mount.parentElement!==element||adapter.labelNode.parentElement!==element)element.replaceChildren(adapter.mount,adapter.labelNode);
+ }else if(adapter.mount.parentElement!==element)element.replaceChildren(adapter.mount);
+ adapter.label=label;if(adapter.signature===signature)return;
+ adapter.signature=signature;adapter.root.render(<Icon size={18} aria-hidden='true' className={element.dataset.workspaceIcon==='volume'?'workspace-reveal-icon':undefined}/>);
 }
 const dialogs=new WeakMap(),selects=new Map(),forms=new WeakSet(),dates=new Map();
 let dialogReturnTarget:HTMLElement|null=null;
@@ -84,6 +96,7 @@ function enhanceForm(form:HTMLFormElement){
  const clear=event=>{const field=event.target;if(field.validity?.valid){const error=document.getElementById(field.getAttribute('aria-describedby'));if(error?.classList.contains('form-error'))error.textContent='';field.removeAttribute?.('aria-invalid');if(error?.classList.contains('form-error'))field.removeAttribute?.('aria-describedby');}};form.addEventListener('input',clear);form.addEventListener('change',clear);
 }
 function scan(scope:ParentNode=document){
+ scope.querySelectorAll<HTMLElement>('[data-delete],[data-delete-clothing],[data-delete-outfit]').forEach(element=>{const record=element.closest('article,li,.row');if(record){record.classList.add('workspace-record');element.classList.add('workspace-reveal-action');}});
  for(const [selector,icon,label] of [
   ['[data-refresh-core]','refresh','刷新项目信息'],
   ['[data-sync-vocabulary]','refresh','刷新词汇同步状态'],

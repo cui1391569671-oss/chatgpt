@@ -2162,6 +2162,8 @@ dialog[open]::backdrop {
 .vocabulary-history p{padding-bottom:8px}
 
 .personal-info{min-width:0;display:flex;flex-direction:column;gap:16px}
+.vocabulary-sync-line{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.vocabulary-sync-line>.vocabulary-sync{flex:1 1 auto}
 .vocabulary-sync{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0;font-size:12px;color:var(--admin-muted-foreground)}
 .word-practice-page{width:100%;min-width:0}
 .word-practice-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
@@ -2207,10 +2209,7 @@ dialog[open]::backdrop {
 .media-wall-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:var(--media-cover-fit,cover);z-index:1}
 .media-wall-cover--game{--media-cover-fit:contain}
 .media-wall-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;overflow-wrap:anywhere;text-align:center}
-.media-wall-status,.media-wall-rating{position:absolute;z-index:2;background:var(--semantic-surface-muted);color:var(--semantic-text);padding:4px 8px;border-radius:7px;font-size:12px;pointer-events:none}
-.media-wall-status{left:8px;bottom:8px;display:inline-flex;align-items:center;gap:4px;font-weight:600;line-height:18px;background:var(--semantic-surface);color:var(--semantic-text)}
-.media-wall-status[data-status=completed]{background:var(--accent);color:var(--semantic-text-inverse)}
-.record-cover .media-wall-status{bottom:36px}
+.media-wall-rating{position:absolute;z-index:2;background:var(--semantic-surface-muted);color:var(--semantic-text);padding:4px 8px;border-radius:7px;font-size:12px;pointer-events:none}
 .media-wall-rating{right:8px;top:8px}
 
 .media-wall-cover:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
@@ -2268,7 +2267,7 @@ dialog[open]::backdrop {
 .fitness-header p{margin:8px 0 0}
 .fitness-layout{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr);gap:24px;align-items:start}
 .fitness-plan,.fitness-library,.fitness-profile,.fitness-history,.fitness-exercise{min-width:0;max-width:100%}
-.fitness-library{display:flex;flex-direction:column;gap:16px}
+.fitness-library{--workspace-search-flex:0 0 auto;display:flex;flex-direction:column;gap:16px}
 .fitness-library>h3{margin:0}
 .fitness-plan-row{padding:16px 0;margin:0;border:0;border-bottom:1px solid var(--admin-border)}
 .fitness-plan-row legend{padding-top:16px}
@@ -2307,7 +2306,7 @@ dialog[open]::backdrop {
 @container fitness (max-width:760px){.fitness-layout{grid-template-columns:minmax(0,1fr)}.fitness-actions>button{flex:1 1 140px}.fitness-header{align-items:start}}
 
 /* Today task aggregation business layout. */
-.today-task-group{margin-top:12px;--task-title-height:44px;--task-title-padding:0}.today-task-detail{white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0 0}.today-task-date{margin:8px 0}.today-task-group .row-title{overflow-wrap:anywhere}.today-task-group .row-content{position:relative;padding-right:52px}.today-task-group .row-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.today-task-details>summary{position:absolute;right:0;top:0;list-style:none}.today-task-details>summary::-webkit-details-marker{display:none}.today-task-details>summary:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}.today-task-details>div{margin-top:8px;overflow-wrap:anywhere}.today-task-details p{margin:0}.today-task-details p+p{margin-top:8px}
+.today-task-group{margin-top:12px;--task-title-height:44px;--task-title-padding:0}.today-task-detail{white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0 0}.today-task-date{margin:8px 0}.today-task-group .row-title{overflow-wrap:anywhere}.today-task-group .row-content{position:relative;padding-right:52px}.today-task-group .row-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.today-task-details>summary{position:absolute;right:0;top:0;list-style:none}.today-task-details>summary::-webkit-details-marker{display:none}.today-task-details>summary svg{transition:rotate var(--duration-fast)}.today-task-details[open]>summary svg{rotate:180deg}.today-task-details>summary:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}.today-task-details>div{margin-top:8px;overflow-wrap:anywhere}.today-task-details p{margin:0}.today-task-details p+p{margin-top:8px}
 
 .checkin-list{list-style:none;padding:0;margin:0}.checkin-list li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--semantic-border)}.checkin-list li:last-child{border-bottom:0}.checkin-toggle{flex:1;min-width:0}.checkin-toggle span{overflow-wrap:anywhere}
 
