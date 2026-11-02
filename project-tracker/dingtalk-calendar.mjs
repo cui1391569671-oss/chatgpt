@@ -1,4 +1,6 @@
 import {readBoundedText} from './request-body.mjs';
+export const DINGTALK_SYNC_INTERVAL_SECONDS=6*60*60;
+const staleAfterMs=(DINGTALK_SYNC_INTERVAL_SECONDS+15*60)*1000;
 const reply=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 const table='CREATE TABLE IF NOT EXISTS dingtalk_calendar (id INTEGER PRIMARY KEY CHECK(id=1), version INTEGER NOT NULL, payload TEXT NOT NULL)';
 export function validSnapshot(s){
@@ -11,7 +13,7 @@ export async function readDingtalkCalendar(env){
  if(!env.DINGTALK_CALENDAR_SYNC_SECRET)return {events:[],connected:false};
  await env.DB.prepare(table).run();const row=await env.DB.prepare('SELECT payload FROM dingtalk_calendar WHERE id=1').first();
  if(!row)return {events:[],connected:false};const s=JSON.parse(row.payload);
- return {events:s.events,connected:true,lastSyncedAt:s.lastSyncedAt,windowStart:s.windowStart,windowEnd:s.windowEnd,stale:Date.now()-Date.parse(s.lastSyncedAt)>15*60000};
+ return {events:s.events,connected:true,lastSyncedAt:s.lastSyncedAt,windowStart:s.windowStart,windowEnd:s.windowEnd,stale:Date.now()-Date.parse(s.lastSyncedAt)>staleAfterMs};
 }
 export async function dingtalkCalendarPush(request,env){
  if(request.method!=='POST')return reply({error:'Method not allowed'},405);

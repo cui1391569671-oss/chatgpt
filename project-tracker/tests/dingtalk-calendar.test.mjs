@@ -32,3 +32,13 @@ test('signed atomic replacement handles edits, cancellations, account mismatch a
  assert.equal((await dingtalkCalendarPush(await signed({...s,version:s.version+2,events:[]}),env)).status,200);assert.equal((await readDingtalkCalendar(env)).events.length,0);
  assert.equal((await dingtalkCalendarPush(await signed(s,Date.now()-400000),env)).status,401);assert.equal((await dingtalkCalendarPush(await signed(s,Date.now(),'0'.repeat(64)),env)).status,401);
 });
+test('six-hour sync stays fresh through its grace period and retains events when overdue',async t=>{
+ const now=Date.parse('2026-11-02T12:00:00+08:00');t.mock.method(Date,'now',()=>now);
+ const env={DB:database(),DINGTALK_CALENDAR_SYNC_SECRET:secret},s=snapshot(now-100);
+ assert.equal((await dingtalkCalendarPush(await signed(s),env)).status,200);
+ for(const [age,stale] of [[15*60000+1,false],[6*3600000,false],[6*3600000+15*60000,false],[6*3600000+15*60000+1,true]]){
+  const lastSyncedAt=new Date(now-age).toISOString(),payload={events:s.events,lastSyncedAt};
+  await env.DB.prepare('UPDATE dingtalk_calendar SET payload=? WHERE id=1').bind(JSON.stringify(payload)).run();
+  const data=await readDingtalkCalendar(env);assert.equal(data.stale,stale);assert.equal(data.lastSyncedAt,lastSyncedAt);assert.deepEqual(data.events,s.events);
+ }
+});

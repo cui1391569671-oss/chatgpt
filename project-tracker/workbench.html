@@ -6361,7 +6361,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .workspace-detail-list ul{margin:0;padding-left:20px}
 .project-core-detail-trigger{display:block;min-height:44px;border:0;padding:8px 0;background:transparent;color:var(--semantic-primary-text);text-align:left;cursor:pointer;font:inherit}
 .project-core-detail-trigger:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}
-.workspace-sync-status{display:flex;flex:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 16px;margin:0 0 16px;background:var(--semantic-surface);border:1px solid var(--semantic-border);border-radius:var(--radius-xl)}
+.workspace-sync-status{display:flex;flex:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 16px;margin:16px 0 0;background:var(--semantic-surface);border:1px solid var(--semantic-border);border-radius:var(--radius-xl)}
 .workspace-sync-status strong{font-size:14px;font-weight:500}
 .workspace-sync-status p{margin:4px 0 0;color:var(--semantic-text-muted);font-size:12px}
 .workspace-sync-status[data-tone=warning] strong{color:var(--semantic-warning-text)}
@@ -7698,7 +7698,7 @@ function showDingtalkEvent(id){
 function renderCalendar(){
  if(view!=='calendar')return;if(isCalendarEditing()){calendarDeferredRender=true;return;}const target=$('results');if(!target)return;disposeWorkspaceCalendar();
  const items=state.events,tasks=state.tasks.filter(t=>t.dueDate),issues=scope==='work'?projectCalendar:[];
- target.innerHTML=(scope==='work'?'<section id="calendarSyncStatus" class="workspace-sync-status" aria-label="钉钉同步状态"><p role="status">正在读取钉钉同步状态…</p></section>':'')+(scope==='work'&&projectCalendarError?'<p class="form-error" role="alert">'+esc(projectCalendarError)+'</p>':'')+'<div class="calendar-with-today"><section class="card calendar-full-surface"><div id="workspaceCalendar" aria-label="ilamy 日历，时间按北京时间展示"></div></section>'+todayTasksPage('calendar')+'</div>';
+ target.innerHTML=(scope==='work'&&projectCalendarError?'<p class="form-error" role="alert">'+esc(projectCalendarError)+'</p>':'')+'<div class="calendar-with-today"><section class="card calendar-full-surface"><div id="workspaceCalendar" aria-label="ilamy 日历，时间按北京时间展示"></div></section>'+todayTasksPage('calendar')+'</div>'+(scope==='work'?'<section id="calendarSyncStatus" class="workspace-sync-status" aria-label="钉钉同步状态"><p role="status">正在读取钉钉同步状态…</p></section>':'');
  mountWorkspaceCalendar(items,tasks,issues);renderTodayTaskResults();refreshTodayTasks();
 }
 
