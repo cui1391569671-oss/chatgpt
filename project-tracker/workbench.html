@@ -4233,6 +4233,7 @@ body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direct
 .calendar-today-panel .row-content{width:100%}
 @media(max-width:1000px){.calendar-with-today{grid-template-columns:minmax(0,1fr) 240px;gap:16px}}
 
+.project-information-table{--project-column-1:18%;--project-column-2:30%;--project-column-3:10%;--project-column-4:16%;--project-column-5:14%;--project-column-6:12%}
 .project-shipping-table{--project-column-1:24%;--project-column-2:14%;--project-column-3:30%;--project-column-4:20%;--project-column-5:12%}
 
 .project-budget-table :is(td,thead th):not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
@@ -5442,15 +5443,21 @@ body {
   width: var(--project-column-6, 23%);
 }
 .project-core-facts {
+  --project-fact-label: .9fr;
+  --project-fact-value: 1.25fr;
   display: grid;
   gap: 6px;
   margin: 0;
   white-space: normal;
 }
+.project-core-supply {
+  --project-fact-label: 1.7fr;
+  --project-fact-value: 1fr;
+}
 .project-core-fact {
   display: grid;
   gap: 2px 8px;
-  grid-template-columns: minmax(0,.9fr) minmax(0,1.25fr);
+  grid-template-columns: minmax(0,var(--project-fact-label)) minmax(0,var(--project-fact-value));
 }
 .project-core-fact dt {
   color: var(--muted);
@@ -7565,23 +7572,46 @@ $('releaseClose').onclick=()=>$('releaseDialog').close();$('releasePlatform').on
 
 function validDriveUrl(value){try{const u=new URL(value);return u.protocol==='https:'&&['drive.google.com','docs.google.com'].includes(u.hostname)&&!u.username&&!u.password&&!u.port;}catch{return false;}}
 /* PROJECT_CORE_SUMMARY_START */
+// Supply follows the ten source-sheet categories; unknown legacy modules stay under Other.
+const PROJECT_SUPPLY_CATEGORIES=Object.freeze(['货架系统','四向车系统','提升机系统','输送线系统','电气控制系统','软件系统（RMS/WMS/WCS）','网络及 IT 设备','安装调试及培训','备品备件及工具','其他']);
+const supplyAliases=[['货架','货架系统','货架及附属设施'],['四向车','四向车系统','四向穿梭车','四向穿梭车系统'],['提升机','提升机系统'],['输送线','输送线系统','输送系统'],['电控','电控系统','电气控制','电气控制系统','电气控制及出入库附件','电控、检测及安全附件'],['软件','软件系统'],['网络设备','网络及IT设备'],['安装调试及培训','安装调试培训','安装调试','安装','培训'],['备品备件及工具','备品备件','备件及工具','备件'],['其他']];
+const supplyName=value=>value.normalize('NFKC').replace(/\([^)]*\)/g,'').replace(/\s+/g,'').trim();
+function summarizeProjectSupply(raw){
+ const entries=[];
+ for(const line of String(raw||'').split('\n')){
+  if(!line.trim())continue;
+  const split=line.indexOf('：'),name=split>=0?line.slice(0,split).trim():'';
+  // A source cell can contain line breaks. Continuations belong to their module,
+  // including multiline freight, insurance and source notes in the Other category.
+  if(name&&name.length<=80&&!/[；。]|表列数量|供货方|备注/.test(name)&&!['说明','数量','单位'].includes(name))entries.push({name,body:line.slice(split+1)});
+  else if(entries.length)entries[entries.length-1].body+='\n'+line;
+  else entries.push({name:'',body:line});
+ }
+ if(!entries.length)return {supplyScope:[],supplyDetails:[]};
+ const grouped=PROJECT_SUPPLY_CATEGORIES.map(()=>[]);
+ for(const entry of entries){const index=supplyAliases.findIndex(names=>names.includes(supplyName(entry.name)));grouped[index<0?9:index].push(entry);}
+ const compact=(entry,index)=>{
+  const body=entry.body,description=body.split('；供货方：')[0],count=body.match(/（表列数量：([^）]+)）/);
+  const responsibility=body.match(/；供货方：甲方(?:；|$)/)?'甲方提供':description.match(/不在乙方供货范围|^甲方(?:提供|负责)(?!安装|机械|电气|接线)|未列[^；。]*供货[^；。]*/)?.[0];
+  const software=index===5?[...description.matchAll(/(?:WMS|WCS|RMS|RCS|WES)(?:（[^）]*）)?\s*\d+\s*套/g)].map(m=>m[0].replace(/（[^）]*）/g,'')):[];
+  const control=index===4?description.match(/电控(?:系统)?\s*(\d+\s*套)/)?.[1]:null;
+  const value=count?count[1].replace(/(\d)([^\d.,\s])/,'$1 $2'):software.length?software.join('、'):control||(!entry.name?description:'详见清单');
+  const pending=/未单列|范围[^；。\n]*待确认|供货[^；。\n]*待确认/.test(description)?'范围待确认':'';
+  const qualifiers=[responsibility,pending].filter(Boolean);
+  const result=value+(qualifiers.length?'（'+qualifiers.join('，')+'）':'');
+  return index===9&&entry.name&&entry.name!=='其他'?entry.name+'：'+result:result;
+ };
+ const supplyScope=grouped.map((rows,index)=>({category:PROJECT_SUPPLY_CATEGORIES[index],value:rows.length?rows.map(row=>compact(row,index)).join('；'):'待补充'}));
+ const supplyDetails=grouped.map((rows,index)=>({category:PROJECT_SUPPLY_CATEGORIES[index],value:rows.length?rows.map(row=>(row.name&&row.name!==PROJECT_SUPPLY_CATEGORIES[index]?row.name+'：':'')+row.body).join('\n'):'待补充'}));
+ return {supplyScope,supplyDetails};
+}
+
 // Read-only presentation of the original snapshot. Never rewrites source records.
 function summarizeProjectCore(item){
  const lines=value=>String(value||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
  const unique=values=>[...new Set(values)];
  const category=name=>name.replace(/（[^）]*）/g,'').replace(/系统$/,'').trim().replace(/^四向穿梭车$/,'四向车').replace(/^货架及附属设施$/,'货架').replace(/^电气控制$/,'电控').replace(/^(电气控制及出入库附件|电控、检测及安全附件)$/,'电控及附件').replace(/^网络及.*设备$/,'网络设备').replace(/^备品备件及工具$/,'备品备件');
- const supplyScope=lines(item.supplyScope).flatMap(line=>{
-  const split=line.indexOf('：');
-  if(split<0)return [{category:'供货',value:line}];
-  const name=category(line.slice(0,split)),body=line.slice(split+1),count=body.match(/（表列数量：([^）]+)）/);
-  if(/运输|保险|境外险|包装|实施|安装|培训/.test(name)||!/(货架|车|提升|输送|电|软件|移载|升降|轨道|门|备件|附件|网络|IT)/.test(name))return [];
-  const description=body.split('；供货方：')[0];
-  const responsibility=body.match(/；供货方：甲方(?:；|$)/)?'甲方提供':description.match(/不在乙方供货范围|^甲方(?:提供|负责)(?!安装|机械|电气|接线)|未列[^；。]*供货[^；。]*/)?.[0];
-  const software=/软件/.test(name)?[...description.matchAll(/(?:WMS|WCS|RMS|RCS|WES)(?:（[^）]*）)?\s*\d+\s*套/g)].map(m=>m[0].replace(/（[^）]*）/g,'')):[];
-  const control=/电控|电气控制/.test(name)?description.match(/电控(?:系统)?\s*(\d+\s*套)/)?.[1]:null;
-  const value=count?count[1].replace(/(\d)([^\d.,])/,'$1 $2'):software.length?software.join('、'):control||'待确认';
-  return [{category:name,value:responsibility&&value==='待确认'?responsibility:value+(responsibility?'（'+responsibility+'）':'')}];
- });
+ const {supplyScope,supplyDetails}=summarizeProjectSupply(item.supplyScope);
  const transport=String(item.transport||'').replace(/^原表运输方式\/贸易条件：/,'').replace(/；实际运输方式须按原表确认$/,'（贸易条件）');
  const dimensions=[];
  for(const line of lines(item.palletSize)){
@@ -7606,7 +7636,7 @@ function summarizeProjectCore(item){
   // Keep restrictions and disagreements verbatim; they change the meaning of a rate.
   return [line];
  });
- return {supplyScope,transport:transport||'待补充',palletSize:unique(dimensions),equipmentLoad,efficiency};
+ return {supplyScope,supplyDetails,transport:transport||'待补充',palletSize:unique(dimensions),equipmentLoad,efficiency};
 }
 
 /* PROJECT_CORE_SUMMARY_END */
@@ -7704,11 +7734,11 @@ function renderDrive(){
  if(!projectCoreInfo&&!projectCoreError){$('results').innerHTML='<p class="muted" role="status">正在加载项目核心信息…</p>';return;}
  const sync=projectCoreInfo?.sync;
  const header='<div class="project-core-heading"><div class="project-core-actions" data-page-toolbar><a class="btn" data-workspace-icon="external" aria-label="打开项目信息表" href="https://docs.google.com/spreadsheets/d/1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM/edit" target="_blank" rel="noopener noreferrer">打开信息表</a>'+(!sync?.configured?'<label class="btn project-core-import" for="coreInfoImport">导入更新<input id="coreInfoImport" type="file" accept="application/json,.json" class="hidden"></label>':'')+'<button class="btn" type="button" data-refresh-core '+(projectCoreLoading?'disabled':'')+'>'+(projectCoreLoading?'正在刷新…':'刷新')+'</button></div></div>';
- $('results').innerHTML=header+projectCoreSyncMarkup()+(projectCoreError?'<p class="form-error" role="alert">'+esc(projectCoreError)+'</p>':'')+(items.length?'<div class="project-core-scroll" role="region" aria-label="项目核心信息表，可横向滚动" tabindex="0"><table class="project-core-table"><thead><tr><th scope="col">项目</th><th scope="col">供货分类</th><th scope="col">运输方式</th><th scope="col">托盘尺寸</th><th scope="col">设备负载</th><th scope="col">效率信息</th></tr></thead><tbody>'+items.map(item=>{
+ $('results').innerHTML=header+projectCoreSyncMarkup()+(projectCoreError?'<p class="form-error" role="alert">'+esc(projectCoreError)+'</p>':'')+(items.length?'<div class="project-core-scroll" role="region" aria-label="项目核心信息表，可横向滚动" tabindex="0"><table class="project-core-table project-information-table"><thead><tr><th scope="col">项目</th><th scope="col">供货分类</th><th scope="col">运输方式</th><th scope="col">托盘尺寸</th><th scope="col">设备负载</th><th scope="col">效率信息</th></tr></thead><tbody>'+items.map(item=>{
   const summary=summarizeProjectCore(item);
-  const facts=values=>values.length?'<dl class="project-core-facts">'+values.map(f=>'<div class="project-core-fact"><dt>'+esc(f.category)+'</dt><dd>'+esc(f.value).replace(/((?:WMS|WCS|RMS|RCS|WES)?\d[\d,]*(?:\.\d+)?)\s*(kg|台|套|货位)/g,'<span class="project-core-measure">$1 $2</span>')+'</dd></div>').join('')+'</dl>':'<span aria-label="待补充">—</span>';
+  const facts=(values,supply=false)=>values.length?'<dl class="project-core-facts'+(supply?' project-core-supply':'')+'">'+values.map(f=>'<div class="project-core-fact"><dt>'+esc(f.category).replace('（RMS/WMS/WCS）','<span class="project-core-measure">（RMS/WMS/WCS）</span>')+'</dt><dd>'+esc(f.value).replace(/((?:WMS|WCS|RMS|RCS|WES)?\d[\d,]*(?:\.\d+)?)\s*(kg|台|套|货位)/g,'<span class="project-core-measure">$1 $2</span>')+'</dd></div>').join('')+'</dl>':'<span aria-label="待补充">—</span>';
   const values=list=>list.length?'<ul class="project-core-values">'+list.map(value=>'<li>'+esc(value)+'</li>').join('')+'</ul>':'<span aria-label="待补充">—</span>';
-  return '<tr><th scope="row"><span class="project-core-code">'+esc(item.projectCode)+'</span><button type="button" class="project-core-detail-trigger" data-core-details="'+esc(item.sourceSheetId)+'" aria-label="查看'+esc(item.projectName)+'完整信息">'+esc(item.projectName)+'</button></th><td>'+facts(summary.supplyScope)+'</td><td>'+(item.transport?esc(summary.transport):'<span aria-label="待补充">—</span>')+'</td><td>'+values(summary.palletSize)+'</td><td>'+facts(summary.equipmentLoad)+'</td><td>'+ (summary.efficiency.length?'<button type="button" class="project-core-detail-trigger" data-core-details="'+esc(item.sourceSheetId)+'" aria-label="查看'+esc(item.projectName)+'的 '+summary.efficiency.length+' 项效率与验收条件">'+summary.efficiency.length+' 项</button>':'<span aria-label="待补充">—</span>')+'</td></tr>';
+  return '<tr><th scope="row"><span class="project-core-code">'+esc(item.projectCode)+'</span><button type="button" class="project-core-detail-trigger" data-core-details="'+esc(item.sourceSheetId)+'" aria-label="查看'+esc(item.projectName)+'完整信息">'+esc(item.projectName)+'</button></th><td>'+facts(summary.supplyScope,true)+'</td><td>'+(item.transport?esc(summary.transport):'<span aria-label="待补充">—</span>')+'</td><td>'+values(summary.palletSize)+'</td><td>'+facts(summary.equipmentLoad)+'</td><td>'+ (summary.efficiency.length?'<button type="button" class="project-core-detail-trigger" data-core-details="'+esc(item.sourceSheetId)+'" aria-label="查看'+esc(item.projectName)+'的 '+summary.efficiency.length+' 项效率与验收条件">'+summary.efficiency.length+' 项</button>':'<span aria-label="待补充">—</span>')+'</td></tr>';
  }).join('')+'</tbody></table></div>':!projectCoreError?'<div class="empty">暂无项目信息，请先同步项目信息表。</div>':'');
  const scroll=$('results').querySelector('.project-core-scroll');if(scroll){scroll.scrollLeft=scrollLeft;scroll.scrollTop=scrollTop;}
 }
@@ -7717,7 +7747,7 @@ function showProjectCoreDetails(id){
  let dialog=$('projectCoreDetails');if(!dialog){dialog=document.createElement('dialog');dialog.id='projectCoreDetails';document.body.append(dialog);}
  const summary=summarizeProjectCore(item),list=rows=>rows.length?'<ul>'+rows.map(row=>'<li>'+esc(typeof row==='string'?row:row.category+'：'+row.value)+'</li>').join('')+'</ul>':'待补充';
  dialog.dataset.returnFocus='[data-core-details="'+CSS.escape(id)+'"]';
- dialog.innerHTML='<h2>'+esc(item.projectCode+' · '+item.projectName)+'</h2><dl class="workspace-detail-list">'+[['供货分类',list(summary.supplyScope)],['运输方式',esc(summary.transport)],['托盘尺寸',list(summary.palletSize)],['设备负载',list(summary.equipmentLoad)],['效率与验收条件',list(summary.efficiency)]].map(([title,html])=>'<div><dt>'+title+'</dt><dd>'+html+'</dd></div>').join('')+'</dl><div class="actions"><a class="btn" data-workspace-icon="external" aria-label="打开项目信息表" href="https://docs.google.com/spreadsheets/d/1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM/edit" target="_blank" rel="noopener noreferrer">打开项目信息表</a><button type="button" data-close-core-details>关闭</button></div>';
+ dialog.innerHTML='<h2>'+esc(item.projectCode+' · '+item.projectName)+'</h2><dl class="workspace-detail-list">'+[['供货分类',list(summary.supplyDetails)],['运输方式',esc(summary.transport)],['托盘尺寸',list(summary.palletSize)],['设备负载',list(summary.equipmentLoad)],['效率与验收条件',list(summary.efficiency)]].map(([title,html])=>'<div><dt>'+title+'</dt><dd>'+html+'</dd></div>').join('')+'</dl><div class="actions"><a class="btn" data-workspace-icon="external" aria-label="打开项目信息表" href="https://docs.google.com/spreadsheets/d/1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM/edit" target="_blank" rel="noopener noreferrer">打开项目信息表</a><button type="button" data-close-core-details>关闭</button></div>';
  dialog.querySelector('[data-close-core-details]').onclick=()=>dialog.close();window.WorkspacePrimitives.openDialog(dialog);
 }
 function refreshVisibleProjectCore(){if(scope==='work'&&['drive','projectBudget'].includes(view)&&!document.hidden)loadProjectCoreInfo({quiet:true});}

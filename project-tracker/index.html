@@ -3807,15 +3807,21 @@ body {
   width: var(--project-column-6, 23%);
 }
 .project-core-facts {
+  --project-fact-label: .9fr;
+  --project-fact-value: 1.25fr;
   display: grid;
   gap: 6px;
   margin: 0;
   white-space: normal;
 }
+.project-core-supply {
+  --project-fact-label: 1.7fr;
+  --project-fact-value: 1fr;
+}
 .project-core-fact {
   display: grid;
   gap: 2px 8px;
-  grid-template-columns: minmax(0,.9fr) minmax(0,1.25fr);
+  grid-template-columns: minmax(0,var(--project-fact-label)) minmax(0,var(--project-fact-value));
 }
 .project-core-fact dt {
   color: var(--muted);
