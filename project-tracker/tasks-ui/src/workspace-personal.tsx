@@ -1,4 +1,3 @@
-import {WorkspaceHelp} from './components/workspace-icon-action';
 import {WorkspaceReactBits} from './workspace-react-bits';
 import {observeWorkspaceAnimations} from './workspace-motion-policy';
 import {useState,useEffect} from 'react';
@@ -13,7 +12,7 @@ export function PersonalPreferences({open,onOpenChange}:{open:boolean;onOpenChan
  const setOpen=onOpenChange;
  useEffect(()=>{if(open){setDraft(read());setError('');}},[open]);
 
- return <Dialog open={open} onOpenChange={setOpen}><DialogContent returnFocus={()=>document.querySelector<HTMLButtonElement>('.wb-account-trigger')}><DialogTitle>个性设置</DialogTitle><DialogDescription>仅保存在当前浏览器</DialogDescription><form noValidate className='wb-personal-form' onSubmit={e=>{e.preventDefault();try{localStorage.setItem(key,JSON.stringify(draft));apply(draft);setOpen(false);}catch{setError('浏览器未允许保存偏好，请检查存储设置后重试。');}}}><label htmlFor='personal-motto'>首页寄语（最多80字）</label><input id='personal-motto' maxLength={80} value={draft.motto} onChange={e=>setDraft({...draft,motto:e.target.value})}/>{[['compact','紧凑布局']].map(([name,label])=><label className='wb-preference-row' key={name}><span>{label}</span><input type='checkbox' checked={draft[name]} onChange={e=>setDraft({...draft,[name]:e.target.checked})}/></label>)}<WorkspaceHelp label='个性设置说明'><p>偏好仅保存在当前浏览器，业务记录继续按原方式同步。华丽动效已启用，系统减少动态效果设置优先。</p></WorkspaceHelp><p role='alert'>{error}</p><div className='wb-personal-actions'><Button type='button' variant='secondary' onClick={()=>setDraft(defaults)}>恢复默认</Button><Button type='submit'>保存偏好</Button></div></form></DialogContent></Dialog>;
+ return <Dialog open={open} onOpenChange={setOpen}><DialogContent returnFocus={()=>document.querySelector<HTMLButtonElement>('.wb-account-trigger')}><DialogTitle>个性设置</DialogTitle><DialogDescription>仅保存在当前浏览器</DialogDescription><form noValidate className='wb-personal-form' onSubmit={e=>{e.preventDefault();try{localStorage.setItem(key,JSON.stringify(draft));apply(draft);setOpen(false);}catch{setError('浏览器未允许保存偏好，请检查存储设置后重试。');}}}><label htmlFor='personal-motto'>首页寄语（最多80字）</label><input id='personal-motto' maxLength={80} value={draft.motto} onChange={e=>setDraft({...draft,motto:e.target.value})}/>{[['compact','紧凑布局']].map(([name,label])=><label className='wb-preference-row' key={name}><span>{label}</span><input type='checkbox' checked={draft[name]} onChange={e=>setDraft({...draft,[name]:e.target.checked})}/></label>)}<p role='alert'>{error}</p><div className='wb-personal-actions'><Button type='button' variant='secondary' onClick={()=>setDraft(defaults)}>恢复默认</Button><Button type='submit'>保存偏好</Button></div></form></DialogContent></Dialog>;
 }
 
 export function WorkspaceMotionRuntime(){

@@ -5087,15 +5087,6 @@ body [data-workspace-size=icon] {
 .workspace-view-actions{display:inline-flex;gap:0;align-items:center;flex:none}
 .workspace-icon-action::after{content:attr(data-icon-label);position:absolute;bottom:calc(100% + 8px);right:0;z-index:20;display:none;width:max-content;max-width:220px;padding:6px 10px;border:1px solid var(--semantic-border);border-radius:var(--radius-md);background:var(--semantic-surface-elevated);color:var(--semantic-text);font-size:12px;font-weight:400;line-height:1.5;white-space:normal;pointer-events:none;box-shadow:var(--card-shadow)}
 .workspace-icon-action:not(:disabled):is(:hover,:focus-visible)::after{display:block}
-.workspace-help{position:relative;flex:none;max-width:100%}.workspace-help[open]{width:min(360px,100%)}
-.workspace-help>summary{display:flex;width:44px;margin-left:auto;list-style:none;min-height:44px;min-width:44px;border-radius:var(--control-radius);color:var(--semantic-text-muted)}
-.workspace-help>summary::-webkit-details-marker{display:none}
-.workspace-help>summary:hover{color:var(--semantic-primary-text);background:var(--semantic-control-hover)}
-.workspace-help>summary:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}
-.workspace-help[open]>.workspace-icon-action::after{display:none}
-.workspace-help-content{position:relative;width:100%;margin-top:8px;max-height:40dvh;overflow:auto;padding:16px;background:var(--semantic-surface-elevated);color:var(--semantic-text);border:1px solid var(--semantic-border);border-radius:var(--radius-xl);box-shadow:var(--card-shadow);font-size:14px;line-height:1.7}
-.workspace-help-content p{margin:0}
-.workspace-help-content p+p{margin-top:8px}
 
 body :is([data-ui-control=button],[data-slot=button]):not(:disabled):active {
   --btn-secondary-bg: var(--semantic-control-active);
@@ -5536,6 +5527,32 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:dark;iso
 .photography-detail-meta>span{display:flex;align-items:center;gap:8px;color:var(--semantic-text)}
 .photography-note{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 .photo-image-error{position:relative;z-index:2;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--semantic-text-muted)}
+
+/* The account menu owns entry to one searchable help library. */
+#workspaceHelp{height:100%;min-height:0}
+.workspace-help-page{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0}
+.workspace-help-filters{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.workspace-help-filters>.workspace-search{flex:1;max-width:560px;min-width:min(260px,100%)}
+.workspace-help-filters>span{font-size:12px;color:var(--semantic-text-muted);margin-left:auto}
+.workspace-help-scroll{flex:1;min-height:0;overflow:auto;scrollbar-gutter:stable;padding:0 4px 24px}
+.workspace-help-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:16px;align-items:start}
+.workspace-help-topic{border:1px solid var(--semantic-border);border-radius:var(--radius-xl);background:var(--semantic-surface);min-width:0}
+.workspace-help-topic>summary{display:flex;align-items:center;gap:12px;cursor:pointer;min-height:72px;padding:16px;list-style:none;border-radius:inherit;color:var(--semantic-text)}
+.workspace-help-topic>summary::-webkit-details-marker{display:none}
+.workspace-help-topic>summary:hover{background:var(--semantic-surface-muted)}
+.workspace-help-topic>summary:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}
+.workspace-help-topic>summary>span{flex:1;min-width:0;display:grid;gap:4px;overflow-wrap:anywhere}
+.workspace-help-topic strong{font-size:16px;font-weight:500}
+.workspace-help-topic small{color:var(--semantic-text-muted);font-size:12px}
+.workspace-help-chevron{flex:none;transition:transform var(--duration-base)}
+.workspace-help-topic[open] .workspace-help-chevron{transform:rotate(180deg)}
+.workspace-help-topic-body{padding:0 20px 20px;display:grid;gap:16px;overflow-wrap:anywhere}
+.workspace-help-topic-body h2{font-size:14px;font-weight:500;margin:0 0 8px;color:var(--semantic-text)}
+.workspace-help-topic-body ul{margin:0;padding-left:20px;color:var(--semantic-text-muted);line-height:1.8}
+.workspace-help-topic-body li+li{margin-top:8px}
+.workspace-help-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:280px;height:100%}
+.workspace-help-empty h2{font-size:18px;margin:0}
+@media(prefers-reduced-motion:reduce){.workspace-help-chevron{transition:none}}
 </style><!-- PRODUCT_DESIGN_END --></head>
 <body class="modern-project">
 <div class="container">

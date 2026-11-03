@@ -2,7 +2,7 @@ import {WorkspaceToolbar} from './components/workspace-toolbar';
 import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 import {motion} from 'motion/react';
 import {CheckCircle2,BookOpen,Volume2,VolumeX} from 'lucide-react';
-import {WorkspaceIconButton,WorkspaceHelp} from '@/components/workspace-icon-action';
+import {WorkspaceIconButton} from '@/components/workspace-icon-action';
 import {useState,useRef,useEffect} from 'react';
 import {createRoot} from 'react-dom/client';
 import {Button} from '@/components/ui/button';
@@ -63,7 +63,7 @@ function Practice({words,bridge,close,controller}){
  return <section className='word-practice-page' aria-label='英语练习'>
   <WorkspaceToolbar><WorkspaceIconButton icon={BookOpen} label='词汇库' disabled={pending} onClick={()=>void leave()}/></WorkspaceToolbar>
   <div className='word-practice-body card'>
-   <div className='word-practice-session-head'><p className='muted' role='status'>{todaySessions.length?`今日 ${todaySessions.length} 轮`:'今日 0 轮'}</p><WorkspaceHelp label='英语练习帮助'><p>{isSentence?'按中文译文填写英文。Enter 检查，Shift + Enter 换行；大小写、空格和句末标点不影响匹配。按参考句匹配，其他正确译法可能不同。':'按中文释义填写英文，或切换英文跟打。Enter 检查答案。'}</p><p>查看答案或选择“暂时不会”后，本题记为待巩固。完成整轮后保存练习记录。</p>{isSentence&&missingTranslations>0&&<p>在源表格补充“例句译文”，多条例句与译文按相同顺序分行填写。</p>}</WorkspaceHelp>{queue&&!finished&&<Button variant='ghost' disabled={pending} onClick={()=>void leave()}>退出练习</Button>}</div>
+   <div className='word-practice-session-head'><p className='muted' role='status'>{todaySessions.length?`今日 ${todaySessions.length} 轮`:'今日 0 轮'}</p>{isSentence&&missingTranslations>0&&<p className='muted' role='status'>有 {missingTranslations} 个词条缺少对应例句译文，暂不纳入句子练习。</p>}{queue&&!finished&&<Button variant='ghost' disabled={pending} onClick={()=>void leave()}>退出练习</Button>}</div>
    {!queue?<>
     <div className='word-practice-settings'>
      <label>练习方式<WorkspaceSelect label='练习方式' value={mode} onValueChange={setMode} options={modes}/></label>
