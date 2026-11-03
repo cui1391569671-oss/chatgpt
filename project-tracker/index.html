@@ -5490,6 +5490,52 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:dark;iso
 /* Shared horizontal choice controls. Business adapters keep their source nodes. */
 .wb-segment-scroll { min-width: 0; max-width: 100%; overflow-x: auto; padding: 3px; }
 .wb-segment-native { min-width: 0; max-width: 100%; }
+
+/* Private photography: the photo, rather than its controls, owns the page. */
+#workspacePhotography{height:100%;min-height:0}
+.photography-page{display:flex;flex-direction:column;min-height:0;height:100%;gap:16px}
+.photography-filters{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.photography-filters>.workspace-search{max-width:320px;flex:1;min-width:200px}
+.photography-location{display:flex;align-items:center;gap:8px;margin-right:auto;color:var(--semantic-text)}
+.photography-count{color:var(--semantic-text-muted);font-size:12px;margin-left:8px}
+.photography-scroll{flex:1;min-height:0;overflow:auto;scrollbar-gutter:stable}
+.photography-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));align-items:start;gap:24px 16px;padding:0 4px 24px}
+.photography-card{min-width:0}
+.photography-card-image{position:relative;aspect-ratio:4/3;border-radius:var(--radius-xl);overflow:hidden;background:var(--semantic-surface-muted)}
+.photography-card-image>img{width:100%;height:100%;object-fit:cover}
+.photography-open{position:absolute;inset:0;z-index:1;border:0;border-radius:inherit;background:transparent;cursor:pointer;transition:background var(--duration-base)}
+.photography-open:hover{background:var(--semantic-surface-medium)}
+.photography-open:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:-4px}
+.photography-caption{display:grid;gap:4px;padding:12px 4px 0;overflow-wrap:anywhere}
+.photography-caption strong{font-size:14px;font-weight:500;color:var(--semantic-text)}
+.photography-caption>span{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--semantic-text-muted);font-size:12px}
+.photography-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;height:100%;gap:16px}
+.photography-empty h2{font-size:18px;font-weight:500;margin:0}
+.photography-pagination{display:flex;justify-content:center;align-items:center;gap:12px;color:var(--semantic-text-muted)}
+.photo-page-error{display:flex;align-items:center;gap:16px;color:var(--semantic-error-text)}
+.photography-fields{display:grid;gap:16px}
+.photography-fields label{display:block;margin-bottom:8px}
+.photography-fields input,.photography-fields textarea{width:100%}
+.photography-fields .workspace-field-row>div{min-width:0}
+.photography-drop{min-height:120px;display:flex;flex-direction:column;justify-content:center;gap:8px;border-style:dashed}
+.photography-drop[data-dragging=true]{border-color:var(--semantic-primary);background:var(--semantic-surface-medium)}
+.photography-drop small{font-size:12px;color:var(--semantic-text-muted)}
+.photography-queue{list-style:none;display:grid;gap:12px;padding:0;margin:0}
+.photography-queue li{display:flex;align-items:center;gap:12px;min-width:0}
+.photography-queue li>img{width:64px;height:64px;object-fit:cover;border-radius:var(--control-radius)}
+.photography-queue li>div{flex:1;min-width:0;display:grid;gap:4px;overflow-wrap:anywhere}
+.photography-queue strong{font-size:14px;font-weight:500}
+.photography-queue span{font-size:12px;color:var(--semantic-text-muted)}
+.photography-queue p{margin:0;color:var(--semantic-error-text);font-size:12px}
+.photography-detail{width:min(1120px,calc(100vw - 48px));max-width:none}
+.photography-upload{width:min(720px,calc(100vw - 48px));max-width:none}
+.photography-detail-body{display:grid;gap:16px}
+.photography-full-image{display:flex;align-items:center;justify-content:center;min-height:240px;background:var(--semantic-surface-muted);border-radius:var(--radius-xl)}
+.photography-full-image>img{width:100%;height:auto;max-height:60dvh;object-fit:contain}
+.photography-detail-meta{display:flex;align-items:center;flex-wrap:wrap;gap:16px;color:var(--semantic-text-muted)}
+.photography-detail-meta>span{display:flex;align-items:center;gap:8px;color:var(--semantic-text)}
+.photography-note{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.photo-image-error{position:relative;z-index:2;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--semantic-text-muted)}
 </style><!-- PRODUCT_DESIGN_END --></head>
 <body class="modern-project">
 <div class="container">

@@ -30,6 +30,7 @@ import {getSteamReview} from './steam-reviews.mjs';
 import {WORKSPACE_COLLECTIONS,PROJECT_COLLECTIONS,ensureProjectIds,applyRecordChanges,RecordConflict} from './cloud-records.mjs';
 import {sessionValid,sessionCookie,authRoute,loginResponse,authenticationAttempt} from './auth.mjs';
 import {mediaImageRoute} from './media-image.mjs';
+import {photographyRoute} from './photography-route.mjs';
 import {findGameCover,findMediaCover,findAnimeCover,findMovieCovers} from './game-covers.mjs';
 import {getGameReleases} from './game-releases.mjs';
 import {HTML,WORKBENCH,FAVICON} from './pages.mjs';
@@ -140,6 +141,7 @@ async function fetchRoute(request,env){
    return json({error:'需要登录'},401);
   }
   try{
+   if(url.pathname==='/api/photography'||url.pathname.startsWith('/api/photography/'))return await photographyRoute(request,env);
    if(url.pathname==='/api/dingtalk-calendar'&&request.method==='GET'){if(url.searchParams.get('scope')!=='work')return json({error:'仅工作日历支持钉钉同步'},400);return json(await readDingtalkCalendar(env));}
    if(url.pathname==='/api/security/csp-report')return await cspReportRoute(request);
    if(['/api/maintenance/audit','/api/maintenance/images'].includes(url.pathname))return await maintenanceAudit(request,env.DB,await readState(env.DB));

@@ -9,6 +9,7 @@ import {SaveButton} from '@/components/save-button';
 
 import './workspace-motion';
 import './fitness';
+import './photography';
 import {GameTaskMigration} from './game-task-migration';
 import './workspace-feedback';
 import {WorkspaceSearch} from '@/components/workspace-search';

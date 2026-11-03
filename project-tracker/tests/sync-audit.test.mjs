@@ -37,7 +37,7 @@ test('queued project edits submit only changes against the acknowledged cloud st
 });
 const workHtml=readFileSync(new URL('../workbench.html',import.meta.url),'utf8');
 test('workspace background refresh updates data but ignores responses racing a local save',async()=>{
- let respond,draws=0;const document={querySelector:()=>null};const context=vm.createContext({JSON,Error,view:'notes',ready:true,busy:false,workspaceRefreshing:false,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,state:{tasks:[],notes:[],events:[]},version:1,api:'/api/workspace?scope=work',document,$:()=>({dataset:{}}),render:()=>draws++,status:()=>{},fetch:()=>new Promise(r=>respond=r)});
+ let respond,draws=0;const document={querySelector:()=>null};const context=vm.createContext({JSON,Error,view:'notes',ready:true,busy:false,workspaceRefreshing:false,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,isPhotographyEditing:()=>false,state:{tasks:[],notes:[],events:[]},version:1,api:'/api/workspace?scope=work',document,$:()=>({dataset:{}}),render:()=>draws++,status:()=>{},fetch:()=>new Promise(r=>respond=r)});
  vm.runInContext(workHtml.slice(workHtml.indexOf('async function refreshWorkspace()'),workHtml.indexOf('setInterval(()=>{if(!document.hidden)refreshWorkspace();}')),context);
  const running=context.refreshWorkspace();respond({ok:true,json:async()=>({workspace:{tasks:[task('remote')],notes:[],events:[]},version:2})});await running;assert.equal(context.state.tasks[0].id,'remote');assert.equal(draws,1);
  const delayed=context.refreshWorkspace();context.version=3;context.state.tasks=[task('local-save')];respond({ok:true,json:async()=>({workspace:{tasks:[],notes:[],events:[]},version:2})});await delayed;assert.equal(context.state.tasks[0].id,'local-save');assert.equal(context.version,3);assert.equal(draws,1);
@@ -69,7 +69,7 @@ function refreshFixture(){
  const nodes=new Map();
  const $=id=>{if(!nodes.has(id)){const classes=new Set();nodes.set(id,{dataset:{},textContent:'',setAttribute(){},classList:{contains:value=>classes.has(value),toggle(value,on){if(on)classes.add(value);else classes.delete(value);}}});}return nodes.get(id);};
  let result;
- const context=vm.createContext({ready:true,busy:false,workspaceRefreshing:false,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,state:{tasks:[task('retained')],notes:[],events:[]},version:1,view:'home',api:'/api/workspace?scope=work',document:{querySelector:()=>null},$,render(){},fetch:async()=>{if(result instanceof Error)throw result;return result;}});
+ const context=vm.createContext({ready:true,busy:false,workspaceRefreshing:false,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,isPhotographyEditing:()=>false,state:{tasks:[task('retained')],notes:[],events:[]},version:1,view:'home',api:'/api/workspace?scope=work',document:{querySelector:()=>null},$,render(){},fetch:async()=>{if(result instanceof Error)throw result;return result;}});
  vm.runInContext(workHtml.slice(workHtml.indexOf('function status('),workHtml.indexOf('async function workspaceConfirm(')),context);
  vm.runInContext(workHtml.slice(workHtml.indexOf('async function refreshWorkspace()'),workHtml.indexOf('setInterval(()=>{if(!document.hidden)refreshWorkspace();}')),context);
  return {context,$,respond(value){result=value;},async refresh(){await context.refreshWorkspace();}};
@@ -89,4 +89,8 @@ test('background polling never replaces or clears a save error',async()=>{
 test('failed HTTP refresh preserves records and remains retryable',async()=>{
  const f=refreshFixture();f.respond({ok:false,status:503});await f.refresh();assert.match(f.$('statusText').textContent,/503/);assert.equal(f.context.state.tasks[0].id,'retained');
  f.respond({ok:true,json:async()=>({version:2,workspace:{tasks:[task('updated')]}})});await f.refresh();assert.equal(f.context.state.tasks[0].id,'updated');assert.equal(f.$('status').classList.contains('hidden'),true);
+});
+
+test('background workspace refresh preserves an active photography upload or editor',async()=>{
+ const f=refreshFixture();let reads=0;f.context.fetch=async()=>{reads++;throw Error('Must not refresh while photo work is active');};f.context.isPhotographyEditing=()=>true;await f.refresh();assert.equal(reads,0);assert.equal(f.context.version,1);assert.equal(f.context.state.tasks[0].id,'retained');
 });

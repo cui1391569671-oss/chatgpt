@@ -9,6 +9,7 @@ declare global {
   WorkspaceShell:typeof import("./workspace-shell").workspaceShell;
   WorkspaceTasks:typeof import("./main").workspaceTasks;
   WorkspaceAnnualPlans:typeof import("./annual-plans").workspaceAnnualPlans;
+  WorkspacePhotography:typeof import("./photography").workspacePhotography;
   WorkspaceFitness:typeof import("./fitness").workspaceFitness;
   WorkspacePersonalInfo:typeof import("./personal-info").workspacePersonalInfo;
   WorkspaceWordPractice:typeof import("./word-practice").workspaceWordPractice;

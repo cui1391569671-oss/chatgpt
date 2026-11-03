@@ -54,6 +54,15 @@ try{
   assert.ok(actual.equals(expectedBytes),'Restored image bytes differ');
   const other=image.scope==='work'?'personal':'work';assert.equal((await call('/api/calendar-images/'+other+'/'+image.id)).status,404);images++;
  }
+ if(tables.includes('photography')){
+  const rows=(await db.prepare('SELECT id,image,thumbnail FROM photography').all()).results;
+  const gallery=await get('/api/photography?scope=personal');assert.equal(gallery.total,rows.length,'Restored photo count differs');
+  assert.equal((await call('/api/photography?scope=work')).status,403);
+  for(const photo of rows)for(const kind of ['image','thumbnail']){
+   const response=await call('/api/photography/'+photo.id+'/'+kind+'?scope=personal');assert.equal(response.status,200);
+   assert.ok(Buffer.from(await response.arrayBuffer()).equals(Buffer.from(photo[kind])),'Restored photography bytes differ');images++;
+  }
+ }
  const unchanged=[];for(const name of tables)if(name!=='login_attempts'){assert.equal(await tableDigest(name),before[name],'Read routes changed restored business data');unchanged.push(name);}
  // Exercise mutations only after proving that reads leave the restored business data intact.
  const patch=(path,operations)=>mf.dispatchFetch(new URL(path,url),{method:'POST',headers:{Origin:url.origin,Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify({operations})});

@@ -5,7 +5,7 @@ export const motionTiming={get card(){return token('card',500);},get heading(){r
 // Apple global navigation timing observed on 2026-10-29; values remain theme-owned.
 export const navigationTiming={get content(){return token('navigation-content',320);},get closeDelay(){return token('navigation-close-delay',120);},get headingDelay(){return token('navigation-heading-delay',80);},get itemDelay(){return token('navigation-item-delay',120);},get group(){return token('navigation-group',80);},get groupStep(){return token('navigation-group-step',40);},get itemStep(){return token('navigation-item-step',20);}};
 export const motionEase={get css(){return typeof document==='undefined'?'cubic-bezier(.22,1,.36,1)':getComputedStyle(document.documentElement).getPropertyValue('--workspace-motion-ease').trim()||'cubic-bezier(.22,1,.36,1)';},gsap:'power3.out'};
-export const workspaceCardSelector='.card,.workspace-board-card,.workspace-goal-note,.workspace-note-reader,.tasks-empty-board';
+export const workspaceCardSelector='.card,.workspace-board-card,.workspace-goal-note,.workspace-note-reader,.tasks-empty-board,.photography-card';
 const active=new Set<{element:HTMLElement;animation:Animation}>();
 export function animateWorkspaceElement(element:HTMLElement,keyframes:Keyframe[],duration=motionTiming.control){
  if(motionDisabled())return;
