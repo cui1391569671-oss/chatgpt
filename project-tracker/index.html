@@ -4627,7 +4627,7 @@ body.shadcn-workbench .wb-topbar {
 body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;min-width:0;margin:var(--app-top-gap) var(--app-gutter) 0;background:transparent;border:0}
 /* The complete navigation group, including the account entry, stays centered. */
 .wb-navigation-row{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;gap:24px;min-width:0;width:100%;max-width:1370px;margin:0 auto;padding:0 0 16px}
-.wb-primary-navigation{--navigation-left:0px;--navigation-top:80px;--navigation-duration:var(--workspace-motion-navigation);--navigation-close-delay:0ms;position:relative;min-width:0;isolation:isolate}
+.wb-primary-navigation{--navigation-group-count:1;--navigation-left:0px;--navigation-top:80px;--navigation-duration:var(--workspace-motion-navigation);--navigation-close-delay:0ms;position:relative;min-width:0;isolation:isolate}
 .wb-top-navigation{display:flex;justify-content:center;gap:24px;min-width:0;list-style:none;margin:0;padding:0}
 .wb-top-navigation>li{list-style:none;margin:0;padding:0;display:flex}
 .wb-site-logo{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0;border:0;background:transparent;text-decoration:none;border-radius:0}
@@ -4683,7 +4683,19 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-nav-menu-item[data-disabled]{pointer-events:none;opacity:.5}
 .wb-nav-menu [aria-current=page]{color:var(--semantic-primary-text)}
 @media(max-width:900px){.wb-navigation-row{gap:12px}.wb-top-navigation{gap:12px}}
-@media(max-width:640px){.wb-navigation-row{gap:8px}.wb-top-navigation{width:100%;gap:24px}.wb-page-row{flex-direction:column;align-items:stretch;gap:8px}.wb-page-row>.wb-page-location{padding-left:4px}.wb-topbar-actions{justify-content:flex-end}}
+@media(max-width:640px){
+  .wb-navigation-row{gap:8px}
+  .wb-primary-navigation{display:block;width:100%}
+  .wb-top-navigation{display:grid;grid-template-columns:repeat(var(--navigation-group-count),minmax(0,1fr));width:100%;gap:8px 4px}
+  .wb-site-logo-item{grid-area:1/1;justify-self:start}
+  .wb-account-menu-item{grid-area:1/-2;justify-self:end}
+  .wb-site-nav-item{grid-row:2;min-width:0}
+  .wb-site-nav-link{width:100%;min-width:44px;padding:0 4px;font-size:14px;white-space:nowrap}
+  .wb-navigation-columns{--navigation-menu-width:calc(100vw - 2 * var(--app-gutter));grid-template-columns:minmax(0,1fr);gap:24px;margin-left:var(--app-gutter);padding:20px 8px 24px}
+  .wb-page-row{flex-direction:column;align-items:stretch;gap:8px}
+  .wb-page-row>.wb-page-location{padding-left:4px}
+  .wb-topbar-actions{justify-content:flex-end}
+}
 
 .site-task-group h2,.workspace-note-index h2{color:var(--semantic-text)}
 .site-task-group h2 small,.site-task-title small,.site-list-footer,.site-empty p{color:var(--semantic-text-muted)}

@@ -5,8 +5,8 @@ export function createNavigationIntent({getValue,onChange,now=()=>performance.no
  const change=value=>{cancel();hovered=null;onChange(value);};
  return {
   cancel,change,
-  enter(value){cancel();const show=()=>{timer=null;hovered={value,at:now()};onChange(value);};if(getValue()){if(getValue()!==value)show();}else timer=setTimer(show,150);},
-  leave(){cancel();timer=setTimer(()=>{timer=null;hovered=null;onChange('');},180);},
+  enter(value,pointerType='mouse'){if(pointerType!=='mouse')return;cancel();const show=()=>{timer=null;hovered={value,at:now()};onChange(value);};if(getValue()){if(getValue()!==value)show();}else timer=setTimer(show,150);},
+  leave(pointerType='mouse'){if(pointerType!=='mouse')return;cancel();timer=setTimer(()=>{timer=null;hovered=null;onChange('');},180);},
   click(value){cancel();const keep=getValue()===value&&hovered?.value===value&&now()-hovered.at<500;hovered=null;return keep;}
  };
 }
