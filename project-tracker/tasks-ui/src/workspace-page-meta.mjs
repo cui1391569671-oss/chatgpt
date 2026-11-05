@@ -16,7 +16,7 @@ export function workspaceSiteNavigation(scope){
   {title:'项目资料',columns:[column('项目资料','work',['drive','projectBudget','projectShipping'],true)]},
   {title:'记录',columns:[column('工作记录','work',['notes'],true),column('私人记录','personal',['notes'],true)]},
   {title:'生活',columns:[column('日程与计划','personal',['annualPlans','tasks'],true),column('成长与习惯','personal',['checkins','vocabulary','fitness']),column('生活管理','personal',['wardrobe','maintenance'])]},
-  {title:'摄影',columns:[column('南京摄影','personal',['photography'],true)]},
+  {title:'摄影',columns:[column('摄影作品','personal',['photography'],true)]},
   {title:'娱乐',columns:[column('娱乐作品','personal',['completedGames'],true)]}
  ].map(group=>({...group,columns:group.columns.filter(column=>!scope||column.space===scope)})).filter(group=>group.columns.length).map(group=>({...group,items:group.columns.flatMap(column=>column.views.map(view=>[column.space,view]))}));
 }

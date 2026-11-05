@@ -35,7 +35,7 @@ export async function photographyRoute(request,env){
  if(!value||typeof value!=='object'||Array.isArray(value))return reply({error:'照片数据无效'},400);
  if(request.method==='POST'){
   const fields=photoFields(value),image=jpeg(value.image,PHOTO_MAX_BYTES),thumbnail=jpeg(value.thumbnail,PHOTO_THUMB_MAX_BYTES);
-  if(!fields||!uuid.test(value.id||'')||!image||!thumbnail||![value.width,value.height].every(n=>Number.isSafeInteger(n)&&n>0&&n<=PHOTO_MAX_EDGE))return reply({error:'请检查照片格式、景点及日期'},400);
+  if(!fields||!uuid.test(value.id||'')||!image||!thumbnail||![value.width,value.height].every(n=>Number.isSafeInteger(n)&&n>0&&n<=PHOTO_MAX_EDGE))return reply({error:'请检查照片格式、拍摄地点及日期'},400);
   const fingerprint=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify({...fields,image:value.image,thumbnail:value.thumbnail,width:value.width,height:value.height})))),b=>b.toString(16).padStart(2,'0')).join('');
   await env.DB.prepare(table).run();
   await env.DB.prepare('INSERT INTO photography (id,title,spot,shotOn,note,width,height,createdAt,version,fingerprint,image,thumbnail) VALUES (?,?,?,?,?,?,?,?,1,?,?,?) ON CONFLICT(id) DO NOTHING').bind(value.id,fields.title,fields.spot,fields.shotOn,fields.note,value.width,value.height,new Date().toISOString(),fingerprint,Array.from(image),Array.from(thumbnail)).run();
@@ -45,7 +45,7 @@ export async function photographyRoute(request,env){
  }
  if(!Number.isSafeInteger(value?.version)||value.version<1)return reply({error:'照片版本无效，请刷新后重试'},400);
  const fields=request.method==='PATCH'?photoFields(value):null;
- if(request.method==='PATCH'&&!fields)return reply({error:'请输入照片名称、景点和有效日期'},400);
+ if(request.method==='PATCH'&&!fields)return reply({error:'请输入照片名称、拍摄地点和有效日期'},400);
  await env.DB.prepare(table).run();
  const result=request.method==='PATCH'?await env.DB.prepare('UPDATE photography SET title=?,spot=?,shotOn=?,note=?,version=version+1 WHERE id=? AND version=?').bind(fields.title,fields.spot,fields.shotOn,fields.note,id,value.version).run():await env.DB.prepare('DELETE FROM photography WHERE id=? AND version=?').bind(id,value.version).run();
  if(!result.meta?.changes){const row=await env.DB.prepare('SELECT id FROM photography WHERE id=?').bind(id).first();if(!row&&request.method==='DELETE')return reply({ok:true});return reply({error:row?'照片已在其他设备修改，请刷新后重试':'照片已删除'},409);}
