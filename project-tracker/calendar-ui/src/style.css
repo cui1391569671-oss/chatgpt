@@ -14,6 +14,39 @@
 .ilamy-surface{position:relative}.ilamy-status{position:absolute;bottom:32px;right:12px;z-index:40;pointer-events:none}.ilamy-calendar-box{height:760px;min-width:0}.ilamy-completed-event{text-decoration:line-through;opacity:.65}.ilamy-reading-tools{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px}.ilamy-reading-tools>button{min-height:44px;color:var(--semantic-primary-text);background:transparent;text-align:left}.ilamy-help{color:var(--semantic-text-muted);font-size:12px;margin:0}.ilamy-status,.ilamy-failure{padding:12px;margin:0 0 12px;background:var(--semantic-surface);border:1px solid var(--semantic-border);border-radius:8px}.ilamy-failure{color:var(--semantic-error-text)}.ilamy-failure button{min-height:44px;padding:8px 12px;border:1px solid var(--semantic-border);border-radius:6px;background:var(--semantic-surface);margin-right:8px}.ilamy-confirm{max-width:min(500px,calc(100vw - 32px));background:var(--semantic-surface);color:var(--semantic-text);padding:24px}.ilamy-confirm p{margin:16px 0}.ilamy-confirm button{min-height:44px;padding:8px 16px;border:1px solid var(--semantic-border);border-radius:6px;margin-right:10px;background:var(--semantic-surface-elevated)}.ilamy-confirm .ilamy-delete{background:var(--semantic-error-muted);color:var(--semantic-error-text)}.ilamy-holiday-rest{background:var(--semantic-surface)}.ilamy-holiday-work{background:var(--semantic-surface)}
 [data-ilamy-portal]{z-index:70}[data-ilamy-portal] textarea{resize:none}[data-ilamy-portal] input,[data-ilamy-portal] textarea{font:inherit}[data-ilamy-portal] [role=dialog]{max-height:calc(100dvh - 24px)}
 @media(max-width:760px){.ilamy-calendar-box{height:700px}.ilamy-surface{font-size:12px}.ilamy-help{line-height:1.7}}
+.ilamy-agenda{font-size:14px;line-height:1.5}
+.ilamy-agenda-range,.ilamy-agenda-time{color:var(--semantic-text-muted);font-variant-numeric:tabular-nums}
+.ilamy-agenda-range{padding:8px 8px 12px}
+.ilamy-agenda-empty{padding:24px 8px;color:var(--semantic-text-muted)}
+.ilamy-agenda-day{
+ display:grid;
+ grid-template-columns:8rem minmax(0,1fr);
+ gap:8px;
+ padding:8px;
+ border-top:1px solid var(--semantic-border-muted);
+}
+.ilamy-agenda-day h2{font-size:inherit;font-weight:600;padding-top:10px}
+.ilamy-agenda-day ul{list-style:none;margin:0;padding:0;min-width:0}
+.ilamy-agenda-event{
+ display:grid;
+ grid-template-columns:3.25rem minmax(0,1fr);
+ gap:8px;
+ align-items:baseline;
+ width:100%;
+ min-height:44px;
+ padding:10px 6px;
+ color:inherit;
+ text-align:left;
+ border-radius:6px;
+}
+.ilamy-agenda-event:hover,.ilamy-agenda-event:focus-visible{background:var(--semantic-control-hover)}
+.ilamy-agenda-title{display:grid;grid-template-columns:7px minmax(0,1fr);gap:8px;align-items:baseline;overflow-wrap:anywhere}
+.ilamy-agenda-marker{width:7px;height:7px;border-radius:50%}
+@media(max-width:640px){
+ .ilamy-agenda-day{grid-template-columns:minmax(0,1fr);gap:4px;padding:10px 4px}
+ .ilamy-agenda-day h2{padding:0 6px}
+ .ilamy-agenda-event{font-size:15px}
+}
 .ilamy-event-pill{position:relative;display:block;width:100%;height:100%;padding:2px 12px;border-radius:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.ilamy-source-event{width:100%;height:100%;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:transparent;color:inherit;padding:2px 4px;border:0;min-height:0;font-size:12px;border-radius:4px}
 .ilamy-holiday-rest,.ilamy-holiday-work,.ilamy-holiday-festival{position:relative}.ilamy-holiday-rest::after,.ilamy-holiday-work::after,.ilamy-holiday-festival::after{content:attr(data-holiday);position:absolute;top:4px;right:4px;pointer-events:none;font-size:10px;color:var(--semantic-error-text)}.ilamy-holiday-work::after{color:var(--semantic-info-text)}.ilamy-validation{color:var(--semantic-error-text);font-size:13px;padding-top:8px}[data-ilamy-portal] [aria-invalid=true]{outline:2px solid var(--semantic-error-text);outline-offset:2px}
 @media(max-width:640px){.ilamy-holiday-rest::after,.ilamy-holiday-work::after,.ilamy-holiday-festival::after{content:attr(data-holiday-short);font-size:9px}}

@@ -5,7 +5,8 @@ import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {IlamyCalendar,useIlamyCalendarContext,defaultTranslations,dayjs} from '@ilamy/calendar';
 import {recurrencePlugin} from '@ilamy/calendar/plugins/recurrence';
-import {agendaPlugin} from '@ilamy/calendar/plugins/agenda';
+import {createAgendaView} from '@ilamy/calendar/plugins/agenda';
+import {CalendarAgenda} from './agenda.jsx';
 import {dragToCreatePlugin} from '@ilamy/calendar/plugins/drag-to-create';
 import zhCN from 'dayjs/locale/zh-cn';
 // Keep locale week boundaries aligned with the calendar's Sunday-first columns.
@@ -16,7 +17,8 @@ import {enhanceFileInput} from '../../file-trigger.js';
 import {legacyRule} from './records.js';
 import {validCalendarRule,ruleOccurrencesOn} from './recurrence-core.js';
 const translations={...defaultTranslations,today:'今天',create:'创建',new:'新建',update:'保存',delete:'删除',cancel:'取消',export:'导出',previous:'上一段时间',next:'下一段时间',event:'日程',events:'日程',newEvent:'新日程',title:'标题',description:'备注',location:'地点',allDay:'全天',startDate:'开始日期',endDate:'结束日期',startTime:'开始时间',searchTime:'选择时间…',endTime:'结束时间',color:'颜色',createEvent:'新建日程',editEvent:'编辑日程',addNewEvent:'选择日程时间并填写内容，时间均为北京时间。',editEventDetails:'修改日程内容，时间均为北京时间。',eventTitlePlaceholder:'日程标题',eventDescriptionPlaceholder:'备注（可选）',eventLocationPlaceholder:'地点或会议链接（可选）',repeat:'重复',repeats:'重复',customRecurrence:'自定义重复',frequency:'频率',everyWeekday:'每个工作日',weeklyOn:'每周',monthlyOnDay:'每月日期',monthlyOnThe:'每月第几个星期',first:'第一个',second:'第二个',third:'第三个',fourth:'第四个',last:'最后一个',daily:'每天',weekly:'每周',monthly:'每月',yearly:'每年',interval:'间隔',repeatOn:'重复星期',never:'永不',count:'次数',every:'每隔',ends:'结束',after:'重复次数',occurrences:'次',on:'截止日期',editRecurringEvent:'修改重复日程',deleteRecurringEvent:'删除重复日程',editRecurringEventQuestion:'是重复日程，要修改哪些日期？',deleteRecurringEventQuestion:'是重复日程，要删除哪些日期？',thisEvent:'仅本次日程',thisEventDescription:'只修改这一次',thisAndFollowingEvents:'本次及之后日程',thisAndFollowingEventsDescription:'修改本次及之后的安排',allEvents:'整组日程',allEventsDescription:'修改整组重复日程',onlyChangeThis:'只修改这一次',changeThisAndFuture:'修改本次及之后的安排',changeEntireSeries:'修改整组日程',onlyDeleteThis:'只删除这一次',deleteThisAndFuture:'删除本次及之后的安排',deleteEntireSeries:'删除整组日程',month:'月',week:'周',day:'日',year:'年',agenda:'列表',agendaNoEvents:'这段时间没有安排',more:'更多',resources:'资源',resource:'资源',selectResource:'选择资源',time:'时间',date:'日期',noResourcesVisible:'没有可见资源',addResourcesOrShowExisting:'请添加或显示资源'};
-const plugins=[recurrencePlugin(),agendaPlugin({window:'week'}),dragToCreatePlugin()];
+const agendaView=createAgendaView({window:'week'});
+const plugins=[recurrencePlugin(),dragToCreatePlugin()];
 function reviveRule(rule){if(!rule)return undefined;return {...rule,dtstart:new Date(rule.dtstart),...(rule.until?{until:new Date(rule.until)}:{})};}
 function entries(options){
  const theme=getComputedStyle(document.documentElement),palette=name=>theme.getPropertyValue(name).trim();
@@ -41,7 +43,11 @@ function PageCalendarHeader({disabled,controller}){
 }
 function CalendarApp({options,controller}){
  const gesture=useEventGesture(controller);controller.onGestureIdle=()=>options.onIdle?.();
- const appPlugins=useMemo(()=>[...plugins,{name:'workbench-images',renderSlot:(name,context)=>name==='event-form'?<Attachments {...context} scope={options.scope}/>:null},{name:'workbench-observer',provider:({children})=><><Observer options={options} controller={controller} onEditing={value=>{controller.editing=value;}}/>{children}{React.createElement(GestureScope,{controller})}</>}],[controller]);
+ const appPlugins=useMemo(()=>[...plugins,
+  {name:'workbench-agenda',views:[{...agendaView,component:()=><CalendarAgenda openSource={options.openSource} focus={controller.focus}/>} ]},
+  {name:'workbench-images',renderSlot:(name,context)=>name==='event-form'?<Attachments {...context} scope={options.scope}/>:null},
+  {name:'workbench-observer',provider:({children})=><><Observer options={options} controller={controller} onEditing={value=>{controller.editing=value;}}/>{children}{React.createElement(GestureScope,{controller})}</>}
+ ],[controller]);
  const [events,setEvents]=useState(()=>entries(options)),[pending,setPending]=useState(false),[failure,setFailure]=useState(null);const locked=useRef(false),base=useRef(events);controller.failed=!!failure;controller.pending=pending;useEffect(()=>{if(!pending&&!failure)queueMicrotask(()=>{options.onIdle?.();controller.focus.restore();});},[pending,failure]);
  function restore(){setEvents([...base.current]);}
  async function commit(mutation){
@@ -64,9 +70,9 @@ function CalendarApp({options,controller}){
   {pending&&<p role="status" className="ilamy-status">正在保存日程…</p>}
   {failure&&<section role="alert" className="ilamy-failure"><p>{failure.error} 修改暂留本页，尚未保存：{failure.mutation.event.title}</p><button type="button" onClick={()=>commit(failure.mutation)}>重试保存</button><button type="button" onClick={()=>{setFailure(null);restore();}}>放弃本次修改</button></section>}
   <div className="ilamy-calendar-box" inert={pending||failure?true:undefined}>
-   <IlamyCalendar headerComponent={<PageCalendarHeader disabled={!!(pending||failure)} controller={controller}/>} events={events} plugins={appPlugins} initialDate={dayjs.tz((options.anchor||options.selectedDate)+'T09:00','Asia/Shanghai')} initialView={options.view||'month'} locale="zh-cn" translations={translations} timezone="Asia/Shanghai" firstDayOfWeek="sunday" timeFormat="24-hour" slotDuration={30} scrollTime="08:00" dayMaxEvents={3} onEventsChange={onMutation} onViewChange={value=>{controller.view=value;}} onDateChange={date=>{controller.anchor=date.format('YYYY-MM-DD');}} renderEvent={(event,segment)=>event.data?.source?<button type="button" title={event.title} aria-label={event.title} className={'ilamy-source-event '+(event.data?.done?'ilamy-completed-event':'')} style={{backgroundColor:event.backgroundColor,color:event.color}} onPointerDown={e=>e.stopPropagation()} onClick={e=>{e.preventDefault();e.stopPropagation();options.openSource(event.data.source,event.data.recordId);}}>{!event.allDay&&event.start.tz('Asia/Shanghai').format('HH:mm')+' '}{event.title}</button>:React.createElement(EventBar,{event,segment,controller,gesture})} getCellClassName={info=>{const date=info.start.tz('Asia/Shanghai'),key=date.format('YYYY-MM-DD'),holiday=options.holiday(key);return 'ilamy-date-'+key+(holiday?' ilamy-holiday-'+holiday.type:'');}}/>
+   <IlamyCalendar headerComponent={<PageCalendarHeader disabled={!!(pending||failure)} controller={controller}/>} events={events} plugins={appPlugins} initialDate={dayjs.tz((options.anchor||options.selectedDate)+'T09:00','Asia/Shanghai')} initialView={controller.view} locale="zh-cn" translations={translations} timezone="Asia/Shanghai" firstDayOfWeek="sunday" timeFormat="24-hour" slotDuration={30} scrollTime="08:00" dayMaxEvents={3} onEventsChange={onMutation} onViewChange={value=>{if(controller.view!==value)controller.scrollToStart();controller.view=value;}} onDateChange={date=>{const anchor=date.format('YYYY-MM-DD');if(controller.anchor!==anchor)controller.scrollToStart();controller.anchor=anchor;}} renderEvent={(event,segment)=>event.data?.source?<button type="button" title={event.title} aria-label={event.title} className={'ilamy-source-event '+(event.data?.done?'ilamy-completed-event':'')} style={{backgroundColor:event.backgroundColor,color:event.color}} onPointerDown={e=>e.stopPropagation()} onClick={e=>{e.preventDefault();e.stopPropagation();options.openSource(event.data.source,event.data.recordId);}}>{!event.allDay&&event.start.tz('Asia/Shanghai').format('HH:mm')+' '}{event.title}</button>:React.createElement(EventBar,{event,segment,controller,gesture})} getCellClassName={info=>{const date=info.start.tz('Asia/Shanghai'),key=date.format('YYYY-MM-DD'),holiday=options.holiday(key);return 'ilamy-date-'+key+(holiday?' ilamy-holiday-'+holiday.type:'');}}/>
   </div>
-  <div className="ilamy-reading-tools"><span className="ilamy-help">北京时间</span><button type="button" data-workspace-icon="list" aria-label="查看完整日程列表" disabled={pending||!!failure} onClick={()=>controller.api?.setView('agenda')}>查看完整日程列表</button></div>
+  <div className="ilamy-reading-tools"><span className="ilamy-help">北京时间</span><button type="button" data-workspace-icon="list" aria-label="查看完整日程列表" disabled={pending||!!failure} onClick={()=>{controller.api?.setView('agenda');controller.scrollToStart();}}>查看完整日程列表</button></div>
  </div>;
 }
 // Radix renders its own forms/popovers in portals. Scope the library stylesheet to
@@ -96,4 +102,17 @@ function bindCalendarControls(root){
 }
 function bindPortal(root){bindCalendarControls(root);for(const el of root.querySelectorAll('.sr-only'))if(el.textContent==='Close')el.textContent='关闭';for(const form of root.querySelectorAll('form')){if(form.dataset.ilamyValidation)continue;form.dataset.ilamyValidation='true';form.noValidate=true;for(const [name,max] of [['title',200],['description',5000],['location',500]]){const field=form.elements.namedItem(name);if(field)field.maxLength=max;}form.addEventListener('submit',event=>{const title=form.elements.namedItem('title');if(!title)return;let error=form.querySelector('[data-ilamy-error]');if(!error){error=document.createElement('p');error.setAttribute('role','alert');error.dataset.ilamyError='';error.id='ilamy-form-error';error.className='ilamy-validation';form.append(error);}if(!title.value.trim()||title.value.trim().length>200){event.preventDefault();event.stopPropagation();error.textContent='请填写 1–200 字的日程标题。';title.setAttribute('aria-invalid','true');title.setAttribute('aria-describedby',error.id);title.focus();}else{error.textContent='';title.removeAttribute('aria-invalid');}},true);}}
 const observer=new MutationObserver(records=>{for(const record of records)for(const node of record.addedNodes){if(!(node instanceof HTMLElement)||!document.getElementById('workspaceCalendar')||node.closest('.ilamy-surface,[data-ui-portal],[data-shell-portal],[data-tasks-portal]')||node.querySelector('[data-ui-portal],[data-shell-portal],[data-tasks-portal]'))continue;const existing=node.closest('[data-ilamy-portal]');if(existing){bindPortal(existing);continue;}let top=node;while(top.parentElement&&top.parentElement!==document.body)top=top.parentElement;if(top.parentElement===document.body&&!top.matches('[data-ui-portal],[data-shell-portal],[data-tasks-portal]')&&(top.matches('[role="dialog"],[data-slot="dialog-overlay"],[data-radix-popper-content-wrapper]')||top.querySelector('[role="dialog"],[role="listbox"],[data-radix-popper-content-wrapper]'))){top.setAttribute('data-ilamy-portal','');if(top.matches('[data-radix-popper-content-wrapper]'))top.style.zIndex='var(--ilamy-popover-layer,90)';const host=document.getElementById('workspaceCalendar');if(host){const theme=getComputedStyle(host);for(const name of ['--ilamy-brand','--ilamy-bg','--ilamy-ink','--ilamy-line'])top.style.setProperty(name,theme.getPropertyValue(name));}bindPortal(top);}}});if(document.body)observer.observe(document.body,{childList:true,subtree:true});else document.addEventListener('DOMContentLoaded',()=>observer.observe(document.body,{childList:true,subtree:true}),{once:true});
-window.IlamyCalendarRuntime={validCalendarRule,ruleOccurrencesOn,mount(host,options){const root=createRoot(host),controller={api:null,editing:false,pending:false,failed:false,view:options.view||'month',anchor:options.anchor||options.selectedDate};controller.focus=createCalendarFormFocus(host,()=>!controller.pending&&!controller.failed);root.render(<CalendarApp options={options} controller={controller}/>);controller.dispose=()=>{controller.focus.dispose();root.unmount();};return controller;}};
+window.IlamyCalendarRuntime={validCalendarRule,ruleOccurrencesOn,mount(host,options){
+ const root=createRoot(host);
+ const narrow=window.matchMedia('(max-width: 640px)');
+ const controller={
+  api:null,editing:false,pending:false,failed:false,
+  view:options.view||(narrow.matches?'agenda':'month'),
+  anchor:options.anchor||options.selectedDate,
+  scrollToStart(){if(narrow.matches)host.closest('#content')?.scrollTo(0,0);}
+ };
+ controller.focus=createCalendarFormFocus(host,()=>!controller.pending&&!controller.failed);
+ root.render(<CalendarApp options={options} controller={controller}/>);
+ controller.dispose=()=>{controller.focus.dispose();root.unmount();};
+ return controller;
+}};

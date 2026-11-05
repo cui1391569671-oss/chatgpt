@@ -2151,6 +2151,21 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .workspace-sync-status summary{display:flex;align-items:center;min-height:44px;cursor:pointer;color:var(--semantic-text)}
 
 @media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%}.wb-page-toolbar>.workspace-search{max-width:none;flex-basis:100%}.wb-page-toolbar>.ui-select-mount{flex:1;min-width:120px}}
+@media(max-width:640px){
+  body[data-workspace-view=calendar] .wb-page-row{margin:4px auto 0}
+  body[data-workspace-view=calendar] .wb-page-location h1{font-size:24px}
+  body[data-workspace-view=calendar] .wb-page-actions-mount{max-width:none}
+  body[data-workspace-view=calendar] #workspaceReactActions{flex:1;min-width:0}
+  .wb-page-toolbar[data-ui-owner=calendar-controls]{
+    display:grid;
+    width:100%;
+    grid-template-columns:44px repeat(2,minmax(0,1fr)) 44px;
+    align-items:stretch;
+  }
+  [data-ui-owner=calendar-controls] .wb-calendar-date{grid-column:span 2;width:100%}
+  [data-ui-owner=calendar-controls] .wb-calendar-view{--workspace-select-min-width:0px;width:100%}
+  [data-ui-owner=calendar-controls]>button:last-child{grid-column:span 2}
+}
 
 body.shadcn-workbench .wb-icon-button:not(:disabled):hover {
   background: var(--btn-ghost-hover-bg);
@@ -2332,6 +2347,9 @@ body.shadcn-workbench .ilamy-surface .droppable-cell.pointer-events-none {
 body.shadcn-workbench .ilamy-surface .bg-primary {
   background: var(--semantic-primary);
   color: var(--semantic-text-inverse);
+}
+@media(max-width:640px){
+  body.shadcn-workbench .ilamy-calendar-box:not(:has(.ilamy-agenda)){min-height:clamp(360px,65dvh,560px)}
 }
 body.shadcn-workbench .ilamy-surface button:not(.ilamy-source-event) {
   border-radius: var(--radius-md);

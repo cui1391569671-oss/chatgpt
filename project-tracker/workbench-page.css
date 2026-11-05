@@ -2358,6 +2358,11 @@ body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direct
 .calendar-today-panel .actions{align-self:flex-start}
 .calendar-today-panel .row-content{width:100%}
 @media(max-width:1000px){.calendar-with-today{grid-template-columns:minmax(0,1fr) 240px;gap:16px}}
+@media(max-width:640px){
+  body[data-workspace-view=calendar] #results{height:auto}
+  .calendar-with-today{flex:none;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto}
+  .calendar-today-panel{overflow:visible;scrollbar-gutter:auto}
+}
 
 .project-information-table{--project-column-1:18%;--project-column-2:30%;--project-column-3:10%;--project-column-4:16%;--project-column-5:14%;--project-column-6:12%}
 .project-shipping-table{--project-column-1:24%;--project-column-2:14%;--project-column-3:30%;--project-column-4:20%;--project-column-5:12%}

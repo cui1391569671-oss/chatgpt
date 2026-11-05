@@ -1,7 +1,7 @@
 /* exported disposeWorkspaceCalendar, openCalendarEvent, mountWorkspaceCalendar */
 // ilamy owns the calendar and its standard event form. This adapter owns only
 // workbench routing, scope isolation and the existing cloud persistence boundary.
-let workspaceCalendar=null,workspaceCalendarView='month',workspaceCalendarAnchor='',calendarDeferredRender=false;
+let workspaceCalendar=null,workspaceCalendarView='',workspaceCalendarAnchor='',calendarDeferredRender=false;
 function isCalendarEditing(){return !!(workspaceCalendar?.gesturing||workspaceCalendar?.gestureScopeOpen||workspaceCalendar?.editing||workspaceCalendar?.pending||workspaceCalendar?.failed);}
 function disposeWorkspaceCalendar(){stopDingtalkRefresh();if(!workspaceCalendar)return;workspaceCalendarView=workspaceCalendar.view;workspaceCalendarAnchor=workspaceCalendar.anchor;workspaceCalendar.dispose();workspaceCalendar=null;}
 function openCalendarEvent(id){
