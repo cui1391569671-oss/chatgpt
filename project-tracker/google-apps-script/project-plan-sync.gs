@@ -1,3 +1,4 @@
+/** @OnlyCurrentDoc */
 // Bind this script to 项目任务清单汇总. It only reads cells and publishes the approved plan fields.
 const PROJECT_PLAN_ENDPOINT='https://tracker.managementplatformlee.com/api/project-plan/push';
 const PROJECT_PLAN_HANDLERS=['projectPlanEdited','projectPlanChanged','projectPlanTimer','projectPlanOpened'];
@@ -46,7 +47,8 @@ function pushProjectPlan_(force){
   const properties=PropertiesService.getScriptProperties();
   const secret=properties.getProperty('PROJECT_PLAN_SYNC_SECRET');
   if(!secret||secret.length<32)throw Error('请先配置项目计划同步密钥。');
-  const spreadsheet=SpreadsheetApp.openById(PROJECT_PLAN_SOURCE_ID);
+  const spreadsheet=SpreadsheetApp.getActiveSpreadsheet();
+  if(spreadsheet?.getId()!==PROJECT_PLAN_SOURCE_ID)throw Error('请在项目任务清单汇总运行此脚本。');
   const projectTabs=spreadsheet.getSheets().filter(sheet=>PROJECT_PLAN_TAB.test(sheet.getName()));
   if(!projectTabs.length||projectTabs.length>200)throw Error('项目页数量超出范围。');
   const timeZone=spreadsheet.getSpreadsheetTimeZone();
