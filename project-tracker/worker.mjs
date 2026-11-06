@@ -23,6 +23,7 @@ import {ILAMY_JS,ILAMY_CSS,ILAMY_LICENSE} from './ilamy-assets.mjs';
 import {validEventRecurrence} from './event-recurrence.mjs';
 import {projectCoreInfoRoute} from './project-core-info.mjs';
 import {projectCorePushRoute} from './project-core-sync.mjs';
+import {projectPlanPush,projectPlanRead} from './project-plan-sync.mjs';
 import {personalVaultRoute} from './personal-vault.mjs';
 import {validMediaTracking} from './media-tracking.mjs';
 import {mediaSourcesRoute} from './media-sources.mjs';
@@ -131,6 +132,7 @@ async function fetchRoute(request,env){
   if(url.pathname==='/'&&['GET','HEAD'].includes(request.method))return new Response(null,{status:302,headers:{Location:'/work','Cache-Control':'no-store'}});
   if(url.pathname==='/favicon.svg'&&request.method==='GET')return new Response(FAVICON,{headers:{'Content-Type':'image/svg+xml; charset=utf-8','Cache-Control':'public, max-age=3600','X-Content-Type-Options':'nosniff'}});
   if(url.pathname==='/api/project-core-information/push')return await projectCorePushRoute(request,env);
+  if(url.pathname==='/api/project-plan/push')return await projectPlanPush(request,env);
   if(url.pathname==='/api/dingtalk-calendar/push')return await dingtalkCalendarPush(request,env);
   if(url.pathname==='/api/vocabulary/push')return await vocabularyPushRoute(request,env,{readState,writeState,validWorkspace});
   if(!env.TRACKER_USER || !env.TRACKER_PASSWORD)return new Response('请先配置 TRACKER_USER 和 TRACKER_PASSWORD 两个 Secret。',{status:503});
@@ -163,6 +165,7 @@ async function fetchRoute(request,env){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     return json({error:'请在 Google 表格的“工作台词库同步”菜单中推送更新'},409);
    }
+   if(url.pathname==='/api/project-plan')return await projectPlanRead(request,env);
    if(url.pathname==='/api/project-core-information')return await projectCoreInfoRoute(request,env);
    if(url.pathname==='/api/account/vault')return await personalVaultRoute(request,env);
    if(url.pathname==='/api/media/image')return await mediaImageRoute(request);

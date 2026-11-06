@@ -6,13 +6,16 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import assert from 'node:assert/strict';
+import {createHmac} from 'node:crypto';
+import {PROJECT_PLAN_SOURCE_ID,parseProjectPlanSheets} from '../project-plan-sheet.mjs';
 import {deriveVaultKey,newVaultSalt,encryptVault,decryptVault} from '../personal-vault.mjs';
 const folder=await mkdtemp(join(tmpdir(),'workbench-local-d1-'));
+const planSecret='synthetic-project-plan-sync-secret-only';
 let mf;
 try{
  const bundle=join(folder,'worker.mjs');
  await build({entryPoints:[fileURLToPath(new URL('../worker.mjs',import.meta.url))],bundle:true,format:'esm',platform:'neutral',target:'es2022',outfile:bundle});
- mf=new Miniflare({d1Persist:join(folder,'d1'),modules:true,modulesRoot:folder,scriptPath:bundle,compatibilityDate:'2026-07-30',host:'127.0.0.1',port:0,d1Databases:{DB:'audit-synthetic-db'},bindings:{TRACKER_USER:'audit-user',TRACKER_PASSWORD:'audit-local-only'},outboundService:()=>new Response(JSON.stringify({items:[],error:'Synthetic preview: external services disabled'}),{status:503,headers:{'Content-Type':'application/json'}})});
+ mf=new Miniflare({d1Persist:join(folder,'d1'),modules:true,modulesRoot:folder,scriptPath:bundle,compatibilityDate:'2026-07-30',host:'127.0.0.1',port:0,d1Databases:{DB:'audit-synthetic-db'},bindings:{TRACKER_USER:'audit-user',TRACKER_PASSWORD:'audit-local-only',PROJECT_PLAN_SYNC_SECRET:planSecret},outboundService:()=>new Response(JSON.stringify({items:[],error:'Synthetic preview: external services disabled'}),{status:503,headers:{'Content-Type':'application/json'}})});
  const db=await mf.getD1Database('DB');
  await db.prepare('CREATE TABLE tracker_state (id INTEGER PRIMARY KEY, payload TEXT NOT NULL, version INTEGER NOT NULL)').run();
  const state={data:[],archive:[],projects:['Synthetic project'],priorities:{},deletedProjects:[],workspace:{tasks:[],notes:[],events:[]},workWorkspace:{tasks:[],notes:[],events:[]},workspaceVersions:{work:1,personal:1}};
@@ -21,6 +24,29 @@ try{
  const login=await mf.dispatchFetch(new URL('/auth/login',url),{method:'POST',headers:{Origin:url.origin,'Content-Type':'application/x-www-form-urlencoded','CF-Connecting-IP':'192.0.2.1'},body:'username=audit-user&password=audit-local-only',redirect:'manual'});
  assert.equal(login.status,303);const cookie=login.headers.get('Set-Cookie').split(';')[0];
  const call=(path,body)=>mf.dispatchFetch(new URL(path,url),{method:body?'POST':'GET',headers:{Origin:url.origin,Cookie:cookie,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
+ assert.equal((await mf.dispatchFetch(new URL('/api/project-plan',url))).status,401);
+ assert.deepEqual((await (await call('/api/project-plan')).json()).projects,[]);
+ const plan=parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,[17,18].map(sheetId=>({
+  sheetId,name:'PM'+sheetId+'-演示标准任务清单',
+  rows:[['阶段','模块','标准任务','是否适用','责任部门','计划开始时间','计划完成日期','状态'],
+        ['验收','通用','演示任务','是','项目部','2026-12-31','2027-01-01','进行中']]
+ })));
+ const now=Date.now();
+ const pushPlan=(data,stamp,secret=planSecret)=>{
+  const body=JSON.stringify(data);
+  const signature=createHmac('sha256',secret).update(stamp+'.'+body).digest('hex');
+  return mf.dispatchFetch(new URL('/api/project-plan/push',url),{method:'POST',headers:{'Content-Type':'application/json','X-Project-Plan-Timestamp':String(stamp),'X-Project-Plan-Signature':signature},body});
+ };
+ assert.equal((await pushPlan(plan,now,'incorrect')).status,401);
+ assert.equal((await pushPlan(plan,now)).status,200);
+ assert.equal((await (await pushPlan(plan,now)).json()).skipped,true);
+ assert.equal((await pushPlan(plan,now-1)).status,409);
+ assert.equal((await pushPlan({...plan,projects:[]},now+1)).status,400);
+ assert.equal((await pushPlan({...plan,projects:plan.projects.slice(0,1)},now+2)).status,409);
+ assert.equal((await (await call('/api/project-plan')).json()).projects.length,2);
+ const editedPlan=structuredClone(plan);editedPlan.projects[0].tasks[0].end='2027-01-05';
+ assert.equal((await pushPlan(editedPlan,now+3)).status,200);
+ assert.equal((await (await call('/api/project-plan')).json()).projects[0].tasks[0].end,'2027-01-05');
  const record={id:'synthetic-task',title:'Synthetic task',done:false,priority:'normal',dueDate:'',detail:''};
  let result=await call('/api/workspace/patch?scope=work',{operations:[{collection:'tasks',id:record.id,action:'create',record}]});assert.equal(result.status,200);
  assert.equal((await(await call('/api/workspace?scope=personal')).json()).workspace.tasks.length,0);
@@ -57,7 +83,7 @@ try{
  for(let i=0;i<10;i++)assert.equal((await mf.dispatchFetch(new URL('/work',url),{headers:basic})).status,401);
  assert.equal((await mf.dispatchFetch(new URL('/work',url),{headers:{...basic,Authorization:'Basic '+btoa('audit-user:audit-local-only')}})).status,429);
  assert.equal((await call('/work')).status,200);
- console.log(JSON.stringify({localD1:true,compatibilityDate:'2026-07-30',productionCompatibilityVerified:false,remoteAccess:false,login:true,scopeIsolation:true,fieldConflict:true,basicLimit:true,cookieStillWorks:true,legacyBasicUpgrade:true,idempotentCreate:true,mixedWritesPreserved:true,imageBlob:true,vaultRoundtrip:true,vaultConflict:true,projectDelete:true}));
+ console.log(JSON.stringify({localD1:true,compatibilityDate:'2026-07-30',productionCompatibilityVerified:false,remoteAccess:false,login:true,scopeIsolation:true,fieldConflict:true,basicLimit:true,cookieStillWorks:true,legacyBasicUpgrade:true,idempotentCreate:true,mixedWritesPreserved:true,imageBlob:true,vaultRoundtrip:true,vaultConflict:true,projectDelete:true,projectPlanSync:true}));
  if(process.argv.includes('--serve')){
   console.log('Preview '+url.origin+' (synthetic login: audit-user / audit-local-only; no production data)');
   await new Promise(resolve=>{process.once('SIGINT',resolve);process.once('SIGTERM',resolve);});

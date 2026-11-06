@@ -44,14 +44,19 @@ export function WorkspaceNavigation({bridge,snapshot,accountMenu}){
   <Menu.List className='wb-top-navigation'>
    <Menu.Item className='wb-site-logo-item'><Menu.Link href={'/'+bridge.scope+'?view=home'} className='wb-site-logo' active={current==='home'} aria-label='我的工作台首页' title='我的工作台' onClick={event=>event.preventDefault()} onSelect={event=>choose(event,bridge.scope,'home')} onPointerEnter={event=>leave(event.pointerType)}><img src='/favicon.svg?v=workbench-mark-1' width={28} height={28} alt='' aria-hidden='true'/></Menu.Link></Menu.Item>
 
-   {groups.map(group=><Menu.Item className='wb-site-nav-item' key={group.title} value={group.title}>
+   {groups.map(group=>{
+    if(group.direct){
+     const [[space,id]]=group.items,active=space===bridge.scope&&current===id;
+     return <Menu.Item className='wb-site-nav-item' key={group.title} value={group.title}><Menu.Link href={'/'+space+'?view='+encodeURIComponent(id)} className='wb-site-nav-link' active={active} data-active={String(active)} aria-current={active?'page':undefined} onClick={event=>event.preventDefault()} onSelect={event=>choose(event,space,id)} onPointerEnter={event=>leave(event.pointerType)}>{group.title}</Menu.Link></Menu.Item>;
+    }
+    return <Menu.Item className='wb-site-nav-item' key={group.title} value={group.title}>
     <Menu.Trigger className='wb-site-nav-link' data-nav-group={group.title} data-active={group.items.some(([space,id])=>space===bridge.scope&&id===current)} onPointerEnter={event=>enter(group.title,event.pointerType)} onClick={event=>{if(click(group.title))event.preventDefault();}} onKeyDown={event=>{if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();keyboardEntry.current={value:group.title,last:event.key==='ArrowUp'};if(open===group.title){const links=root.current?.querySelectorAll<HTMLAnchorElement>('[data-nav-panel="'+open+'"] a');focusNavigationLink(links?.[event.key==='ArrowUp'?links.length-1:0]);keyboardEntry.current=null;}else change(group.title);}}}>{group.title}</Menu.Trigger>
     <Menu.Content asChild onPointerEnter={cancel} onPointerLeave={event=>leave(event.pointerType)}>
      <div className='wb-navigation-content' data-nav-panel={group.title}>
       <div className='wb-navigation-columns' style={{'--navigation-column-count':group.columns.length} as CSSProperties} aria-label={group.title+'页面'}>{group.columns.map((column,columnIndex)=>{const groupDelay=Math.min(navigationTiming.group+(columnIndex-1)*navigationTiming.groupStep,columnIndex*navigationTiming.group);return <section className='wb-navigation-column' data-primary={column.primary} key={column.title} aria-label={column.title}><motion.h2 {...reveal(navigationTiming.headingDelay+groupDelay)}>{column.title}</motion.h2><div className='wb-navigation-links'>{column.views.map((id,itemIndex)=>{const active=column.space===bridge.scope&&current===id,label=workspacePageMeta(column.space,id).label;return <motion.div key={id} {...reveal(navigationTiming.itemDelay+groupDelay+itemIndex*navigationTiming.itemStep)}><Menu.Link href={'/'+column.space+'?view='+encodeURIComponent(id)} className='wb-navigation-link' active={active} aria-current={active?'page':undefined} onClick={event=>event.preventDefault()} onSelect={event=>choose(event,column.space,id)}><span>{label}</span>{active&&<Check size={16} aria-hidden='true'/>}</Menu.Link></motion.div>;})}</div></section>;})}</div>
      </div>
     </Menu.Content>
-   </Menu.Item>)}
+   </Menu.Item>;})}
    <Menu.Item className='wb-account-menu-item' onPointerEnter={()=>change('')}>{accountMenu}</Menu.Item>
   </Menu.List>
   <motion.div className='wb-navigation-backdrop' aria-hidden='true' inert={!open} initial={false} animate={{opacity:open?1:0}} transition={{duration:reduce?0:motionTiming.navigation/1000,delay:reduce||open?0:navigationTiming.closeDelay/1000,ease:[.4,0,.6,1]}} style={{pointerEvents:open?'auto':'none'}} onPointerEnter={event=>leave(event.pointerType)} onPointerDown={()=>change('')}/>
