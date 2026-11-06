@@ -10,17 +10,18 @@ import {activeProjectPlanTasks,projectPlanTimeline,projectTaskBar,projectTaskTim
 type Task={row:number;phase:string;module:string;title:string;applicability:string;department:string;start:string;end:string;status:string};
 type Project={sheetId:number;name:string;code:string;tasks:Task[]};
 type Snapshot={projects:Project[];lastSyncedAt:string|null};
-const filters=[{value:'all',label:'全部任务'},{value:'dated',label:'有计划日期'},{value:'pending',label:'待补或核对日期'},{value:'excluded',label:'不适用'}];
+const filters=[{value:'all',label:'全部任务'},{value:'dated',label:'有计划日期'},{value:'pending',label:'待补或核对日期'}];
 const source='https://docs.google.com/spreadsheets/d/'+PROJECT_PLAN_SOURCE_ID+'/edit';
 const hasDate=kind=>kind==='range'||kind==='point';
 const syncTime=new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
 
 function PlanChart({project,filter}:{project:Project;filter:string}){
- const rows=useMemo(()=>activeProjectPlanTasks(project.tasks).map(task=>({task,timing:projectTaskTiming(task)})),[project]);
+ const applicableTasks=useMemo(()=>project.tasks.filter(task=>task.applicability!=='否'),[project.tasks]);
+ const rows=useMemo(()=>activeProjectPlanTasks(applicableTasks).map(task=>({task,timing:projectTaskTiming(task)})),[applicableTasks]);
  const timeline=useMemo(()=>projectPlanTimeline(rows.map(row=>row.timing)),[rows]);
  const visible=rows.filter(({timing:{kind}})=>filter==='all'||(filter==='dated'&&hasDate(kind))||
-  (filter==='pending'&&['pending','point','invalid'].includes(kind))||filter===kind);
- if(!visible.length)return <p className='project-plan-empty' role='status'>{rows.length?'没有符合筛选条件的任务。':project.tasks.length?'该项目的阶段均已完成。':'该项目暂无任务。'}</p>;
+  (filter==='pending'&&['pending','point','invalid'].includes(kind)));
+ if(!visible.length)return <p className='project-plan-empty' role='status'>{rows.length?'没有符合筛选条件的任务。':applicableTasks.length?'该项目的适用阶段均已完成。':'该项目暂无适用任务。'}</p>;
  const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'});
  const todayPosition=timeline?.position(today,true);
  const showToday=todayPosition!==undefined&&todayPosition>=0&&todayPosition<100;
@@ -47,12 +48,11 @@ function PlanChart({project,filter}:{project:Project;filter:string}){
     <tr className='project-plan-phase'><th scope='rowgroup' className='project-plan-name'>{phase}</th><td/></tr>
     {items.map(({task,timing})=>{
      const bar=projectTaskBar(timing,timeline);
-     const status=timing.kind==='excluded'?'':task.status;
+     const status=task.status;
      const detail=[task.module==='通用'?'':task.module,task.department].filter(Boolean).join(' · ');
      const label=timing.kind==='range'?timing.start+' 至 '+timing.end:
       timing.kind==='point'?(task.start===timing.date?'开始 ':'完成 ')+timing.date+' · '+(task.start===timing.date?'待补完成日期':'待补开始日期'):
-       timing.kind==='invalid'?task.start+' 至 '+task.end+' · 日期顺序待核对':
-        timing.kind==='excluded'?'不适用':'待排期';
+       timing.kind==='invalid'?task.start+' 至 '+task.end+' · 日期顺序待核对':'待排期';
      return <tr key={task.row} data-status={status}>
       <th scope='row' className='project-plan-name'>
        <strong>{task.title}</strong>
