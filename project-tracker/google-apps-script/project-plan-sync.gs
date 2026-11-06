@@ -1,44 +1,38 @@
-/** @OnlyCurrentDoc */
-// Bind this script to 项目任务清单汇总. It only reads cells and publishes the approved plan fields.
+// Standalone script. Use the OAuth scopes in project-plan-appsscript.json.
 const PROJECT_PLAN_ENDPOINT='https://tracker.managementplatformlee.com/api/project-plan/push';
-const PROJECT_PLAN_HANDLERS=['projectPlanEdited','projectPlanChanged','projectPlanTimer','projectPlanOpened'];
-
-function prepareProjectPlanSync(){
- const properties=PropertiesService.getScriptProperties();
- if(!properties.getProperty('PROJECT_PLAN_SYNC_SECRET'))properties.setProperty('PROJECT_PLAN_SYNC_SECRET',Utilities.getUuid().replace(/-/g,'')+Utilities.getUuid().replace(/-/g,''));
- console.log('密钥已准备。请通过安全渠道在 Cloudflare 配置同名 PROJECT_PLAN_SYNC_SECRET。');
-}
-
-function projectPlanOpened(){
- SpreadsheetApp.getUi().createMenu('工作台项目计划同步').addItem('立即同步','syncProjectPlanNow').addItem('安装自动同步','installProjectPlanSync').addItem('卸载自动同步','uninstallProjectPlanSync').addToUi();
-}
 
 function installProjectPlanSync(){
- const spreadsheet=SpreadsheetApp.getActiveSpreadsheet();
- if(spreadsheet?.getId()!==PROJECT_PLAN_SOURCE_ID)throw Error('请在项目任务清单汇总绑定此脚本。');
  pushProjectPlan_(true);
- const previous=ScriptApp.getProjectTriggers().filter(trigger=>PROJECT_PLAN_HANDLERS.includes(trigger.getHandlerFunction()));
- const created=[];
- try{
-  created.push(ScriptApp.newTrigger('projectPlanEdited').forSpreadsheet(spreadsheet).onEdit().create());
-  created.push(ScriptApp.newTrigger('projectPlanChanged').forSpreadsheet(spreadsheet).onChange().create());
-  created.push(ScriptApp.newTrigger('projectPlanTimer').timeBased().everyMinutes(5).create());
-  created.push(ScriptApp.newTrigger('projectPlanOpened').forSpreadsheet(spreadsheet).onOpen().create());
- }catch(error){
-  created.forEach(trigger=>ScriptApp.deleteTrigger(trigger));throw error;
- }
+ const previous=ScriptApp.getProjectTriggers().filter(trigger=>trigger.getHandlerFunction()==='projectPlanTimer');
+ ScriptApp.newTrigger('projectPlanTimer').timeBased().everyMinutes(5).create();
  previous.forEach(trigger=>ScriptApp.deleteTrigger(trigger));
- projectPlanOpened();
- spreadsheet.toast('已安装自动同步','工作台项目计划同步');
+ console.log('项目计划已自动同步，每5分钟检查一次。');
 }
 
 function uninstallProjectPlanSync(){
- ScriptApp.getProjectTriggers().filter(trigger=>PROJECT_PLAN_HANDLERS.includes(trigger.getHandlerFunction())).forEach(trigger=>ScriptApp.deleteTrigger(trigger));
+ ScriptApp.getProjectTriggers().filter(trigger=>trigger.getHandlerFunction()==='projectPlanTimer').forEach(trigger=>ScriptApp.deleteTrigger(trigger));
 }
-function projectPlanEdited(event){if(event?.source?.getId()===PROJECT_PLAN_SOURCE_ID&&PROJECT_PLAN_TAB.test(event.range.getSheet().getName()))pushProjectPlan_(false);}
-function projectPlanChanged(event){if(event?.source?.getId()===PROJECT_PLAN_SOURCE_ID&&event.changeType!=='EDIT')pushProjectPlan_(false);}
 function projectPlanTimer(){pushProjectPlan_(false);}
 function syncProjectPlanNow(){pushProjectPlan_(true);}
+
+function readProjectPlanSheets_(){
+ const tabs=Sheets.Spreadsheets.get(PROJECT_PLAN_SOURCE_ID,{fields:'sheets(properties(sheetId,title,gridProperties(rowCount,columnCount)))'}).sheets
+  .map(sheet=>sheet.properties).filter(sheet=>PROJECT_PLAN_TAB.test(sheet.title));
+ if(!tabs.length||tabs.length>200)throw Error('项目页数量超出范围。');
+ const sheets=[];
+ for(let i=0;i<tabs.length;i+=10){
+  const batch=tabs.slice(i,i+10);
+  const ranges=batch.map(sheet=>{
+   const {rowCount,columnCount}=sheet.gridProperties;
+   if(rowCount>1000||columnCount<9)throw Error('项目页超出支持范围，请核对源表。');
+   return "'"+sheet.title.replace(/'/g,"''")+"'!A1:I"+rowCount;
+  });
+  const values=Sheets.Spreadsheets.Values.batchGet(PROJECT_PLAN_SOURCE_ID,{ranges,valueRenderOption:'FORMATTED_VALUE'}).valueRanges;
+  if(values?.length!==batch.length)throw Error('源表返回的项目页不完整。');
+  batch.forEach((sheet,index)=>sheets.push({sheetId:sheet.sheetId,name:sheet.title,rows:values[index].values||[]}));
+ }
+ return sheets;
+}
 
 function pushProjectPlan_(force){
  const lock=LockService.getScriptLock();
@@ -47,18 +41,7 @@ function pushProjectPlan_(force){
   const properties=PropertiesService.getScriptProperties();
   const secret=properties.getProperty('PROJECT_PLAN_SYNC_SECRET');
   if(!secret||secret.length<32)throw Error('请先配置项目计划同步密钥。');
-  const spreadsheet=SpreadsheetApp.getActiveSpreadsheet();
-  if(spreadsheet?.getId()!==PROJECT_PLAN_SOURCE_ID)throw Error('请在项目任务清单汇总运行此脚本。');
-  const projectTabs=spreadsheet.getSheets().filter(sheet=>PROJECT_PLAN_TAB.test(sheet.getName()));
-  if(!projectTabs.length||projectTabs.length>200)throw Error('项目页数量超出范围。');
-  const timeZone=spreadsheet.getSpreadsheetTimeZone();
-  const sheets=projectTabs.map(sheet=>{
-   const rows=sheet.getLastRow(),columns=sheet.getLastColumn();
-   if(!rows||rows>1000||columns<9||columns>64)throw Error('项目页超出支持范围，请核对源表。');
-   const values=sheet.getRange(1,1,rows,columns).getValues().map(row=>row.map(cell=>cell instanceof Date?Utilities.formatDate(cell,timeZone,'yyyy-MM-dd'):cell));
-   return {sheetId:sheet.getSheetId(),name:sheet.getName(),rows:values};
-  });
-  const body=JSON.stringify(parseProjectPlanSheets(spreadsheet.getId(),sheets));
+  const body=JSON.stringify(parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,readProjectPlanSheets_()));
   const hex=bytes=>bytes.map(value=>(value&255).toString(16).padStart(2,'0')).join('');
   const hash=hex(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,body,Utilities.Charset.UTF_8));
   if(!force&&hash===properties.getProperty('PROJECT_PLAN_LAST_HASH'))return;
@@ -68,7 +51,7 @@ function pushProjectPlan_(force){
   const result=JSON.parse(response.getContentText());
   if(response.getResponseCode()!==200||!result.ok)throw Error(result.error||'项目计划同步失败。');
   properties.setProperty('PROJECT_PLAN_LAST_HASH',hash);
-  if(force)spreadsheet.toast('项目计划同步成功','工作台项目计划同步');
+  if(force)console.log('项目计划同步成功，共 '+result.count+' 个项目。');
  }finally{lock.releaseLock();}
 }
 /* PROJECT_PLAN_PARSER_START */
