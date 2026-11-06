@@ -2385,11 +2385,12 @@ body[data-workspace-view=projectPlan] #content{display:flex;flex-direction:colum
 .project-plan-table thead{position:sticky;top:0;z-index:2;background:var(--semantic-surface-elevated)}
 .project-plan-table thead th{height:44px}
 .project-plan-name{position:sticky;left:0;z-index:1;width:280px;min-width:280px;max-width:280px;padding:8px 16px;border-inline-end:1px solid var(--semantic-border);background:var(--semantic-surface-strong);overflow-wrap:anywhere}
-.project-plan-table thead .project-plan-name,.project-plan-phase>*{background:var(--semantic-surface-elevated)}
-.project-plan-name span,.project-plan-name small{color:var(--semantic-text-muted);font-size:12px;font-weight:400}
-.project-plan-name span{margin-inline-start:8px}
+.project-plan-table thead .project-plan-name{background:var(--semantic-surface-elevated)}
+.project-plan-phase>*{background:var(--semantic-info-subtle)}
+.project-plan-name small,.project-plan-table thead .project-plan-name span{color:var(--semantic-text-muted);font-size:12px;font-weight:400}
+.project-plan-table thead .project-plan-name span{margin-inline-start:8px}
 .project-plan-name small{display:block;margin-top:2px}
-.project-plan-phase th{color:var(--semantic-primary);font-size:12px}
+.project-plan-phase th{color:var(--semantic-info-text);font-size:12px}
 .project-plan-table td{padding:0}
 .project-plan-axis{width:100%;padding:0;font-size:12px;color:var(--semantic-text-muted)}
 .project-plan-axis>span{padding-inline:12px}
@@ -2403,9 +2404,12 @@ body[data-workspace-view=projectPlan] #content{display:flex;flex-direction:colum
 .project-plan-time-cell{position:relative;background-image:var(--project-plan-grid)}
 .project-plan-track{min-height:52px;display:flex;align-items:center}
 .project-plan-today{position:absolute;inset-block:0;border-inline-start:1px solid var(--semantic-primary);opacity:.65}
-.project-plan-bar{position:absolute;min-width:2px;height:12px;border-radius:8px;background:var(--semantic-primary)}
-.project-plan-bar[data-status="已完成"]{background:var(--semantic-success)}
-.project-plan-bar[data-status="阻塞"]{background:var(--semantic-error)}
+.project-plan-table tr[data-status]{--project-plan-status-color:var(--semantic-text-muted)}
+.project-plan-table tr[data-status="进行中"]{--project-plan-status-color:var(--semantic-secondary)}
+.project-plan-table tr[data-status="已完成"]{--project-plan-status-color:var(--semantic-success)}
+.project-plan-table tr[data-status="阻塞"]{--project-plan-status-color:var(--semantic-error)}
+.project-plan-task-status{color:var(--project-plan-status-color)}
+.project-plan-bar{position:absolute;min-width:2px;height:12px;border-radius:8px;background:var(--project-plan-status-color)}
 .project-plan-bar[data-kind=point]{width:8px;height:8px;border-radius:2px;transform:translateX(-50%) rotate(45deg)}
 @media(max-width:640px){
  .project-plan-name{width:44vw;min-width:44vw;max-width:44vw;padding-inline:8px}

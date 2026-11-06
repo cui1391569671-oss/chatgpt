@@ -47,17 +47,21 @@ function PlanChart({project,filter}:{project:Project;filter:string}){
     <tr className='project-plan-phase'><th scope='rowgroup' className='project-plan-name'>{phase}</th><td/></tr>
     {items.map(({task,timing})=>{
      const bar=projectTaskBar(timing,timeline);
-     const status=timing.kind==='excluded'?'不适用':task.status;
-     const detail=[task.module==='通用'?'':task.module,task.department,timing.kind==='excluded'?'':status].filter(Boolean).join(' · ');
+     const status=timing.kind==='excluded'?'':task.status;
+     const detail=[task.module==='通用'?'':task.module,task.department].filter(Boolean).join(' · ');
      const label=timing.kind==='range'?timing.start+' 至 '+timing.end:
       timing.kind==='point'?(task.start===timing.date?'开始 ':'完成 ')+timing.date+' · '+(task.start===timing.date?'待补完成日期':'待补开始日期'):
        timing.kind==='invalid'?task.start+' 至 '+task.end+' · 日期顺序待核对':
         timing.kind==='excluded'?'不适用':'待排期';
-     return <tr key={task.row}>
-      <th scope='row' className='project-plan-name'><strong>{task.title}</strong>{detail&&<small>{detail}</small>}<small>{label}</small></th>
+     return <tr key={task.row} data-status={status}>
+      <th scope='row' className='project-plan-name'>
+       <strong>{task.title}</strong>
+       {(detail||status)&&<small>{detail}{status&&<>{detail&&' · '}<span className='project-plan-task-status'>{status}</span></>}</small>}
+       <small>{label}</small>
+      </th>
       <td className='project-plan-time-cell'><div className='project-plan-track'>
        {showToday&&<span aria-hidden='true' className='project-plan-today' style={{left:todayPosition+'%'}}/>}
-       {bar&&<span className='project-plan-bar' data-kind={timing.kind} data-status={status} style={bar} aria-hidden='true'/>}
+       {bar&&<span className='project-plan-bar' data-kind={timing.kind} style={bar} aria-hidden='true'/>}
       </div></td>
      </tr>;
     })}
