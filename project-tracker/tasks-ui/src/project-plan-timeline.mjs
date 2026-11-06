@@ -1,5 +1,15 @@
 import {validPlanDate,shiftPlanDate} from '../../annual-plans.mjs';
 
+export function activeProjectPlanTasks(tasks){
+ const completed=new Set(),unfinished=new Set();
+ for(const {phase,applicability,status} of tasks){
+  if(!phase||applicability==='否')continue;
+  if(status==='已完成')completed.add(phase);
+  else unfinished.add(phase);
+ }
+ return tasks.filter(({phase})=>!completed.has(phase)||unfinished.has(phase));
+}
+
 export function projectTaskTiming(task){
  if(task.applicability==='否')return {kind:'excluded'};
  const start=validPlanDate(task.start)?task.start:'';

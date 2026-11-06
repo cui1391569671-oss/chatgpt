@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {PROJECT_PLAN_SOURCE_ID,parseProjectPlanSheets,normalizeProjectPlanSnapshot} from '../project-plan-sheet.mjs';
-import {projectPlanTimeline,projectTaskBar,projectTaskTiming} from '../tasks-ui/src/project-plan-timeline.mjs';
+import {activeProjectPlanTasks,projectPlanTimeline,projectTaskBar,projectTaskTiming} from '../tasks-ui/src/project-plan-timeline.mjs';
 import {workspaceSiteNavigation} from '../tasks-ui/src/workspace-page-meta.mjs';
 
 const sheet={
@@ -24,6 +24,16 @@ test('project plan extracts fields by header, retains row numbers and pending ta
  assert.throws(()=>parseProjectPlanSheets('wrong',[sheet]));
  assert.throws(()=>parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,[sheet,sheet]));
  assert.throws(()=>parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,[{...sheet,rows:[['missing']]}]));
+});
+
+test('completed phases disappear while mixed, excluded-only, and unclassified tasks remain',()=>{
+ const done=(phase,applicability='是')=>({phase,applicability,status:'已完成'});
+ const open=(phase,applicability='是')=>({phase,applicability,status:'未开始'});
+ const visible=[done('实施'),open('实施'),open('选配','否'),done(''),open('验收','')];
+ assert.deepEqual(activeProjectPlanTasks([
+  done('准备'),visible[0],open('准备','否'),...visible.slice(1)
+ ]),visible);
+ assert.deepEqual(activeProjectPlanTasks([done('准备')]),[]);
 });
 
 test('gantt uses inclusive end dates and valid day positions across months and years',()=>{
