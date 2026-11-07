@@ -2415,3 +2415,20 @@ body[data-workspace-view=projectPlan] #content{display:flex;flex-direction:colum
  .project-plan-name{width:44vw;min-width:44vw;max-width:44vw;padding-inline:8px}
  .project-plan-sync{margin-inline-start:0}
 }
+
+.word-practice-layout{display:grid;grid-template-columns:minmax(0,1fr) 370px;align-items:start;gap:24px}
+.learning-calendar{min-width:0;padding:20px}
+.learning-calendar-title,.learning-calendar-month{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.learning-calendar-title h2{margin:0;font-size:18px}
+.learning-calendar-caption{font-size:12px;line-height:1.7;margin:8px 0 12px}
+.learning-calendar-month{margin-bottom:8px}
+.workspace-date-week .learning-calendar-day{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:18px}
+.learning-calendar-mark{display:flex;height:12px;color:var(--semantic-primary)}
+.learning-calendar-day[aria-selected=true] .learning-calendar-mark{color:inherit}
+.learning-calendar-day[aria-current=date] span:first-child{text-decoration:underline;text-underline-offset:3px}
+.learning-calendar-count{font-size:14px;margin:16px 0}
+.learning-calendar-count strong{color:var(--semantic-primary)}
+.learning-calendar-detail{padding-top:16px;border-top:1px solid var(--admin-border);font-size:13px;line-height:1.7}
+.learning-calendar-detail h3{font-size:14px;margin:0 0 8px}
+.learning-calendar-detail p{margin:4px 0}
+@media(max-width:1000px){.word-practice-layout{grid-template-columns:minmax(0,1fr)}.learning-calendar{width:100%;max-width:420px}}

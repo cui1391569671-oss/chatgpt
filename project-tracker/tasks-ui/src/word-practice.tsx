@@ -1,3 +1,4 @@
+import {LearningCheckinCalendar} from './learning-checkin-calendar';
 import {WorkspaceToolbar} from './components/workspace-toolbar';
 import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 import {motion} from 'motion/react';
@@ -16,7 +17,7 @@ const modeLabel=mode=>modes.find(item=>item.value===mode)?.label||'单词练习'
 const unit=mode=>mode==='sentence'?'句':'词';
 function Practice({words,bridge,close,controller}){
  const reduce=useWorkspaceMotionOff();
- const [library,setLibrary]=useState(words),[sessions,setSessions]=useState(()=>bridge.sessions?.()||[]);
+ const [library,setLibrary]=useState(words),[sessions,setSessions]=useState(()=>bridge.sessions?.()||[]),[checkins,setCheckins]=useState(()=>bridge.checkins?.()||[]);
  const round=useRef(null);
  const [mode,setMode]=useState('sentence'),[scope,setScope]=useState('unknown'),[limit,setLimit]=useState('20');
  const [queue,setQueue]=useState(null),[index,setIndex]=useState(0),[answer,setAnswer]=useState(''),[result,setResult]=useState(null),[mistakes,setMistakes]=useState([]),[correct,setCorrect]=useState(0),[pending,setPending]=useState(false),[error,setError]=useState(''),[revealed,setRevealed]=useState(false),[speaking,setSpeaking]=useState(false);
@@ -32,7 +33,7 @@ function Practice({words,bridge,close,controller}){
  useEffect(()=>()=>{window.speechSynthesis?.cancel();},[]);
  useEffect(()=>{input.current?.focus();},[index,queue]);
  controller.isEditing=()=>lock.current||!!queue&&!finished;
- controller.update=rows=>{setLibrary(rows);setSessions(bridge.sessions());};
+ controller.update=rows=>{setLibrary(rows);setSessions(bridge.sessions());setCheckins(bridge.checkins?.()||[]);};
  const selected=isSentence?sentenceQueue(library,scope,Number(limit)):practiceQueue(library.filter(word=>mode==='typing'||word.meaning?.trim()),scope,Number(limit));
  const missingTranslations=library.filter(word=>word.example?.trim()&&!sentenceQueue([word],'all',1).length).length;
  function start(list=selected){round.current={id:crypto.randomUUID(),startedAt:new Date().toISOString()};window.speechSynthesis?.cancel();setSpeaking(false);setQueue(list);setIndex(0);setAnswer('');setResult(null);setMistakes([]);setCorrect(0);setError('');setRevealed(false);hadError.current=false;}
@@ -62,6 +63,7 @@ function Practice({words,bridge,close,controller}){
  const inputProps={id:'word-practice-input',value:answer,autoComplete:'off',autoCorrect:'off',autoCapitalize:'none',spellCheck:false,placeholder:isSentence?'写出对应的英文句子…':'在这里输入单词…',disabled:pending||!!result,'aria-invalid':!!error,'aria-describedby':'word-practice-feedback',maxLength:isSentence?5000:200,onCompositionStart:()=>{composing.current=true;},onCompositionEnd:()=>{composing.current=false;},onChange:(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=>{setAnswer(e.target.value);if(!pending)setError('');},onKeyDown:(e:React.KeyboardEvent<HTMLInputElement|HTMLTextAreaElement>)=>{if(e.key==='Enter'){if(e.nativeEvent.isComposing||composing.current){e.preventDefault();return;}if(isSentence&&!e.shiftKey){e.preventDefault();submit();}}}};
  return <section className='word-practice-page' aria-label='英语练习'>
   <WorkspaceToolbar><WorkspaceIconButton icon={BookOpen} label='词汇库' disabled={pending} onClick={()=>void leave()}/></WorkspaceToolbar>
+  <div className='word-practice-layout'>
   <div className='word-practice-body card'>
    <div className='word-practice-session-head'><p className='muted' role='status'>{todaySessions.length?`今日 ${todaySessions.length} 轮`:'今日 0 轮'}</p>{isSentence&&missingTranslations>0&&<p className='muted' role='status'>有 {missingTranslations} 个词条缺少对应例句译文，暂不纳入句子练习。</p>}{queue&&!finished&&<Button variant='ghost' disabled={pending} onClick={()=>void leave()}>退出练习</Button>}</div>
    {!queue?<>
@@ -97,6 +99,8 @@ function Practice({words,bridge,close,controller}){
     </form>
    </>}
    {(!queue||finished)&&<section aria-label='最近练习记录' className='word-practice-summary'><h3>最近练习记录</h3>{recentSessions.length?<ol>{recentSessions.map(s=><li key={s.id}>{sessionLabel(s)}</li>)}</ol>:<p className='muted'>暂无练习记录</p>}</section>}
+  </div>
+  <LearningCheckinCalendar sessions={sessions} checkins={checkins} today={bridge.today()}/>
   </div>
   <footer className='word-practice-footer'>{finished&&mistakes.length>0&&<Button onClick={()=>start(mistakes)}>重练待巩固内容</Button>}{finished&&<Button variant='outline' onClick={()=>setQueue(null)}>重新选择</Button>}</footer>
  </section>;

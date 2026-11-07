@@ -4290,6 +4290,23 @@ body[data-workspace-view=projectPlan] #content{display:flex;flex-direction:colum
  .project-plan-sync{margin-inline-start:0}
 }
 
+.word-practice-layout{display:grid;grid-template-columns:minmax(0,1fr) 370px;align-items:start;gap:24px}
+.learning-calendar{min-width:0;padding:20px}
+.learning-calendar-title,.learning-calendar-month{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.learning-calendar-title h2{margin:0;font-size:18px}
+.learning-calendar-caption{font-size:12px;line-height:1.7;margin:8px 0 12px}
+.learning-calendar-month{margin-bottom:8px}
+.workspace-date-week .learning-calendar-day{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:18px}
+.learning-calendar-mark{display:flex;height:12px;color:var(--semantic-primary)}
+.learning-calendar-day[aria-selected=true] .learning-calendar-mark{color:inherit}
+.learning-calendar-day[aria-current=date] span:first-child{text-decoration:underline;text-underline-offset:3px}
+.learning-calendar-count{font-size:14px;margin:16px 0}
+.learning-calendar-count strong{color:var(--semantic-primary)}
+.learning-calendar-detail{padding-top:16px;border-top:1px solid var(--admin-border);font-size:13px;line-height:1.7}
+.learning-calendar-detail h3{font-size:14px;margin:0 0 8px}
+.learning-calendar-detail p{margin:4px 0}
+@media(max-width:1000px){.word-practice-layout{grid-template-columns:minmax(0,1fr)}.learning-calendar{width:100%;max-width:420px}}
+
 /* Canonical workspace layout and materials. Edit owners here; do not append override sheets. */
 :root {
   color-scheme: dark;
@@ -8269,7 +8286,7 @@ function renderWordPractice(){
  disposeWorkspaceTasks();disposeWorkspaceCalendar();disposePersonalInfo();disposeAnnualPlans();stopWordAudio();
  $('content').innerHTML='<div id="workspaceWordPractice" data-ui-root data-ui-owner="word-practice"></div>';
  if(!window.WorkspaceWordPractice){$('workspaceWordPractice').textContent='单词练习组件加载失败，请刷新重试。';return;}
- wordPracticeController=window.WorkspaceWordPractice.mount($('workspaceWordPractice'),state.vocabulary||[],{sessions:()=>state.wordPracticeSessions||[],today:day,close(){disposeWordPractice();view='vocabularyLibrary';query='';render();history.replaceState(null,'',location.pathname+'?view=vocabularyLibrary');},async review(id,correct,session){
+ wordPracticeController=window.WorkspaceWordPractice.mount($('workspaceWordPractice'),state.vocabulary||[],{sessions:()=>state.wordPracticeSessions||[],checkins:()=>state.checkins||[],today:day,close(){disposeWordPractice();view='vocabularyLibrary';query='';render();history.replaceState(null,'',location.pathname+'?view=vocabularyLibrary');},async review(id,correct,session){
   const next=structuredClone(state),index=(next.vocabulary||[]).findIndex(w=>w.id===id);if(index<0)throw Error('这个单词已移除，请结束练习后刷新词库。');
   next.vocabulary[index]=reviewedWord(next.vocabulary[index],correct,day());
   if(session){next.wordPracticeSessions??=[];if(!next.wordPracticeSessions.some(s=>s.id===session.id))next.wordPracticeSessions.push({...session,completedOn:day()});}
