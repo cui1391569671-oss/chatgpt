@@ -1,6 +1,7 @@
-/* exported mediaReviewKey, setupMediaCoverPicker, resolveMediaSourceCovers */
+/* exported mediaReviewKey, setupMediaCoverPicker, resolveMediaSourceCovers, resolveSteamReviews */
 const mediaSourceNames={tmdb:'TMDB',igdb:'IGDB',steam:'Steam',bangumi:'Bangumi',mal:'MyAnimeList'};
 const resolvedMediaCovers=new Map();
+const steamReviews=new Map();
 function mediaCoverKey(item){return [item.id,item.mediaSource,item.mediaSourceId,item.mediaType,item.season].join(':');}
 function mediaReviewKey(item){return item.steamAppId||(item.mediaSource==='steam'?item.mediaSourceId:'')||item.title;}
 function setupMediaCoverPicker(){
@@ -49,16 +50,83 @@ async function resolveMediaSourceCovers(){
   const key=mediaCoverKey(item);if(resolvedMediaCovers.has(key))return;
   if(!pendingMediaCovers.has(key))pendingMediaCovers.set(key,(async()=>{
    try{const response=await fetch('/api/media/details?'+new URLSearchParams({source:item.mediaSource,id:item.mediaSourceId,type:item.mediaType||'game',season:String(item.season||0)}),{signal:AbortSignal.timeout(12000)});
-    if(response.ok)resolvedMediaCovers.set(key,(await response.json()).coverUrl||'');
+    if(response.ok){
+     const coverUrl=(await response.json()).coverUrl||'';
+     resolvedMediaCovers.set(key,coverUrl);
+     if(coverUrl)updateVisibleMediaCover(item);
+    }
    }catch{/* Optional cover resolution keeps the saved cover and retries on a later render. */}finally{pendingMediaCovers.delete(key);}
   })());
   await pendingMediaCovers.get(key);
  };
  await Promise.all(Array.from({length:Math.min(4,queue.length)},async()=>{while(cursor<queue.length)await resolve(queue[cursor++]);}));
- if(view==='completedGames'&&queue.length)renderCompletedGames(false);
+
 }
 
 function retryOriginalMediaCover(image){
  const original=image.dataset.coverFallback;if(!original)return false;
  delete image.dataset.coverFallback;image.hidden=false;image.src=original;return true;
+}
+
+// Enrichment updates preserve card nodes, loaded images, focus and entrance animations.
+function updateVisibleMediaCover(item){
+ if(view!=='completedGames')return;
+ const current=(state.completedGames||[]).find(record=>record.id===item.id);
+ if(!current||mediaCoverKey(current)!==mediaCoverKey(item)||current.coverMode==='manual')return;
+ const url=current.coverUrl||resolvedMediaCovers.get(mediaCoverKey(current));
+ if(!url)return;
+ const host=$('results');
+ if(!host)return;
+ for(const cover of host.querySelectorAll('.media-wall-cover,.record-cover')){
+  if(cover.dataset.id!==current.id||cover.querySelector('img'))continue;
+  const image=document.createElement('img');
+  const source=gameCoverImageUrl(url,current.mediaType||'game');
+  image.width=300;
+  image.height=450;
+  image.loading='lazy';
+  image.decoding='async';
+  image.referrerPolicy='no-referrer';
+  image.alt=current.title+' 封面';
+  if(cover.classList.contains('record-cover'))image.className='game-cover';
+  if(source!==url)image.dataset.coverFallback=url;
+  image.onerror=()=>{if(!retryOriginalMediaCover(image))image.hidden=true;};
+  image.src=source;
+  cover.prepend(image);
+  if(cover.classList.contains('record-cover')&&(current.mediaType||'game')==='game'){
+   const review=document.createElement('span');
+   review.className='cover-rating';
+   review.dataset.mediaReviewKey=mediaReviewKey(current);
+   review.textContent=steamReviews.get(mediaReviewKey(current))?.label||'评价加载中…';
+   cover.append(review);
+   void resolveSteamReviews();
+  }
+ }
+}
+function updateVisibleMediaReview(key){
+ if(view!=='completedGames')return;
+ const host=$('results');
+ if(!host)return;
+ const label=steamReviews.get(key)?.label||'评价暂不可用';
+ for(const node of host.querySelectorAll('[data-media-review-key]')){
+  if(node.dataset.mediaReviewKey===key&&node.textContent!==label)node.textContent=label;
+ }
+}
+async function resolveSteamReviews(){
+ if(view!=='completedGames'||mediaLayout!=='list')return;
+ const host=$('results');
+ if(!host)return;
+ const visibleKeys=new Set(Array.from(host.querySelectorAll('[data-media-review-key]'),node=>node.dataset.mediaReviewKey));
+ for(const game of state.completedGames||[]){
+  if(view!=='completedGames'||mediaLayout!=='list')return;
+  const key=mediaReviewKey(game);
+  if((game.mediaType||'game')!=='game'||!visibleKeys.has(key)||steamReviews.has(key))continue;
+  steamReviews.set(key,{label:'评价加载中…'});
+  try{
+   const query=game.steamAppId||game.mediaSource==='steam'?{appid:game.steamAppId||game.mediaSourceId}:{title:game.title};
+   const response=await fetch('/api/steam-review?'+new URLSearchParams(query),{signal:AbortSignal.timeout(12000)});
+   if(!response.ok)throw Error('Review lookup failed');
+   steamReviews.set(key,await response.json());
+  }catch{steamReviews.set(key,{label:'评价暂不可用'});}
+  updateVisibleMediaReview(key);
+ }
 }

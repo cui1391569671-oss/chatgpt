@@ -8087,10 +8087,10 @@ function renderMediaLibrary(resolve=true){
  items.sort(mediaSort==='title'?(a,b)=>a.title.localeCompare(b.title,'zh-CN'):mediaSort==='rating'?(a,b)=>(b.rating??-1)-(a.rating??-1):(a,b)=>(b.history?.at(-1)?.at||b.completedDate||b.startedDate||'').localeCompare(a.history?.at(-1)?.at||a.completedDate||a.startedDate||''));
  const signature=[query,mediaFilter,mediaStatusFilter,mediaSort].join('|');if(signature!==mediaSignature){mediaPage=1;mediaSignature=signature;}
  const pages=Math.max(1,Math.ceil(items.length/24));mediaPage=Math.min(mediaPage,pages);const visible=items.slice((mediaPage-1)*24,mediaPage*24);
- $('results').innerHTML=segmentControl('mediaStatus','作品状态',mediaStatusFilter,Object.entries(MEDIA_DISPLAY_STATUSES).map(([value,label])=>({value,label:label+' '+selected.filter(g=>mediaDisplayStatus(g)===value).length})),'media-status-tabs')+'<div class="media-controls">'+segmentControl('media','作品类别',mediaFilter,[{value:'all',label:'全部 '+all.length},...Object.entries(mediaTypes).map(([value,label])=>({value,label:label+' '+all.filter(g=>(g.mediaType||'game')===value).length}))],'media-filters')+'<div class="media-library-toolbar"><label><span>排序</span><select id="mediaTrackingSort" aria-label="作品排序">'+[['recent','最近更新'],['title','作品名称'],['rating','我的评分']].map(([v,l])=>'<option value="'+v+'" '+(v===mediaSort?'selected':'')+'>'+l+'</option>').join('')+'</select></label><button class="btn" data-workspace-icon="'+(mediaLayout==='grid'?'list':'grid')+'" aria-label="'+(mediaLayout==='grid'?'切换列表':'切换封面墙')+'" data-media-layout="'+(mediaLayout==='grid'?'list':'grid')+'">'+(mediaLayout==='grid'?'切换列表':'切换封面墙')+'</button></div></div>'+(items.length?'<div class="'+(mediaLayout==='list'?'media-library-list':'media-wall')+'">'+visible.map((g,index)=>mediaLayout==='grid'?mediaWallCard(g,index):'<article class="card"><button type="button" class="record-cover" data-edit="completedGames" data-id="'+esc(g.id)+'" aria-label="编辑娱乐记录：'+esc(g.title)+'">'+(g.coverUrl?'<img class="game-cover" loading="lazy" decoding="async" width="300" height="450" referrerpolicy="no-referrer" src="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game'))+'" data-cover-fallback="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game')!==g.coverUrl?g.coverUrl:'')+'" alt="'+esc(g.title)+' 封面" onerror="if(!retryOriginalMediaCover(this))this.hidden=true">':'<span class="game-cover-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m10 8 6 4-6 4z"/></svg><span class="workspace-visually-hidden">暂无封面</span></span>')+(g.coverUrl&&(g.mediaType||'game')==='game'?'<span class="cover-rating">'+esc((steamReviews.get(mediaReviewKey(g))||{}).label||'评价加载中…')+'</span>':'')+mediaCoverStatus(g)+'<span class="cover-platform">'+esc(g.platform||mediaTypes[g.mediaType||'game'])+'</span></button><div class="media-record-info"><h3><button type="button" class="workspace-record-title" data-edit="completedGames" data-id="'+esc(g.id)+'" aria-label="编辑娱乐记录：'+esc(g.title)+'">'+esc(g.title)+'</button></h3>'+(g.progress||g.total||g.season?'<p>'+mediaProgressText(g)+'</p>':'')+''+(g.rating!=null||g.repeats?'<p class="muted">'+[g.rating==null?'':'★ '+g.rating+' / 10',g.repeats?((g.mediaType||'game')==='game'?'重玩':'重看')+' '+g.repeats+' 次':''].filter(Boolean).join(' · ')+'</p>':'')+(g.completedDate?'<p class="muted">完成 '+esc(g.completedDate)+'</p>':'')+(g.detail?'<details class="media-record-details secondary-help"><summary>备注</summary><p class="media-record-note">'+esc(g.detail)+'</p></details>':'')+(['anime','tv'].includes(g.mediaType)&&mediaTrackingStatus(g)==='in_progress'?'<div class="media-record-actions"><button class="btn" data-media-advance="'+esc(g.id)+'" '+(busy||g.total>0&&g.progress>=g.total?'disabled data-disabled-when-idle':'')+'>＋1 集</button></div>':'')+'</div></article>').join('')+'</div><div class="media-pagination"><button class="btn" data-workspace-icon="previous" aria-label="上一页" data-media-page="-1" '+(mediaPage===1?'disabled data-disabled-when-idle':'')+'>上一页</button><span>第 '+mediaPage+' / '+pages+' 页 · '+items.length+' 条</span><button class="btn" data-workspace-icon="next" aria-label="下一页" data-media-page="1" '+(mediaPage===pages?'disabled data-disabled-when-idle':'')+'>下一页</button></div>':'<div class="card">'+empty(raw.length?'没有符合条件的记录':'暂无娱乐记录')+(raw.length?'<button class="btn" data-media-reset>清空筛选</button>':'')+'</div>');
+ $('results').innerHTML=segmentControl('mediaStatus','作品状态',mediaStatusFilter,Object.entries(MEDIA_DISPLAY_STATUSES).map(([value,label])=>({value,label:label+' '+selected.filter(g=>mediaDisplayStatus(g)===value).length})),'media-status-tabs')+'<div class="media-controls">'+segmentControl('media','作品类别',mediaFilter,[{value:'all',label:'全部 '+all.length},...Object.entries(mediaTypes).map(([value,label])=>({value,label:label+' '+all.filter(g=>(g.mediaType||'game')===value).length}))],'media-filters')+'<div class="media-library-toolbar"><label><span>排序</span><select id="mediaTrackingSort" aria-label="作品排序">'+[['recent','最近更新'],['title','作品名称'],['rating','我的评分']].map(([v,l])=>'<option value="'+v+'" '+(v===mediaSort?'selected':'')+'>'+l+'</option>').join('')+'</select></label><button class="btn" data-workspace-icon="'+(mediaLayout==='grid'?'list':'grid')+'" aria-label="'+(mediaLayout==='grid'?'切换列表':'切换封面墙')+'" data-media-layout="'+(mediaLayout==='grid'?'list':'grid')+'">'+(mediaLayout==='grid'?'切换列表':'切换封面墙')+'</button></div></div>'+(items.length?'<div class="'+(mediaLayout==='list'?'media-library-list':'media-wall')+'">'+visible.map((g,index)=>mediaLayout==='grid'?mediaWallCard(g,index):'<article class="card"><button type="button" class="record-cover" data-edit="completedGames" data-id="'+esc(g.id)+'" aria-label="编辑娱乐记录：'+esc(g.title)+'">'+(g.coverUrl?'<img class="game-cover" loading="lazy" decoding="async" width="300" height="450" referrerpolicy="no-referrer" src="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game'))+'" data-cover-fallback="'+esc(gameCoverImageUrl(g.coverUrl,g.mediaType||'game')!==g.coverUrl?g.coverUrl:'')+'" alt="'+esc(g.title)+' 封面" onerror="if(!retryOriginalMediaCover(this))this.hidden=true">':'<span class="game-cover-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m10 8 6 4-6 4z"/></svg><span class="workspace-visually-hidden">暂无封面</span></span>')+(g.coverUrl&&(g.mediaType||'game')==='game'?'<span class="cover-rating" data-media-review-key="'+esc(mediaReviewKey(g))+'">'+esc((steamReviews.get(mediaReviewKey(g))||{}).label||'评价加载中…')+'</span>':'')+mediaCoverStatus(g)+'<span class="cover-platform">'+esc(g.platform||mediaTypes[g.mediaType||'game'])+'</span></button><div class="media-record-info"><h3><button type="button" class="workspace-record-title" data-edit="completedGames" data-id="'+esc(g.id)+'" aria-label="编辑娱乐记录：'+esc(g.title)+'">'+esc(g.title)+'</button></h3>'+(g.progress||g.total||g.season?'<p>'+mediaProgressText(g)+'</p>':'')+''+(g.rating!=null||g.repeats?'<p class="muted">'+[g.rating==null?'':'★ '+g.rating+' / 10',g.repeats?((g.mediaType||'game')==='game'?'重玩':'重看')+' '+g.repeats+' 次':''].filter(Boolean).join(' · ')+'</p>':'')+(g.completedDate?'<p class="muted">完成 '+esc(g.completedDate)+'</p>':'')+(g.detail?'<details class="media-record-details secondary-help"><summary>备注</summary><p class="media-record-note">'+esc(g.detail)+'</p></details>':'')+(['anime','tv'].includes(g.mediaType)&&mediaTrackingStatus(g)==='in_progress'?'<div class="media-record-actions"><button class="btn" data-media-advance="'+esc(g.id)+'" '+(busy||g.total>0&&g.progress>=g.total?'disabled data-disabled-when-idle':'')+'>＋1 集</button></div>':'')+'</div></article>').join('')+'</div><div class="media-pagination"><button class="btn" data-workspace-icon="previous" aria-label="上一页" data-media-page="-1" '+(mediaPage===1?'disabled data-disabled-when-idle':'')+'>上一页</button><span>第 '+mediaPage+' / '+pages+' 页 · '+items.length+' 条</span><button class="btn" data-workspace-icon="next" aria-label="下一页" data-media-page="1" '+(mediaPage===pages?'disabled data-disabled-when-idle':'')+'>下一页</button></div>':'<div class="card">'+empty(raw.length?'没有符合条件的记录':'暂无娱乐记录')+(raw.length?'<button class="btn" data-media-reset>清空筛选</button>':'')+'</div>');
  window.WorkspaceMotion?.rearrange($('results'),priorLayout);
  $('mediaTrackingSort').onchange=e=>{mediaSort=e.target.value;saveMediaView();renderCompletedGames(false);};
- $('results').insertAdjacentHTML('beforeend','<details class="media-source-credits secondary-help"><summary>数据来源与致谢</summary><p><a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer"><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" width="80" height="58" alt="TMDB"></a></p><p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p><p>游戏资料：IGDB / Steam；动漫资料：Bangumi / MyAnimeList。</p></details>');if(resolve){resolveSavedGameCovers();resolveSteamReviews();}
+ $('results').insertAdjacentHTML('beforeend','<details class="media-source-credits secondary-help"><summary>数据来源与致谢</summary><p><a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer"><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" width="80" height="58" alt="TMDB"></a></p><p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p><p>游戏资料：IGDB / Steam；动漫资料：Bangumi / MyAnimeList。</p></details>');if(resolve)resolveSavedGameCovers();if(mediaLayout==='list')resolveSteamReviews();
 }
 onWorkspaceContent('click',async e=>{
  const button=e.target.closest('button');if(!button)return;
@@ -8118,9 +8118,10 @@ function enhanceWorkspaceAutocomplete(input,list,onSelect,onSearch){
  return {clear(){items=[];list.replaceChildren();close();},set(candidates,markup){items=candidates;index=-1;list.innerHTML=markup;list.querySelectorAll('[data-choice]').forEach((node,i)=>{node.id=list.id+'-option-'+i;node.setAttribute('role','option');node.setAttribute('aria-selected','false');node.tabIndex=-1;});list.hidden=!items.length;input.setAttribute('aria-expanded',String(!!items.length));},destroy(){input.removeEventListener('workspace-autocomplete-close',close);document.removeEventListener('pointerdown',outside);input.removeEventListener('keydown',keydown);}};
 }
 
-/* exported mediaReviewKey, setupMediaCoverPicker, resolveMediaSourceCovers */
+/* exported mediaReviewKey, setupMediaCoverPicker, resolveMediaSourceCovers, resolveSteamReviews */
 const mediaSourceNames={tmdb:'TMDB',igdb:'IGDB',steam:'Steam',bangumi:'Bangumi',mal:'MyAnimeList'};
 const resolvedMediaCovers=new Map();
+const steamReviews=new Map();
 function mediaCoverKey(item){return [item.id,item.mediaSource,item.mediaSourceId,item.mediaType,item.season].join(':');}
 function mediaReviewKey(item){return item.steamAppId||(item.mediaSource==='steam'?item.mediaSourceId:'')||item.title;}
 function setupMediaCoverPicker(){
@@ -8169,18 +8170,85 @@ async function resolveMediaSourceCovers(){
   const key=mediaCoverKey(item);if(resolvedMediaCovers.has(key))return;
   if(!pendingMediaCovers.has(key))pendingMediaCovers.set(key,(async()=>{
    try{const response=await fetch('/api/media/details?'+new URLSearchParams({source:item.mediaSource,id:item.mediaSourceId,type:item.mediaType||'game',season:String(item.season||0)}),{signal:AbortSignal.timeout(12000)});
-    if(response.ok)resolvedMediaCovers.set(key,(await response.json()).coverUrl||'');
+    if(response.ok){
+     const coverUrl=(await response.json()).coverUrl||'';
+     resolvedMediaCovers.set(key,coverUrl);
+     if(coverUrl)updateVisibleMediaCover(item);
+    }
    }catch{/* Optional cover resolution keeps the saved cover and retries on a later render. */}finally{pendingMediaCovers.delete(key);}
   })());
   await pendingMediaCovers.get(key);
  };
  await Promise.all(Array.from({length:Math.min(4,queue.length)},async()=>{while(cursor<queue.length)await resolve(queue[cursor++]);}));
- if(view==='completedGames'&&queue.length)renderCompletedGames(false);
+
 }
 
 function retryOriginalMediaCover(image){
  const original=image.dataset.coverFallback;if(!original)return false;
  delete image.dataset.coverFallback;image.hidden=false;image.src=original;return true;
+}
+
+// Enrichment updates preserve card nodes, loaded images, focus and entrance animations.
+function updateVisibleMediaCover(item){
+ if(view!=='completedGames')return;
+ const current=(state.completedGames||[]).find(record=>record.id===item.id);
+ if(!current||mediaCoverKey(current)!==mediaCoverKey(item)||current.coverMode==='manual')return;
+ const url=current.coverUrl||resolvedMediaCovers.get(mediaCoverKey(current));
+ if(!url)return;
+ const host=$('results');
+ if(!host)return;
+ for(const cover of host.querySelectorAll('.media-wall-cover,.record-cover')){
+  if(cover.dataset.id!==current.id||cover.querySelector('img'))continue;
+  const image=document.createElement('img');
+  const source=gameCoverImageUrl(url,current.mediaType||'game');
+  image.width=300;
+  image.height=450;
+  image.loading='lazy';
+  image.decoding='async';
+  image.referrerPolicy='no-referrer';
+  image.alt=current.title+' 封面';
+  if(cover.classList.contains('record-cover'))image.className='game-cover';
+  if(source!==url)image.dataset.coverFallback=url;
+  image.onerror=()=>{if(!retryOriginalMediaCover(image))image.hidden=true;};
+  image.src=source;
+  cover.prepend(image);
+  if(cover.classList.contains('record-cover')&&(current.mediaType||'game')==='game'){
+   const review=document.createElement('span');
+   review.className='cover-rating';
+   review.dataset.mediaReviewKey=mediaReviewKey(current);
+   review.textContent=steamReviews.get(mediaReviewKey(current))?.label||'评价加载中…';
+   cover.append(review);
+   void resolveSteamReviews();
+  }
+ }
+}
+function updateVisibleMediaReview(key){
+ if(view!=='completedGames')return;
+ const host=$('results');
+ if(!host)return;
+ const label=steamReviews.get(key)?.label||'评价暂不可用';
+ for(const node of host.querySelectorAll('[data-media-review-key]')){
+  if(node.dataset.mediaReviewKey===key&&node.textContent!==label)node.textContent=label;
+ }
+}
+async function resolveSteamReviews(){
+ if(view!=='completedGames'||mediaLayout!=='list')return;
+ const host=$('results');
+ if(!host)return;
+ const visibleKeys=new Set(Array.from(host.querySelectorAll('[data-media-review-key]'),node=>node.dataset.mediaReviewKey));
+ for(const game of state.completedGames||[]){
+  if(view!=='completedGames'||mediaLayout!=='list')return;
+  const key=mediaReviewKey(game);
+  if((game.mediaType||'game')!=='game'||!visibleKeys.has(key)||steamReviews.has(key))continue;
+  steamReviews.set(key,{label:'评价加载中…'});
+  try{
+   const query=game.steamAppId||game.mediaSource==='steam'?{appid:game.steamAppId||game.mediaSourceId}:{title:game.title};
+   const response=await fetch('/api/steam-review?'+new URLSearchParams(query),{signal:AbortSignal.timeout(12000)});
+   if(!response.ok)throw Error('Review lookup failed');
+   steamReviews.set(key,await response.json());
+  }catch{steamReviews.set(key,{label:'评价暂不可用'});}
+  updateVisibleMediaReview(key);
+ }
 }
 
 /* MEDIA_TRACKING_END */
@@ -8194,8 +8262,6 @@ const resolvedAnimeCovers=new Map();
 async function resolveSavedGameCovers(){return resolveMediaSourceCovers();}
 document.addEventListener('load',e=>{const img=e.target;if(img.matches?.('img[data-official-portrait]')&&img.naturalWidth>=img.naturalHeight){img.replaceWith(Object.assign(document.createElement('div'),{className:img.classList.contains('game-cover')?'game-cover-placeholder':'release-cover-missing',textContent:'暂无 Steam 竖版封面'}));}},true);
 document.addEventListener('error',e=>{const img=e.target;if(!img.matches?.('img[data-official-portrait]'))return;if(/library_600x900\.jpg/.test(img.src)){img.src=img.src.replace('.jpg','.png');}else img.replaceWith(Object.assign(document.createElement('div'),{className:'release-cover-missing',textContent:'暂无官方竖版封面'}));},true);
-const steamReviews=new Map();
-async function resolveSteamReviews(){for(const game of state.completedGames||[]){if((game.mediaType||'game')!=='game'||steamReviews.has(mediaReviewKey(game)))continue;steamReviews.set(mediaReviewKey(game),{label:'评价加载中…'});try{const r=await fetch('/api/steam-review?'+new URLSearchParams(game.steamAppId||game.mediaSource==='steam'?{appid:game.steamAppId||game.mediaSourceId}:{title:game.title}));if(!r.ok)throw Error();steamReviews.set(mediaReviewKey(game),await r.json());}catch{steamReviews.set(mediaReviewKey(game),{label:'评价暂不可用'});}if(view==='completedGames')renderCompletedGames(false);}}
 function renderCompletedGames(resolve=true){return renderMediaLibrary(resolve);}
 
 function field(id,label,type,value='',extra=''){return '<label for="'+id+'">'+label+'</label><input id="'+id+'" name="'+id+'" type="'+type+'" value="'+esc(value)+'" '+extra+'>';}
