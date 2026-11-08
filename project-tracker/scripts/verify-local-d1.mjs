@@ -24,6 +24,11 @@ try{
  const login=await mf.dispatchFetch(new URL('/auth/login',url),{method:'POST',headers:{Origin:url.origin,'Content-Type':'application/x-www-form-urlencoded','CF-Connecting-IP':'192.0.2.1'},body:'username=audit-user&password=audit-local-only',redirect:'manual'});
  assert.equal(login.status,303);const cookie=login.headers.get('Set-Cookie').split(';')[0];
  const call=(path,body)=>mf.dispatchFetch(new URL(path,url),{method:body?'POST':'GET',headers:{Origin:url.origin,Cookie:cookie,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
+ const beauty={id:'synthetic-beauty',title:'隔离护肤记录',category:'skincare',date:'2026-11-08',products:'演示产品',detail:'隔离检查'};
+ assert.equal((await call('/api/workspace/patch?scope=personal',{operations:[{collection:'beautyRecords',id:beauty.id,action:'create',record:beauty}]})).status,200);
+ assert.deepEqual((await (await call('/api/workspace?scope=personal')).json()).workspace.beautyRecords,[beauty]);
+ assert.equal((await call('/api/workspace/patch?scope=work',{operations:[{collection:'beautyRecords',id:beauty.id,action:'create',record:beauty}]})).status,400);
+ assert.equal((await call('/api/workspace/patch?scope=personal',{operations:[{collection:'beautyRecords',id:beauty.id,action:'delete',before:beauty}]})).status,200);
  assert.equal((await mf.dispatchFetch(new URL('/api/project-plan',url))).status,401);
  assert.deepEqual((await (await call('/api/project-plan')).json()).projects,[]);
  const plan=parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,[17,18].map(sheetId=>({

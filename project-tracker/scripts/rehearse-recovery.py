@@ -14,7 +14,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix='workbench-recovery-') as folder:
         source=sqlite3.connect(':memory:')
         source.executescript('CREATE TABLE tracker_state(id INTEGER PRIMARY KEY,payload TEXT,version INTEGER); CREATE TABLE wardrobe_images(id TEXT PRIMARY KEY,bytes BLOB); CREATE TABLE calendar_images(id TEXT PRIMARY KEY,scope TEXT,bytes BLOB); CREATE TABLE note_images(id TEXT PRIMARY KEY,scope TEXT,bytes BLOB); CREATE TABLE account_vault(owner TEXT PRIMARY KEY,envelope TEXT,version INTEGER); CREATE TABLE project_core_information(id INTEGER PRIMARY KEY,payload TEXT); CREATE TABLE project_plan_snapshot(id INTEGER PRIMARY KEY,payload TEXT,sync_version INTEGER); CREATE TABLE photography(id TEXT PRIMARY KEY,title TEXT,spot TEXT,shotOn TEXT,note TEXT,width INTEGER,height INTEGER,createdAt TEXT,version INTEGER,fingerprint TEXT,image BLOB,thumbnail BLOB);')
-        state={'data':[{'id':'issue-1'}],'archive':[],'workspace':{'tasks':[{'id':'personal-1'}]},'workWorkspace':{'tasks':[{'id':'work-1'}]},'workspaceVersions':{'personal':3,'work':7}}
+        state={'data':[{'id':'issue-1'}],'archive':[],'workspace':{'tasks':[{'id':'personal-1'}],'beautyRecords':[{'id':'beauty-1','title':'护肤记录','category':'skincare','date':'2026-11-08','products':'演示产品','detail':'恢复检查'}]},'workWorkspace':{'tasks':[{'id':'work-1'}]},'workspaceVersions':{'personal':3,'work':7}}
         source.execute('INSERT INTO tracker_state VALUES(1,?,9)',(json.dumps(state),))
         source.execute('INSERT INTO wardrobe_images VALUES(?,?)',('synthetic',bytes([255,216,0,255,217])))
         source.execute('INSERT INTO calendar_images VALUES(?,?,?)',('event-image','work',bytes([255,216,1,255,217])))

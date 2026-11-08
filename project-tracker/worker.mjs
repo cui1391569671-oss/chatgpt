@@ -1,3 +1,4 @@
+import {validBeautyRecords} from './beauty-records.mjs';
 import {validMaintenanceFrequency} from './maintenance-schedule.mjs';
 import {readDingtalkCalendar,dingtalkCalendarPush} from './dingtalk-calendar.mjs';
 import {validProjectShipping} from './project-shipping.mjs';
@@ -84,6 +85,7 @@ function reminderTasks(s,requestedScope){const tasks=[];for(const [scope,key] of
 function sameProjectState(a,b){const normalize=v=>Array.isArray(v)?v.map(normalize):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,normalize(v[k])])):v;const fields=v=>({data:v.data,archive:v.archive,priorities:v.priorities,projects:v.projects||[],deletedProjects:v.deletedProjects||[]});return JSON.stringify(normalize(fields(a)))===JSON.stringify(normalize(fields(b)));}
 
 function validWorkspace(w){
+ if(w?.beautyRecords!==undefined&&!validBeautyRecords(w.beautyRecords))return false;
  const str=(s,max)=>typeof s==='string'&&s.length<=max;
  const date=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
  const time=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)&&date(s.slice(0,10))&&Number(s.slice(11,13))<24&&Number(s.slice(14,16))<60;
@@ -225,7 +227,7 @@ async function fetchRoute(request,env){
     const text=await readBoundedText(request,1500000);
     let input;try{input=JSON.parse(text);}catch{return json({error:'Invalid JSON'},400);}
     const workspace=url.pathname==='/api/workspace/patch',scope=url.searchParams.get('scope');if(workspace&&!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);
-    if(workspace&&scope==='work'&&input?.operations?.some(op=>['checkins','annualPlans','wordPracticeSessions','fitnessSessions','fitnessProfiles'].includes(op.collection)))return json({error:'此记录仅限私人空间'},400);
+    if(workspace&&scope==='work'&&input?.operations?.some(op=>['checkins','annualPlans','wordPracticeSessions','fitnessSessions','fitnessProfiles','beautyRecords'].includes(op.collection)))return json({error:'此记录仅限私人空间'},400);
     if(workspace&&scope==='personal'&&input?.operations?.some(op=>op.collection==='projectShipping'))return json({error:'发货信息仅限工作空间'},400);
     const key=scope==='work'?'workWorkspace':'workspace';
     for(let attempt=0;attempt<5;attempt++){
@@ -250,7 +252,7 @@ async function fetchRoute(request,env){
      if(!request.headers.get('Content-Type')?.includes('application/json'))return json({error:'JSON required'},415);
      const body=await readBoundedText(request,1500000);
      let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
-    if(scope==='work'&&(input?.workspace?.checkins!==undefined||input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined||input?.workspace?.fitnessSessions!==undefined||input?.workspace?.fitnessProfiles!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
+    if(scope==='work'&&(input?.workspace?.checkins!==undefined||input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined||input?.workspace?.fitnessSessions!==undefined||input?.workspace?.fitnessProfiles!==undefined||input?.workspace?.beautyRecords!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
      if(scope==='personal'&&input?.workspace?.projectShipping!==undefined)return json({error:'发货信息仅限工作空间'},400);
      if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace)||scope==='work'&&input.workspace.tasks.some(t=>!!t.mediaRecordId)||input.workspace.events.some(event=>!validEventImages(event.images,scope))||input.workspace.notes.some(note=>!validNoteImages(note.images,scope)))return json({error:'Invalid workspace'},400);
      for(let attempt=0;attempt<3;attempt++){
