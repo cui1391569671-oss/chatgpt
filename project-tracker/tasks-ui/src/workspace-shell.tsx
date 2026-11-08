@@ -15,7 +15,7 @@ import {Dialog,DialogContent,DialogTitle,DialogDescription} from '@/components/u
 import {Command,CommandInput,CommandList,CommandEmpty,CommandGroup,CommandItem} from '@/components/ui/command';
 import {DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator} from '@/components/ui/dropdown-menu';
 import {BriefcaseBusiness, CalendarDays, CheckSquare, NotebookPen, FolderOpen, BookOpen, Dumbbell, Shirt, Wrench, Clapperboard, UserRound, Home, Check, X, CircleHelp, GanttChart} from 'lucide-react';
-const pageIcons={home:Home,projects:BriefcaseBusiness,projectPlan:GanttChart,tasks:CheckSquare,today:CheckSquare,drive:FolderOpen,notes:NotebookPen,calendar:CalendarDays,annualPlans:CalendarDays,checkins:CheckSquare,vocabulary:BookOpen,fitness:Dumbbell,completedGames:Clapperboard,wardrobe:Shirt,maintenance:Wrench};
+const pageIcons={home:Home,projects:BriefcaseBusiness,projectPlan:GanttChart,tasks:CheckSquare,today:CheckSquare,drive:FolderOpen,notes:NotebookPen,photographyNotes:NotebookPen,calendar:CalendarDays,annualPlans:CalendarDays,checkins:CheckSquare,vocabulary:BookOpen,fitness:Dumbbell,completedGames:Clapperboard,wardrobe:Shirt,maintenance:Wrench};
 const navigationGroups=scope=>workspaceNavigation(scope).map(group=>({...group,items:group.views.map(id=>[id,workspacePageMeta(scope,id).label,pageIcons[id]||Home] as const)}));
 function ShellHeader({bridge,snapshot,actions}){
  const reduceMotion=useWorkspaceMotionOff();
