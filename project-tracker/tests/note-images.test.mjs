@@ -1,0 +1,51 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {Miniflare} from 'miniflare';
+import worker,{validWorkspace} from './helpers/session-worker.mjs';
+import {validNoteImages} from '../workspace-images.mjs';
+import {recordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
+const origin='https://test.local',jpeg=new Uint8Array([255,216,1,255,217]);
+const blank=()=>({tasks:[],notes:[],events:[]});
+const note=images=>({id:'photo-note',notebook:'photography',title:'光线',body:'第一行\n第二行',updatedAt:'2026-11-08T00:00:00Z',images});
+test('note image refs reject external, duplicate, oversized and invalid refs while legacy notes remain valid',()=>{
+ const url='/api/note-images/personal/12345678-1234-1234-1234-123456789012';
+ assert(validWorkspace({...blank(),notes:[note(undefined)]}));assert(validNoteImages([url],'personal'));assert(!validNoteImages([url],'work'));
+ for(const images of [null,[url,url],Array(5).fill(url),['https://example.com/image.jpg'],[url.replace('note-images','calendar-images')],[123]])assert(!validWorkspace({...blank(),notes:[note(images)]}));
+});
+test('note upload, authenticated retrieval and record patch roundtrip preserve image bytes and scope isolation',async t=>{
+ const mf=new Miniflare({modules:true,script:'export default {fetch(){return new Response("test")}}',compatibilityDate:'2026-07-30',d1Databases:{DB:'note-image-test'}});t.after(()=>mf.dispose());
+ const env={DB:await mf.getD1Database('DB'),TRACKER_USER:'u',TRACKER_PASSWORD:'p'};
+ await env.DB.prepare('CREATE TABLE tracker_state(id INTEGER PRIMARY KEY,payload TEXT,version INTEGER)').run();
+ await env.DB.prepare('INSERT INTO tracker_state VALUES(1,?,1)').bind(JSON.stringify({data:[],archive:[],projects:[],priorities:{},workspace:blank(),workWorkspace:blank(),workspaceVersions:{personal:1,work:1}})).run();
+ const call=(path,{method='GET',body,auth=true,type='application/json',from=origin}={})=>worker.fetch(new Request(origin+path,{method,headers:{Origin:from,'Content-Type':type,...(auth?{Authorization:'Basic '+btoa('u:p')}:{})},...(body===undefined?{}:{body:type==='application/json'?JSON.stringify(body):body})}),env);
+ const upload=(changes={})=>call('/api/note-images/personal',{method:'POST',body:jpeg,type:'image/jpeg',...changes});
+ assert.equal((await upload({auth:false})).status,401);assert.equal((await upload({from:'https://other.local'})).status,403);
+ assert.equal((await upload({body:new Uint8Array(240001)})).status,413);assert.equal((await upload({body:new Uint8Array([1,2,3,4])})).status,400);assert.equal((await upload({type:'image/png'})).status,415);
+ const image=(await(await upload()).json()).image;assert(validNoteImages([image],'personal'));
+ assert.equal((await call(image,{auth:false})).status,401);
+ const response=await call(image);assert.equal(response.status,200);assert.equal(response.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(new Uint8Array(await response.arrayBuffer()),jpeg);
+ assert.equal((await call(image.replace('/personal/','/work/'))).status,404);assert.equal((await call(image.replace('/note-images/','/calendar-images/'))).status,404);
+ const created={...blank(),notes:[note([image])]};
+ const patch=(scope,before,after)=>call('/api/workspace/patch?scope='+scope,{method:'POST',body:{operations:recordChanges(before,after,WORKSPACE_COLLECTIONS)}});
+ assert.equal((await patch('work',blank(),created)).status,400);assert.equal((await patch('personal',blank(),created)).status,200);
+ let saved=(await(await call('/api/workspace?scope=personal')).json()).workspace;assert.deepEqual(saved.notes[0],created.notes[0]);
+ const removed=structuredClone(saved);removed.notes[0].images=[];assert.equal((await patch('personal',saved,removed)).status,200);
+ saved=(await(await call('/api/workspace?scope=personal')).json()).workspace;assert.deepEqual(saved.notes[0].images,[]);assert.equal(saved.notes[0].body,'第一行\n第二行');
+});
+
+test('note photo drafts retain partial uploads on failure, block concurrent uploads and detach cleanly',async()=>{
+ const {readFileSync}=await import('node:fs'),{default:vm}=await import('node:vm');
+ const nodes=Object.fromEntries(['noteImageRefs','noteImages','noteImagePreviews','body','noteImageStatus'].map(id=>[id,{value:'',innerHTML:'',listeners:{},addEventListener(event,listener){this.listeners[event]=listener;}}]));
+ const url='/api/note-images/personal/12345678-1234-1234-1234-123456789012';let attempts=0,release;
+ const context=vm.createContext({AbortController,busy:false,scope:'personal',esc:value=>String(value),$:id=>nodes[id],compressWorkspaceImage:async()=>jpeg,fetch:async()=>{attempts++;if(attempts===1)return {ok:true,json:async()=>({image:url})};return {ok:false,status:503};}});
+ vm.runInContext(readFileSync(new URL('../note-images.js',import.meta.url),'utf8').replace(/export /g,''),context);
+ context.initNoteImages({});nodes.noteImages.listeners.change({target:{files:[{},{}],value:'x'}});
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.deepEqual(JSON.parse(nodes.noteImageRefs.value),[url]);assert.match(nodes.noteImageStatus.textContent,/503/);assert(!context.noteImagesPending());
+ context.fetch=()=>new Promise(resolve=>{release=resolve;});
+ nodes.noteImages.listeners.change({target:{files:[{}],value:'x'}});await new Promise(resolve=>setImmediate(resolve));assert(context.noteImagesPending());
+ nodes.body.listeners.paste({clipboardData:{files:[{type:'image/png'}],getData:()=>''},preventDefault(){}});assert.match(nodes.noteImageStatus.textContent,/请稍候/);
+ context.destroyNoteImages();context.initNoteImages({images:[]});
+ release({ok:true,json:async()=>({image:url})});await new Promise(resolve=>setImmediate(resolve));
+ assert.deepEqual(JSON.parse(nodes.noteImageRefs.value),[]);assert(!context.noteImagesPending());
+});

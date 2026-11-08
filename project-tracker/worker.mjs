@@ -10,7 +10,7 @@ import {staticAssetResponse} from './static-assets.mjs';
 import {validGameTaskReference} from './game-task-links.mjs';
 import {projectCalendarItems} from './calendar-sources.mjs';
 import {todayTasks} from './today-tasks.mjs';
-import {validEventImages,calendarImagesRoute} from './calendar-images.mjs';
+import {validEventImages,calendarImagesRoute,validNoteImages,noteImagesRoute} from './workspace-images.mjs';
 import {validRequirements} from './requirements.mjs';
 import {vocabularySyncStatus,vocabularyPushRoute} from './vocabulary-sheet.mjs';
 import {FITNESS_MEDIA} from './fitness-media.mjs';
@@ -121,7 +121,7 @@ function validWorkspace(w){
  const ids=new Set();
  if(![...w.tasks,...w.notes,...w.events].every(x=>{if(!x||!str(x.id,100)||!x.id||ids.has(x.id)||!str(x.title,200)||!x.title.trim())return false;ids.add(x.id);return true;}))return false;
  return w.tasks.every(t=>validGameTaskReference(t)&&(t.taskType===undefined||['task','game'].includes(t.taskType))&&(t.gamePlatform===undefined||str(t.gamePlatform,100))&&typeof t.done==='boolean'&&['high','normal','low'].includes(t.priority)&&str(t.detail,5000)&&(t.dueDate===''||date(t.dueDate)))&&
- w.notes.every(n=>(n.notebook===undefined||n.notebook==='photography')&&str(n.body,20000)&&str(n.updatedAt,40)&&!Number.isNaN(Date.parse(n.updatedAt)))&&
+ w.notes.every(n=>validNoteImages(n.images)&&(n.notebook===undefined||n.notebook==='photography')&&str(n.body,20000)&&str(n.updatedAt,40)&&!Number.isNaN(Date.parse(n.updatedAt)))&&
  w.events.every(e=>validEventRecurrence(e)&&(e.done===undefined||typeof e.done==='boolean')&&time(e.start)&&(e.end===''||time(e.end)&&e.end>=e.start)&&str(e.location,500)&&str(e.detail,5000));
 }
 
@@ -180,6 +180,7 @@ async function fetchRoute(request,env){
     const projectHtml=embedded?HTML.replace('<body class="modern-project">','<body class="modern-project" data-project-embedded>'):HTML;
     return new Response(url.pathname==='/projects'?projectHtml:WORKBENCH,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':embedded?'SAMEORIGIN':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','X-Content-Type-Options':'nosniff'}});
    }
+   if(url.pathname.startsWith('/api/note-images/'))return await noteImagesRoute(request,env);
    if(url.pathname.startsWith('/api/calendar-images/'))return await calendarImagesRoute(request,env);
    if(url.pathname==='/api/wardrobe-images'&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
@@ -230,7 +231,7 @@ async function fetchRoute(request,env){
     for(let attempt=0;attempt<5;attempt++){
      const current=await readState(env.DB);let updated;
      try{updated=applyRecordChanges(workspace?current[key]||{tasks:[],notes:[],events:[]}:current,input?.operations,workspace?WORKSPACE_COLLECTIONS:PROJECT_COLLECTIONS);}catch(e){return json({error:e.message},e instanceof RecordConflict?409:400);}
-     if(workspace){if(!validWorkspace(updated)||scope==='work'&&updated.tasks.some(t=>!!t.mediaRecordId)||updated.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);current[key]=updated;const versions=normalizedWorkspaceVersions(current.workspaceVersions);versions[scope]++;current.workspaceVersions=versions;}
+     if(workspace){if(!validWorkspace(updated)||scope==='work'&&updated.tasks.some(t=>!!t.mediaRecordId)||updated.events.some(event=>!validEventImages(event.images,scope))||updated.notes.some(note=>!validNoteImages(note.images,scope)))return json({error:'Invalid workspace'},400);current[key]=updated;const versions=normalizedWorkspaceVersions(current.workspaceVersions);versions[scope]++;current.workspaceVersions=versions;}
      else{if(!valid(updated))return json({error:'Invalid state'},400);try{assertProjectChanges(current,updated);}catch(e){return json({error:e.message},400);}Object.assign(current,updated);}
      if(await writeState(env.DB,current)){
       if(workspace)return json({ok:true,workspace:updated,version:current.workspaceVersions[scope]});
@@ -251,7 +252,7 @@ async function fetchRoute(request,env){
      let input;try{input=JSON.parse(body);}catch{return json({error:'Invalid JSON'},400);}
     if(scope==='work'&&(input?.workspace?.checkins!==undefined||input?.workspace?.annualPlans!==undefined||input?.workspace?.wordPracticeSessions!==undefined||input?.workspace?.fitnessSessions!==undefined||input?.workspace?.fitnessProfiles!==undefined))return json({error:'学习记录和年度计划仅限私人空间'},400);
      if(scope==='personal'&&input?.workspace?.projectShipping!==undefined)return json({error:'发货信息仅限工作空间'},400);
-     if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace)||scope==='work'&&input.workspace.tasks.some(t=>!!t.mediaRecordId)||input.workspace.events.some(event=>!validEventImages(event.images,scope)))return json({error:'Invalid workspace'},400);
+     if(!Number.isSafeInteger(input?.version)||input.version<1||!validWorkspace(input.workspace)||scope==='work'&&input.workspace.tasks.some(t=>!!t.mediaRecordId)||input.workspace.events.some(event=>!validEventImages(event.images,scope))||input.workspace.notes.some(note=>!validNoteImages(note.images,scope)))return json({error:'Invalid workspace'},400);
      for(let attempt=0;attempt<3;attempt++){
       const s=await readState(env.DB),versions=normalizedWorkspaceVersions(s.workspaceVersions);
       if(versions[scope]!==input.version)return json({error:'Version conflict'},409);

@@ -1,7 +1,7 @@
 /* exported closeMediaRecordEditor, mediaTrackingFields, initMediaTrackingForm, readMediaTracking, renderMediaLibrary */
 let mediaFormBaseline='';
 function mediaFormSnapshot(){return JSON.stringify([...new FormData($('form')).entries()]);}
-async function closeMediaRecordEditor(){if(busy)return;if((kind==='completedGames'||kind==='notes'&&view==='photographyNotes')&&mediaFormSnapshot()!==mediaFormBaseline){if(!await window.WorkspacePrimitives.confirm({title:'放弃修改？',description:kind==='notes'?'尚未保存的摄影笔记修改将丢失。':'尚未保存的娱乐记录修改将丢失。',action:'放弃修改'}))return;}$('editor').close();}
+async function closeMediaRecordEditor(){if(busy)return;if(kind==='notes'&&noteImagesPending()){$('formError').textContent='照片正在上传，请完成后再关闭。';return;}if((kind==='completedGames'||kind==='notes')&&mediaFormSnapshot()!==mediaFormBaseline){if(!await window.WorkspacePrimitives.confirm({title:'放弃修改？',description:kind==='notes'?'尚未保存的笔记修改将丢失。':'尚未保存的娱乐记录修改将丢失。',action:'放弃修改'}))return;}$('editor').close();}
 let mediaStatusFilter=new URLSearchParams(location.search).get('mediaStatus')||'planned',mediaSort=new URLSearchParams(location.search).get('mediaSort')||'recent',mediaLayout=new URLSearchParams(location.search).get('mediaLayout')==='list'?'list':'grid',mediaPage=1,mediaSignature='';
 mediaStatusFilter=Object.hasOwn(MEDIA_STATUSES,mediaStatusFilter)?mediaDisplayStatus({trackingStatus:mediaStatusFilter}):'planned';
 if(!['recent','title','rating'].includes(mediaSort))mediaSort='recent';

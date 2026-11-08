@@ -1,9 +1,6 @@
 import {useRef,useState,useEffect,useLayoutEffect} from 'react';
 import {createPortal} from 'react-dom';
-async function jpeg(file){
- if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>10*1024*1024)throw Error('请选择 10MB 以内的 JPG、PNG 或 WebP 图片。');
- const bitmap=await createImageBitmap(file);try{if(bitmap.width*bitmap.height>36000000)throw Error('图片尺寸过大，请缩小后上传。');const scale=Math.min(1,1280/Math.max(bitmap.width,bitmap.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));const context=canvas.getContext('2d');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(bitmap,0,0,canvas.width,canvas.height);for(const q of [.8,.6,.4,.25]){const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',q));if(blob&&blob.size<=240000)return blob;}throw Error('图片压缩后仍过大，请选择更小的图片。');}finally{bitmap.close();}
-}
+import {compressWorkspaceImage as jpeg} from '../../image-upload.mjs';
 export function Attachments({event,onChange,scope}){
  const images=event.data?.images||[],[pending,setPending]=useState(false),[error,setError]=useState('');const node=useRef(null),uploading=useRef(false),alive=useRef(true),uploadHandler=useRef(null);const [pasteHost,setPasteHost]=useState(null);
  useEffect(()=>()=>{alive.current=false;},[]);

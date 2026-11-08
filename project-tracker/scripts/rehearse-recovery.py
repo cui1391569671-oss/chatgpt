@@ -8,16 +8,17 @@ bounded_restore=importlib.util.module_from_spec(spec);spec.loader.exec_module(bo
 
 def digest(db):
     return {table: hashlib.sha256(repr(db.execute('SELECT * FROM '+table+' ORDER BY 1').fetchall()).encode()).hexdigest()
-            for table in ('tracker_state','wardrobe_images','calendar_images','account_vault','project_core_information','project_plan_snapshot','photography')}
+            for table in ('tracker_state','wardrobe_images','calendar_images','note_images','account_vault','project_core_information','project_plan_snapshot','photography')}
 
 def main():
     with tempfile.TemporaryDirectory(prefix='workbench-recovery-') as folder:
         source=sqlite3.connect(':memory:')
-        source.executescript('CREATE TABLE tracker_state(id INTEGER PRIMARY KEY,payload TEXT,version INTEGER); CREATE TABLE wardrobe_images(id TEXT PRIMARY KEY,bytes BLOB); CREATE TABLE calendar_images(id TEXT PRIMARY KEY,scope TEXT,bytes BLOB); CREATE TABLE account_vault(owner TEXT PRIMARY KEY,envelope TEXT,version INTEGER); CREATE TABLE project_core_information(id INTEGER PRIMARY KEY,payload TEXT); CREATE TABLE project_plan_snapshot(id INTEGER PRIMARY KEY,payload TEXT,sync_version INTEGER); CREATE TABLE photography(id TEXT PRIMARY KEY,title TEXT,spot TEXT,shotOn TEXT,note TEXT,width INTEGER,height INTEGER,createdAt TEXT,version INTEGER,fingerprint TEXT,image BLOB,thumbnail BLOB);')
+        source.executescript('CREATE TABLE tracker_state(id INTEGER PRIMARY KEY,payload TEXT,version INTEGER); CREATE TABLE wardrobe_images(id TEXT PRIMARY KEY,bytes BLOB); CREATE TABLE calendar_images(id TEXT PRIMARY KEY,scope TEXT,bytes BLOB); CREATE TABLE note_images(id TEXT PRIMARY KEY,scope TEXT,bytes BLOB); CREATE TABLE account_vault(owner TEXT PRIMARY KEY,envelope TEXT,version INTEGER); CREATE TABLE project_core_information(id INTEGER PRIMARY KEY,payload TEXT); CREATE TABLE project_plan_snapshot(id INTEGER PRIMARY KEY,payload TEXT,sync_version INTEGER); CREATE TABLE photography(id TEXT PRIMARY KEY,title TEXT,spot TEXT,shotOn TEXT,note TEXT,width INTEGER,height INTEGER,createdAt TEXT,version INTEGER,fingerprint TEXT,image BLOB,thumbnail BLOB);')
         state={'data':[{'id':'issue-1'}],'archive':[],'workspace':{'tasks':[{'id':'personal-1'}]},'workWorkspace':{'tasks':[{'id':'work-1'}]},'workspaceVersions':{'personal':3,'work':7}}
         source.execute('INSERT INTO tracker_state VALUES(1,?,9)',(json.dumps(state),))
         source.execute('INSERT INTO wardrobe_images VALUES(?,?)',('synthetic',bytes([255,216,0,255,217])))
         source.execute('INSERT INTO calendar_images VALUES(?,?,?)',('event-image','work',bytes([255,216,1,255,217])))
+        source.execute('INSERT INTO note_images VALUES(?,?,?)',('note-image','personal',bytes([255,216,2,255,217])))
         source.execute('INSERT INTO account_vault VALUES(?,?,?)',('fake-owner',json.dumps({'syntheticEnvelope':True}),2))
         source.execute('INSERT INTO project_core_information VALUES(1,?)',(json.dumps({'items':[]}),))
         source.execute('INSERT INTO project_plan_snapshot VALUES(1,?,?)',(json.dumps({'projects':[{'code':'PM001','tasks':[{'title':'Synthetic plan'}]}]}),1793923200000))
@@ -39,6 +40,6 @@ def main():
         bounded.execute('UPDATE restore_edge SET empty_value=? WHERE id=7',('trigger test',))
         assert bounded.execute('SELECT id FROM trigger_log').fetchone()[0]==7
         bounded.close()
-        print(json.dumps({'syntheticOnly':True,'tablesVerified':7,'integrity':'ok','blobsPreserved':True,'workspaceVersionsPreserved':True,'cloudflareRecoveryVerified':False},ensure_ascii=False))
+        print(json.dumps({'syntheticOnly':True,'tablesVerified':8,'integrity':'ok','blobsPreserved':True,'workspaceVersionsPreserved':True,'cloudflareRecoveryVerified':False},ensure_ascii=False))
         source.close();restored.close()
 if __name__=='__main__':main()

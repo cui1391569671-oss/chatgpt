@@ -48,11 +48,11 @@ try{
  assert.equal((await call('/api/project-core-information')).status,200);
  assert.equal((await call('/api/account/vault')).status,200);
  let images=0;
- if(tables.includes('calendar_images'))for(const image of (await db.prepare('SELECT id,scope,bytes FROM calendar_images').all()).results){
-  const response=await call('/api/calendar-images/'+image.scope+'/'+image.id);assert.equal(response.status,200);
+ for(const [table,endpoint] of [['calendar_images','calendar-images'],['note_images','note-images']])if(tables.includes(table))for(const image of (await db.prepare('SELECT id,scope,bytes FROM '+table).all()).results){
+  const response=await call('/api/'+endpoint+'/'+image.scope+'/'+image.id);assert.equal(response.status,200);
   const actual=Buffer.from(await response.arrayBuffer()),expectedBytes=Buffer.from(image.bytes);
   assert.ok(actual.equals(expectedBytes),'Restored image bytes differ');
-  const other=image.scope==='work'?'personal':'work';assert.equal((await call('/api/calendar-images/'+other+'/'+image.id)).status,404);images++;
+  const other=image.scope==='work'?'personal':'work';assert.equal((await call('/api/'+endpoint+'/'+other+'/'+image.id)).status,404);images++;
  }
  if(tables.includes('photography')){
   const rows=(await db.prepare('SELECT id,image,thumbnail FROM photography').all()).results;

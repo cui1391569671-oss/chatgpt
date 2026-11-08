@@ -2432,3 +2432,5 @@ body[data-workspace-view=projectPlan] #content{display:flex;flex-direction:colum
 .learning-calendar-detail h3{font-size:14px;margin:0 0 8px}
 .learning-calendar-detail p{margin:4px 0}
 @media(max-width:1000px){.word-practice-layout{grid-template-columns:minmax(0,1fr)}.learning-calendar{width:100%;max-width:420px}}
+
+.workspace-note-attachments{display:grid;gap:12px;margin-top:16px;min-width:0}.workspace-note-attachments p{margin:0}.workspace-note-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px;margin-top:24px;max-width:960px;min-width:0}.workspace-note-photos figure{margin:0;display:grid;gap:8px;align-content:start;min-width:0}.workspace-note-photos a{display:block;min-width:0}.workspace-note-photos img{display:block;width:100%;height:auto;max-height:360px;object-fit:contain;border-radius:var(--control-radius)}
