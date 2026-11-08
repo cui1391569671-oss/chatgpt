@@ -45,7 +45,7 @@ function mediaWallCard(g,index=0){
 }
 function renderMediaLibrary(resolve=true){
  const priorLayout=window.WorkspaceMotion?.snapshot($('results'));
- const raw=state.completedGames||[],all=raw.map(g=>({...g,coverUrl:g.coverUrl||resolvedMediaCovers.get(mediaCoverKey(g))||''})),q=query.toLowerCase();
+ const raw=state.completedGames||[],all=raw.map(g=>({...g,coverUrl:mediaDisplayCover(g)})),q=query.toLowerCase();
  const selected=all.filter(g=>mediaFilter==='all'||(g.mediaType||'game')===mediaFilter),items=selected.filter(g=>mediaDisplayStatus(g)===mediaStatusFilter).filter(g=>[g.title,g.platform,g.detail].join(' ').toLowerCase().includes(q));
  items.sort(mediaSort==='title'?(a,b)=>a.title.localeCompare(b.title,'zh-CN'):mediaSort==='rating'?(a,b)=>(b.rating??-1)-(a.rating??-1):(a,b)=>(b.history?.at(-1)?.at||b.completedDate||b.startedDate||'').localeCompare(a.history?.at(-1)?.at||a.completedDate||a.startedDate||''));
  const signature=[query,mediaFilter,mediaStatusFilter,mediaSort].join('|');if(signature!==mediaSignature){mediaPage=1;mediaSignature=signature;}

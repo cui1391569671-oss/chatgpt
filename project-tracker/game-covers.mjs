@@ -14,6 +14,22 @@ const KNOWN_STEAM_GAMES=[
  {id:'8980',title:'Borderlands Game of the Year',names:['无主之地','无主之地1','无主之地 1','Borderlands','Borderlands 1','Borderlands I','Borderlands GOTY','Borderlands Game of the Year','Borderlands Game of the Year Edition','无主之地1年度版']},
  {id:'729040',title:'Borderlands Game of the Year Enhanced',names:['Borderlands Game of the Year Enhanced','Borderlands GOTY Enhanced','无主之地1增强版','无主之地1年度增强版','无主之地年度版增强版']}
 ];
+// Candidate search keeps Steam editions and app IDs distinct; it never auto-selects a title.
+export async function searchSteamGames(title,fetcher=fetch){
+ const known=KNOWN_STEAM_GAMES.find(g=>g.names.some(n=>normalizeGameName(n)===normalizeGameName(title.trim())));
+ if(known)return [{id:known.id,title:known.title,coverUrl:await getSteamPortrait(known.id,fetcher),url:'https://store.steampowered.com/app/'+known.id+'/',releaseDate:'',platform:''}];
+ const games=new Map();let available=false;
+ for(const term of gameSearchTerms(title).slice(0,3)){
+  await Promise.all(['schinese','english'].map(async language=>{
+   try{const query=new URLSearchParams({term,category1:'998',infinite:'1',l:language,count:'20',start:'0'});const response=await fetcher('https://store.steampowered.com/search/results/?'+query,{signal:AbortSignal.timeout(7000)});if(!response.ok)throw Error();const data=await response.json();if(typeof data.results_html!=='string')throw Error();available=true;for(const game of parseSteamGames(data.results_html))if(!games.has(game.id))games.set(game.id,game);}catch{/* One Steam language may still succeed. */}
+  }));
+  if(games.size)break;
+ }
+ if(!available)throw Error('Steam unavailable');
+ const rows=[...games.values()].slice(0,20);let cursor=0;
+ await Promise.all(Array.from({length:Math.min(4,rows.length)},async()=>{while(cursor<rows.length){const row=rows[cursor++];row.coverUrl=await getSteamPortrait(row.id,fetcher);}}));
+ return rows;
+}
 export async function findGameCover(title,fetcher=fetch){
  const known=KNOWN_STEAM_GAMES.find(g=>g.names.some(n=>normalizeGameName(n)===normalizeGameName(title.trim())));if(known)return {coverUrl:await getSteamPortrait(known.id,fetcher),matchedTitle:known.title,sourceUrl:'https://store.steampowered.com/app/'+known.id+'/'};
  const original=title.trim(),alias=ALIASES.find(group=>group.some(x=>normalizeGameName(x)===normalizeGameName(original))),queries=[...new Set([original,...(alias||[])])],wanted=new Set(queries.map(normalizeGameName));const candidates=new Map();

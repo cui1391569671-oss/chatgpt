@@ -1,20 +1,24 @@
-/* exported mediaReviewKey, setupMediaCoverPicker, resolveMediaSourceCovers, resolveSteamReviews */
+/* exported mediaReviewKey, setupMediaCoverPicker, resolveMediaSourceCovers, resolveSteamReviews, mediaDisplayCover */
 const mediaSourceNames={tmdb:'TMDB',igdb:'IGDB',steam:'Steam',bangumi:'Bangumi',mal:'MyAnimeList'};
 const resolvedMediaCovers=new Map();
 const steamReviews=new Map();
-function mediaCoverKey(item){return [item.id,item.mediaSource,item.mediaSourceId,item.mediaType,item.season].join(':');}
+function mediaCoverKey(item){return [item.id,item.mediaSource,item.mediaSourceId,item.mediaType,item.season,item.steamAppId,item.coverUrl].join(':');}
 function mediaReviewKey(item){return item.steamAppId||(item.mediaSource==='steam'?item.mediaSourceId:'')||item.title;}
+function isSteamCover(url){try{const u=new URL(url);return u.protocol==='https:'&&/(^|\.)steamstatic\.com$/.test(u.hostname);}catch{return false;}}
+function automaticGameCover(item){return (item.mediaType||'game')==='game'&&item.coverMode!=='manual'&&!!item.mediaSource&&!!item.mediaSourceId;}
+function mediaDisplayCover(item){const saved=item.coverUrl||'',resolved=resolvedMediaCovers.get(mediaCoverKey(item))||'';return automaticGameCover(item)&&!isSteamCover(saved)?resolved:saved||resolved;}
+function mediaDetailsQuery(item){const appid=item.steamAppId||(item.mediaSource==='steam'?item.mediaSourceId:'');return {source:(item.mediaType||'game')==='game'&&appid?'steam':item.mediaSource,id:(item.mediaType||'game')==='game'&&appid?appid:item.mediaSourceId,type:item.mediaType||'game',season:String(item.season||0)};}
 function setupMediaCoverPicker(){
  let timer,controller,composition=false;const session=++gameCoverSequence;
  const active=seq=>seq===gameCoverSequence&&$('editor').open&&kind==='completedGames';
- const preview=()=>{const url=$('coverUrl').value.trim(),valid=/^https:\/\//.test(url);$('gameCoverPreview').classList.toggle('hidden',!valid);if(valid){const image=$('gameCoverPreview'),source=gameCoverImageUrl(url,$('mediaType').value);image.dataset.coverFallback=source!==url?url:'';image.src=source;}};
+ const preview=()=>{const url=$('coverUrl').value.trim(),valid=/^https:\/\//.test(url)&&!($('mediaType').value==='game'&&$('coverMode').value==='source'&&!isSteamCover(url));$('gameCoverPreview').classList.toggle('hidden',!valid);if(valid){const image=$('gameCoverPreview'),source=gameCoverImageUrl(url,$('mediaType').value);image.dataset.coverFallback=source!==url?url:'';image.src=source;}};
  const binding=()=>{const source=$('mediaSource').value;$('refreshMediaSource').classList.toggle('hidden',!source);$('clearMediaSource').classList.toggle('hidden',!source);$('selectedMediaSource').textContent=source?'已关联 '+mediaSourceNames[source]+' 作品'+($('coverMode').value==='manual'?' · 使用自定义封面':''):'';};
  const clearBinding=()=>{for(const id of ['mediaSource','mediaSourceId','steamAppId'])$(id).value='';$('coverMode').value='manual';binding();};
  const invalidate=()=>{clearTimeout(timer);controller?.abort();++gameCoverSequence;$('matchGameCover').disabled=false;$('refreshMediaSource').disabled=false;autocomplete.clear();};
  const request=async(url,seq)=>{controller=new AbortController();const response=await fetch(url,{signal:controller.signal,cache:'no-cache'});const data=await response.json();if(!response.ok)throw Error(data.error||'作品资料暂不可用');if(!active(seq))return null;return data;};
  const setIdentity=item=>{for(const [id,value] of Object.entries({mediaSource:item.source,mediaSourceId:item.sourceId,steamAppId:item.steamAppId||'',coverMode:'source'}))$(id).value=value;binding();};
- const applyDetails=(item,replaceTitle=false)=>{if(replaceTitle&&item.matchedTitle)$('title').value=item.matchedTitle;if(item.coverUrl)$('coverUrl').value=item.coverUrl;if(item.platforms&&!$('platform').value)$('platform').value=item.platforms.slice(0,100);if(item.total>0&&!Number($('total').value)&&['anime','tv'].includes($('mediaType').value))$('total').value=item.total;if(item.steamAppId)$('steamAppId').value=item.steamAppId;preview();binding();};
- const detailsUrl=()=>'/api/media/details?'+new URLSearchParams({source:$('mediaSource').value,id:$('mediaSourceId').value,type:$('mediaType').value,season:$('season').value||'0'});
+ const applyDetails=(item,replaceTitle=false)=>{if(replaceTitle&&item.matchedTitle)$('title').value=item.matchedTitle;if(item.coverUrl||$('mediaType').value==='game'&&$('coverMode').value==='source'&&Object.hasOwn(item,'coverUrl'))$('coverUrl').value=item.coverUrl||'';if(item.platforms&&!$('platform').value)$('platform').value=item.platforms.slice(0,100);if(item.total>0&&!Number($('total').value)&&['anime','tv'].includes($('mediaType').value))$('total').value=item.total;if(item.steamAppId)$('steamAppId').value=item.steamAppId;preview();binding();};
+ const detailsUrl=()=>'/api/media/details?'+new URLSearchParams(mediaDetailsQuery({mediaSource:$('mediaSource').value,mediaSourceId:$('mediaSourceId').value,steamAppId:$('steamAppId').value,mediaType:$('mediaType').value,season:$('season').value||'0'}));
  const refresh=async()=>{if(!$('mediaSource').value)return;invalidate();const seq=gameCoverSequence;$('gameCoverStatus').textContent='正在按已选作品读取资料…';$('refreshMediaSource').disabled=true;try{const data=await request(detailsUrl(),seq);if(!data)return;if($('coverMode').value==='manual'){$('gameCoverStatus').textContent='已保留自定义封面。重新选择候选作品后可使用来源封面。';return;}applyDetails(data);$('gameCoverStatus').textContent=data.coverUrl?'已刷新所选作品封面。':'此作品暂时没有封面，可填写自定义链接。';}catch(e){if(active(seq)&&e.name!=='AbortError')$('gameCoverStatus').textContent='作品资料暂不可用，已保留现有封面。';}finally{if(active(seq))$('refreshMediaSource').disabled=false;}};
  const choose=async(item)=>{
   invalidate();const seq=gameCoverSequence;setIdentity(item);$('coverUrl').value=item.coverUrl||'';applyDetails(item,true);$('gameCoverStatus').textContent='已选择 '+mediaSourceNames[item.source]+'：'+item.matchedTitle+(item.coverUrl?'':'（暂无封面，可填写自定义链接）');
@@ -35,7 +39,7 @@ function setupMediaCoverPicker(){
  $('mediaType').addEventListener('change',changed);$('season').addEventListener('change',()=>{invalidate();if($('mediaSource').value&&$('coverMode').value==='source')refresh();});
  $('matchGameCover').onclick=search;$('refreshMediaSource').onclick=refresh;$('clearMediaSource').onclick=()=>{invalidate();clearBinding();$('gameCoverStatus').textContent='已解除关联，保留当前自定义封面。';};
  $('gameCoverPreview').onerror=()=>{if(retryOriginalMediaCover($('gameCoverPreview')))return;$('gameCoverPreview').classList.add('hidden');$('gameCoverStatus').textContent='图片暂时无法加载，可刷新已选作品或填写其他封面链接。';};
- preview();binding();$('gameCoverStatus').textContent=$('mediaSource').value?'已保留所选作品。可按作品 ID 刷新资料。':'输入名称后搜索，点击候选作品以关联封面。';
+ preview();binding();if($('mediaType').value==='game'&&$('coverMode').value==='source'&&!isSteamCover($('coverUrl').value))void refresh();$('gameCoverStatus').textContent=$('mediaSource').value?'已保留所选作品。可按作品 ID 刷新资料。':'输入名称后搜索，点击候选作品以关联封面。';
  $('editor').addEventListener('close',()=>{autocomplete.destroy();clearTimeout(timer);controller?.abort();if(gameCoverSequence>=session)++gameCoverSequence;},{once:true});
 }
 const pendingMediaCovers=new Map();
@@ -44,14 +48,14 @@ function gameCoverImageUrl(url,type='game'){
  try{const u=new URL(url);return u.protocol==='https:'&&['shared.fastly.steamstatic.com','shared.akamai.steamstatic.com','cdn.akamai.steamstatic.com','cdn.cloudflare.steamstatic.com','images.igdb.com','images.launchbox-app.com','cdn.wikimg.net'].includes(u.hostname)?'/api/media/image?'+new URLSearchParams({url:u.href}):url;}catch{return url;}
 }
 async function resolveMediaSourceCovers(){
- const queue=(state.completedGames||[]).filter(item=>!item.coverUrl&&item.coverMode!=='manual'&&item.mediaSource&&item.mediaSourceId);
+ const queue=(state.completedGames||[]).filter(item=>(!item.coverUrl||automaticGameCover(item)&&!isSteamCover(item.coverUrl))&&item.coverMode!=='manual'&&item.mediaSource&&item.mediaSourceId);
  let cursor=0;
  const resolve=async item=>{
   const key=mediaCoverKey(item);if(resolvedMediaCovers.has(key))return;
   if(!pendingMediaCovers.has(key))pendingMediaCovers.set(key,(async()=>{
-   try{const response=await fetch('/api/media/details?'+new URLSearchParams({source:item.mediaSource,id:item.mediaSourceId,type:item.mediaType||'game',season:String(item.season||0)}),{signal:AbortSignal.timeout(12000)});
+   try{const response=await fetch('/api/media/details?'+new URLSearchParams(mediaDetailsQuery(item)),{signal:AbortSignal.timeout(12000)});
     if(response.ok){
-     const coverUrl=(await response.json()).coverUrl||'';
+     const coverUrl=(await response.json()).coverUrl||'';if(automaticGameCover(item)&&coverUrl&&!isSteamCover(coverUrl))return;
      resolvedMediaCovers.set(key,coverUrl);
      if(coverUrl)updateVisibleMediaCover(item);
     }
@@ -73,7 +77,7 @@ function updateVisibleMediaCover(item){
  if(view!=='completedGames')return;
  const current=(state.completedGames||[]).find(record=>record.id===item.id);
  if(!current||mediaCoverKey(current)!==mediaCoverKey(item)||current.coverMode==='manual')return;
- const url=current.coverUrl||resolvedMediaCovers.get(mediaCoverKey(current));
+ const url=mediaDisplayCover(current);
  if(!url)return;
  const host=$('results');
  if(!host)return;

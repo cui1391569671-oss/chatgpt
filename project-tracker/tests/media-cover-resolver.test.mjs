@@ -51,3 +51,12 @@ test('reviews request visible list games only, update existing labels and never 
  assert.equal(calls,2);assert.equal(renders,0);assert.equal(labels[0].textContent,'好评如潮');assert.equal(labels[1].textContent,'评价暂不可用');
  await vm.runInContext('resolveSteamReviews()',context);assert.equal(calls,2);
 });
+
+
+test('legacy automatic game covers switch to Steam by stable app ID without touching manual images or saved records',async()=>{
+ const legacy={id:'legacy',title:'Old title',mediaType:'game',mediaSource:'igdb',mediaSourceId:'42',steamAppId:'620',coverMode:'source',coverUrl:'https://images.igdb.com/old.jpg'};
+ const manual={...legacy,id:'manual',coverMode:'manual'},movie={...legacy,id:'movie',mediaType:'movie',mediaSource:'tmdb'};let calls=0;
+ const context=vm.createContext({URL,URLSearchParams,AbortSignal,Map,Promise,state:{completedGames:[legacy,manual,movie]},view:'other',fetch:async url=>{calls++;const query=new URL(url,'https://test.local').searchParams;assert.equal(query.get('source'),'steam');assert.equal(query.get('id'),'620');return Response.json({coverUrl:'https://cdn.akamai.steamstatic.com/steam/apps/620/library_600x900.jpg'});}});
+ vm.runInContext(source,context);context.record=legacy;assert.equal(vm.runInContext('mediaDisplayCover(record)',context),'');context.record=manual;assert.equal(vm.runInContext('mediaDisplayCover(record)',context),manual.coverUrl);context.record=movie;assert.equal(vm.runInContext('mediaDisplayCover(record)',context),movie.coverUrl);
+ await vm.runInContext('resolveMediaSourceCovers()',context);assert.equal(calls,1);context.record=legacy;assert.match(vm.runInContext('mediaDisplayCover(record)',context),/steamstatic/);assert.equal(legacy.coverUrl,'https://images.igdb.com/old.jpg');await vm.runInContext('resolveMediaSourceCovers()',context);assert.equal(calls,1);
+});
