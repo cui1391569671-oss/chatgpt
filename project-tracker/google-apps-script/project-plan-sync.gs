@@ -17,11 +17,12 @@ function syncProjectPlanNow(){pushProjectPlan_(true);}
 
 function readProjectPlanSheets_(){
  const tabs=Sheets.Spreadsheets.get(PROJECT_PLAN_SOURCE_ID,{fields:'sheets(properties(sheetId,title,gridProperties(rowCount,columnCount)))'}).sheets
-  .map(sheet=>sheet.properties).filter(sheet=>PROJECT_PLAN_TAB.test(sheet.title));
- if(!tabs.length||tabs.length>200)throw Error('项目页数量超出范围。');
+  .map(sheet=>sheet.properties);
+ const projectTabs=tabs.filter(sheet=>PROJECT_PLAN_TAB.test(sheet.title));
+ if(!projectTabs.length||projectTabs.length>200)throw Error('项目页数量超出范围。');
  const sheets=[];
- for(let i=0;i<tabs.length;i+=10){
-  const batch=tabs.slice(i,i+10);
+ for(let i=0;i<projectTabs.length;i+=10){
+  const batch=projectTabs.slice(i,i+10);
   const ranges=batch.map(sheet=>{
    const {rowCount,columnCount}=sheet.gridProperties;
    if(rowCount>1000||columnCount<9)throw Error('项目页超出支持范围，请核对源表。');
@@ -31,7 +32,7 @@ function readProjectPlanSheets_(){
   if(values?.length!==batch.length)throw Error('源表返回的项目页不完整。');
   batch.forEach((sheet,index)=>sheets.push({sheetId:sheet.sheetId,name:sheet.title,rows:values[index].values||[]}));
  }
- return sheets;
+ return {sheets,sourceSheetIds:tabs.map(tab=>tab.sheetId)};
 }
 
 function pushProjectPlan_(force){
@@ -41,7 +42,9 @@ function pushProjectPlan_(force){
   const properties=PropertiesService.getScriptProperties();
   const secret=properties.getProperty('PROJECT_PLAN_SYNC_SECRET');
   if(!secret||secret.length<32)throw Error('请先配置项目计划同步密钥。');
-  const body=JSON.stringify(parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,readProjectPlanSheets_()));
+  const {sheets,sourceSheetIds}=readProjectPlanSheets_();
+  const snapshot=parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,sheets);
+  const body=JSON.stringify({...snapshot,sourceSheetIds});
   const hex=bytes=>bytes.map(value=>(value&255).toString(16).padStart(2,'0')).join('');
   const hash=hex(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,body,Utilities.Charset.UTF_8));
   if(!force&&hash===properties.getProperty('PROJECT_PLAN_LAST_HASH'))return;

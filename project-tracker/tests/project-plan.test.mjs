@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {runInNewContext} from 'node:vm';
 import {PROJECT_PLAN_SOURCE_ID,parseProjectPlanSheets,normalizeProjectPlanSnapshot} from '../project-plan-sheet.mjs';
 import {activeProjectPlanTasks,projectPlanTimeline,projectTaskBar,projectTaskTiming} from '../tasks-ui/src/project-plan-timeline.mjs';
 import {workspaceSiteNavigation} from '../tasks-ui/src/workspace-page-meta.mjs';
@@ -67,4 +68,25 @@ test('project plan is a work-only navigation route and Apps Script uses the same
  const script=readFileSync(new URL('../google-apps-script/project-plan-sync.gs',import.meta.url),'utf8');
  const parser=readFileSync(new URL('../project-plan-sheet.mjs',import.meta.url),'utf8').replace(/^export /gm,'');
  assert(script.includes(parser));
+});
+
+test('Apps Script inventories all source sheet IDs and rejects a partial task read',()=>{
+ const script=readFileSync(new URL('../google-apps-script/project-plan-sync.gs',import.meta.url),'utf8');
+ const gridProperties={rowCount:20,columnCount:9};
+ const tabs=[{sheetId:17,title:sheet.name,gridProperties},{sheetId:18,title:'已改名的项目页',gridProperties}];
+ let valueRanges=[{values:sheet.rows}];
+ const spreadsheetApi={
+  get(id){assert.equal(id,PROJECT_PLAN_SOURCE_ID);return {sheets:tabs.map(properties=>({properties}))};},
+  Values:{batchGet(id,{ranges}){
+   assert.equal(id,PROJECT_PLAN_SOURCE_ID);
+   assert.deepEqual(Array.from(ranges),["'"+sheet.name+"'!A1:I20"]);
+   return {valueRanges};
+  }}
+ };
+ const context={Sheets:{Spreadsheets:spreadsheetApi}};
+ runInNewContext(script,context);
+ const result=JSON.parse(JSON.stringify(context.readProjectPlanSheets_()));
+ assert.deepEqual(result,{sheets:[sheet],sourceSheetIds:[17,18]});
+ valueRanges=[];
+ assert.throws(()=>context.readProjectPlanSheets_(),/源表返回的项目页不完整/);
 });

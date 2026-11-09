@@ -28,8 +28,17 @@ export async function projectPlanPush(request,env){
  const key=await crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['verify']);
  const bytes=Uint8Array.from(signature.match(/../g),value=>parseInt(value,16));
  if(!await crypto.subtle.verify('HMAC',key,bytes,encoder.encode(timestamp+'.'+body)))return reply({error:'同步签名无效或已过期'},401);
- let snapshot;
- try{snapshot=normalizeProjectPlanSnapshot(JSON.parse(body));}catch{return reply({error:'项目计划格式不正确，原数据已保留'},400);}
+ let snapshot,sourceIds;
+ try{
+  const source=JSON.parse(body);
+  snapshot=normalizeProjectPlanSnapshot(source);
+  if(Object.hasOwn(source,'sourceSheetIds')){
+   const ids=source.sourceSheetIds;
+   if(!Array.isArray(ids)||!ids.length||ids.some(id=>!Number.isSafeInteger(id)||id<0))throw Error('源表页清单无效');
+   sourceIds=new Set(ids);
+   if(sourceIds.size!==ids.length||snapshot.projects.some(project=>!sourceIds.has(project.sheetId)))throw Error('源表页清单不一致');
+  }
+ }catch{return reply({error:'项目计划格式不正确，原数据已保留'},400);}
  const payload=JSON.stringify(snapshot);
  try{
   const previous=await readSnapshot(env.DB);
@@ -38,7 +47,9 @@ export async function projectPlanPush(request,env){
    return reply({error:'此同步已过期，原数据已保留'},409);
   }
   const incomingIds=new Set(snapshot.projects.map(project=>project.sheetId));
-  if(previous&&JSON.parse(previous.payload).projects.some(project=>!incomingIds.has(project.sheetId)))return reply({error:'源表缺少已有项目页，原数据已保留'},409);
+  // Only a signed inventory of all source tabs can confirm an existing tab was deleted.
+  const missing=project=>!incomingIds.has(project.sheetId)&&(!sourceIds||sourceIds.has(project.sheetId));
+  if(previous&&JSON.parse(previous.payload).projects.some(missing))return reply({error:'已有项目页未完整同步，原数据已保留'},409);
   const result=await env.DB.prepare('INSERT INTO project_plan_snapshot (id,payload,sync_version) VALUES (1,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload,sync_version=excluded.sync_version WHERE project_plan_snapshot.sync_version=?')
    .bind(payload,stamp,previous?.sync_version??0).run();
   if(!result.meta?.changes)return reply({error:'项目计划已更新，请重新同步'},409);
