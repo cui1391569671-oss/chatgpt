@@ -108,8 +108,19 @@ function parseProjectCoreSheets(source,day){
   const risks=labels.get('主要风险与限制')||'';
   if(/托盘|货物含托/.test(risks))palletSize+=(palletSize?'\n':'')+'原表风险说明：'+risks;
   const efficiency=labels.get('效率信息')||labels.get('项目目标/验收标准')||'';
+  let contractAmount='';
+  const commerceStart=sheet.rows.findIndex(row=>/^\d+\s+商务与金额$/.test(text(row[0])));
+  for(const row of sheet.rows.slice(commerceStart<0?sheet.rows.length:commerceStart+1)){
+   if(/^\d+\s+/.test(text(row[0])))break;
+   if(text(row[0])!=='合同总金额')continue;
+   const amount=text(row[1]);
+   const currency=text(row[4])==='币种'?text(row[5]):'';
+   const tax=text(row[8])==='含税/未税'?text(row[9]):'';
+   if(amount)contractAmount=amount+(currency?' '+currency:'（币种待确认）')+(tax?'（'+tax+'）':'');
+   break;
+  }
   const budget=parseProjectBudget(sheet.rows);
-  return {...(budget?{budget}:{}),projectCode,projectName,supplyScope:lines.join('\n'),transport,palletSize,equipmentLoad:labels.get('设备负载')||excerpt(/额载|负载|载重|载荷|\d\s*(?:kg|公斤|千克)/i),efficiency,sourceSheet:text(sheet.name),sourceSheetId:sheet.id,sourceUpdatedAt:labels.get('信息更新日期')||''};
+  return {...(budget?{budget}:{}),projectCode,projectName,contractAmount,supplyScope:lines.join('\n'),transport,palletSize,equipmentLoad:labels.get('设备负载')||excerpt(/额载|负载|载重|载荷|\d\s*(?:kg|公斤|千克)/i),efficiency,sourceSheet:text(sheet.name),sourceSheetId:sheet.id,sourceUpdatedAt:labels.get('信息更新日期')||''};
  });
  return {sourceSpreadsheetId:source.spreadsheetId,sourceTitle:text(source.title),syncedAt:day,items};
 }

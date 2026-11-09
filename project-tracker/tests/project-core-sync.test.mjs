@@ -24,6 +24,24 @@ test('ten-category source rows survive parsing and signed storage through the pa
  for(let i=0;i<10;i++){assert.equal(summary.supplyScope[i].value,(i+1)+' 套');assert.match(summary.supplyDetails[i].value,new RegExp('示例备注'+i));}
  assert.match(summary.supplyDetails[9].value,/运输1项\n保险1项/);assert(!JSON.stringify(DB.stored).includes('PRIVATE CONTACT'));
 });
+test('contract amount comes only from the commercial section and survives signed storage',async()=>{
+ const contractRow=(amount,currency='',tax='')=>['合同总金额',amount,'','','币种',currency,'','','含税/未税',tax];
+ const tabs=['QA001','QA002','QA003','QA004'].map((code,i)=>({...sheet(code),id:i+1}));
+ for(const [i,row] of [contractRow('1,250.00','USD','含税'),contractRow('0'),contractRow('','CNY')].entries()){
+  tabs[i].rows.splice(2,0,['02  商务与金额'],row,['03  项目要求']);
+ }
+ const parsed={...parseProjectCoreSheets(source(tabs),'2026-11-09'),automationInstalled:true};
+ const expected=['1,250.00 USD（含税）','0（币种待确认）','',''];
+ assert.deepEqual(parsed.items.map(item=>item.contractAmount),expected);
+ const DB=database(),env={DB,TRACKER_USER:'u',TRACKER_PASSWORD:'p',PROJECT_CORE_SYNC_SECRET:secret},stamp=Date.now()-1000;
+ assert.equal((await projectCorePushRoute(await signed(parsed,stamp),env)).status,200);
+ const request=new Request('https://test.local/api/project-core-information',{headers:{Authorization:'Basic '+btoa('u:p')}});
+ const saved=await (await worker.fetch(request,env)).json();
+ assert.deepEqual(saved.items.map(item=>item.contractAmount),expected);
+ parsed.items[0].contractAmount=1250;
+ assert.equal((await projectCorePushRoute(await signed(parsed,stamp+1),env)).status,400);
+ assert.equal(DB.stored.items[0].contractAmount,expected[0]);
+});
 test('malformed, empty, duplicate or incomplete source sheets cannot clear a snapshot',()=>{for(const s of [source([]),source([sheet(),sheet()]),source([{...sheet(),rows:[['项目编号','QA001']]}]),{...source([sheet()]),spreadsheetId:'wrong'}])assert.throws(()=>parseProjectCoreSheets(s,'2026-10-21'));const s=sheet();s.rows.push(['项目编号','different']);assert.throws(()=>parseProjectCoreSheets(source([s]),'2026-10-21'));});
 test('push requires configured secret, valid signature, timestamp, bounded JSON and verified source',async()=>{const DB=database(),env={DB,PROJECT_CORE_SYNC_SECRET:secret};assert.equal((await projectCorePushRoute(await signed(payload()),{DB})).status,503);assert.equal((await projectCorePushRoute(new Request('https://test.local',{method:'GET'}),env)).status,405);for(const req of [await signed(payload(),Date.now()-400000),await signed(payload(),Date.now(),{'X-Project-Core-Signature':'0'.repeat(64)}),await signed(payload(),Date.now(),{'X-Project-Core-Timestamp':'bad'})])assert.equal((await projectCorePushRoute(req,env)).status,401);assert.equal((await projectCorePushRoute(await signed(payload(),Date.now(),{'Content-Type':'text/plain'}),env)).status,415);for(const p of ['{',{}, {...payload(),sourceSpreadsheetId:'wrong'}, {...payload(),items:[]},{...payload(),items:[{...payload().items[0],efficiency:7}]}])assert.equal((await projectCorePushRoute(await signed(p),env)).status,400);assert.equal((await projectCorePushRoute(await signed(' '.repeat(1000001)),env)).status,413);assert.equal(DB.writes,0);});
 test('atomic signed push handles retries, stale requests, removed projects, conflicts and storage failures',async()=>{const DB=database(),env={DB,PROJECT_CORE_SYNC_SECRET:secret},at=Date.now()-5000,first=payload();assert.equal((await worker.fetch(await signed(first,at),env)).status,200,'push uses its own signature before login');assert.equal(DB.stored.items[0].efficiency,first.items[0].efficiency);assert.equal(DB.stored.syncVersion,at);assert.equal((await projectCorePushRoute(await signed(first,at),env)).status,200);assert.equal(DB.writes,1);assert.equal((await projectCorePushRoute(await signed(first,at-1),env)).status,409);const next={...first,items:[{...first.items[0],efficiency:'入库99托/小时'}]};assert.equal((await projectCorePushRoute(await signed(next,at+1),env)).status,200);assert.equal(DB.stored.items[0].efficiency,'入库99托/小时');const removed={...first,items:[{...first.items[0],projectCode:'QA002',sourceSheetId:2}]};assert.equal((await projectCorePushRoute(await signed(removed,at+2),env)).status,409);DB.conflict=true;assert.equal((await projectCorePushRoute(await signed(first,at+3),env)).status,409);DB.conflict=false;DB.fail=true;assert.equal((await projectCorePushRoute(await signed(first,at+4),env)).status,503);assert.equal(DB.stored.items[0].efficiency,'入库99托/小时');assert.equal(DB.writes,2);});
