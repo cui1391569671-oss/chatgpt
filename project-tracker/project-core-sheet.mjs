@@ -9,7 +9,7 @@ export function parseProjectCoreSheets(source,day){
   if(!Number.isInteger(sheet.id)||sheet.id<0||!Array.isArray(sheet.rows)||sheet.rows.length>200||sheet.rows.some(row=>!Array.isArray(row)||row.length>12||row.some(v=>typeof v!=='string'&&v!==null)))throw Error('项目页格式不正确');
   const labels=new Map();
   for(const row of sheet.rows)for(let i=0;i<row.length-1;i++){
-   const key=text(row[i]);if(['项目编号','项目名称','信息更新日期','运输方式','托盘尺寸','设备负载','效率信息','项目目标/验收标准','主要风险与限制'].includes(key)){
+   const key=text(row[i]);if(['项目编号','项目名称','项目问题别名','信息更新日期','运输方式','托盘尺寸','设备负载','效率信息','项目目标/验收标准','主要风险与限制'].includes(key)){
     if(labels.has(key))throw Error('项目页含有重复字段，请检查原表');labels.set(key,text(row[i+1]));
    }
   }
@@ -47,8 +47,9 @@ export function parseProjectCoreSheets(source,day){
    if(amount)contractAmount=amount+(currency?' '+currency:'（币种待确认）')+(tax?'（'+tax+'）':'');
    break;
   }
+  const aliases=[...new Set((labels.get('项目问题别名')||'').split(/[\r\n;；]+/).map(text).filter(Boolean))];
   const budget=parseProjectBudget(sheet.rows);
-  return {...(budget?{budget}:{}),projectCode,projectName,contractAmount,supplyScope:lines.join('\n'),transport,palletSize,equipmentLoad:labels.get('设备负载')||excerpt(/额载|负载|载重|载荷|\d\s*(?:kg|公斤|千克)/i),efficiency,sourceSheet:text(sheet.name),sourceSheetId:sheet.id,sourceUpdatedAt:labels.get('信息更新日期')||''};
+  return {...(budget?{budget}:{}),...(aliases.length?{aliases}:{}),projectCode,projectName,contractAmount,supplyScope:lines.join('\n'),transport,palletSize,equipmentLoad:labels.get('设备负载')||excerpt(/额载|负载|载重|载荷|\d\s*(?:kg|公斤|千克)/i),efficiency,sourceSheet:text(sheet.name),sourceSheetId:sheet.id,sourceUpdatedAt:labels.get('信息更新日期')||''};
  });
  return {sourceSpreadsheetId:source.spreadsheetId,sourceTitle:text(source.title),syncedAt:day,items};
 }

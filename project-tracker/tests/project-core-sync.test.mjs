@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {parseProjectCoreSheets,PROJECT_CORE_SOURCE_ID} from '../project-core-sheet.mjs';
 import {summarizeProjectCore} from '../project-core-summary.mjs';
+import {projectLabel} from '../project-labels.mjs';
 import {projectCorePushRoute} from '../project-core-sync.mjs';
 import worker from './helpers/session-worker.mjs';
 import {readFileSync} from 'node:fs';
@@ -13,6 +14,26 @@ const payload=()=>({...parseProjectCoreSheets(source([sheet()]),'2026-10-21'),au
 const secret='isolated-unit-test-secret-32-characters';
 async function signed(body,stamp=Date.now(),headers={}){const raw=typeof body==='string'?body:JSON.stringify(body),timestamp=String(stamp);const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);const signature=[...new Uint8Array(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(timestamp+'.'+raw)))].map(v=>v.toString(16).padStart(2,'0')).join('');return new Request('https://test.local/api/project-core-information/push',{method:'POST',headers:{'Content-Type':'application/json','X-Project-Core-Timestamp':timestamp,'X-Project-Core-Signature':signature,...headers},body:raw});}
 function database(){let stored=null,writes=0,conflict=false,fail=false;return {get stored(){return stored&&JSON.parse(stored)},get writes(){return writes},set conflict(value){conflict=value},set fail(value){fail=value},seed(value){stored=JSON.stringify(value)},prepare(sql){let args;return {bind(...a){args=a;return this},async first(){return stored?{payload:stored}:null},async run(){if(sql.startsWith('CREATE'))return {};if(fail)throw Error('DB unavailable');if(conflict||stored&&(stored!==args[1]||(JSON.parse(stored).syncVersion||0)>=args[2]))return {meta:{changes:0}};stored=args[0];writes++;return {meta:{changes:1}}}}}}}
+test('source aliases survive signed sync and follow project renumbering',async()=>{
+ const tab=sheet('PM021');
+ tab.rows.splice(1,0,['项目问题别名','旧项目名称； 旧简称\n旧项目名称']);
+ const parse=()=>({...parseProjectCoreSheets(source([tab]),'2026-11-09'),automationInstalled:true});
+ const DB=database(),env={DB,PROJECT_CORE_SYNC_SECRET:secret},at=Date.now()-1000;
+ const oldIssueProject='P099 旧项目名称';
+ assert.equal((await projectCorePushRoute(await signed(parse(),at),env)).status,200);
+ assert.deepEqual(DB.stored.items[0].aliases,['旧项目名称','旧简称']);
+ assert.equal(projectLabel(oldIssueProject,DB.stored.items),'PM021 旧项目名称');
+ tab.rows[0][1]='PM022';
+ assert.equal((await projectCorePushRoute(await signed(parse(),at+1),env)).status,200);
+ assert.equal(projectLabel(oldIssueProject,DB.stored.items),'PM022 旧项目名称');
+ const invalid=parse();
+ invalid.items[0].aliases=['   '];
+ assert.equal((await projectCorePushRoute(await signed(invalid,at+2),env)).status,400);
+ assert.equal(projectLabel(oldIssueProject,DB.stored.items),'PM022 旧项目名称');
+ tab.rows.splice(1,1);
+ assert.equal((await projectCorePushRoute(await signed(parse(),at+3),env)).status,200);
+ assert.equal(projectLabel(oldIssueProject,DB.stored.items),'旧项目名称');
+});
 test('template parser preserves units, per-device loads, efficiency conditions and excludes private fields',()=>{const result=payload(),item=result.items[0];assert.match(item.supplyScope,/表列数量：4台/);assert.match(item.transport,/贸易条件/);assert.match(item.palletSize,/1200×800 mm托盘/);assert.match(item.equipmentLoad,/800 kg/);assert.match(item.equipmentLoad,/1300 kg/);assert.match(item.equipmentLoad,/待确认/);assert.match(item.efficiency,/效率不作为验收依据/);assert(!JSON.stringify(result).includes('PRIVATE CONTACT'));assert(!JSON.stringify(result).includes('9000000'));const extra=sheet();extra.rows.splice(0,0,['自定义说明','可以插行']);assert.equal(parseProjectCoreSheets(source([extra]),'2026-10-21').items[0].projectCode,'QA001');});
 test('ten-category source rows survive parsing and signed storage through the page summary',async()=>{
  const names=['货架系统','四向车系统','提升机系统','输送线系统','电气控制系统','软件系统（RMS/WMS/WCS）','网络及 IT 设备','安装调试及培训','备品备件及工具','其他'],tab=sheet();
