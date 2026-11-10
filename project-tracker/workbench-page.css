@@ -763,6 +763,15 @@ nav button[data-view="tasks"] {
 .clothing-cover-selected {
   border-color: var(--semantic-primary);
 }
+.wardrobe-selection-bar,
+.wardrobe-selection-actions {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wardrobe-selection-actions {
+  display: flex;
+  align-items: center;
+}
 .clothing-selection {
   display: flex;
   align-items: center;
