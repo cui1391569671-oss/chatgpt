@@ -8,8 +8,8 @@ export function legacyRule(event){
 }
 export function eventToRecord(event,previous){
  const format=value=>typeof value==='string'?value:event.start?.constructor&&value?.format?value.tz(BEIJING).format('YYYY-MM-DDTHH:mm'):value;
- const start=format(event.start),end=format(event.end);if(!event.title?.trim()||event.title.trim().length>200)throw Error('日程标题应为 1–200 字。');if(!start||!end||end<start)throw Error('请检查日程开始与结束时间。');
- const record={...previous,id:String(event.id),title:event.title.trim(),start,end,location:event.location||'',detail:event.description||'',done:previous?.done||false,allDay:!!event.allDay};
+ const start=format(event.start),end=format(event.end);const title=event.title?.trim()||'未命名日程';if(title.length>200)throw Error('日程标题最多 200 字。');if(!start||!end||end<start)throw Error('请检查日程开始与结束时间。');
+ const record={...previous,id:String(event.id),title,start,end,location:event.location||'',detail:event.description||'',done:previous?.done||false,allDay:!!event.allDay};
  if(record.location.length>500||record.detail.length>5000)throw Error('地点最多 500 字，备注最多 5000 字。');
  for(const key of ['rrule','exdates','recurrenceId','uid','color','backgroundColor']){if(event[key]!==undefined)record[key]=JSON.parse(JSON.stringify(event[key]));else delete record[key];}
  if(event.data?.images!==undefined)record.images=[...event.data.images];
