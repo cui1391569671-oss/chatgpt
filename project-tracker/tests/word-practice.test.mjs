@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {spellingMatches,practiceQueue,reviewedWord,validPracticeSession,sentenceMatches,sentenceQueue} from '../word-practice.mjs';
+import {spellingMatches,practiceQueue,reviewedWord,validPracticeSession,sentenceMatches,sentenceQueue,vocabularyMastery} from '../word-practice.mjs';
 import {validWorkspace} from './helpers/session-worker.mjs';
 import {recordChanges,applyRecordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
 test('completed practice sessions are validated and merge without losing other devices or vocabulary updates',()=>{
@@ -12,6 +12,15 @@ test('completed practice sessions are validated and merge without losing other d
 });
 test('typing practice matches normalized spelling without accepting incomplete answers',()=>{
  assert.equal(spellingMatches(' Apple ','apple'),true);assert.equal(spellingMatches('don’t',"don't"),true);assert.equal(spellingMatches('ＡＰＰＬＥ','apple'),true);assert.equal(spellingMatches('appl','apple'),false);assert.equal(spellingMatches('apples','apple'),false);
+});
+test('unmastered and unreviewed words remain in practice and outside the mastered filter',()=>{
+ const words=['未掌握','尚未掌握','不会',undefined,' 已掌握 ','ＭＡＳＴＥＲＥＤ'].map((mastery,i)=>({
+  id:String(i),word:'word'+i,mastery,example:'Example '+i+'.',exampleTranslation:'中文例句。'
+ }));
+ const mastered=words.filter(word=>vocabularyMastery(word.mastery)==='mastered');
+ assert.deepEqual(mastered.map(word=>word.id),['4','5']);
+ assert.deepEqual(practiceQueue(words,'unknown').map(word=>word.id),['0','1','2','3']);
+ assert.deepEqual(sentenceQueue(words,'unknown').map(word=>word.id),['0','1','2','3']);
 });
 
 test('sentence matching tolerates presentation, not changed words or missing negation',()=>{

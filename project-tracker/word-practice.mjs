@@ -14,7 +14,11 @@ export function sentenceQueue(words,scope='all',limit=20){
  }
  return result.slice(0,Math.max(1,Math.min(100,Number(limit)||20)));
 }
-function orderedWords(words,scope){return [...words].filter(w=>w?.word?.trim()&&(scope!=='unknown'||!String(w.mastery||'').includes('掌握'))).sort((a,b)=>String(a.lastReviewed||'').localeCompare(String(b.lastReviewed||''))||String(a.word).localeCompare(String(b.word),'en'));}
+export function vocabularyMastery(value){
+ const status=String(value??'').normalize('NFKC').trim().toLowerCase();
+ return ['已掌握','掌握','mastered'].includes(status)?'mastered':'unknown';
+}
+function orderedWords(words,scope){return [...words].filter(w=>w?.word?.trim()&&(scope!=='unknown'||vocabularyMastery(w.mastery)==='unknown')).sort((a,b)=>String(a.lastReviewed||'').localeCompare(String(b.lastReviewed||''))||String(a.word).localeCompare(String(b.word),'en'));}
 export function practiceQueue(words,scope='all',limit=20){return orderedWords(words,scope).slice(0,Math.max(1,Math.min(100,Number(limit)||20))).map(w=>({...w}));}
 
 export function reviewedWord(word,correct,date){const count=Number.parseInt(word.reviewCount||'0',10);return {...word,mastery:correct?'已掌握':'不会',reviewCount:String((Number.isFinite(count)&&count>=0?count:0)+1),firstLearned:word.firstLearned||date,lastReviewed:date};}
