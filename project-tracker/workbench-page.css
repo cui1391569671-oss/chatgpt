@@ -720,17 +720,54 @@ nav button[data-view="tasks"] {
     padding: 10px 12px;
   }
 }
+.wardrobe-categories {
+  display: grid;
+  gap: 20px 16px;
+  align-items: start;
+}
+@media (min-width: 520px) {
+  .wardrobe-categories {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 320px));
+  }
+}
+.wardrobe-category {
+  min-width: 0;
+}
+.wardrobe-category > .card-head {
+  justify-content: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
 .clothes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
-.clothing img {
+.clothing-cover {
+  display: block;
   width: 100%;
-  height: 140px;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--theme-white);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+}
+.clothing-cover > img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  background: var(--bg);
-  border-radius: 10px;
+}
+.clothing-cover-selected {
+  border-color: var(--semantic-primary);
+}
+.clothing-selection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
 }
 .outfit-images {
   display: flex;
@@ -743,10 +780,6 @@ nav button[data-view="tasks"] {
   object-fit: contain;
   border-radius: 8px;
   background: var(--bg);
-}
-.clothing .btn {
-  width: 100%;
-  margin-top: 8px;
 }
 .clothing-previews {
   display: flex;
@@ -1128,13 +1161,6 @@ nav button[data-view="tasks"] {
   flex-direction: column;
   gap: 4px;
 }
-.clothing h3 {
-  font-size: 16px;
-}
-.clothing p {
-  font-size: 14px;
-  margin: 3px 0;
-}
 @media(max-width:1100px) {
   .notes {
     grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
@@ -1247,12 +1273,6 @@ nav button[data-view="tasks"] {
   }
   .calendar-day {
     min-height: 68px;
-  }
-  .clothes-grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-  }
-  .clothing img {
-    height: 130px;
   }
   .notification-item {
     padding: 10px;
