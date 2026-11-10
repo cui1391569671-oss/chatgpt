@@ -1,7 +1,8 @@
 export const PROJECT_BUDGET_FIELDS=[['currency','预算币种',300],['basis','金额口径',300],['installation','安装费用',300],['transport','运输费用',300],['warranty','质保费用',300],['implementation','实施费用',300],['risk','风险金',300],['identifiedSubtotal','已识别小计',300],['total','五类合计',300],['review','复核状态',300],['note','预算说明',2000],['source','预算来源',2000]];
 export function validProjectBudget(budget){return !!budget&&typeof budget==='object'&&!Array.isArray(budget)&&Object.keys(budget).length===PROJECT_BUDGET_FIELDS.length&&PROJECT_BUDGET_FIELDS.every(([key,,max])=>typeof budget[key]==='string'&&budget[key].length<=max);}
+export function isProjectBudgetHeading(value){return /^(?:\d+\s+)?(?:项目)?核心预算$/.test(String(value??'').trim());}
 export function parseProjectBudget(rows){
- const text=v=>String(v??'').trim(),start=rows.findIndex(row=>/^\d+\s+项目核心预算$/.test(text(row[0])));if(start<0)return undefined;
+ const text=v=>String(v??'').trim(),start=rows.findIndex(row=>isProjectBudgetHeading(row[0]));if(start<0)return undefined;
  const fields=new Map(PROJECT_BUDGET_FIELDS.map(([key,label])=>[label,key])),values={};
  for(const row of rows.slice(start+1)){
   if(/^\d+\s+/.test(text(row[0])))break;

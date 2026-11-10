@@ -103,6 +103,32 @@ test('budget extracts only the approved section, preserves zero and unknowns, an
  assert.equal(budget.transport,'0.00');assert.equal(budget.warranty,'待确认');assert.equal(budget.installation,'30,000.00');assert.equal(budget.total,'待确认');assert.equal(budget.currency,'待确认');assert(!JSON.stringify(budget).includes('PRIVATE CONTACT'));assert(!JSON.stringify(budget).includes('9000000'));
  tab.rows.splice(start+2,0,['安装费用','重复']);assert.throws(()=>parseProjectCoreSheets(source([tab]),'2026-10-31'),/重复字段/);
 });
+test('budget nested under commerce syncs the current template without mixing contract and budget amounts',async()=>{
+ const tab=sheet();
+ tab.rows=tab.rows.filter(row=>row[0]!=='06  项目核心预算');
+ tab.rows.splice(3,0,
+  ['02  商务与金额'],
+  ['合同金额','9,876.00','','','币种','USD','','','含税/未税','含税'],
+  ['付款方式','示例付款方式'],
+  ['核心预算'],
+  ['预算币种','CNY','','','金额口径','未税'],
+  ['安装费用','1,234.00','','','运输费用','0.00','','','质保费用','待确认'],
+  ['实施费用','100.00','','','风险金','内含未拆分','','','已识别小计','1,334.00'],
+  ['五类合计','待确认','','','复核状态','质保待复核'],
+  ['03  项目地址与现场条件'],
+  ['预算说明','后续区块的内容不得进入预算']
+ );
+ const parsed={...parseProjectCoreSheets(source([tab]),'2026-11-10'),automationInstalled:true};
+ const DB=database(),env={DB,PROJECT_CORE_SYNC_SECRET:secret};
+ assert.equal((await projectCorePushRoute(await signed(parsed),env)).status,200);
+ const item=DB.stored.items[0];
+ assert.equal(item.contractAmount,'9,876.00 USD（含税）');
+ assert.deepEqual(item.budget,{
+  currency:'CNY',basis:'未税',installation:'1,234.00',transport:'0.00',warranty:'待确认',
+  implementation:'100.00',risk:'内含未拆分',identifiedSubtotal:'1,334.00',total:'待确认',
+  review:'质保待复核',note:'',source:''
+ });
+});
 test('signed budget updates persist all fields atomically and invalid data preserves the last successful budget',async()=>{
  const {PROJECT_BUDGET_FIELDS}=await import('../project-budget.mjs');const DB=database(),env={DB,PROJECT_CORE_SYNC_SECRET:secret},at=Date.now()-5000;
  const budget=Object.fromEntries(PROJECT_BUDGET_FIELDS.map(([key])=>[key,'待确认']));budget.transport='0.00';

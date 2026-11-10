@@ -1,4 +1,4 @@
-import {parseProjectBudget} from './project-budget.mjs';
+import {isProjectBudgetHeading,parseProjectBudget} from './project-budget.mjs';
 // Shared parser for the bound Apps Script and isolated Node tests. No source data is embedded.
 export const PROJECT_CORE_SOURCE_ID='1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM';
 export function parseProjectCoreSheets(source,day){
@@ -39,8 +39,9 @@ export function parseProjectCoreSheets(source,day){
   let contractAmount='';
   const commerceStart=sheet.rows.findIndex(row=>/^\d+\s+商务与金额$/.test(text(row[0])));
   for(const row of sheet.rows.slice(commerceStart<0?sheet.rows.length:commerceStart+1)){
-   if(/^\d+\s+/.test(text(row[0])))break;
-   if(text(row[0])!=='合同总金额')continue;
+   const label=text(row[0]);
+   if(/^\d+\s+/.test(label)||isProjectBudgetHeading(label))break;
+   if(label!=='合同总金额'&&label!=='合同金额')continue;
    const amount=text(row[1]);
    const currency=text(row[4])==='币种'?text(row[5]):'';
    const tax=text(row[8])==='含税/未税'?text(row[9]):'';

@@ -58,8 +58,9 @@ function pushProjectCore_(force){
 /* PROJECT_CORE_PARSER_START */
 const PROJECT_BUDGET_FIELDS=[['currency','预算币种',300],['basis','金额口径',300],['installation','安装费用',300],['transport','运输费用',300],['warranty','质保费用',300],['implementation','实施费用',300],['risk','风险金',300],['identifiedSubtotal','已识别小计',300],['total','五类合计',300],['review','复核状态',300],['note','预算说明',2000],['source','预算来源',2000]];
 function validProjectBudget(budget){return !!budget&&typeof budget==='object'&&!Array.isArray(budget)&&Object.keys(budget).length===PROJECT_BUDGET_FIELDS.length&&PROJECT_BUDGET_FIELDS.every(([key,,max])=>typeof budget[key]==='string'&&budget[key].length<=max);}
+function isProjectBudgetHeading(value){return /^(?:\d+\s+)?(?:项目)?核心预算$/.test(String(value??'').trim());}
 function parseProjectBudget(rows){
- const text=v=>String(v??'').trim(),start=rows.findIndex(row=>/^\d+\s+项目核心预算$/.test(text(row[0])));if(start<0)return undefined;
+ const text=v=>String(v??'').trim(),start=rows.findIndex(row=>isProjectBudgetHeading(row[0]));if(start<0)return undefined;
  const fields=new Map(PROJECT_BUDGET_FIELDS.map(([key,label])=>[label,key])),values={};
  for(const row of rows.slice(start+1)){
   if(/^\d+\s+/.test(text(row[0])))break;
@@ -111,8 +112,9 @@ function parseProjectCoreSheets(source,day){
   let contractAmount='';
   const commerceStart=sheet.rows.findIndex(row=>/^\d+\s+商务与金额$/.test(text(row[0])));
   for(const row of sheet.rows.slice(commerceStart<0?sheet.rows.length:commerceStart+1)){
-   if(/^\d+\s+/.test(text(row[0])))break;
-   if(text(row[0])!=='合同总金额')continue;
+   const label=text(row[0]);
+   if(/^\d+\s+/.test(label)||isProjectBudgetHeading(label))break;
+   if(label!=='合同总金额'&&label!=='合同金额')continue;
    const amount=text(row[1]);
    const currency=text(row[4])==='币种'?text(row[5]):'';
    const tax=text(row[8])==='含税/未税'?text(row[9]):'';
