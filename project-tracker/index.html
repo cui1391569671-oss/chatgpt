@@ -5271,6 +5271,15 @@ input[data-ui-date-native],body [data-workspace-file-native] {
   opacity: .35;
   cursor: not-allowed;
 }
+:is(.workspace-date-dialog .workspace-date-week,[data-ilamy-portal] [data-slot=calendar]) button[aria-current=date] {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+:is(.workspace-date-dialog .workspace-date-week,[data-ilamy-portal] [data-slot=calendar]) button[aria-current=date]:is([aria-selected=false],[data-selected=false]) {
+  color: var(--semantic-primary-text);
+  box-shadow: inset 0 0 0 1px var(--semantic-primary);
+}
 .workspace-date-footer {
   display: flex;
   justify-content: flex-end;
@@ -6085,8 +6094,9 @@ function updateStats() {
 function populateProjectSelect(){
  const projSel=document.getElementById('addProject');
  const selected=projSel.value;
+ const names=projectNames().sort(compareProjectLabels);
   projSel.innerHTML = '';
-  projectNames().forEach(p => {
+  names.forEach(p => {
     const opt = document.createElement('option');
     opt.value = p;
     opt.textContent = displayProject(p);
@@ -6099,7 +6109,7 @@ function populateProjectSelect(){
   newOpt.style.color = 'var(--accent)';
   newOpt.style.fontWeight = '600';
   projSel.appendChild(newOpt);
- if(projectNames().includes(selected))projSel.value=selected;
+ if(names.includes(selected))projSel.value=selected;
 }
 let creatingProject=false,projectCreatePendingName=null,projectCreatedCallback=null,projectCreateFocusTarget=null;
 function showAddChoice(){if(!ready||conflicted||saving||unresolvedPending)return;document.getElementById('addChoice').showModal();}
