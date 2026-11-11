@@ -2409,13 +2409,41 @@ body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direct
 .project-budget-table :is(td,thead th):not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
 .project-budget-table{--project-column-1:25%;--project-column-2:15%;--project-column-3:15%;--project-column-4:15%;--project-column-5:15%;--project-column-6:15%}
 
-/* The original Google task workbook owns its grid and worksheet tabs. */
+/* Private source preview and the optional Google editor share one viewport. */
 body[data-workspace-view=projectPlan] #content{display:flex;flex-direction:column}
 #workspaceProjectPlan,.project-plan{display:flex;flex-direction:column;min-height:0;min-width:0;flex:1}
 .project-plan{gap:12px}
 .project-plan-status{margin:0;color:var(--semantic-text-muted);font-size:14px}
 .project-plan-status a{margin-inline-start:8px;color:var(--semantic-primary-text)}
 .project-plan-frame{display:block;width:100%;min-height:0;flex:1;border:1px solid var(--semantic-border);border-radius:var(--card-radius);background:var(--semantic-surface-strong)}
+.project-plan-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0}
+.project-plan-controls .ui-select{min-width:0;max-width:min(450px,100%)}
+.project-plan-sync{margin-inline-start:auto;color:var(--semantic-text-muted);font-size:12px}
+.project-plan-preview-scroll{flex:1;min-height:0;min-width:0;overflow:auto;border:1px solid var(--semantic-border);border-radius:var(--card-radius)}
+.project-plan-preview-scroll:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:-2px}
+/* Cell colors and dimensions below are source-document content, not application theme tokens. */
+.project-plan-sheet{table-layout:fixed;border-collapse:separate;border-spacing:0;background:var(--semantic-surface-strong);color:var(--semantic-text-primary);color-scheme:light;font-family:Arial,sans-serif}
+.project-plan-sheet :is(th,td){box-sizing:border-box;border-right:1px solid var(--semantic-border);border-bottom:1px solid var(--semantic-border);padding:3px 5px;overflow-wrap:anywhere}
+.project-plan-sheet td>span,.project-plan-sheet .project-plan-task-link{display:block;max-height:var(--project-plan-cell-height);overflow:hidden;text-overflow:clip}
+.project-plan-sheet thead{position:sticky;top:0;z-index:2}
+.project-plan-sheet .project-plan-column-letters th,.project-plan-sheet .project-plan-row-number{background:var(--semantic-surface-elevated);color:var(--semantic-text-muted);font-size:11px;font-weight:400;text-align:center}
+.project-plan-column-letters{height:24px}
+.project-plan-sheet .project-plan-row-number{position:sticky;left:0;z-index:1}
+.project-plan-sheet .project-plan-checkbox{font-size:20px;line-height:1.1;text-align:center}
+.project-plan-legacy-table{width:100%;min-width:1000px;border-collapse:separate;border-spacing:0;background:var(--semantic-surface-strong)}
+.project-plan-legacy-table :is(th,td){padding:8px 12px;border-bottom:1px solid var(--semantic-border);text-align:left;white-space:pre-wrap;overflow-wrap:anywhere}
+.project-plan-legacy-table thead{position:sticky;top:0;background:var(--semantic-surface-elevated)}
+.project-plan-legacy-table caption{text-align:left;padding:12px}
+.project-plan-task-link{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:inherit;white-space:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.project-plan-task-link:hover{text-decoration-thickness:2px}
+.project-plan-task-link:focus-visible{outline:2px solid currentColor;outline-offset:1px}
+.project-plan-editor{width:min(620px,calc(100% - 32px))}
+.project-plan-edit-fields{display:grid;gap:16px;margin-block:16px}
+.project-plan-edit-fields label{display:block;margin-block-end:6px}
+.project-plan-edit-date{display:flex;gap:8px}
+.project-plan-edit-date .workspace-date-trigger{flex:1;min-width:0}
+.project-plan-edit-fields textarea{min-height:96px;resize:none}
+@media(max-width:640px){.project-plan-sync{margin-inline-start:0}}
 
 .word-practice-layout{display:grid;grid-template-columns:minmax(0,1fr) 370px;align-items:start;gap:24px}
 .learning-calendar{min-width:0;padding:20px}

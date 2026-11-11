@@ -1,5 +1,11 @@
 import {PROJECT_PLAN_SOURCE_ID} from '../../project-plan-sheet.mjs';
 
+export function projectPlanDefaultMode(userAgent='',preferred){
+ if(['preview','original'].includes(preferred))return preferred;
+ return /AppleWebKit\//.test(userAgent)&&/Safari\/|Macintosh|iPhone|iPad|iPod/.test(userAgent)&&
+  !/Chrome|Chromium|CriOS|FxiOS|Edg|OPR|OPiOS|Android/.test(userAgent)?'preview':'original';
+}
+
 export function projectPlanSheetUrls(sheetId){
  const source=new URL('https://docs.google.com/spreadsheets/d/'+PROJECT_PLAN_SOURCE_ID+'/edit');
  if(typeof sheetId==='string'&&/^\d+$/.test(sheetId)&&Number.isSafeInteger(Number(sheetId))){

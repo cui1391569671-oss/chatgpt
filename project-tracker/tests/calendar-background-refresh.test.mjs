@@ -24,7 +24,7 @@ test('repeated project polling draws only changed records or error transitions a
 test('a newer workspace snapshot updates the mounted calendar instead of rendering the entire page',async()=>{
  let renderCount=0,calendarCount=0,resolve;
  const status={dataset:{},classList:{contains:()=>false}};
- const c=vm.createContext({state:{events:[],tasks:[]},version:1,ready:true,busy:false,workspaceRefreshing:false,view:'calendar',api:'/api/workspace',document:{querySelector:()=>null},$:()=>status,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,isPhotographyEditing:()=>false,status:()=>{},render:()=>renderCount++,renderCalendar:()=>calendarCount++,fetch:()=>new Promise(r=>resolve=r)});
+ const c=vm.createContext({state:{events:[],tasks:[]},version:1,ready:true,busy:false,workspaceRefreshing:false,view:'calendar',api:'/api/workspace',document:{querySelector:()=>null},$:()=>status,isCalendarEditing:()=>false,isTasksEditing:()=>false,isAnnualPlanEditing:()=>false,isWordPracticing:()=>false,isFitnessEditing:()=>false,isPhotographyEditing:()=>false,isProjectPlanEditing:()=>false,status:()=>{},render:()=>renderCount++,renderCalendar:()=>calendarCount++,fetch:()=>new Promise(r=>resolve=r)});
  vm.runInContext(workspaceRefresh,c);
  let pending=c.refreshWorkspace();resolve({ok:true,json:async()=>({version:2,workspace:{events:[],tasks:[],notes:[{title:'其他页面的更新'}]}})});await pending;
  assert.equal(renderCount,0);assert.equal(calendarCount,1);assert.equal(c.version,2);
