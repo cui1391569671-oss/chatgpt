@@ -1,6 +1,5 @@
 import {normalizeProjectPlanSnapshot} from './project-plan-sheet.mjs';
 import {readBoundedText} from './request-body.mjs';
-import {projectPlanWriteConfigured} from './project-plan-write.mjs';
 
 const reply=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 const readSnapshot=async db=>{
@@ -11,7 +10,7 @@ const readSnapshot=async db=>{
 export async function projectPlanRead(request,env){
  if(request.method!=='GET')return reply({error:'不支持的操作'},405);
  const row=await readSnapshot(env.DB);
- return reply({...(row?{...JSON.parse(row.payload),lastSyncedAt:new Date(row.sync_version).toISOString()}:{projects:[],lastSyncedAt:null}),writeEnabled:!!projectPlanWriteConfigured(env)});
+ return reply(row?{...JSON.parse(row.payload),lastSyncedAt:new Date(row.sync_version).toISOString()}:{projects:[],lastSyncedAt:null});
 }
 
 export async function projectPlanPush(request,env){

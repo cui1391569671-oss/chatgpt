@@ -25,7 +25,6 @@ import {validEventRecurrence} from './event-recurrence.mjs';
 import {projectCoreInfoRoute} from './project-core-info.mjs';
 import {projectCorePushRoute} from './project-core-sync.mjs';
 import {projectPlanPush,projectPlanRead} from './project-plan-sync.mjs';
-import {projectPlanWrite} from './project-plan-write.mjs';
 import {personalVaultRoute} from './personal-vault.mjs';
 import {validMediaTracking} from './media-tracking.mjs';
 import {mediaSourcesRoute} from './media-sources.mjs';
@@ -169,7 +168,6 @@ async function fetchRoute(request,env){
     return json({error:'请在 Google 表格的“工作台词库同步”菜单中推送更新'},409);
    }
    if(url.pathname==='/api/project-plan')return await projectPlanRead(request,env);
-   if(url.pathname==='/api/project-plan/edit')return await projectPlanWrite(request,env);
    if(url.pathname==='/api/project-core-information')return await projectCoreInfoRoute(request,env);
    if(url.pathname==='/api/account/vault')return await personalVaultRoute(request,env);
    if(url.pathname==='/api/media/image')return await mediaImageRoute(request);

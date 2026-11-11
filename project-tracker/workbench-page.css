@@ -2409,41 +2409,51 @@ body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direct
 .project-budget-table :is(td,thead th):not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
 .project-budget-table{--project-column-1:25%;--project-column-2:15%;--project-column-3:15%;--project-column-4:15%;--project-column-5:15%;--project-column-6:15%}
 
-/* Private source preview and the optional Google editor share one viewport. */
+/* Read-only project schedule. The task column and date ruler stay in view. */
 body[data-workspace-view=projectPlan] #content{display:flex;flex-direction:column}
 #workspaceProjectPlan,.project-plan{display:flex;flex-direction:column;min-height:0;min-width:0;flex:1}
-.project-plan{gap:12px}
-.project-plan-status{margin:0;color:var(--semantic-text-muted);font-size:14px}
-.project-plan-status a{margin-inline-start:8px;color:var(--semantic-primary-text)}
-.project-plan-frame{display:block;width:100%;min-height:0;flex:1;border:1px solid var(--semantic-border);border-radius:var(--card-radius);background:var(--semantic-surface-strong)}
-.project-plan-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0}
-.project-plan-controls .ui-select{min-width:0;max-width:min(450px,100%)}
+.project-plan{gap:16px}
+.project-plan-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.project-plan-controls .ui-select{min-width:0;max-width:min(350px,100%)}
 .project-plan-sync{margin-inline-start:auto;color:var(--semantic-text-muted);font-size:12px}
-.project-plan-preview-scroll{flex:1;min-height:0;min-width:0;overflow:auto;border:1px solid var(--semantic-border);border-radius:var(--card-radius)}
-.project-plan-preview-scroll:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:-2px}
-/* Cell colors and dimensions below are source-document content, not application theme tokens. */
-.project-plan-sheet{table-layout:fixed;border-collapse:separate;border-spacing:0;background:var(--semantic-surface-strong);color:var(--semantic-text-primary);color-scheme:light;font-family:Arial,sans-serif}
-.project-plan-sheet :is(th,td){box-sizing:border-box;border-right:1px solid var(--semantic-border);border-bottom:1px solid var(--semantic-border);padding:3px 5px;overflow-wrap:anywhere}
-.project-plan-sheet td>span,.project-plan-sheet .project-plan-task-link{display:block;max-height:var(--project-plan-cell-height);overflow:hidden;text-overflow:clip}
-.project-plan-sheet thead{position:sticky;top:0;z-index:2}
-.project-plan-sheet .project-plan-column-letters th,.project-plan-sheet .project-plan-row-number{background:var(--semantic-surface-elevated);color:var(--semantic-text-muted);font-size:11px;font-weight:400;text-align:center}
-.project-plan-column-letters{height:24px}
-.project-plan-sheet .project-plan-row-number{position:sticky;left:0;z-index:1}
-.project-plan-sheet .project-plan-checkbox{font-size:20px;line-height:1.1;text-align:center}
-.project-plan-legacy-table{width:100%;min-width:1000px;border-collapse:separate;border-spacing:0;background:var(--semantic-surface-strong)}
-.project-plan-legacy-table :is(th,td){padding:8px 12px;border-bottom:1px solid var(--semantic-border);text-align:left;white-space:pre-wrap;overflow-wrap:anywhere}
-.project-plan-legacy-table thead{position:sticky;top:0;background:var(--semantic-surface-elevated)}
-.project-plan-legacy-table caption{text-align:left;padding:12px}
-.project-plan-task-link{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:inherit;white-space:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.project-plan-task-link:hover{text-decoration-thickness:2px}
-.project-plan-task-link:focus-visible{outline:2px solid currentColor;outline-offset:1px}
-.project-plan-editor{width:min(620px,calc(100% - 32px))}
-.project-plan-edit-fields{display:grid;gap:16px;margin-block:16px}
-.project-plan-edit-fields label{display:block;margin-block-end:6px}
-.project-plan-edit-date{display:flex;gap:8px}
-.project-plan-edit-date .workspace-date-trigger{flex:1;min-width:0}
-.project-plan-edit-fields textarea{min-height:96px;resize:none}
-@media(max-width:640px){.project-plan-sync{margin-inline-start:0}}
+.project-plan-empty{margin:0;padding:24px;border:1px solid var(--semantic-border);border-radius:var(--card-radius);background:var(--semantic-surface-strong)}
+.project-plan-scroll{min-height:0;min-width:0;overflow:auto;border:1px solid var(--semantic-border);border-radius:var(--card-radius);background:var(--semantic-surface-strong)}
+.project-plan-scroll:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:-2px}
+.project-plan-table{width:100%;border-collapse:separate;border-spacing:0;text-align:left;font-variant-numeric:tabular-nums}
+.project-plan-table th,.project-plan-table td{border-bottom:1px solid var(--semantic-border);vertical-align:middle}
+.project-plan-table thead{position:sticky;top:0;z-index:2;background:var(--semantic-surface-elevated)}
+.project-plan-table thead th{height:44px}
+.project-plan-name{position:sticky;left:0;z-index:1;width:280px;min-width:280px;max-width:280px;padding:8px 16px;border-inline-end:1px solid var(--semantic-border);background:var(--semantic-surface-strong);overflow-wrap:anywhere}
+.project-plan-table thead .project-plan-name{background:var(--semantic-surface-elevated)}
+.project-plan-phase>*{background:var(--semantic-info-subtle)}
+.project-plan-name small,.project-plan-table thead .project-plan-name span{color:var(--semantic-text-muted);font-size:12px;font-weight:400}
+.project-plan-table thead .project-plan-name span{margin-inline-start:8px}
+.project-plan-name small{display:block;margin-top:2px}
+.project-plan-phase th{color:var(--semantic-info-text);font-size:12px}
+.project-plan-table td{padding:0}
+.project-plan-axis{width:100%;padding:0;font-size:12px;color:var(--semantic-text-muted)}
+.project-plan-axis>span{padding-inline:12px}
+.project-plan-months,.project-plan-days{position:relative;height:28px}
+.project-plan-months{border-bottom:1px solid var(--semantic-border)}
+.project-plan-months span,.project-plan-days span{position:absolute;inset-block:0;display:flex;align-items:center;white-space:nowrap}
+.project-plan-months span{padding-inline:8px;border-inline-start:1px solid var(--semantic-border-strong)}
+.project-plan-days span{justify-content:center;border-inline-start:1px solid var(--semantic-border)}
+.project-plan-days span[data-month-start=true]{border-inline-start-color:var(--semantic-border-strong)}
+.project-plan-axis-today{position:absolute;z-index:1;bottom:0;padding:0 4px;border-inline-start:1px solid var(--semantic-primary);background:var(--semantic-surface-elevated);color:var(--semantic-primary);font-weight:600}
+.project-plan-time-cell{position:relative;background-image:var(--project-plan-grid)}
+.project-plan-track{min-height:52px;display:flex;align-items:center}
+.project-plan-today{position:absolute;inset-block:0;border-inline-start:1px solid var(--semantic-primary);opacity:.65}
+.project-plan-table tr[data-status]{--project-plan-status-color:var(--semantic-text-muted)}
+.project-plan-table tr[data-status="进行中"]{--project-plan-status-color:var(--semantic-secondary)}
+.project-plan-table tr[data-status="已完成"]{--project-plan-status-color:var(--semantic-success)}
+.project-plan-table tr[data-status="阻塞"]{--project-plan-status-color:var(--semantic-error)}
+.project-plan-task-status{color:var(--project-plan-status-color)}
+.project-plan-bar{position:absolute;min-width:2px;height:12px;border-radius:8px;background:var(--project-plan-status-color)}
+.project-plan-bar[data-kind=point]{width:8px;height:8px;border-radius:2px;transform:translateX(-50%) rotate(45deg)}
+@media(max-width:640px){
+ .project-plan-name{width:44vw;min-width:44vw;max-width:44vw;padding-inline:8px}
+ .project-plan-sync{margin-inline-start:0}
+}
 
 .word-practice-layout{display:grid;grid-template-columns:minmax(0,1fr) 370px;align-items:start;gap:24px}
 .learning-calendar{min-width:0;padding:20px}

@@ -30,17 +30,12 @@ try{
  assert.equal((await call('/api/workspace/patch?scope=work',{operations:[{collection:'beautyRecords',id:beauty.id,action:'create',record:beauty}]})).status,400);
  assert.equal((await call('/api/workspace/patch?scope=personal',{operations:[{collection:'beautyRecords',id:beauty.id,action:'delete',before:beauty}]})).status,200);
  assert.equal((await mf.dispatchFetch(new URL('/api/project-plan',url))).status,401);
- assert.equal((await mf.dispatchFetch(new URL('/api/project-plan/edit',url),{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).status,401);
- assert.equal((await call('/api/project-plan/edit',{})).status,503);
- assert.equal((await (await call('/api/project-plan')).json()).writeEnabled,false);
  assert.deepEqual((await (await call('/api/project-plan')).json()).projects,[]);
  const plan=parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,[17,18].map(sheetId=>({
   sheetId,name:'PM'+sheetId+'-演示标准任务清单',
   rows:[['阶段','模块','标准任务','是否适用','责任部门','计划开始时间','计划完成日期','状态'],
         ['验收','通用','演示任务','是','项目部','2026-12-31','2027-01-01','进行中']]
  })));
- plan.projects[0].preview={columns:Array(9).fill(140),heights:[28],styles:[['#ffffff','#000000',10,false,false,'left','bottom',true]],
-  cells:[Array.from({length:9},(_,i)=>[i===0?'隔离只读预览':'',0])],merges:[],frozenRows:0,hiddenRows:[],hiddenColumns:[]};
  const now=Date.now();
  const pushPlan=(data,stamp,secret=planSecret)=>{
   const body=JSON.stringify(data);
@@ -49,10 +44,6 @@ try{
  };
  assert.equal((await pushPlan(plan,now,'incorrect')).status,401);
  assert.equal((await pushPlan(plan,now)).status,200);
- assert.deepEqual((await (await call('/api/project-plan')).json()).projects[0].preview,plan.projects[0].preview);
- const unsafePlan=structuredClone(plan);unsafePlan.projects[0].preview.styles[0][0]='url(https://example.com)';
- assert.equal((await pushPlan(unsafePlan,now+1)).status,400);
- assert.deepEqual((await (await call('/api/project-plan')).json()).projects[0].preview,plan.projects[0].preview);
  assert.equal((await (await pushPlan(plan,now)).json()).skipped,true);
  assert.equal((await pushPlan(plan,now-1)).status,409);
  assert.equal((await pushPlan({...plan,projects:[]},now+1)).status,400);
