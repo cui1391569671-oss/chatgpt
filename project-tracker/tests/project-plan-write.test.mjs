@@ -85,7 +85,8 @@ function scriptHarness(){
 
 test('Apps Script validates HMAC before source access and serializes source writes, reads back values and handles retries safely',()=>{
  const harness=scriptHarness();assert.equal(harness.call(edit(),'a'.repeat(64)).ok,false);assert.equal(harness.counts().sourceReads,0);
- const success=harness.call();assert.equal(success.ok,true);assert.equal(success.synced,true);assert.equal(harness.counts().writes,1);
+ const success=harness.call();assert.equal(success.ok,true);assert.equal(success.synced,false);assert.equal(harness.counts().writes,1);
+ assert.equal(harness.counts().sourceReads,4,'saving reads only the target project before and after the write');
  assert.equal(harness.grid().data[0].rowData[4].values[10].formattedValue,'已核对');
  assert.equal(harness.call().ok,true);assert.equal(harness.counts().writes,1);
  const changed=harness.call(edit([{key:'note',before:'',value:'另一个改动'}]));assert.equal(changed.status,409);assert.equal(harness.counts().writes,1);

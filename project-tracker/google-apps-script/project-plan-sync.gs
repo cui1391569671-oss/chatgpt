@@ -65,8 +65,9 @@ function doPost(event){
   if(!edit.changes.every(change=>fields.find(field=>field.key===change.key)?.value===change.value))return output({ok:false,status:409,error:'原表回读结果与修改不一致，请在原表核对'});
  }catch(error){return output({ok:false,status:409,error:edit?error.message:'回写授权无效，请检查服务配置'});}
  finally{if(lock?.hasLock())lock.releaseLock();}
- let synced=true;try{pushProjectPlan_(true);}catch{synced=false;}
- return output({ok:true,project,synced,lastSyncedAt:synced?new Date().toISOString():null});
+ // Confirm this project promptly; the existing timer refreshes the full snapshot.
+ // Reading every project here can exceed the workbench's response timeout.
+ return output({ok:true,project,synced:false,lastSyncedAt:null});
 }
 
 function pushProjectPlan_(force){
