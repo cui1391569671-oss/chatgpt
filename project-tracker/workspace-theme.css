@@ -171,6 +171,8 @@
 
   /* Shared motion contract: read by workspace-motion-policy.ts and native CSS. */
   --workspace-motion-card: 500ms;
+  --workspace-motion-page: 320ms;
+  --workspace-motion-scale: .985;
   --workspace-motion-heading: 480ms;
   --workspace-motion-control: 240ms;
   --workspace-motion-navigation: 240ms;

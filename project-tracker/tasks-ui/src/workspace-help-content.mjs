@@ -29,7 +29,7 @@ const shared=[
  {id:'common',category:'common',title:'通用操作与快捷键',views:[],scopes:['work','personal'],sections:[section('入口与空间','账号菜单可切换工作/私人空间、打开个人中心与帮助；私人空间还提供个性设置。','点击 W 图标返回当前空间首页；Ctrl / Command + K 搜索页面，方向键选择、Enter 打开、Escape 关闭。','日历、下拉、日期和弹窗均可使用键盘；图标在悬停或聚焦时显示操作名称。'),section('保存与恢复','未保存的编辑先保存或取消，再切换页面；确认框默认选择取消。','保存失败或读取失败时按原处提示重试，保留输入；多设备冲突先核对最新记录。','工作与私人记录分别保存，同一登录账号的个人资料由个人中心统一维护。')]},
  {id:'sync',category:'common',title:'同步与通知提醒',views:[],scopes:['work','personal'],sections:[section('钉钉工作日历','钉钉主日历由原同步电脑每1小时同步；电脑休眠、离线或授权失效时暂停。','超过1小时15分钟未更新会提示过期；日历底部“重试读取”只读取云端快照，不触发电脑端同步。','读取失败保留上次成功的日程，按底部恢复提示处理。'),section('通知范围','通知按北京时间提前一天提醒，并包含逾期待办；工作与私人分别汇总。','点击通知记录进入来源页面；项目、待办和日程仍在各自入口维护。')]},
  {id:'account',category:'account',title:'个人中心与资料保护',views:['personalInfo'],scopes:['work','personal'],sections:[section('个人资料','个人中心可退出登录，并进入证件与银行卡资料页。','资料库使用独立密码；首次设置前阅读不可找回说明，不要填写银行卡密码或安全码。','解锁后添加、查看或编辑资料；号码默认隐藏，切换标签页或闲置5分钟会锁定并清除未保存内容。','修改完成后保存；原处安全说明、校验和锁定状态始终保留。')]},
- {id:'preferences',category:'account',title:'个性设置',views:[],scopes:['personal'],sections:[section('当前浏览器偏好','从私人空间账号菜单打开个性设置，调整首页寄语和紧凑布局，然后保存偏好。','偏好仅保存在当前浏览器，业务记录继续同步到云端；恢复默认后仍需保存。','华丽动效沿用现有设置，系统“减少动态效果”优先。')]}
+ {id:'preferences',category:'account',title:'个性设置',views:[],scopes:['personal'],sections:[section('当前浏览器偏好','从私人空间账号菜单打开个性设置，调整首页寄语和紧凑布局，然后保存偏好。','偏好仅保存在当前浏览器，业务记录继续同步到云端；恢复默认后仍需保存。','切换页面时标题与卡片依次显现，同页刷新不会反复播放。系统“减少动态效果”优先。')]}
 ];
 export const workspaceHelpTopics=[...shared,...pages.flatMap(([view,scopes,sections])=>scopes.map(scope=>({id:scope+':'+view,category:scope,title:workspacePageMeta(scope,view).label,views:[view],scopes:[scope],sections})))];
 export function filterWorkspaceHelp(query='',category='all'){
