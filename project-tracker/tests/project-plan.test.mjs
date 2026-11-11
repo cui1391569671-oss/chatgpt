@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 import {PROJECT_PLAN_SOURCE_ID,parseProjectPlanSheets,normalizeProjectPlanSnapshot} from '../project-plan-sheet.mjs';
-import {activeProjectPlanTasks,projectPlanTimeline,projectTaskBar,projectTaskTiming} from '../tasks-ui/src/project-plan-timeline.mjs';
+import {projectPlanSheetUrls} from '../tasks-ui/src/project-plan-embed.mjs';
 import {workspaceSiteNavigation} from '../tasks-ui/src/workspace-page-meta.mjs';
 
 const sheet={
@@ -19,7 +19,7 @@ test('project plan extracts fields by header, retains row numbers and pending ta
  const snapshot=parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,[sheet]);
  assert.equal(snapshot.projects[0].code,'PM001');
  assert.deepEqual(snapshot.projects[0].tasks.map(row=>row.row),[4,5,7,8]);
- assert.deepEqual(snapshot.projects[0].tasks.map(projectTaskTiming).map(t=>t.kind),['range','point','pending','excluded']);
+ assert.deepEqual(snapshot.projects[0].tasks.map(({start,end})=>[start,end]),[['2026-12-31','2027-01-01'],['2027-01-05','待定'],['',''],['2027-01-08','2027-01-11']]);
  assert.deepEqual(normalizeProjectPlanSnapshot(snapshot),snapshot);
  assert(!JSON.stringify(snapshot).includes('不要同步'));
  assert.throws(()=>parseProjectPlanSheets('wrong',[sheet]));
@@ -27,38 +27,19 @@ test('project plan extracts fields by header, retains row numbers and pending ta
  assert.throws(()=>parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,[{...sheet,rows:[['missing']]}]));
 });
 
-test('completed phases disappear while mixed, excluded-only, and unclassified tasks remain',()=>{
- const done=(phase,applicability='是')=>({phase,applicability,status:'已完成'});
- const open=(phase,applicability='是')=>({phase,applicability,status:'未开始'});
- const visible=[done('实施'),open('实施'),open('选配','否'),done(''),open('验收','')];
- assert.deepEqual(activeProjectPlanTasks([
-  done('准备'),visible[0],open('准备','否'),...visible.slice(1)
- ]),visible);
- assert.deepEqual(activeProjectPlanTasks([done('准备')]),[]);
-});
-
-test('gantt uses inclusive end dates and valid day positions across months and years',()=>{
- const [range,point]=parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,[sheet]).projects[0].tasks.map(projectTaskTiming);
- const timeline=projectPlanTimeline([range,point]);
- assert.deepEqual(timeline.months.map(tick=>tick.label),['2026年12月','2027年1月']);
- const bar=projectTaskBar(range,timeline);
- assert(Math.abs(parseFloat(bar.width)-200/62)<1e-9);
- assert(parseFloat(projectTaskBar(point,timeline).left)>parseFloat(bar.left)+parseFloat(bar.width));
- assert.equal(projectTaskTiming({start:'2026-02-30',end:'待定'}).kind,'pending');
- assert.equal(projectTaskTiming({start:'2026-01-02',end:'2026-01-01'}).kind,'invalid');
- assert.equal(projectPlanTimeline([{kind:'pending'}]),null);
-});
-
-test('five-day ticks restart each month and use the actual final days, including leap years',()=>{
- const timeline=projectPlanTimeline([{kind:'range',start:'2028-02-02',end:'2028-04-05'}]);
- const group=month=>timeline.days.filter(tick=>tick.start.startsWith(month)).map(({day,end})=>[day,end]);
- assert.deepEqual(group('2028-02'),[[1,5],[6,10],[11,15],[16,20],[21,25],[26,29]]);
- assert.deepEqual(group('2028-03').slice(-2),[[26,30],[31,31]]);
- assert.deepEqual(group('2028-04').at(-1),[26,30]);
- const feb26=timeline.days.find(tick=>tick.start==='2028-02-26');
- const march1=timeline.days.find(tick=>tick.start==='2028-03-01');
- assert(Math.abs(feb26.position+feb26.width-march1.position)<1e-9);
- assert.equal(timeline.width,(29+31+30)*18);
+test('embedded original sheet keeps the verified workbook and numeric worksheet deep links',()=>{
+ const urls=projectPlanSheetUrls('2074887405'),source=new URL(urls.source),embed=new URL(urls.embed);
+ assert.equal(source.origin,'https://docs.google.com');
+ assert.equal(source.pathname,'/spreadsheets/d/'+PROJECT_PLAN_SOURCE_ID+'/edit');
+ assert.equal(source.hash,'#gid=2074887405');
+ assert.equal(embed.pathname,source.pathname);
+ assert.equal(embed.searchParams.get('rm'),'minimal');
+ assert.equal(embed.hash,source.hash);
+ for(const input of [null,'','-1','1.5','9007199254740992','https://example.com','17&usp=sharing']){
+  const result=projectPlanSheetUrls(input);
+  assert.equal(new URL(result.embed).hash,'');
+  assert.equal(new URL(result.embed).origin,source.origin);
+ }
 });
 
 test('project plan is a work-only navigation route and Apps Script uses the same parser',()=>{
