@@ -55,6 +55,25 @@ test('authenticated gateway checks origin, configuration and editable row scope;
  assert.match((await uncertain.json()).error,/未能确认/);
 });
 
+test('confirmed writes persist the project for refresh without replacing a concurrent snapshot or other projects',async()=>{
+ const data=snapshot(source());data.projects.push({...structuredClone(data.projects[0]),sheetId:18,code:'PM002',name:'另一个隔离项目'});
+ let saved,version=7,cacheFailure=false;
+ const env={PROJECT_PLAN_WRITE_URL:'https://script.google.com/macros/s/SYNTHETIC/exec',PROJECT_PLAN_SYNC_SECRET:'synthetic-sync-secret-only-32-characters',DB:{prepare(){return {
+  first:async()=>({payload:JSON.stringify(data),sync_version:7}),
+  bind(payload,stamp,before){return {async run(){if(cacheFailure)throw Error('cache unavailable');if(before!==version)return {meta:{changes:0}};saved=JSON.parse(payload);version=stamp;return {meta:{changes:1}};}};}
+ };}}};
+ const project=structuredClone(data.projects[0]);project.editing[0].fields.find(field=>field.key==='note').value='已核对';
+ const send=async()=>Response.json({ok:true,requestId:edit().requestId,project,synced:false});
+ const request=()=>new Request('https://workbench.test/api/project-plan/edit',{method:'POST',headers:{Origin:'https://workbench.test','Content-Type':'application/json'},body:JSON.stringify(edit())});
+ const success=await (await projectPlanWrite(request(),env,send)).json();assert.equal(success.ok,true);assert.equal(success.synced,true);
+ assert.equal(saved.projects[0].editing[0].fields.find(field=>field.key==='note').value,'已核对');
+ assert.deepEqual(saved.projects[1],data.projects[1]);assert.equal(Date.parse(success.lastSyncedAt),version);
+ saved=undefined;const concurrent=await (await projectPlanWrite(request(),env,send)).json();
+ assert.equal(concurrent.ok,true);assert.equal(concurrent.synced,false);assert.equal(saved,undefined);
+ cacheFailure=true;const unavailable=await (await projectPlanWrite(request(),env,send)).json();
+ assert.equal(unavailable.ok,true);assert.equal(unavailable.synced,false);
+});
+
 function scriptHarness(){
  let grid=source(),writes=0,sourceReads=0,heldReads=0,pushes=0,held=false,allowLock=true,nextRead;
  const secret='synthetic-sync-secret-only-32-characters',properties=new Map([['PROJECT_PLAN_SYNC_SECRET',secret]]);

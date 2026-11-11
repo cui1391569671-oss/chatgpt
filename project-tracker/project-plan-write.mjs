@@ -10,7 +10,7 @@ export async function projectPlanWrite(request,env,send=fetch){
  if(!projectPlanWriteConfigured(env))return reply({error:'原表回写尚未启用，请完成 Google 授权与回写服务配置'},503);
  let edit;try{edit=validateProjectPlanEdit(JSON.parse(await readBoundedText(request,20000)));}catch{return reply({error:'任务修改格式不正确'},400);}
  // The authenticated snapshot authorizes only known task rows and explicitly editable fields.
- const row=await env.DB.prepare('SELECT payload FROM project_plan_snapshot WHERE id=1').first();
+ const row=await env.DB.prepare('SELECT payload, sync_version FROM project_plan_snapshot WHERE id=1').first();
  const project=row&&JSON.parse(row.payload).projects.find(item=>item.sheetId===edit.sheetId);
  const task=project?.tasks.find(item=>item.row===edit.row),fields=project?.editing?.find(item=>item.row===edit.row)?.fields;
  if(!task||!['title','phase','module'].every(key=>task[key]===edit.identity[key]))return reply({error:'任务已变化，请刷新后核对'},409);
@@ -26,6 +26,16 @@ export async function projectPlanWrite(request,env,send=fetch){
   if(!result.ok)return reply({error:result.error||'原表未接受本次修改'},[400,409,503].includes(result.status)?result.status:503);
   if(result.project?.sheetId!==edit.sheetId)throw Error('invalid project');
   const project=normalizeProjectPlanSnapshot({sourceSpreadsheetId:PROJECT_PLAN_SOURCE_ID,projects:[result.project]}).projects[0];
-  return reply({ok:true,project,synced:result.synced===true,lastSyncedAt:result.lastSyncedAt||null});
+  // Persist the confirmed project without waiting for a full Google workbook read.
+  // A concurrent snapshot wins; never replace it using this earlier snapshot.
+  let synced=false,lastSyncedAt=null;
+  try{
+   const snapshot=JSON.parse(row.payload),stamp=Math.max(Date.now(),row.sync_version+1);
+   snapshot.projects=snapshot.projects.map(item=>item.sheetId===project.sheetId?project:item);
+   const saved=await env.DB.prepare('UPDATE project_plan_snapshot SET payload=?,sync_version=? WHERE id=1 AND sync_version=?')
+    .bind(JSON.stringify(snapshot),stamp,row.sync_version).run();
+   if(saved.meta?.changes){synced=true;lastSyncedAt=new Date(stamp).toISOString();}
+  }catch{ /* The source write is confirmed; the regular sync can refresh the cache. */ }
+  return reply({ok:true,project,synced,lastSyncedAt});
  }catch{return reply({error:'未能确认原表保存结果，输入已保留。请重试核对结果，避免重复修改。'},503);}
 }
