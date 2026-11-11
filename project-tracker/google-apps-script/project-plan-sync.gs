@@ -58,7 +58,11 @@ function doPost(event){
   lock=LockService.getScriptLock();if(!lock.tryLock(1000))return output({ok:false,status:503,error:'原表正在同步，请稍后重试'});
   const source=readProjectPlanSheets_(edit.sheetId).sheets[0];
   const requests=projectPlanUpdateRequests(source.grid,edit);
-  if(requests.length)Sheets.Spreadsheets.batchUpdate({requests},PROJECT_PLAN_SOURCE_ID);
+  if(requests.length){
+   // Mark before attempting the write, including an uncertain API outcome.
+   PropertiesService.getScriptProperties().setProperty('PROJECT_PLAN_EDIT_VERSION',String(Date.now()));
+   Sheets.Spreadsheets.batchUpdate({requests},PROJECT_PLAN_SOURCE_ID);
+  }
   const fresh=readProjectPlanSheets_(edit.sheetId).sheets[0];
   project=parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,[fresh]).projects[0];
   const fields=project.editing.find(item=>item.row===edit.row)?.fields||[];
@@ -71,18 +75,24 @@ function doPost(event){
 }
 
 function pushProjectPlan_(force){
+ const properties=PropertiesService.getScriptProperties();
+ const secret=properties.getProperty('PROJECT_PLAN_SYNC_SECRET');
+ if(!secret||secret.length<32)throw Error('请先配置项目计划同步密钥。');
+ const editVersion=properties.getProperty('PROJECT_PLAN_EDIT_VERSION')||'';
+ // Source reads are slow and do not mutate the workbook. Keep writes available.
+ const {sheets,sourceSheetIds}=readProjectPlanSheets_();
+ const snapshot=parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,sheets);
+ const body=JSON.stringify({...snapshot,sourceSheetIds});
+ if(Utilities.newBlob(body).getBytes().length>1000000)throw Error('项目计划预览超过1MB，原快照保留；请检查源表范围。');
+ const hex=bytes=>bytes.map(value=>(value&255).toString(16).padStart(2,'0')).join('');
+ const hash=hex(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,body,Utilities.Charset.UTF_8));
  const lock=LockService.getScriptLock();
  if(!lock.tryLock(1000)){if(force)throw Error('正在同步，请稍后重试。');return;}
  try{
-  const properties=PropertiesService.getScriptProperties();
-  const secret=properties.getProperty('PROJECT_PLAN_SYNC_SECRET');
-  if(!secret||secret.length<32)throw Error('请先配置项目计划同步密钥。');
-  const {sheets,sourceSheetIds}=readProjectPlanSheets_();
-  const snapshot=parseProjectPlanSheets(PROJECT_PLAN_SOURCE_ID,sheets);
-  const body=JSON.stringify({...snapshot,sourceSheetIds});
-  if(Utilities.newBlob(body).getBytes().length>1000000)throw Error('项目计划预览超过1MB，原快照保留；请检查源表范围。');
-  const hex=bytes=>bytes.map(value=>(value&255).toString(16).padStart(2,'0')).join('');
-  const hash=hex(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,body,Utilities.Charset.UTF_8));
+  if((properties.getProperty('PROJECT_PLAN_EDIT_VERSION')||'')!==editVersion){
+   if(force)throw Error('读取期间任务已修改，请重新同步。');
+   return;
+  }
   if(!force&&hash===properties.getProperty('PROJECT_PLAN_LAST_HASH'))return;
   const timestamp=String(Date.now());
   const signature=hex(Utilities.computeHmacSha256Signature(timestamp+'.'+body,secret,Utilities.Charset.UTF_8));

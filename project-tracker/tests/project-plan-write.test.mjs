@@ -56,7 +56,7 @@ test('authenticated gateway checks origin, configuration and editable row scope;
 });
 
 function scriptHarness(){
- let grid=source(),writes=0,sourceReads=0,held=false,allowLock=true;
+ let grid=source(),writes=0,sourceReads=0,heldReads=0,pushes=0,held=false,allowLock=true,nextRead;
  const secret='synthetic-sync-secret-only-32-characters',properties=new Map([['PROJECT_PLAN_SYNC_SECRET',secret]]);
  const script=readFileSync(new URL('../google-apps-script/project-plan-sync.gs',import.meta.url),'utf8');
  const context={
@@ -65,8 +65,8 @@ function scriptHarness(){
   LockService:{getScriptLock:()=>({tryLock(){held=allowLock;return held;},hasLock:()=>held,releaseLock(){held=false;}})},
   Utilities:{Charset:{UTF_8:'utf8'},DigestAlgorithm:{SHA_256:'sha256'},newBlob:value=>({getBytes:()=>[...Buffer.from(value)]}),
    computeHmacSha256Signature:(value,key)=>[...createHmac('sha256',key).update(value).digest()],computeDigest:(_,value)=>[...createHash('sha256').update(value).digest()]},
-  UrlFetchApp:{fetch:()=>({getResponseCode:()=>200,getContentText:()=>JSON.stringify({ok:true,count:1})})},
-  Sheets:{Spreadsheets:{get(id,{ranges}){assert.equal(id,PROJECT_PLAN_SOURCE_ID);sourceReads++;return {sheets:ranges?[grid]:[{properties:grid.properties}]};},batchUpdate({requests},id){
+  UrlFetchApp:{fetch:()=>{pushes++;return {getResponseCode:()=>200,getContentText:()=>JSON.stringify({ok:true,count:1})};}},
+  Sheets:{Spreadsheets:{get(id,{ranges}){assert.equal(id,PROJECT_PLAN_SOURCE_ID);sourceReads++;if(held)heldReads++;const callback=nextRead;nextRead=undefined;callback?.();return {sheets:ranges?[grid]:[{properties:grid.properties}]};},batchUpdate({requests},id){
    assert.equal(id,PROJECT_PLAN_SOURCE_ID);writes++;
    for(const {updateCells:{range,rows}} of requests){
     const cell=grid.data[0].rowData[range.startRowIndex].values[range.startColumnIndex],value=rows[0].values[0].userEnteredValue;
@@ -80,7 +80,7 @@ function scriptHarness(){
   const timestamp=String(Date.now()),payload=JSON.stringify(editValue),signature=signatureOverride||createHmac('sha256',secret).update(timestamp+'.'+payload).digest('hex');
   return JSON.parse(context.doPost({postData:{contents:JSON.stringify({timestamp,signature,payload})}}).value);
  };
- return {call,grid:()=>grid,counts:()=>({writes,sourceReads}),block:()=>{allowLock=false;}};
+ return {call,sync:(force=true)=>context.pushProjectPlan_(force),duringNextRead:callback=>{nextRead=callback;},grid:()=>grid,counts:()=>({writes,sourceReads,heldReads,pushes}),block:()=>{allowLock=false;}};
 }
 
 test('Apps Script validates HMAC before source access and serializes source writes, reads back values and handles retries safely',()=>{
@@ -91,4 +91,16 @@ test('Apps Script validates HMAC before source access and serializes source writ
  assert.equal(harness.call().ok,true);assert.equal(harness.counts().writes,1);
  const changed=harness.call(edit([{key:'note',before:'',value:'另一个改动'}]));assert.equal(changed.status,409);assert.equal(harness.counts().writes,1);
  harness.block();assert.equal(harness.call().status,503);
+});
+
+test('full snapshot reads leave task writes available and discard a snapshot spanning a concurrent write',()=>{
+ const fresh=scriptHarness();fresh.sync();
+ assert.equal(fresh.counts().heldReads,0);
+ assert.equal(fresh.counts().pushes,1);
+ fresh.sync(false);assert.equal(fresh.counts().pushes,1);
+ const concurrent=scriptHarness();
+ concurrent.duringNextRead(()=>assert.equal(concurrent.call().ok,true));
+ assert.throws(()=>concurrent.sync(),/读取期间任务已修改/);
+ assert.equal(concurrent.counts().writes,1);
+ assert.equal(concurrent.counts().pushes,0);
 });
