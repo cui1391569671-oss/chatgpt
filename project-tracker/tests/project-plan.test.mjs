@@ -70,6 +70,8 @@ test('Apps Script inventories all source sheet IDs and rejects a partial task re
  assert.deepEqual(result.sourceSheetIds,[17,18]);
  assert.deepEqual(result.sheets[0].rows,sheet.rows.map(row=>Array.from({length:9},(_,i)=>row[i]||'')));
  assert.equal(result.sheets[0].preview.columns.length,9);
+ assert.equal(Object.hasOwn(result.sheets[0],'grid'),false);
+ assert(context.readProjectPlanSheets_(17).sheets[0].grid);
  grids=[];
  assert.throws(()=>context.readProjectPlanSheets_(),/源表返回的项目页不完整/);
 });

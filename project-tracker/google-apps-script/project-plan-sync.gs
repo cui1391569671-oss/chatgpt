@@ -21,8 +21,8 @@ function readProjectPlanSheets_(onlyId){
  const projectTabs=tabs.filter(sheet=>PROJECT_PLAN_TAB.test(sheet.title)&&(onlyId===undefined||sheet.sheetId===onlyId));
  if(!projectTabs.length||projectTabs.length>200)throw Error('项目页数量超出范围。');
  const sheets=[];
- for(let i=0;i<projectTabs.length;i+=3){
-  const batch=projectTabs.slice(i,i+3);
+ for(let i=0;i<projectTabs.length;i++){
+  const batch=projectTabs.slice(i,i+1);
   const ranges=batch.map(sheet=>{
    const {rowCount,columnCount}=sheet.gridProperties;
    if(rowCount>1000||columnCount<9||columnCount>26)throw Error('项目页超出支持范围，请核对源表。');
@@ -34,7 +34,7 @@ function readProjectPlanSheets_(onlyId){
    const source=result.find(item=>item.properties.sheetId===sheet.sheetId);
    if(!source||source.properties.title!==sheet.title)throw Error('源表返回的项目页不完整。');
    const preview=projectPlanPreviewFromGrid(source);
-   sheets.push({sheetId:sheet.sheetId,name:sheet.title,rows:preview.cells.map(row=>row.map(cell=>cell[0])),preview,editing:projectPlanEditingFromGrid(source),grid:source});
+   sheets.push({sheetId:sheet.sheetId,name:sheet.title,rows:preview.cells.map(row=>row.map(cell=>cell[0])),preview,editing:projectPlanEditingFromGrid(source),...(onlyId===undefined?{}:{grid:source})});
   });
  }
  return {sheets,sourceSheetIds:tabs.map(tab=>tab.sheetId)};
