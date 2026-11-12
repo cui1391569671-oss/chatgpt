@@ -9,8 +9,9 @@ function paintHomeSentence(message=''){
  if(heading.textContent!==(example||'每日一句'))heading.textContent=example||'每日一句';
  heading.lang=example?'en':'zh-CN';
  heading.classList.toggle('site-home-sentence',!!example);
- const feedback=message||(current?(example?'来自英语词汇库 · 每天一句':'词汇库暂无英文例句，添加后刷新页面查看。'):'正在读取词汇库例句…');
+ const feedback=message||(current?(example?'':'词汇库暂无英文例句，添加后刷新页面查看。'):'正在读取词汇库例句…');
  if(status.textContent!==feedback)status.textContent=feedback;
+ status.hidden=!feedback;
  const time=document.querySelector('.site-home-date time');
  if(time&&time.dateTime!==today){time.dateTime=today;time.textContent=new Date(today+'T12:00:00+08:00').toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',month:'long',day:'numeric'})+' · '+new Date(today+'T12:00:00+08:00').toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',weekday:'long'});}
 }

@@ -2353,7 +2353,6 @@ dialog[open]::backdrop {
 .site-home-intro h1{margin:0 0 24px;line-height:1.3;letter-spacing:-2px;overflow-wrap:anywhere}
 .site-home-intro h1.site-home-sentence{font-size:clamp(32px,4.2vw,68px);line-height:1.18;letter-spacing:-.025em;max-width:36ch;hyphens:none;text-wrap:pretty}
 .site-home-sentence-status{font-size:14px;line-height:1.6;margin:-8px 0 24px;color:var(--semantic-text-muted)}
-.site-home-motto{white-space:pre-line;font-size:24px;line-height:1.6;margin:0;max-width:40ch}
 .site-home-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px 32px;margin-top:40px}
 .site-home-actions>.btn{min-width:160px}
 .site-home-link{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:transparent;font-size:16px;white-space:nowrap}

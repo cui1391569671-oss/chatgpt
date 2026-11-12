@@ -2057,10 +2057,10 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 /* Daylight home, shared with inner-page typography. */
 .site-home h1{color:var(--semantic-text)}
 .site-home h1 span{color:var(--semantic-primary-text)}
-.site-home-date,.site-home-motto{color:var(--semantic-text-muted)}
+.site-home-date{color:var(--semantic-text-muted)}
 .site-home-link{color:var(--semantic-text)}
 .site-home-link:hover{color:var(--semantic-primary-text)}
-.workspace-overdue-card{width:320px;max-width:100%;padding:12px 16px 16px;border:0;border-radius:0;background:var(--semantic-surface);box-shadow:none;color:var(--semantic-text)}
+.workspace-overdue-card{width:320px;max-width:100%;padding:12px 16px 16px;border:0;border-radius:0;background:transparent;box-shadow:none;color:var(--semantic-text)}
 .workspace-overdue-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .workspace-overdue-head h2{margin:0;font-size:14px;line-height:20px;font-weight:500}
 .workspace-overdue-count{color:var(--semantic-text);font-size:14px;line-height:20px;white-space:nowrap;font-variant-numeric:tabular-nums}

@@ -7,8 +7,8 @@ const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const page=read('workbench.html'),source=page.slice(page.indexOf('function productHome(){'),page.indexOf('function openHomeEvent('));
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function home(scope='work',tasks=[],events=[],summary=null){const context=vm.createContext({scope,state:{tasks,events,notes:[],checkins:[]},projectSummary:summary,day:()=> '2026-10-28',eventsOn:(_day,rows)=>rows,esc});vm.runInContext(source,context);return context.productHome();}
-test('both home spaces use the immersive hero and preserve original task editor entry',()=>{
- for(const scope of ['work','personal']){const html=home(scope);assert.match(html,/data-home-sentence>每日一句/);assert.match(html,/data-home-sentence-status/);assert.match(html,/10月28日 · 星期三/);assert.match(html,/data-add-task/);assert.match(html,/data-tasks-root/);assert.doesNotMatch(html,/site-home-stats|data-home-project-count/);assert.doesNotMatch(html,/class="card|homeCalendar|home2-columns|workspace-mosaic/);}
+test('both home spaces use the immersive hero and reuse the note editor entry',()=>{
+ for(const scope of ['work','personal']){const html=home(scope);assert.match(html,/data-home-sentence>每日一句/);assert.match(html,/data-home-sentence-status/);assert.match(html,/10月28日 · 星期三/);assert.match(html,/data-edit="notes">新建笔记/);assert.doesNotMatch(html,/site-home-motto|安排好重要的事/);assert.match(html,/data-tasks-root/);assert.doesNotMatch(html,/site-home-stats|data-home-project-count/);assert.doesNotMatch(html,/class="card|homeCalendar|home2-columns|workspace-mosaic/);}
 });
 test('home daily action retains workspace-specific owners without sample record text',()=>{
  const work=home('work'),personal=home('personal');assert.match(work,/data-nav="today"/);assert.match(personal,/data-nav="calendar"/);assert.doesNotMatch(work,/DEMO|星河|XH001/);

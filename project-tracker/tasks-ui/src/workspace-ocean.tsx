@@ -1,4 +1,5 @@
 import {oceanSizing} from './workspace-ocean-sizing.mjs';
+import {oceanBoatParticles} from './workspace-ocean-boat.mjs';
 import {useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 // Authored from visual observation, without React Bits Pro source or runtime dependencies.
@@ -10,6 +11,7 @@ uniform float time;
 uniform float pixelRatio;
 uniform vec3 gold;
 uniform vec3 pearl;
+uniform vec4 boatLayout;
 varying vec4 tint;
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 // Value and analytic spatial gradient, sharing the same four lattice samples.
@@ -41,6 +43,23 @@ vec3 sea(vec2 p){
  return vec3(height,gradient);
 }
 void main(){
+ if(seed.z<0.){
+  // Invert the very same projection used below to anchor the hull on this sea.
+  float aspect=2560./(1440.*.88);
+  float depth=4.8*1.65*sceneScale.y/(boatLayout.y-.225)-5.;
+  float projection=1.65/(depth+5.);
+  float x=(boatLayout.x-.53)*aspect/(projection*sceneScale.x);
+  vec3 surface=sea(vec2(x,depth));
+  vec2 waterline=vec2(boatLayout.x,.225+(4.8-surface.x)*projection*sceneScale.y);
+  float roll=clamp(-atan(surface.y),-.22,.22);
+  vec2 local=vec2(seed.x,-seed.y)*boatLayout.z;
+  local=mat2(cos(roll),sin(roll),-sin(roll),cos(roll))*local;
+  waterline+=vec2(local.x,local.y*boatLayout.w);
+  gl_Position=vec4(waterline.x*2.-1.,1.-waterline.y*2.,0.,1.);
+  gl_PointSize=(1.15+hash(seed.xy)*.45)*pixelRatio;
+  tint=vec4(mix(gold,pearl,.12),-seed.z);
+  return;
+ }
  float depth=3.+seed.y*seed.y*74.;
  float aspect=2560./(1440.*.88);
  float x=(seed.x-.5)*(9.+depth*aspect*1.48);
@@ -75,7 +94,7 @@ export function WorkspaceOcean(){
  useEffect(()=>{
   const node=canvas.current;if(!node)return;
   const gl=node.getContext('webgl',{alpha:true,antialias:false,premultipliedAlpha:false,powerPreference:'high-performance'});if(!gl){node.dataset.oceanRenderer='unavailable';return;}
-  let frame=0,last=0,time=0,disposed=false,lost=false,drawCount=0;
+  let frame=0,last=0,time=0,disposed=false,lost=false,drawCount=0,palette='';
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),colors=getComputedStyle(document.documentElement);
   // Theme primitives resolve to six-digit sRGB values; no independent shader palette.
   const rgb=(name:string)=>{const value=colors.getPropertyValue(name).trim();return [1,3,5].map(start=>parseInt(value.slice(start,start+2),16)/255);};
@@ -85,17 +104,26 @@ export function WorkspaceOcean(){
   gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);
   if(!gl.getProgramParameter(program,gl.LINK_STATUS)){node.dataset.oceanRenderer='link-failed';console.warn('Ocean shader link failed:',gl.getProgramInfoLog(program));gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);return;}
   node.dataset.oceanRenderer='webgl';
-  const count=512*384,data=new Float32Array(count*3),random=(i:number)=>{const n=Math.sin(i*127.1+31.7)*43758.5453;return n-Math.floor(n);};
+  const count=512*384,boatPoints=oceanBoatParticles(),data=new Float32Array(count*3+boatPoints.length),random=(i:number)=>{const n=Math.sin(i*127.1+31.7)*43758.5453;return n-Math.floor(n);};
   // A shuffled prefix covers all depths; reducing drawCount cannot remove the far sea.
   const order=Uint32Array.from({length:count},(_,i)=>i);
   for(let i=count-1;i>0;i--){const j=Math.floor(random(i+101)*(i+1)),cell=order[i];order[i]=order[j];order[j]=cell;}
   for(let i=0;i<count;i++){const cell=order[i];data[i*3]=(cell%512+random(cell+1))/512;data[i*3+1]=(Math.floor(cell/512)+random(cell+7))/384;data[i*3+2]=random(cell+13);}
+  data.set(boatPoints,count*3);
   const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);gl.useProgram(program);
   const position=gl.getAttribLocation(program,'seed');gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,3,gl.FLOAT,false,0,0);
-  const clock=gl.getUniformLocation(program,'time'),sceneScale=gl.getUniformLocation(program,'sceneScale'),pointScale=gl.getUniformLocation(program,'pointScale'),ratio=gl.getUniformLocation(program,'pixelRatio');
-  gl.uniform3fv(gl.getUniformLocation(program,'gold'),rgb('--ocean-particle-base'));gl.uniform3fv(gl.getUniformLocation(program,'pearl'),rgb('--ocean-particle-highlight'));
+  const clock=gl.getUniformLocation(program,'time'),sceneScale=gl.getUniformLocation(program,'sceneScale'),pointScale=gl.getUniformLocation(program,'pointScale'),ratio=gl.getUniformLocation(program,'pixelRatio'),boatLayout=gl.getUniformLocation(program,'boatLayout');
+  const baseColor=gl.getUniformLocation(program,'gold'),highlightColor=gl.getUniformLocation(program,'pearl');
   gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
-  function draw(){if(lost||disposed||!drawCount)return;gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform1f(clock,time);gl.drawArrays(gl.POINTS,0,drawCount);}
+  function draw(){if(lost||disposed||!drawCount)return;
+   // The shell may install its theme after this effect; update both water and boat together.
+   const nextPalette=colors.getPropertyValue('--ocean-particle-base')+colors.getPropertyValue('--ocean-particle-highlight');
+   if(nextPalette!==palette){palette=nextPalette;gl.uniform3fv(baseColor,rgb('--ocean-particle-base'));gl.uniform3fv(highlightColor,rgb('--ocean-particle-highlight'));}
+   gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform1f(clock,time);gl.drawArrays(gl.POINTS,0,drawCount);
+   // Same shader, sea surface, projection, palette, clock and lifecycle as the water.
+   const showBoat=document.body.dataset.workspaceView==='home';node.dataset.oceanBoat=showBoat?'visible':'hidden';
+   if(showBoat)gl.drawArrays(gl.POINTS,count,boatPoints.length/3);
+  }
   function tick(now:number){if(disposed||lost||document.hidden||reduced.matches)return;time+=Math.min((now-last)/1000,.1)*2;last=now;draw();frame=requestAnimationFrame(tick);}
   function restart(){cancelAnimationFrame(frame);draw();if(!disposed&&!lost&&!document.hidden&&!reduced.matches){last=performance.now();frame=requestAnimationFrame(tick);}}
   const maxDimension=Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
@@ -104,7 +132,8 @@ export function WorkspaceOcean(){
    const box=node.getBoundingClientRect(),sizing=oceanSizing(box.width,box.height,devicePixelRatio,maxDimension);if(!sizing){drawCount=0;cancelAnimationFrame(frame);return;}
    drawCount=sizing.count;node.dataset.oceanParticles=String(drawCount);node.dataset.oceanPixelRatio=String(sizing.ratio);
    if(node.width!==sizing.width)node.width=sizing.width;if(node.height!==sizing.height)node.height=sizing.height;
-   gl.viewport(0,0,node.width,node.height);gl.uniform2f(sceneScale,sizing.sceneX,sizing.sceneY);gl.uniform1f(pointScale,sizing.pointScale);gl.uniform1f(ratio,sizing.ratio);restart();
+   gl.viewport(0,0,node.width,node.height);gl.uniform2f(sceneScale,sizing.sceneX,sizing.sceneY);gl.uniform1f(pointScale,sizing.pointScale);gl.uniform1f(ratio,sizing.ratio);
+   gl.uniform4f(boatLayout,box.width<=640?.84:.76,.65,Math.max(34,Math.min(64,box.width*.045))/box.width,box.width/box.height);restart();
   }
   const resize=new ResizeObserver(resizeCanvas);resize.observe(node);
   let densityQuery:MediaQueryList;
