@@ -93,7 +93,7 @@ export function WorkspaceOcean(){
   const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);gl.useProgram(program);
   const position=gl.getAttribLocation(program,'seed');gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,3,gl.FLOAT,false,0,0);
   const clock=gl.getUniformLocation(program,'time'),sceneScale=gl.getUniformLocation(program,'sceneScale'),pointScale=gl.getUniformLocation(program,'pointScale'),ratio=gl.getUniformLocation(program,'pixelRatio');
-  gl.uniform3fv(gl.getUniformLocation(program,'gold'),rgb('--particle-gold'));gl.uniform3fv(gl.getUniformLocation(program,'pearl'),rgb('--particle-white'));
+  gl.uniform3fv(gl.getUniformLocation(program,'gold'),rgb('--ocean-particle-base'));gl.uniform3fv(gl.getUniformLocation(program,'pearl'),rgb('--ocean-particle-highlight'));
   gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
   function draw(){if(lost||disposed||!drawCount)return;gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform1f(clock,time);gl.drawArrays(gl.POINTS,0,drawCount);}
   function tick(now:number){if(disposed||lost||document.hidden||reduced.matches)return;time+=Math.min((now-last)/1000,.1)*2;last=now;draw();frame=requestAnimationFrame(tick);}

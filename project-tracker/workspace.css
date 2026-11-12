@@ -1,6 +1,6 @@
 /* Canonical workspace layout and materials. Edit owners here; do not append override sheets. */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --workspace-max-width: 100%;
   --workspace-title-size: 34px;
   --workspace-title-weight: 600;
@@ -8,7 +8,7 @@
   --project-table-bottom-space: 12px;
   --workspace-field-inset-start: 12px;
   --workspace-field-inset-end: 12px;
-  --bg: var(--semantic-surface);
+  --bg: var(--semantic-canvas);
   --surface: var(--semantic-surface);
   --card: var(--semantic-surface);
   --text: var(--semantic-text);
@@ -1713,7 +1713,7 @@ body.modern-project :is(.priority-dropdown,.status-dropdown) button {
   max-width: 100%;
 }
 body.shadcn-workbench {
-  background: var(--semantic-surface);
+  background: var(--semantic-canvas);
   height: 100dvh;
   min-height: 0;
   overflow: hidden;
@@ -1844,7 +1844,7 @@ body.shadcn-workbench .tasks-pagination {
   margin-top: 8px;
 }
 body.modern-project {
-  --bg: var(--semantic-surface);
+  --bg: var(--semantic-canvas);
   --surface: var(--semantic-surface);
   --card: var(--semantic-surface);
   --text: var(--semantic-text);
@@ -1977,14 +1977,14 @@ body.shadcn-workbench .ilamy-calendar-box .droppable-cell {
     width: 44px;
   }
 }
-/* Night Observatory: bind project semantic/component tokens to existing business owners.
+/* Daylight: bind project semantic/component tokens to existing business owners.
    No local palette values. Native DOM compatibility and ilamy use the same preset as ButtonGlass. */
 body.shadcn-workbench,body.modern-project,body.glass-public,body.glass-login {
   --glass-panel: var(--glass-bg);
   --glass-content: var(--card-bg);
   --glass-overlay: var(--modal-bg);
   --glass-shadow: var(--shadow);
-  --glass-background: var(--project-canvas,var(--semantic-surface));
+  --glass-background: var(--project-canvas,var(--semantic-canvas));
   background: var(--glass-background);
   color: var(--semantic-text);
   background-attachment: fixed;
@@ -2054,7 +2054,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-site-nav-link:hover,.wb-site-nav-link:focus-visible{background:transparent;color:var(--semantic-primary-text)}
 .wb-page-row{position:relative;z-index:0;width:100%;max-width:1290px;margin:28px auto 16px;display:flex;align-items:center;justify-content:space-between;gap:32px;min-width:0}
 .wb-page-row[hidden]{display:none}
-/* Selected black/gold personal-site home, shared with inner-page typography. */
+/* Daylight home, shared with inner-page typography. */
 .site-home h1{color:var(--semantic-text)}
 .site-home h1 span{color:var(--semantic-primary-text)}
 .site-home-date,.site-home-motto{color:var(--semantic-text-muted)}
@@ -2071,7 +2071,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .workspace-overdue-title:disabled{cursor:default;opacity:.5}
 .workspace-overdue-meta,.workspace-overdue-date,.workspace-overdue-empty{margin:0;font-size:12px;line-height:20px;overflow-wrap:anywhere}
 .workspace-overdue-meta,.workspace-overdue-empty{color:var(--semantic-text-muted)}
-.workspace-overdue-date{color:var(--semantic-primary-text);margin-top:4px}
+.workspace-overdue-date{color:var(--semantic-warning);margin-top:4px}
 .workspace-overdue-error{display:flex;align-items:center;gap:8px;color:var(--semantic-error-text);font-size:12px;line-height:20px}
 .workspace-overdue-error p{flex:1;margin:8px 0 0}
 
@@ -2459,7 +2459,7 @@ body.shadcn-workbench.shared-workspace main {
 }
 /* Canonical control dimensions: field/button/select share one specification. */
 body.shadcn-workbench,body.modern-project,body.glass-login {
-  --bg: var(--semantic-surface);
+  --bg: var(--semantic-canvas);
   --surface: var(--card-bg);
   --text: var(--semantic-text);
   --muted: var(--semantic-text-muted);
@@ -2920,7 +2920,7 @@ body[data-motion-level=off]{--duration-fast:0ms;--duration-base:0ms;--duration-s
 @keyframes workspace-login-enter{from{opacity:0;transform:translateY(var(--workspace-motion-distance))}to{opacity:1;transform:none}}
 
 /* Shared immersive shell; decorative layers never capture interaction. */
-body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:dark;isolation:isolate}.workspace-atmosphere{position:fixed;right:0;bottom:0;width:65vw;height:44vh;z-index:-1;pointer-events:none;overflow:hidden;opacity:.35;contain:strict}.workspace-atmosphere canvas{display:block;width:100%;height:100%}body[data-workspace-view=home] .workspace-atmosphere{width:100vw;height:88vh;opacity:1}.workspace-page-hero h2{font-weight:650}.workspace-board-lane h3,.workspace-canvas-lane h3{color:var(--semantic-primary-text)}
+body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;isolation:isolate}.workspace-atmosphere{position:fixed;right:0;bottom:0;width:65vw;height:44vh;z-index:-1;pointer-events:none;overflow:hidden;background:radial-gradient(ellipse at 65% 65%,var(--workspace-atmosphere-wash),transparent 72%);opacity:var(--workspace-atmosphere-opacity);contain:strict}.workspace-atmosphere canvas{display:block;width:100%;height:100%}body[data-workspace-view=home] .workspace-atmosphere{width:100vw;height:88vh;opacity:var(--workspace-atmosphere-home-opacity)}.workspace-page-hero h2{font-weight:650}.workspace-board-lane h3,.workspace-canvas-lane h3{color:var(--semantic-primary-text)}
 
 .workspace-link{color:var(--semantic-info-text);text-decoration:underline;text-underline-offset:3px}.workspace-link:hover{color:var(--semantic-primary-text)}.workspace-link:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:3px}
 

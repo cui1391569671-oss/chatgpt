@@ -6,7 +6,7 @@ import {Dialog,DialogContent,DialogTitle,DialogDescription} from './components/u
 const key='workbench-personal-v2';
 const defaults={motto:'安排好重要的事，\n留一点时间给自己。',compact:false,goals:true,leisure:true,motion:'lavish'};
 function read(){try{return {...defaults,...JSON.parse(localStorage.getItem(key)||'{}'),motion:'lavish'};}catch{return defaults;}}
-function apply(value){document.documentElement.dataset.theme='dark';const previousMotion=document.body.dataset.motionLevel;document.body.dataset.motionLevel='lavish';if(previousMotion!==document.body.dataset.motionLevel)window.dispatchEvent(new Event('workspace-motion-change'));document.body.dataset.personalDensity=value.compact?'compact':'comfortable';document.body.dataset.homeGoals=String(value.goals);document.body.dataset.homeLeisure=String(value.leisure);document.querySelectorAll('.site-home[data-scope=personal] .site-home-motto').forEach(node=>node.textContent=value.motto||defaults.motto);}
+function apply(value){document.documentElement.dataset.theme='light';const previousMotion=document.body.dataset.motionLevel;document.body.dataset.motionLevel='lavish';if(previousMotion!==document.body.dataset.motionLevel)window.dispatchEvent(new Event('workspace-motion-change'));document.body.dataset.personalDensity=value.compact?'compact':'comfortable';document.body.dataset.homeGoals=String(value.goals);document.body.dataset.homeLeisure=String(value.leisure);document.querySelectorAll('.site-home[data-scope=personal] .site-home-motto').forEach(node=>node.textContent=value.motto||defaults.motto);}
 export function PersonalPreferences({open,onOpenChange}:{open:boolean;onOpenChange:(value:boolean)=>void}){
  const [draft,setDraft]=useState(read),[error,setError]=useState('');
  const setOpen=onOpenChange;

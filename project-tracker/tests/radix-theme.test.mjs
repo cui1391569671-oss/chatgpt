@@ -22,8 +22,11 @@ test('text and semantic status pairs meet WCAG AA after resolving generated pale
  for(const [fg,bg]of pairs)assert(contrast(value(fg),value(bg))>=4.5,fg+' / '+bg+' contrast '+contrast(value(fg),value(bg)));
  assert(contrast(value('--semantic-text-inverse'),value('--checkbox-checked-bg'))>=3,'Completion check is a non-text graphic');
 });
-test('dark semantic states preserve scale roles while primary actions use the reference white surface',()=>{
+test('light semantic states preserve scale roles with blue actions and white content surfaces',()=>{
  for(const [name,role,step]of [['--semantic-surface','gray',1],['--semantic-surface-muted','gray',2],['--btn-secondary-bg','gray',3],['--semantic-control-hover','gray',4],['--semantic-control-active','gray',5],['--semantic-divider','gray',6],['--semantic-interactive-border','gray',7],['--semantic-interactive-border-hover','gray',8],['--accent-solid','accent',9],['--accent-solid-hover','accent',10]])assert.equal(value(name),value('--'+role+'-'+step),name);
  assert.equal(value('--semantic-text'),value('--theme-text'));assert.equal(value('--semantic-text-muted'),value('--theme-text-muted'));
- assert.equal(value('--btn-primary-bg'),value('--theme-white'));assert.equal(value('--btn-primary-text'),value('--theme-black'));assert.equal(value('--semantic-primary-text'),value('--theme-gold'));assert(contrast(value('--theme-gold'),value('--semantic-surface'))>=4.5);
+ assert.equal(value('--btn-primary-bg'),value('--radix-blue-11'));assert.equal(value('--btn-primary-text'),value('--theme-white'));assert.equal(value('--semantic-primary-text'),value('--radix-blue-12'));assert.equal(value('--semantic-canvas'),'#f8f9fa');assert.equal(value('--semantic-surface'),'#ffffff');
+ for(const bg of ['--semantic-canvas','--workspace-atmosphere-wash'])for(const fg of ['--semantic-text','--semantic-text-muted'])assert(contrast(value(fg),value(bg))>=4.5,fg+' / '+bg);
+ assert(contrast(value('--semantic-primary'),value('--semantic-canvas'))>=3,'Focus outlines stay visible on the canvas');
+ assert.match(read('workspace.css'),/color-scheme:\s*light/);assert.doesNotMatch(read('tasks-ui/src/workspace-personal.tsx'),/dataset\.theme='dark'/);
 });

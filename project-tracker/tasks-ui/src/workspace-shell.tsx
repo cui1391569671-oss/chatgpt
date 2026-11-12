@@ -1,3 +1,4 @@
+import {WorkspaceOcean} from './workspace-ocean';
 import {workspacePageMeta,workspaceNavigation} from './workspace-page-meta.mjs';
 import {WorkspaceNavigation} from './components/workspace-navigation';
 import {navigateWorkspace} from './components/workspace-navigation-intent.mjs';
@@ -9,7 +10,6 @@ import {useState, useEffect,useRef} from 'react';
 import {createRoot} from 'react-dom/client';
 import {createPortal} from 'react-dom';
 import {Button} from '@/components/ui/button';
-import {WorkspaceOcean} from './workspace-ocean';
 import {PersonalPreferences,WorkspaceMotionRuntime} from './workspace-personal';
 import {Dialog,DialogContent,DialogTitle,DialogDescription} from '@/components/ui/dialog';
 import {Command,CommandInput,CommandList,CommandEmpty,CommandGroup,CommandItem} from '@/components/ui/command';
