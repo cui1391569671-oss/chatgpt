@@ -6,7 +6,7 @@ import {readFileSync} from 'node:fs';
 const read=name=>readFileSync(new URL('../'+name,import.meta.url),'utf8');
 const html=read('workbench.html');
 const projectRefresh=html.slice(html.indexOf('async function refreshProjectCalendar(){'),html.indexOf('\nfunction projectIssueRows'));
-const workspaceRefresh=html.slice(html.indexOf('async function refreshWorkspace(){'),html.indexOf('\nsetInterval(()=>{if(!document.hidden)refreshWorkspace();}'));
+const workspaceRefresh=html.slice(html.indexOf('async function refreshWorkspace(){'),html.indexOf('\nsetInterval(',html.indexOf('async function refreshWorkspace(){')));
 const calendarRender=html.slice(html.indexOf('function renderCalendar(){'),html.indexOf('\nfunction wordTitleButton'));
 
 test('repeated project polling draws only changed records or error transitions and retains the last snapshot',async()=>{

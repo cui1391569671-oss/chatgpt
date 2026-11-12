@@ -10,6 +10,7 @@ import {WorkspaceDateInput} from '@/components/workspace-date';
 import {WorkspaceSelect} from '@/components/workspace-select';
 import {enhanceFileInput} from '../../file-trigger.js';
 import {restoreFocusTarget} from '../../focus-return.mjs';
+import {createDiscardGuard} from './discard-guard.mjs';
 import {ArrowLeft,ArrowRight,ChevronLeft,ChevronRight,ChevronDown,CircleHelp,RefreshCw,List,Pencil,Trash2,LayoutGrid,ExternalLink,Plus,Volume2} from 'lucide-react';
 const actionIcons={back:ArrowLeft,forward:ArrowRight,previous:ChevronLeft,next:ChevronRight,help:CircleHelp,details:ChevronDown,refresh:RefreshCw,list:List,edit:Pencil,delete:Trash2,grid:LayoutGrid,external:ExternalLink,plus:Plus,volume:Volume2};
 const iconActions=new Map<HTMLElement,{root:ReturnType<typeof createRoot>;mount:HTMLSpanElement;labelNode?:HTMLSpanElement;signature:string;label:string}>();
@@ -116,7 +117,9 @@ function scan(scope:ParentNode=document){
  scope.querySelectorAll<HTMLElement>('button.btn,a.btn,.actions>button,.card-head>button,input:not([type=checkbox]):not([type=file]):not([type=hidden]),textarea').forEach(el=>{if(!isExternalControl(el)){const kind=el.tagName==='TEXTAREA'?'textarea':el.matches('input')?'input':'button';if(el.dataset.uiControl!==kind)el.dataset.uiControl=kind;}});
 }
 let installed=false;
-export const workspacePrimitives={groupFields(container,ids){
+export const workspacePrimitives={createDiscardGuard({description,hasChanges,isBusy,close,isActive=()=>true}){
+ return createDiscardGuard({hasChanges,isBusy,close,isActive,confirm:()=>workspacePrimitives.confirm({title:'放弃修改？',description:typeof description==='function'?description():description,action:'放弃修改'})});
+ },groupFields(container,ids){
  const fields=ids.map(id=>({control:container.querySelector('#'+id),label:container.querySelector('label[for="'+id+'"]')}));
  if(fields.some(f=>!f.control||!f.label)||fields.some(f=>f.control.parentElement!==fields[0].control.parentElement))return;
  const row=document.createElement('div');row.className='workspace-field-row';fields[0].label.before(row);

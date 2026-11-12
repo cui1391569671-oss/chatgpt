@@ -14,4 +14,3 @@ onWorkspaceContent('input',event=>{if(event.target.id!=='beautySearch')return;up
 onWorkspaceContent('compositionend',event=>{if(event.target.id==='beautySearch')renderBeautyRecords();});
 onWorkspaceContent('change',event=>{if(event.target.id==='beautyCategory'){updateBeautyState({beautyCategory:event.target.value,beautyPage:1});renderBeautyRecords();}});
 onWorkspaceContent('click',event=>{const button=event.target.closest('button');if(!button||busy||!ready||view!=='beauty')return;if(button.dataset.beautyPage){updateBeautyState({beautyPage:Number(button.dataset.beautyPage)});renderBeautyRecords();$('content').scrollTop=0;}if(button.hasAttribute('data-beauty-reset')){updateBeautyState({beautySearch:'',beautyCategory:'all',beautyPage:1});render();}});
-window.addEventListener('beforeunload',event=>{if(kind==='beautyRecords'&&$('editor').open&&(busy||mediaFormSnapshot()!==mediaFormBaseline)){event.preventDefault();event.returnValue='';}});

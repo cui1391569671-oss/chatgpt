@@ -11,6 +11,7 @@ import {staticAssetResponse} from './static-assets.mjs';
 import {validGameTaskReference} from './game-task-links.mjs';
 import {projectCalendarItems} from './calendar-sources.mjs';
 import {todayTasks} from './today-tasks.mjs';
+import {dailySentence} from './daily-sentence.mjs';
 import {validEventImages,calendarImagesRoute,validNoteImages,noteImagesRoute} from './workspace-images.mjs';
 import {validRequirements} from './requirements.mjs';
 import {vocabularySyncStatus,vocabularyPushRoute} from './vocabulary-sheet.mjs';
@@ -145,6 +146,10 @@ async function fetchRoute(request,env){
    return json({error:'需要登录'},401);
   }
   try{
+   if(url.pathname==='/api/daily-sentence'){
+    if(request.method!=='GET')return json({error:'Method not allowed'},405);
+    const state=await readState(env.DB);return json(dailySentence(state.workspace?.vocabulary));
+   }
    if(url.pathname==='/api/photography'||url.pathname.startsWith('/api/photography/'))return await photographyRoute(request,env);
    if(url.pathname==='/api/dingtalk-calendar'&&request.method==='GET'){if(url.searchParams.get('scope')!=='work')return json({error:'仅工作日历支持钉钉同步'},400);return json(await readDingtalkCalendar(env));}
    if(url.pathname==='/api/security/csp-report')return await cspReportRoute(request);

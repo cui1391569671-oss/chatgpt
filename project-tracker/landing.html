@@ -3710,16 +3710,16 @@ body.shadcn-workbench .personal-dashboard {
   margin-top: 16px;
 }
 body.shadcn-workbench[data-workspace-view=tasks] #content {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  display: block;
 }
 body.shadcn-workbench #workspaceTasks,body.shadcn-workbench .tasks-app {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
+  min-height: 100%;
+}
+@media(min-width:641px){
+ body.shadcn-workbench[data-workspace-view=tasks] #content{display:flex;flex-direction:column;overflow:hidden}
+ body.shadcn-workbench #workspaceTasks,body.shadcn-workbench .tasks-app{flex:1;min-height:0;overflow:hidden}
 }
 body.shadcn-workbench .tasks-toolbar,body.shadcn-workbench .tasks-pagination,body.shadcn-workbench .tasks-bulk {
   flex: none;
@@ -3976,11 +3976,11 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 @media(max-width:640px){
   .wb-navigation-row{gap:8px}
   .wb-primary-navigation{display:block;width:100%}
-  .wb-top-navigation{display:grid;grid-template-columns:repeat(var(--navigation-group-count),minmax(0,1fr));width:100%;gap:8px 4px}
-  .wb-site-logo-item{grid-area:1/1;justify-self:start}
-  .wb-account-menu-item{grid-area:1/-2;justify-self:end}
-  .wb-site-nav-item{grid-row:2;min-width:0}
-  .wb-site-nav-link{width:100%;min-width:44px;padding:0 4px;font-size:14px;white-space:nowrap}
+  .wb-top-navigation{position:relative;display:flex;flex-wrap:wrap;justify-content:center;width:100%;padding-top:52px;gap:8px 4px}
+  .wb-site-logo-item{position:absolute;left:0;top:0}
+  .wb-account-menu-item{position:absolute;right:0;top:0}
+  .wb-site-nav-item{flex:0 0 auto;min-width:0}
+  .wb-site-nav-link{min-width:44px;padding:0 8px;font-size:14px;white-space:nowrap}
   .wb-navigation-columns{--navigation-menu-width:calc(100vw - 2 * var(--app-gutter));grid-template-columns:minmax(0,1fr);gap:24px;margin-left:var(--app-gutter);padding:20px 8px 24px}
   .wb-page-row{flex-direction:column;align-items:stretch;gap:8px}
   .wb-page-row>.wb-page-location{padding-left:4px}

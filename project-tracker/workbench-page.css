@@ -309,7 +309,7 @@ dialog label {
   font-weight: 600;
   margin: 12px 0 4px;
 }
-dialog input,dialog textarea,dialog select {
+dialog input:not([type=checkbox]),dialog textarea,dialog select {
   width: 100%;
   border: 1px solid var(--line);
   padding: 10px 12px;
@@ -778,6 +778,7 @@ nav button[data-view="tasks"] {
   gap: 8px;
   min-height: 44px;
 }
+.clothing-selection input[type=checkbox]{flex:none;width:18px;height:18px;min-height:0;padding:0}
 .outfit-images {
   display: flex;
   gap: 8px;
@@ -2350,6 +2351,8 @@ dialog[open]::backdrop {
 .site-home-intro{--workspace-title-size:clamp(48px,5.6vw,88px);--workspace-title-weight:650;min-width:0}
 .site-home-date{margin:0 0 24px;font-size:18px}
 .site-home-intro h1{margin:0 0 24px;line-height:1.3;letter-spacing:-2px;overflow-wrap:anywhere}
+.site-home-intro h1.site-home-sentence{font-size:clamp(32px,4.2vw,68px);line-height:1.18;letter-spacing:-.025em;max-width:36ch;hyphens:none;text-wrap:pretty}
+.site-home-sentence-status{font-size:14px;line-height:1.6;margin:-8px 0 24px;color:var(--semantic-text-muted)}
 .site-home-motto{white-space:pre-line;font-size:24px;line-height:1.6;margin:0;max-width:40ch}
 .site-home-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px 32px;margin-top:40px}
 .site-home-actions>.btn{min-width:160px}
@@ -2371,8 +2374,9 @@ dialog[open]::backdrop {
 .site-task-title strong{font-size:18px;font-weight:550}
 .site-task-group time{font-size:14px;white-space:nowrap}
 .site-task-priority{padding:4px 12px;font-size:12px;border-radius:24px;white-space:nowrap}
-.site-list-footer{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px 0;font-size:14px}
-.site-list-footer>div{display:flex;align-items:center;gap:16px}
+.site-list-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding:16px 0;font-size:14px}
+.site-list-footer>div{display:flex;flex:none;align-items:center;gap:16px;white-space:nowrap}
+@media(max-width:640px){.site-task-scroll{flex:none;overflow:visible}.site-list-controls{flex:none}}
 .site-empty{padding:48px 0}
 
 
