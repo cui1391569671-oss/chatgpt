@@ -874,6 +874,13 @@ SOFTWARE.
   --radix-dark-gray-a12: #ffffffed;
 
 
+  --corner-shape: round;
+  --control-corner-shape: var(--corner-shape);
+  --control-radius: 24px;
+  --card-radius: var(--radius-xl);
+  --dialog-radius: 20px;
+  --navigation-radius: 0px;
+
   --theme-white: #ffffff;
   --theme-canvas: #f8f9fa;
   --theme-text: var(--radix-slate-12);

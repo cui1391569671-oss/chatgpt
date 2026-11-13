@@ -4,6 +4,13 @@
    Project Daylight theme. Component aliases derived from pinned shadcn-glass-ui (Apache-2.0); see theme-presets/shadcn-glass-ui/LICENSE.txt. This is the app theme owner; the upstream snapshot remains unchanged. */
 
 :root {
+  /* Standard circular arcs, shared by native, React and embedded surfaces. */
+  --corner-shape: round;
+  --control-corner-shape: var(--corner-shape);
+  --control-radius: 24px;
+  --card-radius: var(--radius-xl);
+  --dialog-radius: 20px;
+  --navigation-radius: 0px;
   /* Fixed Radix Colors 3.0.0 sRGB primitives -> semantic scale aliases. */
   --theme-white: #ffffff;
   --theme-canvas: #f8f9fa;
