@@ -2917,7 +2917,7 @@ body.shadcn-workbench {
 body[data-motion-level=off]{--duration-fast:0ms;--duration-base:0ms;--duration-slow:0ms;--control-switch-duration:0ms;--workspace-feedback-duration:0ms}
 /* Login intentionally has no JavaScript; share the entrance timing through CSS. */
 @media(prefers-reduced-motion:no-preference){body.glass-login:not([data-motion-level=off]) main.card{animation:workspace-login-enter var(--workspace-motion-card) var(--workspace-motion-ease) both}}
-@keyframes workspace-login-enter{from{opacity:0;transform:translateY(var(--workspace-motion-distance))}to{opacity:1;transform:none}}
+@keyframes workspace-login-enter{from{opacity:0}to{opacity:1}}
 
 /* Shared immersive shell; decorative layers never capture interaction. */
 body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;isolation:isolate}.workspace-atmosphere{position:fixed;right:0;bottom:0;width:65vw;height:44vh;z-index:-1;pointer-events:none;overflow:hidden;background:radial-gradient(ellipse at 65% 65%,var(--workspace-atmosphere-wash),transparent 72%);opacity:var(--workspace-atmosphere-opacity);contain:strict}.workspace-atmosphere canvas{display:block;width:100%;height:100%}body[data-workspace-view=home] .workspace-atmosphere{width:100vw;height:88vh;opacity:var(--workspace-atmosphere-home-opacity)}.workspace-page-hero h2{font-weight:650}.workspace-board-lane h3,.workspace-canvas-lane h3{color:var(--semantic-primary-text)}
@@ -3013,6 +3013,6 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 .wb-assistant-empty,.wb-assistant-feedback{color:var(--semantic-text-muted);font-size:12px;line-height:1.6}
 .wb-assistant-error{color:var(--semantic-error-text);font-size:12px}.wb-assistant-error p{margin:0 0 8px}
 .wb-assistant-composer{display:grid;gap:8px}.wb-assistant-composer label{font-size:13px}.wb-assistant-composer textarea{min-height:88px;max-height:160px;resize:none}
-.wb-assistant-actions{display:flex;align-items:center;justify-content:space-between;gap:8px}.wb-assistant-actions small{color:var(--semantic-text-muted);font-size:11px}
+.wb-assistant-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
 .wb-assistant-feedback{min-height:18px;margin:0}
-@media(max-width:390px){.wb-assistant-body{padding:0 12px 12px}.wb-assistant-actions small{max-width:160px}}
+@media(max-width:390px){.wb-assistant-body{padding:0 12px 12px}}

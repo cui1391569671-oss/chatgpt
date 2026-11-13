@@ -206,10 +206,6 @@ export function WorkspaceAssistant({ scope }: { scope: string }) {
           <SheetDescription>日常问答、翻译与工作思路整理</SheetDescription>
         </SheetHeader>
         <div className="wb-assistant-body">
-          <p className="wb-assistant-info">
-            发送的问题与本会话历史将交给 DeepSeek 处理。聊天按
-            {scope === "work" ? "工作" : "私人"}空间保存。
-          </p>
           {configured === false && (
             <div className="wb-assistant-info" role="status">
               <strong>尚未配置 API Key</strong>
@@ -336,7 +332,6 @@ export function WorkspaceAssistant({ scope }: { scope: string }) {
               onChange={(event) => setDraft(event.target.value)}
             />
             <div className="wb-assistant-actions">
-              <small>每日最多 100 次请求 · 每会话 20 轮</small>
               {pending ? (
                 <Button
                   type="button"

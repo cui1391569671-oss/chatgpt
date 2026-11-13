@@ -18,7 +18,7 @@ function identity(element:HTMLElement,index:number){
  return element.id||element.getAttribute('aria-label')||element.className+':'+index;
 }
 function stationary(element:HTMLElement,kind:Target['kind']){
- return kind==='surface'||!!element.closest('.calendar-full-surface,.annual-chart,.ilamy-calendar,.project-plan')||!!element.querySelector('iframe,.ilamy-calendar,.annual-chart');
+ return kind!=='heading'||!!element.closest('.calendar-full-surface,.annual-chart,.ilamy-calendar,.project-plan')||!!element.querySelector('iframe,.ilamy-calendar,.annual-chart');
 }
 
 export function observeWorkspaceEntrances(){
@@ -35,8 +35,7 @@ export function observeWorkspaceEntrances(){
   const properties=stationary(element,target.kind)?['opacity']:['opacity','transform'];
   const prior=properties.map(property=>[property,element.style.getPropertyValue(property),element.style.getPropertyPriority(property)]);
   const restore=()=>prior.forEach(([property,value,priority])=>{if(value)element.style.setProperty(property,value,priority);else element.style.removeProperty(property);});
-  const distance=target.kind==='heading'?motionTiming.distance/2:motionTiming.distance;
-  const keyframes={opacity:[target.kind==='heading'?.4:0,1],...(properties.includes('transform')?{transform:[`translateY(${distance}px) scale(${target.kind==='heading'?1:motionTiming.scale})`,'none']}:{})};
+  const keyframes={opacity:[target.kind==='heading'?.4:0,1],...(properties.includes('transform')?{transform:[`translateY(${motionTiming.distance/2}px)`,'none']}:{})};
   try{
    const animation=animate(element,keyframes,{duration:(target.kind==='heading'?motionTiming.heading:target.kind==='surface'?motionTiming.page:motionTiming.card)/1000,delay:target.kind==='heading'?0:Math.min(index*motionTiming.stagger,motionTiming.staggerMax)/1000,ease:motionEase.native});
    active.set(element,{animation,restore});

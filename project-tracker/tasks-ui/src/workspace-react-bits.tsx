@@ -21,7 +21,7 @@ export function WorkspaceReactBits(){
   const scan=()=>{
    frame=0;
    const buttons=Array.from(document.querySelectorAll<HTMLElement>(buttonSelector)).filter(node=>!node.closest('dialog,[role=dialog],.annual-chart,.ilamy-calendar')).slice(0,8);
-   const covers=Array.from(document.querySelectorAll<HTMLElement>('#content .media-wall-cover'));
+   const covers=Array.from(document.querySelectorAll<HTMLElement>('#content .media-wall-cover,#content .clothing-cover'));
    setTargets(old=>same(buttons,old.buttons)&&same(covers,old.covers)?old:{buttons,covers});
   };
   const queue=(records:MutationRecord[])=>{

@@ -31,6 +31,7 @@ function setup({reduced=false,intersection=true,failAnimation=false}={}){
 test('entrances stagger visible cards, deduplicate rebuilt records and replay on a new page visit',()=>{
  const h=setup(),cards=Array.from({length:8},(_,i)=>h.card('note-'+i));h.setCards(cards);h.scan();h.enter(cards);
  const entries=h.played.filter(row=>row.element!==h.heading);assert.equal(entries.length,8);assert.equal(entries[1].options.delay,.07);assert.equal(entries.at(-1).options.delay,.28);
+ for(const entry of entries){assert.equal(entry.keyframes.transform,undefined);assert.equal(JSON.stringify(entry.keyframes.opacity),'[0,1]');}
  cards[0].isConnected=false;const replacement=h.card('note-0');h.setCards([replacement,...cards.slice(1)]);h.scan();assert(!h.io.observed.has(replacement));assert.equal(h.played.length,9);
  const newRecord=h.card('new-note');h.setCards([replacement,newRecord]);h.scan();h.enter([newRecord]);assert.equal(h.played.length,10);
  h.body.dataset.workspaceView='tasks';h.scan();h.enter([replacement,newRecord]);assert.equal(h.played.length,13);
