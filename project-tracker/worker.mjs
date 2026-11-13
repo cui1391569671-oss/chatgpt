@@ -35,7 +35,6 @@ import {sessionValid,sessionCookie,authRoute,loginResponse,authenticationAttempt
 import {mediaImageRoute} from './media-image.mjs';
 import {photographyRoute} from './photography-route.mjs';
 import {findGameCover,findMediaCover,findAnimeCover,findMovieCovers} from './game-covers.mjs';
-import {getGameReleases} from './game-releases.mjs';
 import {HTML,WORKBENCH,FAVICON} from './pages.mjs';
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 const upgradedBasicSessions=new WeakMap();
@@ -177,11 +176,6 @@ async function fetchRoute(request,env){
    if(url.pathname==='/api/account/vault')return await personalVaultRoute(request,env);
    if(url.pathname==='/api/media/image')return await mediaImageRoute(request);
    if(['/api/media/search','/api/media/details'].includes(url.pathname))return await mediaSourcesRoute(request,env);
-   if(url.pathname==='/api/game-releases'&&request.method==='GET'){
-    const mode=url.searchParams.get('mode')||'upcoming';
-    if(!['upcoming','released'].includes(mode))return json({error:'Invalid mode'},400);
-    try{return json(await getGameReleases(mode));}catch{return json({error:'Steam 游戏榜暂时无法读取，请稍后重试。'},502);}
-   }
    if(['/', '/work', '/personal', '/projects'].includes(url.pathname) && request.method==='GET'){
     const embedded=url.pathname==='/projects'&&url.searchParams.get('embedded')==='1';
     const projectHtml=embedded?HTML.replace('<body class="modern-project">','<body class="modern-project" data-project-embedded>'):HTML;

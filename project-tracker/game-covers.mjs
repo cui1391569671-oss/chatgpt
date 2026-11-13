@@ -1,5 +1,5 @@
 import {getSteamPortrait,isSteamPortrait} from './steam-artwork.mjs';
-import {parseSteamGames} from './game-releases.mjs';
+import {parseSteamGames} from './steam-search.mjs';
 const ALIASES=[['黑神话悟空','Black Myth: Wukong'],['剑星','Stellar Blade'],['33号远征队','Clair Obscur: Expedition 33'],['光与影33号远征队','Clair Obscur: Expedition 33'],['博德之门3','Baldur’s Gate 3'],['艾尔登法环','Elden Ring'],['传送门2','Portal 2'],['无主之地1','Borderlands'],['无主之地2','Borderlands 2'],['无主之地3','Borderlands 3'],['无主之地4','Borderlands 4']];
 export function gameSearchTerms(title){
  const text=title.normalize('NFKC').trim(),match=text.match(/^(?:最终幻想|最終幻想|final\s*fantasy)\s*(\d{1,2}|[ivx]+)?\s*(.*)$/i);

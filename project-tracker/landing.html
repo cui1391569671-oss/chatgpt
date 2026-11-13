@@ -2090,12 +2090,6 @@ body {
 .shared-workspace .record-cover {
   border-radius: 9px;
 }
-.shared-workspace .release-item {
-  border-radius: 14px;
-}
-.shared-workspace .release-item div {
-  padding: 16px;
-}
 .shared-workspace .status {
   border-radius: 12px;
   padding: 14px 18px;
@@ -2666,7 +2660,8 @@ body {
   white-space: nowrap;
 }
 .issue-state-pill {
-  min-height: 36px;
+  min-width: var(--control-height,44px);
+  min-height: var(--control-height,44px);
   display: inline-flex;
   align-items: center;
   padding: 4px 7px;
@@ -2699,8 +2694,9 @@ body {
   color: var(--semantic-error-text);
 }
 .modern-project .project-priority {
+  min-width: var(--control-height,44px);
   font-size: 13px;
-  min-height: 36px;
+  min-height: var(--control-height,44px);
   border-radius: 4px;
 }
 .modern-project .issue-empty {
@@ -3367,10 +3363,10 @@ body.shadcn-workbench :is(main,#content,#projectPanel,.grid,.card,.row-content,.
 body.shadcn-workbench :is(.grid,.notes,.completed-game-grid,.clothes-grid,.wardrobe-grid)>*,body.shadcn-workbench .calendar-layout>* {
   min-width: 0;
 }
-body.shadcn-workbench :is(.row-title,.row-meta,.note-body,.card h3,.form-error,.notification-list,.release-card,.word-card),body.modern-project :is(.modal,.issue-details-head) {
+body.shadcn-workbench :is(.row-title,.row-meta,.note-body,.card h3,.form-error,.notification-list,.word-card),body.modern-project :is(.modal,.issue-details-head) {
   overflow-wrap: anywhere;
 }
-body.shadcn-workbench :is(.header-actions,.actions,.card-head,.filters,.wardrobe-tabs,.media-filters,.drive-preview-tools,.carousel-controls) {
+body.shadcn-workbench :is(.header-actions,.actions,.card-head,.filters,.wardrobe-tabs,.media-filters,.drive-preview-tools) {
   flex-wrap: wrap;
   max-width: 100%;
   gap: 8px;
@@ -3486,7 +3482,7 @@ body.shadcn-workbench :is(.calendar-full-surface,.ilamy-surface,.ilamy-calendar-
   min-width: 0;
   max-width: 100%;
 }
-body.shadcn-workbench :is(.daily-vocabulary,.daily-word,.release-card,.upcoming-hero,.game-info,.clothing) {
+body.shadcn-workbench :is(.daily-vocabulary,.daily-word,.game-info,.clothing) {
   min-width: 0;
   max-width: 100%;
   overflow-wrap: anywhere;
@@ -4029,7 +4025,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .workspace-detail-list dt{color:var(--semantic-text-muted)}
 .workspace-detail-list dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 .workspace-detail-list ul{margin:0;padding-left:20px}
-.project-core-detail-trigger{display:block;min-height:44px;border:0;padding:8px 0;background:transparent;color:var(--semantic-primary-text);text-align:left;cursor:pointer;font:inherit}
+.project-core-detail-trigger{display:block;min-width:var(--control-height,44px);min-height:var(--control-height,44px);border:0;padding:8px 0;background:transparent;color:var(--semantic-primary-text);text-align:left;cursor:pointer;font:inherit}
 .project-core-detail-trigger:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}
 .workspace-sync-status{display:flex;flex:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 16px;margin:16px 0 0;background:var(--semantic-surface);border:1px solid var(--semantic-border);border-radius:var(--radius-xl)}
 .workspace-sync-status strong{font-size:14px;font-weight:500}
@@ -4040,7 +4036,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .workspace-sync-status details{max-width:48ch}
 .workspace-sync-status summary{display:flex;align-items:center;min-height:44px;cursor:pointer;color:var(--semantic-text)}
 
-@media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%}.wb-page-toolbar>.workspace-search{max-width:none;flex-basis:100%}.wb-page-toolbar>.ui-select-mount{flex:1;min-width:120px}}
+@media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%;max-width:100%}.wb-page-toolbar>.workspace-search{max-width:none;flex-basis:100%}.wb-page-toolbar>.ui-select-mount{flex:1;min-width:120px}}
 @media(max-width:640px){
   body[data-workspace-view=calendar] .wb-page-row{margin:4px auto 0}
   body[data-workspace-view=calendar] .wb-page-location h1{font-size:24px}
@@ -4643,9 +4639,6 @@ body.shadcn-workbench .row-meta,body.shadcn-workbench .task-title small,body.mod
 }
 .workspace-dialog.ui-wide-dialog {
   --dialog-width: 1100px;
-}
-.workspace-dialog.ui-release-dialog {
-  --dialog-width: 1000px;
 }
 .workspace-dialog.ui-account-dialog {
   --dialog-width: 380px;

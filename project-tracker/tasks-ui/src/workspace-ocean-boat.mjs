@@ -1,3 +1,18 @@
+// Reserve the entire possible wave excursion and rotated sail, not just one frame.
+// Rectangles are in canvas CSS pixels; no safe space means omitting decoration.
+export function oceanBoatLayout(width,height,obstacles=[]){
+ if(width<=0||height<=0)return null;
+ const size=Math.max(34,Math.min(64,width*.045)),gap=12;
+ const intersects=(a,b)=>a.left<b.right+gap&&a.right>b.left-gap&&a.top<b.bottom+gap&&a.bottom>b.top-gap;
+ for(const y of [.65,.8,.9,.5])for(const x of [width<=640?.84:.76,.9,.65,.5]){
+  const swing=(y-.225)*height*.5;
+  const bounds={left:x*width-size*.72,right:x*width+size*.72,top:y*height-swing-size*1.12,bottom:y*height+swing+size*.15};
+  if(bounds.left<gap||bounds.right>width-gap||bounds.top<gap||bounds.bottom>height-gap)continue;
+  if(obstacles.some(rect=>intersects(bounds,rect)))continue;
+  return {x,y,size,bounds};
+ }
+ return null;
+}
 // Local x/up coordinates, with the hull's waterline at the origin.
 // These points go through the ocean's own sea() and projection in the vertex shader.
 export function oceanBoatParticles(){

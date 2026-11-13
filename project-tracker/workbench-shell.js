@@ -35,7 +35,7 @@ function mountWorkbenchShell(){
   for(const [node,entry] of moved)if(!entry.marker.isConnected){node.remove();moved.delete(node);}
   const add=$('add');if(add&&!add.classList.contains('hidden')&&!add.closest('#workspacePageActions'))move(add);
   for(const node of $('content').querySelectorAll('[data-page-toolbar]'))move(node);
-  if(['completedGames','upcoming','wardrobe','beauty','maintenance','vocabularyLibrary'].includes(view)){
+  if(['completedGames','wardrobe','beauty','maintenance','vocabularyLibrary'].includes(view)){
    const candidates=[...$('content').querySelectorAll('.wardrobe-tabs,.filters')];
    if(candidates.length){let bar=$('content').querySelector('.workspace-filter-header');if(!bar){bar=document.createElement('div');bar.className='workspace-filter-header';$('content').prepend(bar);}for(const node of candidates)if(node.parentElement!==bar)bar.append(node);}
   }

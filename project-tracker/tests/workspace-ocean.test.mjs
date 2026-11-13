@@ -1,4 +1,4 @@
-import {oceanBoatParticles} from '../tasks-ui/src/workspace-ocean-boat.mjs';
+import {oceanBoatParticles,oceanBoatLayout} from '../tasks-ui/src/workspace-ocean-boat.mjs';
 import {oceanSizing,OCEAN_REFERENCE} from '../tasks-ui/src/workspace-ocean-sizing.mjs';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -6,22 +6,25 @@ import ts from 'typescript';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 const code=ts.transpileModule(fs.readFileSync(new URL('../tasks-ui/src/workspace-ocean.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-test('ocean respects motion preference, hidden documents, context recovery and GPU disposal',()=>{
+test('ocean respects motion preference, hidden documents, context recovery and GPU disposal',async()=>{
 let cleanup,callback,raf=0,draws=0,deleted=0,disconnected=false,generation=0,vertices=0,clock=0,color='#0090ff';
 const palettes=[],passes=[],handlers={},canvasHandlers={},media={matches:true,addEventListener:(n,f)=>handlers.motion=f,removeEventListener:()=>deleted++};
 const gl=new Proxy({getParameter:()=>8192,getShaderParameter:()=>true,getProgramParameter:()=>true,createShader:()=>({}),createProgram:()=>({}),createBuffer:()=>({}),getAttribLocation:()=>0,getUniformLocation:(program,name)=>name,uniform1f:(name,value)=>{if(name==='time')clock=value;},uniform3fv:(name,value)=>palettes.push({name,value}),drawArrays:(mode,start,count)=>{draws++;vertices=count;passes.push({start,count,clock});},deleteBuffer:()=>deleted++,deleteProgram:()=>deleted++,deleteShader:()=>deleted++},{get:(t,k)=>k in t?t[k]:k===k.toUpperCase()?1:()=>{}});
-const canvas={dataset:{},getContext:()=>gl,getBoundingClientRect:()=>({width:1248,height:576}),addEventListener:(n,f)=>canvasHandlers[n]=f,removeEventListener:()=>deleted++};
-const doc={hidden:false,documentElement:{},body:{dataset:{workspaceView:'home'}},addEventListener:(n,f)=>handlers.visibility=f,removeEventListener:()=>deleted++};
-const sandbox={exports:{},console,require:n=>n==='./workspace-ocean-sizing.mjs'?{oceanSizing}:n==='./workspace-ocean-boat.mjs'?{oceanBoatParticles}:n==='react'?{useRef:()=>({current:canvas}),useState:()=>[0,f=>generation=f(0)],useEffect:f=>cleanup=f()}:n==='react-dom'?{createPortal:n=>n}:{jsx:()=>({}),jsxs:()=>({})},matchMedia:query=>query.includes('resolution:')?{addEventListener:(n,f)=>handlers.density=f,removeEventListener:()=>deleted++}:media,getComputedStyle:()=>({getPropertyValue:()=>color}),document:doc,devicePixelRatio:1.5,performance:{now:()=>0},requestAnimationFrame:f=>{callback=f;return ++raf;},cancelAnimationFrame(){},ResizeObserver:class{constructor(f){this.f=f;}observe(){this.f();}disconnect(){disconnected=true;}}};
+const canvas={dataset:{},getContext:()=>gl,getBoundingClientRect:()=>({left:0,top:0,width:1248,height:576}),addEventListener:(n,f)=>canvasHandlers[n]=f,removeEventListener:()=>deleted++};
+const doc={hidden:false,documentElement:{},body:{dataset:{workspaceView:'home'}},getElementById:()=>null,querySelectorAll:()=>[],addEventListener:(n,f)=>handlers[n]=f,removeEventListener:()=>deleted++};
+const sandbox={exports:{},console,require:n=>n==='./workspace-ocean-sizing.mjs'?{oceanSizing}:n==='./workspace-ocean-boat.mjs'?{oceanBoatParticles,oceanBoatLayout}:n==='react'?{useRef:()=>({current:canvas}),useState:()=>[0,f=>generation=f(0)],useEffect:f=>cleanup=f()}:n==='react-dom'?{createPortal:n=>n}:{jsx:()=>({}),jsxs:()=>({})},matchMedia:query=>query.includes('resolution:')?{addEventListener:(n,f)=>handlers.density=f,removeEventListener:()=>deleted++}:media,getComputedStyle:()=>({getPropertyValue:()=>color}),document:doc,devicePixelRatio:1.5,performance:{now:()=>0},requestAnimationFrame:f=>{callback=f;return ++raf;},cancelAnimationFrame(){},MutationObserver:class{observe(){}disconnect(){}},ResizeObserver:class{constructor(f){this.f=f;}observe(target){if(target===canvas)this.f();}disconnect(){disconnected=true;}}};
 vm.runInNewContext(code,sandbox);sandbox.exports.WorkspaceOcean();
 assert.equal(canvas.dataset.oceanRenderer,'webgl');assert.equal(passes[0].count,oceanSizing(1248,576,1.5).count);assert.equal(vertices,oceanBoatParticles().length/3);assert.equal(draws,2);assert.equal(raf,0);assert.equal(canvas.dataset.oceanBoat,'visible');assert.equal(passes[1].start,OCEAN_REFERENCE.particles);
 media.matches=false;handlers.motion();assert.ok(raf);const before=draws;for(let i=1;i<=120;i++)callback(i*1000/120);assert.equal(draws,before+240);for(let i=before;i<passes.length;i+=2)assert.equal(passes[i].clock,passes[i+1].clock,'water and boat share the same GPU clock');assert.ok(Math.abs(clock-2)<1e-8,'120 Hz draws must preserve two seconds of simulation per real second');
 assert.equal(palettes.length,2,'unchanged theme must not re-upload the palette every frame');color='#0d74ce';
 sandbox.performance.now=()=>1000;sandbox.devicePixelRatio=2;handlers.density();assert.equal(canvas.width,oceanSizing(1248,576,2).width);assert.equal(palettes.length,4);assert.equal(palettes[2].value[0],13/255,'late theme installation updates both boat and sea');assert.ok(Math.abs(clock-2)<1e-8,'pixel density changes preserve animation time');
 const next=draws;for(let i=1;i<=60;i++)callback(1000+i*1000/60);assert.equal(draws,next+120);assert.ok(Math.abs(clock-4)<1e-8,'60 Hz must have the same propagation speed');
-doc.body.dataset.workspaceView='notes';doc.hidden=true;const scheduled=raf;const beforeHidden=draws;handlers.visibility();assert.equal(raf,scheduled);assert.equal(draws,beforeHidden+1);assert.equal(canvas.dataset.oceanBoat,'hidden');
+media.matches=true;handlers.motion();let settle,blocked=true;const animation={finished:new Promise(resolve=>{settle=resolve;})};
+doc.querySelectorAll=()=>[{getAnimations:()=>[animation],getBoundingClientRect:()=>({left:0,top:0,right:blocked?1248:0,bottom:blocked?576:0})}];handlers.scroll();assert.equal(canvas.dataset.oceanBoat,'hidden');
+blocked=false;settle();await Promise.resolve();assert.equal(canvas.dataset.oceanBoat,'visible','finished entrance motion invalidates the cached placement, including reduced motion');
+doc.body.dataset.workspaceView='notes';doc.hidden=true;const scheduled=raf;const beforeHidden=draws;handlers.visibilitychange();assert.equal(raf,scheduled);assert.equal(draws,beforeHidden+1);assert.equal(canvas.dataset.oceanBoat,'hidden');
 let prevented=false;canvasHandlers.webglcontextlost({preventDefault(){prevented=true;}});assert.ok(prevented);canvasHandlers.webglcontextrestored();assert.equal(generation,1);
-cleanup();assert.ok(disconnected);assert.equal(deleted,10);
+cleanup();assert.ok(disconnected);assert.equal(deleted,11);
 });
 
 test('ocean sizing preserves the reference and bounds density, pixel budget and GPU dimensions',()=>{
@@ -41,4 +44,14 @@ test('boat particle geometry has bounded coordinates, translucent coverage, sail
  let sail=false,hull=false;
  for(let i=0;i<points.length;i+=3){assert(Math.abs(points[i])<=.51);assert(points[i+1]>=0&&points[i+1]<=1);assert(points[i+2]<0&&points[i+2]>=-1);if(points[i+1]>.8)sail=true;if(points[i+1]<.1)hull=true;}
  assert(sail&&hull);
+});
+
+test('boat keeps its whole wave excursion outside changing home text and hides when no safe space exists',()=>{
+ const desktop=oceanBoatLayout(1440,792,[{left:24,right:800,top:100,bottom:600}]);assert(desktop);assert(desktop.bounds.left>812);
+ for(const [width,height] of [[320,563.2],[390,742.72],[1440,792]]){
+  assert.equal(oceanBoatLayout(width,height,[{left:0,right:width,top:0,bottom:height}]),null);
+  const blockers=[{left:12,right:width-12,top:100,bottom:450}];const safe=oceanBoatLayout(width,height,blockers);
+  if(safe)assert(safe.bounds.top>=462||safe.bounds.bottom<=88);
+ }
+ assert.equal(oceanBoatLayout(0,600),null);
 });

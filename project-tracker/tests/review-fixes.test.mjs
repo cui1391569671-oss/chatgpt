@@ -20,5 +20,5 @@ test('annual field errors identify the first invalid business field instead of f
  for(const [change,field]of [[{title:' '},'title'],[{category:'bad'},'category'],[{startDate:''},'start'],[{startDate:'2026-02-30'},'start'],[{endDate:''},'end'],[{endDate:'2025-12-31'},'end'],[{progress:2.5},'progress'],[{detail:'a'.repeat(5001)},'detail']])assert.equal(annualPlanFieldError({...plan,...change}).field,field);
 });
 test('page metadata names private aliases and shared account routes in either space',()=>{
- assert.equal(workspacePageMeta('personal','upcoming').label,'即将发售');assert.equal(workspacePageMeta('personal','personalInfo').label,'个人信息');assert.equal(workspacePageMeta('work','personalInfo').title,'个人信息 · 工作台');assert.notEqual(workspacePageMeta('personal','tasks').title,workspacePageMeta('personal','notes').title);assert.equal(workspacePageMeta('personal','vocabularyLibrary').label,'词汇库');
+ assert.equal(workspacePageMeta('personal','personalInfo').label,'个人信息');assert.equal(workspacePageMeta('work','personalInfo').title,'个人信息 · 工作台');assert.notEqual(workspacePageMeta('personal','tasks').title,workspacePageMeta('personal','notes').title);assert.equal(workspacePageMeta('personal','vocabularyLibrary').label,'词汇库');
 });

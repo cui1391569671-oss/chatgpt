@@ -7,7 +7,7 @@ const source=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 test('central help covers every current work and private page, account and supported aliases',()=>{
  assert.equal(new Set(workspaceHelpTopics.map(topic=>topic.id)).size,workspaceHelpTopics.length);
  for(const scope of ['work','personal']){
-  const views=[...workspaceNavigation(scope).flatMap(group=>group.views),'personalInfo',...(scope==='personal'?['vocabularyLibrary','upcoming']:[])];
+  const views=[...workspaceNavigation(scope).flatMap(group=>group.views),'personalInfo',...(scope==='personal'?['vocabularyLibrary']:[])];
   for(const view of views)assert(workspaceHelpTopics.some(topic=>topic.scopes.includes(scope)&&topic.views.includes(view)),scope+':'+view);
   assert.equal(workspacePageMeta(scope,'help').label,'帮助');
  }

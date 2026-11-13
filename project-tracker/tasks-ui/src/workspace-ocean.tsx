@@ -1,5 +1,5 @@
 import {oceanSizing} from './workspace-ocean-sizing.mjs';
-import {oceanBoatParticles} from './workspace-ocean-boat.mjs';
+import {oceanBoatParticles,oceanBoatLayout} from './workspace-ocean-boat.mjs';
 import {useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 // Authored from visual observation, without React Bits Pro source or runtime dependencies.
@@ -115,13 +115,27 @@ export function WorkspaceOcean(){
   const clock=gl.getUniformLocation(program,'time'),sceneScale=gl.getUniformLocation(program,'sceneScale'),pointScale=gl.getUniformLocation(program,'pointScale'),ratio=gl.getUniformLocation(program,'pixelRatio'),boatLayout=gl.getUniformLocation(program,'boatLayout');
   const baseColor=gl.getUniformLocation(program,'gold'),highlightColor=gl.getUniformLocation(program,'pearl');
   gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+  let layoutDirty=true,boatVisible=false;
+  const watchedAnimations=new WeakSet<Animation>();
+  function positionBoat(){
+   layoutDirty=false;
+   const box=node.getBoundingClientRect();
+   const obstacles=[...document.querySelectorAll('.site-home-intro>.site-home-date,.site-home-intro>h1,.site-home-sentence-status,.site-home-actions>*,#workspaceHomeReminders>*')].map(element=>{
+    // Entrance transforms are temporary; recompute when each observed motion settles.
+    for(const animation of element.getAnimations?.()||[])if(!watchedAnimations.has(animation)){watchedAnimations.add(animation);void animation.finished.then(invalidateLayout,invalidateLayout);}
+    const r=element.getBoundingClientRect();return {left:r.left-box.left,right:r.right-box.left,top:r.top-box.top,bottom:r.bottom-box.top};
+   }).filter(r=>r.right>r.left&&r.bottom>r.top);
+   const layout=oceanBoatLayout(box.width,box.height,obstacles);boatVisible=!!layout;
+   if(layout)gl.uniform4f(boatLayout,layout.x,layout.y,layout.size/box.width,box.width/box.height);
+  }
   function draw(){if(lost||disposed||!drawCount)return;
    // The shell may install its theme after this effect; update both water and boat together.
    const nextPalette=colors.getPropertyValue('--ocean-particle-base')+colors.getPropertyValue('--ocean-particle-highlight');
    if(nextPalette!==palette){palette=nextPalette;gl.uniform3fv(baseColor,rgb('--ocean-particle-base'));gl.uniform3fv(highlightColor,rgb('--ocean-particle-highlight'));}
    gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform1f(clock,time);gl.drawArrays(gl.POINTS,0,drawCount);
    // Same shader, sea surface, projection, palette, clock and lifecycle as the water.
-   const showBoat=document.body.dataset.workspaceView==='home';node.dataset.oceanBoat=showBoat?'visible':'hidden';
+   if(layoutDirty)positionBoat();
+   const showBoat=document.body.dataset.workspaceView==='home'&&boatVisible;node.dataset.oceanBoat=showBoat?'visible':'hidden';
    if(showBoat)gl.drawArrays(gl.POINTS,count,boatPoints.length/3);
   }
   function tick(now:number){if(disposed||lost||document.hidden||reduced.matches)return;time+=Math.min((now-last)/1000,.1)*2;last=now;draw();frame=requestAnimationFrame(tick);}
@@ -133,9 +147,15 @@ export function WorkspaceOcean(){
    drawCount=sizing.count;node.dataset.oceanParticles=String(drawCount);node.dataset.oceanPixelRatio=String(sizing.ratio);
    if(node.width!==sizing.width)node.width=sizing.width;if(node.height!==sizing.height)node.height=sizing.height;
    gl.viewport(0,0,node.width,node.height);gl.uniform2f(sceneScale,sizing.sceneX,sizing.sceneY);gl.uniform1f(pointScale,sizing.pointScale);gl.uniform1f(ratio,sizing.ratio);
-   gl.uniform4f(boatLayout,box.width<=640?.84:.76,.65,Math.max(34,Math.min(64,box.width*.045))/box.width,box.width/box.height);restart();
+   layoutDirty=true;restart();
   }
   const resize=new ResizeObserver(resizeCanvas);resize.observe(node);
+  // Titles can arrive after the canvas, wrap after fonts settle, or move on scroll.
+  function invalidateLayout(){if(disposed)return;layoutDirty=true;if(reduced.matches)draw();}
+  const contentObserver=new MutationObserver(invalidateLayout);contentObserver.observe(document.getElementById('content')||document.body,{childList:true,subtree:true,characterData:true});
+  const contentResize=new ResizeObserver(invalidateLayout);contentResize.observe(document.getElementById('content')||document.body);
+  document.addEventListener('scroll',invalidateLayout,true);
+  document.fonts?.addEventListener('loadingdone',invalidateLayout);
   let densityQuery:MediaQueryList;
   function densityChanged(){resizeCanvas();watchDensity();}
   function watchDensity(){densityQuery?.removeEventListener('change',densityChanged);densityQuery=matchMedia('(resolution: '+(devicePixelRatio||1)+'dppx)');densityQuery.addEventListener('change',densityChanged);}
@@ -145,7 +165,7 @@ export function WorkspaceOcean(){
   const contextRestored=()=>setGeneration(value=>value+1);
   node.addEventListener('webglcontextlost',contextLost);node.addEventListener('webglcontextrestored',contextRestored);
   reduced.addEventListener('change',restart);document.addEventListener('visibilitychange',restart);
-  return()=>{disposed=true;cancelAnimationFrame(frame);resize.disconnect();densityQuery.removeEventListener('change',densityChanged);node.removeEventListener('webglcontextlost',contextLost);node.removeEventListener('webglcontextrestored',contextRestored);reduced.removeEventListener('change',restart);document.removeEventListener('visibilitychange',restart);gl.deleteBuffer(buffer);gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);};
+  return()=>{disposed=true;cancelAnimationFrame(frame);resize.disconnect();contentObserver.disconnect();contentResize.disconnect();document.removeEventListener('scroll',invalidateLayout,true);document.fonts?.removeEventListener('loadingdone',invalidateLayout);densityQuery.removeEventListener('change',densityChanged);node.removeEventListener('webglcontextlost',contextLost);node.removeEventListener('webglcontextrestored',contextRestored);reduced.removeEventListener('change',restart);document.removeEventListener('visibilitychange',restart);gl.deleteBuffer(buffer);gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);};
  },[generation]);
  return createPortal(<div className='workspace-atmosphere' aria-hidden='true'><canvas key={generation} ref={canvas}/></div>,document.body);
 }

@@ -866,70 +866,8 @@ nav button[data-view="tasks"] {
   border-radius: 10px;
   background: var(--bg);
 }
-.release-item {
-  color: var(--text);
-  text-decoration: none;
-  min-width: 0;
-  display: block;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.release-item:hover {
-  border-color: var(--accent);
-}
-.release-item img {
-  width: 100%;
-  aspect-ratio: 231/87;
-  object-fit: cover;
-  background: var(--soft);
-}
-.release-item h3 {
-  font-size: 16px;
-  overflow-wrap: anywhere;
-  margin: 0 0 8px;
-}
-.release-item p {
-  font-size: 14px;
-  margin: 4px 0;
-}
-.release-dialog {
-  width: min(1000px,94vw);
-  max-width: 1000px;
-}
-.release-dialog .release-list {
-  grid-template-columns: repeat(3,minmax(0,1fr));
-}
-.release-toolbar {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 16px 0;
-}
-.release-toolbar input {
-  flex: 1;
-  min-width: 180px;
-  width: auto;
-}
-.release-toolbar select {
-  width: auto;
-  min-width: 140px;
-}
-@media(max-width:900px) {
-  .release-list {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-  }
-}
-@media(max-width:600px) {
-  .release-dialog .release-list {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-  }
-  .release-card .card-head {
-    align-items: flex-start;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-}
+
+
 .daily-word {
   padding: 12px;
   border: 1px solid var(--line);
@@ -1333,14 +1271,6 @@ nav button[data-view="tasks"] {
   gap: 8px;
   margin-bottom: 0;
 }
-.release-list {
-  display: grid;
-  grid-template-columns: repeat(5,minmax(0,1fr));
-  gap: 10px;
-}
-.release-item div {
-  padding: 10px;
-}
 .shared-workspace .sidebar-bottom {
   margin-top: auto;
   padding-top: 12px;
@@ -1465,67 +1395,7 @@ nav button[data-view="tasks"] {
     max-width: none;
   }
 }
-.compact-releases {
-  margin-left: auto;
-  width: 310px;
-  max-width: 100%;
-  min-width: 0;
-}
-.compact-releases .card-head {
-  gap: 12px;
-}
-.compact-releases h2 {
-  font-size: 17px;
-}
-.compact-releases .release-list {
-  display: block;
-}
-.compact-releases .release-item {
-  display: grid;
-  grid-template-columns: 112px 1fr;
-  min-height: 168px;
-  align-items: center;
-}
-.compact-releases .game-cover-thumb {
-  width: 112px;
-  height: 168px;
-  object-fit: cover;
-}
-.compact-releases .release-item h3 {
-  font-size: 16px;
-}
-.carousel-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 8px;
-}
-.carousel-controls button {
-  min-width: 40px;
-  min-height: 40px;
-  padding: 4px;
-}
-.compact-releases .card-head button {
-  font-size: 14px;
-}
-@media(max-width:600px) {
-  .compact-releases {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-.release-cover-missing {
-  width: 112px;
-  height: 168px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--soft);
-  color: var(--muted);
-  font-size: 14px;
-  text-align: center;
-}
+
 .record-cover {
   display: block;
   position: relative;
@@ -1644,40 +1514,7 @@ nav button[data-view="tasks"] {
 .grid>section:has([data-nav="tasks"]) {
   grid-column: 1/-1;
 }
-.home-release-card {
-  margin-left: 0;
-  width: 100%;
-  box-sizing: border-box;
-  max-width: none;
-}
-.home-release-card .release-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
-  gap: 16px;
-}
-.home-release-card .release-item {
-  max-width: none;
-  margin: auto;
-  display: block;
-  min-height: 0;
-}
-.home-release-card .game-cover-thumb,.home-release-card .release-cover-missing {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 2/3;
-}
-.home-release-card .release-cover-missing {
-  display: flex;
-}
-.home-release-card .release-item h3 {
-  font-size: 17px;
-}
-@media(max-width:600px) {
-  .home-release-card .release-list {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 12px;
-  }
-}
+
 /* Shared top navigation */
 .shell,.shell.sidebar-collapsed {
   display: flex;
@@ -1974,11 +1811,6 @@ body.project-view .page-footer {
   .agenda {
     min-height: 0;
   }
-}
-.release-list .game-cover-thumb {
-  height: auto;
-  aspect-ratio: 2/3;
-  object-fit: contain;
 }
 .record-cover .game-cover {
   object-fit: contain;
@@ -2369,13 +2201,25 @@ dialog[open]::backdrop {
 .site-task-group h2 small{font-size:16px;font-weight:400}
 .site-task-group ul{list-style:none;padding:0;margin:0 0 24px}
 .site-task-group li{display:flex;align-items:center;gap:20px;min-width:0;padding:8px 0}
+.site-task-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;min-width:0}
 .site-task-title{flex:1;min-width:0;min-height:var(--task-title-height,52px);text-align:left;padding:var(--task-title-padding,4px 0);display:grid;gap:4px;overflow-wrap:anywhere}
 .site-task-title strong{font-size:18px;font-weight:550}
 .site-task-group time{font-size:14px;white-space:nowrap}
 .site-task-priority{padding:4px 12px;font-size:12px;border-radius:24px;white-space:nowrap}
 .site-list-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding:16px 0;font-size:14px}
 .site-list-footer>div{display:flex;flex:none;align-items:center;gap:16px;white-space:nowrap}
-@media(max-width:640px){.site-task-scroll{flex:none;overflow:visible}.site-list-controls{flex:none}}
+@media(max-width:640px){
+ .site-task-scroll{flex:none;overflow:visible}.site-list-controls{flex:none}
+ .site-task-group li{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:0 8px;align-items:start}
+ .site-task-group li>.site-task-title{grid-column:2;grid-row:1;min-height:44px}
+ .site-task-group li>.site-task-meta{grid-column:2;grid-row:2;gap:8px;padding:4px 0 8px}
+ .site-task-group li>:first-child{grid-column:1;grid-row:1/3}
+ .site-task-group li>.workspace-icon-action{grid-column:3;grid-row:1/3}
+}
+.annual-filters{gap:8px}
+.annual-filters>.workspace-search{flex:1 1 240px;min-width:0}
+@media(max-width:640px){.annual-plans>.annual-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.annual-filters>.workspace-search,.annual-filters>.ui-select:last-child:nth-child(4){grid-column:1/-1}.annual-filters .ui-select{width:100%;min-width:0}}
+
 .site-empty{padding:48px 0}
 
 
