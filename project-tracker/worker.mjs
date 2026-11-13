@@ -1,3 +1,4 @@
+import {deepseekRoute} from './deepseek.mjs';
 import {validBeautyRecords} from './beauty-records.mjs';
 import {validMaintenanceFrequency} from './maintenance-schedule.mjs';
 import {readDingtalkCalendar,dingtalkCalendarPush} from './dingtalk-calendar.mjs';
@@ -127,7 +128,7 @@ function validWorkspace(w){
  w.events.every(e=>validEventRecurrence(e)&&(e.done===undefined||typeof e.done==='boolean')&&time(e.start)&&(e.end===''||time(e.end)&&e.end>=e.start)&&str(e.location,500)&&str(e.detail,5000));
 }
 
-async function fetchRoute(request,env){
+async function fetchRoute(request,env,ctx){
   const url=new URL(request.url);
   if(url.pathname==='/robots.txt'&&request.method==='GET')return new Response('User-agent: *\nDisallow: /\n',{headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'}});
   if(url.pathname==='/sitemap.xml'&&request.method==='GET')return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>',{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow'}});
@@ -145,6 +146,7 @@ async function fetchRoute(request,env){
    return json({error:'需要登录'},401);
   }
   try{
+   if(['/api/ai/status','/api/ai/conversations','/api/ai/chat'].includes(url.pathname))return await deepseekRoute(request,env,ctx);
    if(url.pathname==='/api/daily-sentence'){
     if(request.method!=='GET')return json({error:'Method not allowed'},405);
     const state=await readState(env.DB);return json(dailySentence(state.workspace?.vocabulary));
@@ -290,8 +292,8 @@ async function fetchRoute(request,env){
   }catch(e){if(e instanceof RequestBodyLimitError)return json({error:e.message},413);console.error(e);return json({error:'服务暂不可用，请检查 DB 绑定及初始化 SQL'},500);}
 }
 export default {
- async fetch(request,env){
-  const response=await fetchRoute(request,env),cookie=upgradedBasicSessions.get(request);
+ async fetch(request,env,ctx){
+  const response=await fetchRoute(request,env,ctx),cookie=upgradedBasicSessions.get(request);
   const headers=new Headers(response.headers);
   if(headers.get('Content-Type')?.startsWith('text/html')&&!headers.has('Content-Security-Policy'))headers.set('Content-Security-Policy-Report-Only',WORKSPACE_CSP_REPORT_ONLY);
   if(cookie)headers.append('Set-Cookie',cookie);
