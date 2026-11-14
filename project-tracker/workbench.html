@@ -2609,6 +2609,45 @@ nav button[data-view="tasks"] {
   gap: 20px 16px;
   align-items: start;
 }
+wardrobe-runway{display:grid;grid-template-columns:minmax(0,1fr) 256px;min-width:0;overflow:hidden;border:1px solid var(--semantic-border);border-radius:var(--card-radius);background:var(--semantic-surface)}
+.wardrobe-runway-main{min-width:0;display:flex;flex-direction:column;background:var(--theme-white)}
+.wardrobe-runway-stage{position:relative;min-width:0;height:clamp(340px,46vh,480px);overflow:hidden;touch-action:pan-y;isolation:isolate;cursor:grab}
+.wardrobe-runway-stage:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:-4px}
+.wardrobe-runway[data-dragging=true] .wardrobe-runway-stage{cursor:grabbing}
+.wardrobe-runway-slide{position:absolute;left:0;bottom:0;width:clamp(160px,35%,280px);height:calc(100% - 56px);transform-origin:50% 100%;transition:transform var(--workspace-motion-card) var(--workspace-motion-ease),filter var(--workspace-motion-card) var(--workspace-motion-ease),opacity var(--workspace-motion-control) var(--workspace-motion-ease)}
+.wardrobe-runway-cover{width:100%;height:100%;display:flex;align-items:center;justify-content:center;border:2px solid transparent;border-radius:var(--card-radius);background:var(--theme-white);padding:12px;overflow:hidden;cursor:pointer}
+.wardrobe-runway-cover img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.wardrobe-runway-cover.is-selected{border-color:var(--semantic-primary)}
+.wardrobe-runway-look{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:center}
+.wardrobe-runway-look img{min-height:0;max-height:145px}
+.wardrobe-runway-look img:first-child{grid-column:1/-1;max-height:200px}
+.wardrobe-runway-controls{display:flex;align-items:center;gap:8px;padding:12px 20px;min-width:0;flex-wrap:wrap}
+.wardrobe-runway-count{font-size:12px;white-space:nowrap;color:var(--semantic-text-muted);font-variant-numeric:tabular-nums}
+.wardrobe-runway-progress{height:2px;min-width:24px;flex:1;background:var(--semantic-border)}
+.wardrobe-runway-progress span{display:block;height:100%;background:var(--semantic-primary);transition:width var(--workspace-motion-control) var(--workspace-motion-ease)}
+.wardrobe-runway-panel{min-width:0;border-left:1px solid var(--semantic-border);padding:24px;overflow-wrap:anywhere}
+.wardrobe-runway-label{font-size:12px;color:var(--semantic-text-muted)}
+.wardrobe-runway-panel h2{font-size:20px;line-height:1.4;margin:12px 0}
+.wardrobe-runway-panel p{font-size:12px;line-height:1.7}
+.wardrobe-runway-pieces{display:grid;margin:24px 0;gap:12px}
+.wardrobe-runway-piece{display:grid;grid-template-columns:56px minmax(0,1fr);gap:4px 12px;align-items:center;padding:8px 0;background:transparent;text-align:left;border:0;border-bottom:1px solid var(--semantic-border);color:var(--semantic-text);cursor:pointer}
+.wardrobe-runway-piece img{grid-row:span 2;width:56px;height:72px;object-fit:contain;background:var(--theme-white);border-radius:var(--radius-sm)}
+.wardrobe-runway-piece span{overflow-wrap:anywhere;font-size:12px}
+.wardrobe-runway[data-motion=off] .wardrobe-runway-slide,.wardrobe-runway[data-motion=off] .wardrobe-runway-progress span{transition:none}
+@media(max-width:767px){
+ wardrobe-runway{grid-template-columns:minmax(0,1fr)}
+ .wardrobe-runway-stage{height:340px}
+ .wardrobe-runway-slide{width:46%;height:calc(100% - 56px)}
+ .wardrobe-runway-panel{border-left:0;border-top:1px solid var(--semantic-border);padding:20px}
+ .wardrobe-runway-controls{padding:12px;gap:6px}
+ .wardrobe-runway-progress{display:none}
+ .wardrobe-runway-count{flex:1;text-align:center}
+ .wardrobe-runway-panel h2{font-size:18px}
+ .wardrobe-runway-pieces{grid-template-columns:repeat(2,minmax(0,1fr));margin:16px 0}
+ .wardrobe-runway-piece{grid-template-columns:44px minmax(0,1fr);gap:4px 8px}
+ .wardrobe-runway-piece img{width:44px;height:60px}
+}
+@media(max-width:374px){.wardrobe-runway-stage{height:280px}.wardrobe-runway-controls [data-runway-play]{padding:0 10px;font-size:12px}.wardrobe-runway-pieces{grid-template-columns:minmax(0,1fr)}}
 @media (min-width: 520px) {
   .wardrobe-categories {
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 320px));
@@ -7477,7 +7516,7 @@ const priority=p=>({high:'高优先级',normal:'普通',low:'低优先级'}[p]||
 function status(text,error=false,source=''){$('status').dataset.source=source;$('status').setAttribute('role',error?'alert':'status');$('statusText').textContent=text;$('status').classList.toggle('error',error);$('status').classList.toggle('hidden',!error||view==='projects');$('recover').classList.toggle('hidden',!error);}
 async function workspaceConfirm(description){if(!window.WorkspacePrimitives){toast('确认组件加载失败，请刷新页面后重试。');return false;}return window.WorkspacePrimitives.confirm({title:'确认操作',description,action:description.includes('移除')?'移除':'删除'});}
 function toast(text,tone){const kind=tone||(/失败|无法|错误|未保存|不支持|请先|需要/.test(text)?'error':/已保存|已更新|已删除|成功/.test(text)?'success':'info');if(window.WorkspaceFeedback)return window.WorkspaceFeedback.show($('toast'),text,kind);$('toast').textContent=text;$('toast').hidden=false;}
-function setBusy(value){busy=value;renderNotifications();document.querySelectorAll('[data-workspace-segment]').forEach(node=>{node.dataset.segmentDisabled=String(value||!ready||conflict);});$('add').disabled=value||!ready||conflict;$('submit').disabled=value;document.querySelectorAll('#content button,#content input[type=checkbox],#workspaceNativeActions button').forEach(x=>{if(!x.closest('#workspaceCalendar,#workspaceTasks,#workspacePersonalInfo,#workspaceAnnualPlans,#workspaceWordPractice,#workspaceFitness,#workspacePhotography,#workspaceHelp'))x.disabled=value||!ready||conflict||x.hasAttribute('data-disabled-when-idle')||x.hasAttribute('data-refresh-today')&&todayTaskLoading||x.hasAttribute('data-refresh-core')&&projectCoreLoading||x.hasAttribute('data-refresh-dingtalk')&&!!dingtalkRequest;});}
+function setBusy(value){busy=value;document.querySelectorAll('wardrobe-runway').forEach(node=>{node.dataset.locked=String(value||!ready||conflict);});renderNotifications();document.querySelectorAll('[data-workspace-segment]').forEach(node=>{node.dataset.segmentDisabled=String(value||!ready||conflict);});$('add').disabled=value||!ready||conflict;$('submit').disabled=value;document.querySelectorAll('#content button,#content input[type=checkbox],#workspaceNativeActions button').forEach(x=>{if(!x.closest('#workspaceCalendar,#workspaceTasks,#workspacePersonalInfo,#workspaceAnnualPlans,#workspaceWordPractice,#workspaceFitness,#workspacePhotography,#workspaceHelp'))x.disabled=value||!ready||conflict||x.hasAttribute('data-disabled-when-idle')||x.hasAttribute('data-refresh-today')&&todayTaskLoading||x.hasAttribute('data-refresh-core')&&projectCoreLoading||x.hasAttribute('data-refresh-dingtalk')&&!!dingtalkRequest;});}
 async function load(){setBusy(true);try{if(scope==='work')await loadProjectLabels();const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const s=await r.json();state=s.workspace;state.driveLinks??=[];version=s.version;ready=true;conflict=false;refreshProjectCalendar();refreshReminders();const target=new URLSearchParams(location.search);const allowedViews=scope==='work'?['today','calendar','home','tasks','projects','drive','projectBudget','projectShipping','projectPlan','notes','personalInfo','help']:['home','calendar','today','checkins','tasks','annualPlans','notes','vocabulary','vocabularyLibrary','fitness','completedGames','wardrobe','beauty','maintenance','photography','photographyNotes','personalInfo','help'];if(allowedViews.includes(target.get('view')))view=target.get('view');else if(['requirements','upcoming'].includes(target.get('view')))history.replaceState(null,'',location.pathname+'?view=home');status('已连接云端 · '+(scope==='work'?'工作':'私人')+'数据独立保存');render();if(target.has('task')){const task=state.tasks.find(t=>t.id===target.get('task'));if(task){setBusy(false);edit('tasks',task.id);}else toast('该任务已移除，请查看最新待办。');}}catch(e){ready=false;status(e.message+'，请重新加载。',true);}finally{setBusy(false);$('content').setAttribute('aria-busy','false');}}
 let workspaceRefreshing=false;
 async function refreshWorkspace(){
@@ -7629,6 +7668,7 @@ document.addEventListener('workspace-segment-change',event=>{
  if(!(source instanceof HTMLElement)||!source.matches('[data-workspace-segment]')||busy||!ready||conflict||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()||isPhotographyEditing()||isCalendarEditing()||document.querySelector('dialog[open]')){event.preventDefault();return;}
  if(key==='media'&&view==='completedGames'&&(value==='all'||Object.hasOwn(mediaTypes,value))){source.dataset.segmentValue=value;mediaFilter=value;renderResults();}
  else if(key==='mediaStatus'&&view==='completedGames'&&Object.hasOwn(MEDIA_DISPLAY_STATUSES,value)){source.dataset.segmentValue=value;mediaStatusFilter=value;saveMediaView();renderCompletedGames(false);}
+ else if(key==='wardrobe-layout'&&view==='wardrobe'&&['runway','grid'].includes(value)){wardrobeLayout=value;renderWardrobe();}
  else if(key==='wardrobe'&&view==='wardrobe'&&['clothes','outfits'].includes(value)){source.dataset.segmentValue=value;wardrobeMode=value;render();}
  else event.preventDefault();
 });
@@ -8367,9 +8407,82 @@ function outsideEditor(e){const r=$('editor').getBoundingClientRect();return e.c
 $('editor').addEventListener('pointerdown',e=>{editorBackdropPress=e.target===$('editor')&&outsideEditor(e);});
 $('editor').addEventListener('click',e=>{if(editorBackdropPress&&!busy&&e.target===$('editor')&&outsideEditor(e)){if(kind==='projectShipping')closeShippingEditor();else void closeMediaRecordEditor();}editorBackdropPress=false;});
 $('deleteEntertainment').onclick=async()=>{if(busy||kind!=='completedGames'||!editing)return;const item=state.completedGames.find(g=>g.id===editing);if(!item)return;const linked=state.tasks.filter(t=>t.mediaRecordId===item.id).length;if(!await workspaceConfirm('删除娱乐记录「'+item.title+'」？'+(linked?'关联的 '+linked+' 项待办会保留，可在待办编辑中解除关联。':'')))return;if(await deleteRecord('completedGames',editing))$('editor').close();else $('formError').textContent=saveError||'删除未成功，请重试。';};$('cancel').onclick=()=>kind==='projectShipping'?closeShippingEditor():closeMediaRecordEditor();$('editor').addEventListener('cancel',e=>{if(busy)e.preventDefault();else if(kind==='completedGames'||kind==='projectShipping'||kind==='notes'||kind==='beautyRecords'||kind==='maintenance'){e.preventDefault();if(kind==='projectShipping')closeShippingEditor();else closeMediaRecordEditor();}});$('editor').addEventListener('close',destroyNoteImages);$('recover').onclick=()=>{if(!busy){$('editor').close();load();}};$('add').onclick=()=>edit(view==='beauty'?'beautyRecords':view==='maintenance'?'maintenance':view==='completedGames'?'completedGames':view==='drive'?'driveLinks':['notes','photographyNotes'].includes(view)?'notes':['calendar','home'].includes(view)?'events':'tasks');document.querySelector('nav').onclick=e=>{const b=e.target.closest('button[data-view]');if(b){if(isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()||isPhotographyEditing()){toast('请先关闭编辑面板或处理未保存修改。');return;}view=b.dataset.view;query='';render();}};onWorkspaceContent('input',e=>{if(e.target.id==='search'){query=e.target.value;renderResults();}});onWorkspaceContent('change',async e=>{if(e.target.id==='filter'){filter=e.target.value;renderResults();}if(e.target.dataset.routineToggle){const next=structuredClone(state),item=next.dailyRoutines.find(x=>x.id===e.target.dataset.routineToggle);if(!item)return;item.completedOn=e.target.checked?day():'';if(!await change(next))e.target.checked=!e.target.checked;}if(e.target.dataset.eventToggle){const next=structuredClone(state),item=next.events.find(x=>x.id===e.target.dataset.eventToggle);if(!item)return;if(item.recurrence){const dates=new Set(item.completedDates||[]),date=e.target.dataset.occurrenceDate;if(e.target.checked)dates.add(date);else dates.delete(date);item.completedDates=[...dates];}else item.done=e.target.checked;if(!await change(next))e.target.checked=!e.target.checked;}if(e.target.dataset.toggle){const next=structuredClone(state),t=next.tasks.find(t=>t.id===e.target.dataset.toggle);t.done=e.target.checked;if(!await change(next))e.target.checked=!e.target.checked;}});onWorkspaceContent('click',async e=>{const b=e.target.closest('button');if(!b)return;if(b.closest('.calendar-today-panel')&&!b.hasAttribute('data-refresh-today')&&isCalendarEditing()){toast('请先关闭日程编辑面板或处理未保存修改。');return;}if(b.dataset.dingtalkEvent){showDingtalkEvent(b.dataset.dingtalkEvent);return;}if(b.dataset.readNote){readingNoteId=b.dataset.readNote;renderResults();document.querySelector('.workspace-note-reader h2')?.setAttribute('tabindex','-1');document.querySelector('.workspace-note-reader h2')?.focus({preventScroll:true});return;}if(b.hasAttribute('data-home-new-event')){openHomeEvent();return;}if(b.dataset.homeEvent){openHomeEvent(b.dataset.homeEvent);return;}if(b.hasAttribute('data-refresh-today')){refreshTodayTasks();return;}if(b.dataset.todayCalendar){selectedDate=b.dataset.todayCalendar;workspaceCalendarAnchor=selectedDate;view='calendar';render();history.replaceState(null,'',location.pathname+'?view=calendar');return;}if(b.hasAttribute('data-shipping-add')){openShippingEditor(undefined,true);return;}if(b.dataset.shippingEdit){openShippingEditor(b.dataset.shippingEdit);return;}if(b.hasAttribute('data-refresh-core')){loadProjectCoreInfo();return;}if(b.hasAttribute('data-add-routine'))edit('dailyRoutines');if(b.hasAttribute('data-refresh-project-calendar'))refreshProjectCalendar();if(b.dataset.coreDetails){showProjectCoreDetails(b.dataset.coreDetails);return;}if(b.dataset.previewSheet)previewSheet(b.dataset.previewSheet);if(b.dataset.addEvent)openCalendarEvent();if(b.hasAttribute('data-add-task'))edit('tasks');if(b.dataset.nav){if(isTasksEditing()){toast('请先关闭待办编辑面板。');return;}view=b.dataset.nav;query='';render();history.replaceState(null,'',location.pathname+'?view='+encodeURIComponent(view));}if(b.dataset.edit)edit(b.dataset.edit,b.dataset.id);if(b.dataset.delete){const type=b.dataset.delete;if(type==='events'){openCalendarEvent(b.dataset.id);return;}const item=state[type].find(x=>x.id===b.dataset.id);if(!await workspaceConfirm(type==='driveLinks'?'移除常用链接「'+item.title+'」？Google 中的文件会保留。':'删除'+labels[type]+'「'+item.title+'」？'))return;await deleteRecord(type,item.id);}});
+/* WARDROBE_RUNWAY_START */
+/* Wardrobe presentation only. Records, selection and editing stay with the wardrobe owner. */
+window.WorkspaceWardrobeRunway={markup(records,mode,{clothes,seasons,categories,active,selecting,selected:selection,escape:esc}){
+ const outfits=mode==='outfits';
+ const image=clothing=>'<img src="'+esc(clothing.image)+'" alt="" loading="lazy" decoding="async">';
+ const recordClothes=record=>outfits?record.items.map(id=>clothes.find(c=>c.id===id)).filter(Boolean):[record];
+ return '<wardrobe-runway class="wardrobe-runway" data-mode="'+mode+'" data-active="'+esc(active||'')+'" data-selecting="'+selecting+'" aria-label="'+(outfits?'穿搭展台':'衣服展台')+'"><div class="wardrobe-runway-main"><div class="wardrobe-runway-stage" tabindex="0" role="region" aria-roledescription="轮播" aria-label="'+(outfits?'穿搭轮播':'衣服轮播')+'">'+records.map(record=>{
+  const pieces=recordClothes(record),selected=!outfits&&selection.has(record.id);
+  const action=outfits?'data-runway-view="'+esc(record.id)+'" aria-label="查看'+esc(record.name)+'"':selecting?'data-pick-clothing="'+esc(record.id)+'" aria-pressed="'+selected+'" aria-label="选择'+esc(record.name)+'"':'data-edit-clothing="'+esc(record.id)+'" aria-label="编辑'+esc(record.name)+'"';
+  return '<div class="wardrobe-runway-slide" data-runway-slide data-record-id="'+esc(record.id)+'"><button type="button" class="wardrobe-runway-cover'+(outfits?' wardrobe-runway-look':'')+(selected?' is-selected':'')+'" '+action+'>'+pieces.map(image).join('')+'</button></div>';
+ }).join('')+'</div><div class="wardrobe-runway-controls"><button type="button" class="btn" data-workspace-icon="previous" data-runway-step="-1" aria-label="上一件'+(outfits?'搭配':'衣服')+'">上一件</button><span class="wardrobe-runway-count" role="status" aria-live="polite"></span><div class="wardrobe-runway-progress" aria-hidden="true"><span></span></div><button type="button" class="btn" data-runway-play aria-pressed="false">自动轮播</button><button type="button" class="btn" data-workspace-icon="next" data-runway-step="1" aria-label="下一件'+(outfits?'搭配':'衣服')+'">下一件</button></div></div><div class="wardrobe-runway-panel">'+records.map(record=>{
+  const pieces=recordClothes(record);
+  return '<section data-runway-details="'+esc(record.id)+'" hidden><span class="wardrobe-runway-label">'+(outfits?'这套搭配':'当前衣服')+'</span><h2>'+esc(record.name)+'</h2><p class="muted">'+(outfits?esc(seasons[record.season])+' · '+pieces.length+' 件':esc(categories[record.category])+' · '+record.seasons.map(s=>esc(seasons[s])).join(' / '))+'</p>'+(outfits?'<div class="wardrobe-runway-pieces">'+pieces.map(c=>'<button type="button" class="wardrobe-runway-piece" data-edit-clothing="'+esc(c.id)+'" aria-label="编辑'+esc(c.name)+'">'+image(c)+'<span>'+esc(c.name)+'</span><span class="muted">'+esc(categories[c.category])+'</span></button>').join('')+'</div><button type="button" class="btn danger" data-workspace-icon="delete" data-delete-outfit="'+esc(record.id)+'" aria-label="删除'+esc(record.name)+'">删除搭配</button>':'')+'</section>';
+ }).join('')+'</div></wardrobe-runway>';
+}};
+if(!customElements.get('wardrobe-runway'))customElements.define('wardrobe-runway',class extends HTMLElement{
+ connectedCallback(){
+  this.slides=[...this.querySelectorAll('[data-runway-slide]')];this.details=[...this.querySelectorAll('[data-runway-details]')];this.stage=this.querySelector('.wardrobe-runway-stage');
+  this.index=Math.max(0,this.slides.findIndex(slide=>slide.dataset.recordId===this.dataset.active));this.media=matchMedia('(prefers-reduced-motion: reduce)');this.controller=new AbortController();const signal=this.controller.signal;
+  this.addEventListener('click',event=>{
+   const slide=event.target.closest('[data-runway-slide]');
+   if(this.suppressClick){event.preventDefault();event.stopPropagation();return;}
+   if(slide&&slide!==this.slides[this.index]){event.preventDefault();event.stopPropagation();this.stop();this.go(this.slides.indexOf(slide));return;}
+   const step=event.target.closest('[data-runway-step]');if(step){this.stop();this.go(this.index+Number(step.dataset.runwayStep));}
+   if(event.target.closest('[data-runway-play]')){if(this.playing)this.stop();else this.play();}
+   if(event.target.closest('[data-runway-view]')){this.stop();this.querySelector('[data-runway-details]:not([hidden])')?.querySelector('h2')?.focus({preventScroll:true});}
+  },{capture:true,signal});
+  this.addEventListener('focusin',event=>{if(!event.target.closest('[data-runway-play]'))this.stop();},{signal});
+  this.stage.addEventListener('keydown',event=>{if(this.dataset.locked==='true')return;if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();this.stage.focus({preventScroll:true});this.stop();this.go(this.index+(event.key==='ArrowRight'?1:-1));}},{signal});
+  this.stage.addEventListener('pointerdown',event=>{if(event.button!==0||this.dataset.locked==='true')return;this.stop();this.drag={x:event.clientX,y:event.clientY,id:event.pointerId,index:this.index,moved:false};},{signal});
+  this.stage.addEventListener('pointermove',event=>{
+   const drag=this.drag;if(!drag||drag.id!==event.pointerId||this.dataset.locked==='true')return;const dx=event.clientX-drag.x,dy=event.clientY-drag.y;
+   if(!drag.moved&&Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){this.drag=null;return;}
+   if(Math.abs(dx)>8&&Math.abs(dx)>1.2*Math.abs(dy)){drag.moved=true;this.stage.setPointerCapture(event.pointerId);this.dataset.dragging='true';}
+  },{signal});
+  const finish=event=>{const drag=this.drag;if(!drag||drag.id!==event.pointerId)return;this.drag=null;delete this.dataset.dragging;if(drag.moved){this.suppressClick=true;clearTimeout(this.clickTimer);this.clickTimer=setTimeout(()=>{this.suppressClick=false;},80);const dx=event.clientX-drag.x;if(event.type!=='pointercancel'&&this.dataset.locked!=='true'&&Math.abs(dx)>30)this.go(drag.index+(dx<0?1:-1));}};
+  this.stage.addEventListener('pointerup',finish,{signal});this.stage.addEventListener('pointercancel',finish,{signal});
+  this.stage.addEventListener('wheel',event=>{if(this.dataset.locked==='true'||Math.abs(event.deltaX)<=Math.abs(event.deltaY))return;event.preventDefault();if(Date.now()<(this.wheelLock||0))return;this.wheelDelta=(this.wheelDelta||0)+event.deltaX;if(Math.abs(this.wheelDelta)>45){this.stop();this.go(this.index+(this.wheelDelta>0?1:-1));this.wheelDelta=0;this.wheelLock=Date.now()+520;}},{passive:false,signal});
+  this.updateMotion=()=>{this.dataset.motion=this.media.matches||document.body.dataset.motionLevel==='off'?'off':'on';if(this.dataset.motion==='off')this.stop();const button=this.querySelector('[data-runway-play]'),unavailable=this.slides.length<2||this.dataset.motion==='off'||this.dataset.selecting==='true';button.toggleAttribute('data-disabled-when-idle',unavailable);button.disabled=unavailable||this.dataset.locked==='true';};
+  this.media.addEventListener('change',this.updateMotion,{signal});window.addEventListener('workspace-motion-change',this.updateMotion,{signal});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)this.clearTimer();else this.schedule();},{signal});
+  this.observer=new ResizeObserver(()=>this.layout());this.observer.observe(this.stage);
+  this.visibility=new IntersectionObserver(entries=>{this.visible=entries[0].isIntersecting;if(this.visible)this.schedule();else this.clearTimer();});this.visibility.observe(this);
+  this.querySelectorAll('[data-runway-details] h2').forEach(title=>title.tabIndex=-1);
+  for(const button of this.querySelectorAll('[data-runway-step],[data-runway-play]'))if(this.slides.length<2){button.disabled=true;button.setAttribute('data-disabled-when-idle','');}
+  if(this.dataset.selecting==='true'){const button=this.querySelector('[data-runway-play]');button.disabled=true;button.setAttribute('data-disabled-when-idle','');}
+  this.updateMotion();this.go(this.index);if(this.dataset.selecting!=='true'&&this.dataset.motion!=='off')this.play();
+ }
+ disconnectedCallback(){this.stop();clearTimeout(this.clickTimer);this.observer?.disconnect();this.visibility?.disconnect();this.controller?.abort();}
+ go(index){
+  if(!this.slides.length)return;this.index=(index+this.slides.length)%this.slides.length;const id=this.slides[this.index].dataset.recordId;this.dataset.active=id;
+  this.details.forEach(panel=>panel.hidden=panel.dataset.runwayDetails!==id);
+  this.querySelector('.wardrobe-runway-count').textContent=String(this.index+1).padStart(2,'0')+' / '+String(this.slides.length).padStart(2,'0');
+  this.querySelector('.wardrobe-runway-progress span').style.width=((this.index+1)/this.slides.length*100)+'%';
+  this.layout();this.dispatchEvent(new CustomEvent('wardrobe-runway-change',{bubbles:true,detail:{mode:this.dataset.mode,id}}));this.schedule();
+ }
+ layout(){
+  if(!this.stage)return;const width=this.stage.clientWidth,height=this.stage.clientHeight,n=this.slides.length;
+  this.slides.forEach((slide,i)=>{
+   let rank=(i-this.index+n)%n;if(rank>n/2)rank-=n;const visible=Math.abs(rank)<=2,angle=rank*Math.PI/6,depth=width*.62*(1-Math.cos(angle)),perspective=width*1.65/(width*1.65+depth),scale=perspective*(rank===0?1.08:1),x=width*.5+width*.62*Math.sin(angle)*perspective,bottom=24+(height-24-height*.36)*(1-perspective);
+   slide.style.transform='translate3d('+x+'px,'+(-bottom)+'px,0) translateX(-50%) scale('+scale+')';slide.style.zIndex=String(Math.round(scale*100));slide.style.filter='blur('+(Math.abs(rank)*1.8)+'px)';slide.style.opacity=visible?'1':'0';slide.style.visibility=visible?'visible':'hidden';slide.setAttribute('aria-hidden',String(!visible));slide.querySelector('button').tabIndex=visible?0:-1;slide.dataset.front=String(rank===0);
+  });
+ }
+ clearTimer(){clearTimeout(this.timer);this.timer=null;}
+ stop(){this.playing=false;this.clearTimer();const button=this.querySelector('[data-runway-play]');if(button){button.textContent='自动轮播';button.setAttribute('aria-pressed','false');}}
+ play(){if(this.slides.length<2||this.dataset.motion==='off'||this.dataset.selecting==='true')return;this.playing=true;const button=this.querySelector('[data-runway-play]');button.textContent='暂停轮播';button.setAttribute('aria-pressed','true');this.schedule();}
+ schedule(){this.clearTimer();if(!this.playing||!this.visible||document.hidden)return;this.timer=setTimeout(()=>{if(this.dataset.locked!=='true'&&!document.querySelector('dialog[open],[role="dialog"]'))this.go(this.index+1);else this.schedule();},5000);}
+});
+
+/* WARDROBE_RUNWAY_END */
 const seasons={spring:'春季',summer:'夏季',autumn:'秋季',winter:'冬季'},categories={top:'上装',bottom:'下装',dress:'连衣裙',outer:'外套',shoes:'鞋子',accessory:'配饰'};
 let wardrobeSeason='spring',wardrobeSeasonFilter='spring',wardrobeMode='clothes',wardrobeCategory='all',selectingClothes=false,selectedClothes=new Set(),clothingImage=null,clothingEditId=null;
 const MAX_OUTFIT_ITEMS=12;
+let wardrobeLayout='runway';
+const wardrobeRunwayActive={clothes:'',outfits:''};
+onWorkspaceContent('wardrobe-runway-change',event=>{const {mode,id}=event.detail||{};if(mode==='clothes'||mode==='outfits')wardrobeRunwayActive[mode]=id;});
 function wardrobeSeasonOptions(selected,labels=seasons){
  return Object.entries(labels).map(([key,label])=>'<option value="'+key+'" '+(key===selected?'selected':'')+'>'+label+'</option>').join('');
 }
@@ -8378,13 +8491,14 @@ function wardrobePage(){
  const categorySelect=wardrobeMode==='clothes'?'<select id="wardrobeCategory" aria-label="衣服类别"><option value="all">全部类别</option>'+Object.entries(categories).map(([key,label])=>'<option value="'+key+'" '+(key===wardrobeCategory?'selected':'')+'>'+label+'</option>').join('')+'</select>':'';
  return '<div class="wardrobe-tabs" data-page-toolbar>'+segmentControl('wardrobe','衣橱视图',wardrobeMode,views)+'<button class="btn primary" data-workspace-icon="plus" data-workspace-icon-mode="label" data-add-clothing>＋ 添加衣服</button></div><div class="filters"><input id="search" aria-label="搜索衣服" placeholder="搜索名称、颜色" value="'+esc(query)+'"><select id="wardrobeSeason" aria-label="穿搭季节">'+wardrobeSeasonOptions(wardrobeSeasonFilter,{all:'全部季节',...seasons})+'</select>'+categorySelect+'</div><div id="results"></div>';
 }
+function wardrobeRunwayMarkup(records,mode){return window.WorkspaceWardrobeRunway.markup(records,mode,{clothes:state.wardrobe||[],seasons,categories,active:wardrobeRunwayActive[mode],selecting:selectingClothes,selected:selectedClothes,escape:esc});}
 function outfitImages(ids){return '<div class="outfit-images">'+ids.map(id=>(state.wardrobe||[]).find(c=>c.id===id)).filter(Boolean).map(c=>'<img src="'+esc(c.image)+'" alt="'+esc(c.name)+'" title="'+esc(c.name)+'">').join('')+'</div>';}
 function renderWardrobe(){
  const all=state.wardrobe||[];
  const allSeasons=wardrobeSeasonFilter==='all';
  const seasonalClothes=allSeasons?all:all.filter(clothing=>clothing.seasons.includes(wardrobeSeasonFilter));
  const items=seasonalClothes.filter(clothing=>(wardrobeCategory==='all'||clothing.category===wardrobeCategory)&&(clothing.name+' '+clothing.color).toLowerCase().includes(query.toLowerCase()));
- if(wardrobeMode==='outfits'){const outfits=(state.outfits||[]).filter(o=>allSeasons||o.season===wardrobeSeasonFilter);$('results').innerHTML='<div class="card-head"><span class="muted">'+outfits.length+' 套搭配</span>'+(seasonalClothes.length&&!allSeasons?'<button class="btn" data-page-toolbar data-suggest-outfit>生成基础组合</button>':'')+'</div>'+(outfits.length?'<div class="notes">'+outfits.map(o=>'<article class="card"><h3>'+esc(o.name)+'</h3>'+(allSeasons?'<span class="tag">'+esc(seasons[o.season])+'</span>':'')+outfitImages(o.items)+'<p>'+o.items.map(id=>all.find(c=>c.id===id)?.name||'').map(esc).join(' · ')+'</p><button class="btn danger" data-workspace-icon="delete" aria-label="删除'+esc(o.name)+'" data-delete-outfit="'+esc(o.id)+'">删除搭配</button></article>').join('')+'</div>':empty(allSeasons?'暂无穿搭':'本季暂无穿搭'));return;}
+ if(wardrobeMode==='outfits'){const outfits=(state.outfits||[]).filter(o=>allSeasons||o.season===wardrobeSeasonFilter);$('results').innerHTML='<div class="card-head"><span class="muted">'+outfits.length+' 套搭配</span>'+(seasonalClothes.length&&!allSeasons?'<button class="btn" data-page-toolbar data-suggest-outfit>生成基础组合</button>':'')+'</div>'+(outfits.length?wardrobeRunwayMarkup(outfits,'outfits'):empty(allSeasons?'暂无穿搭':'本季暂无穿搭'));return;}
  const groups=Object.entries(categories).map(([key,label])=>{
   const clothes=items.filter(item=>item.category===key);
   if(!clothes.length)return '';
@@ -8393,13 +8507,13 @@ function renderWardrobe(){
  }).join('');
  const filtered=query||wardrobeCategory!=='all';
  const emptyMessage=all.length?(filtered?'没有匹配的衣服':'本季暂无衣服'):'衣橱暂无衣服';
- const content=groups?'<div class="wardrobe-categories">'+groups+'</div>':'<div class="workspace-empty-state">'+empty(emptyMessage)+(filtered?'<button class="btn" data-wardrobe-reset>清空筛选</button>':'')+'</div>';
+ const content=groups?(wardrobeLayout==='runway'?wardrobeRunwayMarkup(items,'clothes'):'<div class="wardrobe-categories">'+groups+'</div>'):'<div class="workspace-empty-state">'+empty(emptyMessage)+(filtered?'<button class="btn" data-wardrobe-reset>清空筛选</button>':'')+'</div>';
  const available=new Set(seasonalClothes.map(clothing=>clothing.id));
  for(const id of selectedClothes)if(!available.has(id))selectedClothes.delete(id);
  const saveSeason=allSeasons&&selectedClothes.size?'<select id="wardrobeSaveSeason" aria-label="搭配归属季节">'+wardrobeSeasonOptions(wardrobeSeason,Object.fromEntries(Object.entries(seasons).map(([key,label])=>[key,'保存到'+label])))+'</select>':'';
  const selectionActions=all.length?'<div class="wardrobe-selection-actions"><button type="button" class="btn" data-toggle-outfit-selection>'+(selectingClothes?'退出选衣':'自选搭配')+'</button>'+(selectedClothes.size?saveSeason+'<button type="button" class="btn primary" data-save-outfit>保存搭配（'+selectedClothes.size+'）</button>':'')+'</div>':'';
- const count=selectingClothes?'点击封面选衣 · 已选 '+selectedClothes.size+' 件':items.length+' / '+all.length+' 件';
- $('results').innerHTML='<div class="card-head wardrobe-selection-bar"><span class="muted">'+count+'</span>'+selectionActions+'</div>'+content;
+ const count=selectingClothes?'已选 '+selectedClothes.size+' 件':items.length+' / '+all.length+' 件';
+ $('results').innerHTML='<div class="card-head wardrobe-selection-bar"><span class="muted">'+count+'</span><div class="wardrobe-selection-actions">'+segmentControl('wardrobe-layout','衣服展示',wardrobeLayout,[{value:'runway',label:'秀场'},{value:'grid',label:'分类'}])+selectionActions+'</div></div>'+content;
 }
 function renderClothingCard(clothing){
  const id=esc(clothing.id),name=esc(clothing.name);
