@@ -5,11 +5,13 @@ import {readFileSync} from 'node:fs';
 const page=readFileSync(new URL('./workbench.html',import.meta.url),'utf8');
 test('unlocking the workspace retains business-disabled actions while enabling available ones',()=>{
  const make=held=>({disabled:held,closest:()=>null,hasAttribute:name=>name==='data-disabled-when-idle'&&held});
- const protectedAction=make(true),availableAction=make(false),add={},submit={};
- const sandbox={renderNotifications(){},$:(id)=>id==='add'?add:submit,document:{querySelectorAll:selector=>selector==='[data-workspace-segment]'?[]:[protectedAction,availableAction]}};
+ const protectedAction=make(true),availableAction=make(false),add={},submit={},runway={dataset:{}};
+ const sandbox={renderNotifications(){},$:(id)=>id==='add'?add:submit,document:{querySelectorAll:selector=>selector==='[data-workspace-segment]'?[]:selector==='wardrobe-runway'?[runway]:[protectedAction,availableAction]}};
  vm.createContext(sandbox);vm.runInContext('let busy=false;const ready=true,conflict=false;'+page.match(/^function setBusy\(value\).*$/m)[0],sandbox);
  sandbox.setBusy(true);assert.equal(protectedAction.disabled,true);assert.equal(availableAction.disabled,true);
+ assert.equal(runway.dataset.locked,'true');
  sandbox.setBusy(false);assert.equal(protectedAction.disabled,true);assert.equal(availableAction.disabled,false);
+ assert.equal(runway.dataset.locked,'false');
 });
 test('calendar stale/error feedback preserves the last snapshot and successful timestamp',async()=>{
  const adapter=readFileSync(new URL('./calendar-adapter.js',import.meta.url),'utf8');
