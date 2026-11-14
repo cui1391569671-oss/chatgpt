@@ -4897,22 +4897,49 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 @media(prefers-reduced-motion:reduce){.workspace-help-chevron{transition:none}}
 
 /* DeepSeek uses the shared Sheet, Button, Select and Textarea owners. */
-.wb-assistant{width:min(520px,100vw);max-width:100vw;display:flex;flex-direction:column;min-height:0}
-.wb-assistant-body{display:flex;flex-direction:column;min-height:0;flex:1;gap:12px;padding:0 20px 16px;overflow:auto}
-.wb-assistant-info{margin:0;padding:12px;border:1px solid var(--semantic-border);border-radius:var(--control-radius);color:var(--semantic-text-muted);font-size:12px;line-height:1.6}
-.wb-assistant-info p{margin:6px 0}.wb-assistant-info a{color:var(--semantic-primary)}
-.wb-assistant-toolbar{display:flex;gap:8px;align-items:center}.wb-assistant-toolbar> :first-child{flex:1;min-width:0}
-.wb-assistant-messages{min-height:100px;flex:1;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
-.wb-assistant-message{padding:12px 0;border-bottom:1px solid var(--semantic-border)}
-.wb-assistant-message-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.wb-assistant-message p{margin:6px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.7;color:var(--semantic-text)}
-.wb-assistant-message[data-role=user] strong{color:var(--semantic-primary)}
-.wb-assistant-feedback{color:var(--semantic-text-muted);font-size:12px;line-height:1.6}
-.wb-assistant-error{color:var(--semantic-error-text);font-size:12px}.wb-assistant-error p{margin:0 0 8px}
-.wb-assistant-composer{display:grid;gap:8px}.wb-assistant-composer label{font-size:13px}.wb-assistant-composer textarea{max-height:160px;resize:none}
+.wb-assistant{--dialog-width:860px;--dialog-overflow:hidden;height:min(620px,calc(100dvh - 64px));display:grid;grid-template-columns:200px minmax(0,1fr);gap:0;min-height:0;padding:0}
+.wb-assistant-sidebar{display:flex;flex-direction:column;gap:16px;min-height:0;padding:24px 16px;overflow:auto;background:var(--semantic-surface-muted);border-right:1px solid var(--semantic-border)}
+.wb-assistant-brand{display:flex;align-items:center;gap:10px;min-height:44px;color:var(--semantic-primary)}
+.wb-assistant-history-label{font-size:12px;font-weight:500;color:var(--semantic-text-muted);margin:12px 8px 0}
+.wb-assistant-history{display:flex;flex-direction:column;gap:4px;min-height:44px;overflow:auto;flex:1}
+.wb-assistant-history-item{justify-content:flex-start;gap:10px;flex-shrink:0;width:100%;min-width:0;text-align:left}
+.wb-assistant-history-item svg{flex-shrink:0}
+.wb-assistant-history-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wb-assistant-history-item[aria-current=true]{background:var(--semantic-primary-subtle);color:var(--semantic-primary-text)}
+.wb-assistant-scope{color:var(--semantic-text-muted);font-size:12px;padding:8px}
+.wb-assistant-body{display:flex;flex-direction:column;min-width:0;min-height:0;gap:16px;padding:24px 32px 20px;overflow:auto}
+.wb-assistant-header{display:flex;align-items:center;gap:12px;min-height:44px;padding-right:40px;flex-shrink:0}
+.wb-assistant-header h2{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:16px;font-weight:600;margin:0}
+.wb-assistant-mobile-brand,.wb-assistant-mobile-history{display:none}
+.wb-assistant-info{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:0;padding:12px 16px;border:1px solid var(--semantic-border);border-radius:var(--control-radius);color:var(--semantic-text-muted);font-size:12px;line-height:1.6;flex-shrink:0}
+.wb-assistant-info a{color:var(--semantic-primary)}
+.wb-assistant-messages{min-height:100px;flex:1;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:8px 0}
+.wb-assistant-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:100%;color:var(--semantic-primary)}
+.wb-assistant-empty h3{margin:0;font-size:24px;letter-spacing:-.5px;color:var(--semantic-text)}
+.wb-assistant-message{max-width:72ch;margin:0 auto 28px;padding:0 8px}
+.wb-assistant-message[data-role=user]{width:fit-content;max-width:85%;margin-left:auto;margin-right:8px;padding:12px 20px;border-radius:var(--card-radius);background:var(--semantic-primary-subtle)}
+.wb-assistant-message-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px}
+.wb-assistant-message strong{font-size:12px;color:var(--semantic-text-muted)}
+.wb-assistant-message p{margin:6px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.85;color:var(--semantic-text)}
+.wb-assistant-message[data-role=user] strong{color:var(--semantic-primary-text)}
+.wb-assistant-error{max-height:25dvh;overflow:auto;flex-shrink:0;color:var(--semantic-error-text);font-size:12px}.wb-assistant-error p{margin:0 0 8px}
+.wb-assistant-composer{display:grid;gap:8px;flex-shrink:0;padding-top:16px;border-top:1px solid var(--semantic-border)}
+.wb-assistant-composer textarea{max-height:160px;resize:none}
 .wb-assistant-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
-.wb-assistant-feedback{min-height:18px;margin:0}
-@media(max-width:390px){.wb-assistant-body{padding:0 12px 12px}}
+.wb-assistant-feedback{flex:1;min-width:0;margin:0;color:var(--semantic-text-muted);font-size:12px;line-height:1.6}
+@media(max-width:767px){
+ .wb-assistant{grid-template-columns:minmax(0,1fr);height:min(620px,calc(100dvh - 32px))}
+ .wb-assistant-sidebar{display:none}
+ .wb-assistant-body{padding:16px;gap:12px;overflow:auto}
+ .wb-assistant-header h2{flex:1}
+ .wb-assistant-mobile-brand{display:inline;color:var(--semantic-text-muted);font-size:12px}
+ .wb-assistant-mobile-history{display:flex;gap:8px;align-items:center;flex-shrink:0}
+ .wb-assistant-mobile-history> :first-child{flex:1;min-width:0}
+ .wb-assistant-messages{flex:1 0 100px}
+ .wb-assistant-message{padding:0;margin-bottom:24px}
+ .wb-assistant-message[data-role=user]{margin-right:0;padding:12px 16px}
+ .wb-assistant-composer{padding-top:12px}
+}
 </style><!-- GLASS_PUBLIC_END --></head>
 <body class="glass-public">
 <a class="skip" href="#main">跳到主要内容</a>

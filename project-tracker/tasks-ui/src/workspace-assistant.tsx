@@ -1,17 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { WorkspaceSelect } from "@/components/workspace-select";
 import { WorkspaceIconButton } from "@/components/workspace-icon-action";
-import { MessageCircle, Copy } from "lucide-react";
+import { MessageCircle, Copy, Plus, ArrowUp, Square } from "lucide-react";
 type Message = { role: "user" | "assistant"; content: string };
 type Conversation = { id: string; title: string; version: number };
 async function responseJson(response: Response) {
@@ -82,6 +81,8 @@ export function WorkspaceAssistant({ scope }: { scope: string }) {
         setVersion(0);
         setSelected("");
       }
+      setPartial("");
+      setNotice("");
     } catch (e) {
       if (mounted.current)
         setError(e instanceof Error ? e.message : "加载失败");
@@ -182,14 +183,23 @@ export function WorkspaceAssistant({ scope }: { scope: string }) {
       request.current = null;
     }
   }
+  const currentTitle = conversations.find((c) => c.id === selected)?.title ||
+    (selected ? "当前会话" : "新会话");
+  const historyOptions = [
+    { value: "new", label: "新会话" },
+    ...conversations.map((c) => ({ value: c.id, label: c.title || "未命名会话" })),
+    ...(selected && !conversations.some((c) => c.id === selected)
+      ? [{ value: selected, label: "当前会话" }] : []),
+  ];
+  const newConversation = () => { void load(""); };
   return (
-    <Sheet
+    <Dialog
       open={open}
       onOpenChange={(next) => {
         setOpen(next);
       }}
     >
-      <SheetTrigger asChild>
+      <DialogTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
@@ -199,62 +209,61 @@ export function WorkspaceAssistant({ scope }: { scope: string }) {
         >
           <MessageCircle size={18} aria-hidden="true" />
         </Button>
-      </SheetTrigger>
-      <SheetContent className="wb-assistant" side="right">
-        <SheetHeader>
-          <SheetTitle>DeepSeek 助手</SheetTitle>
-          <SheetDescription>日常问答、翻译与工作思路整理</SheetDescription>
-        </SheetHeader>
+      </DialogTrigger>
+      <DialogContent className="wb-assistant">
+        <DialogDescription className="sr-only">DeepSeek 聊天会话</DialogDescription>
+        <div className="wb-assistant-sidebar" role="complementary" aria-label="会话历史">
+          <div className="wb-assistant-brand">
+            <MessageCircle size={22} aria-hidden="true" />
+            <DialogTitle>DeepSeek</DialogTitle>
+          </div>
+          <Button variant="outline" disabled={pending || loading} onClick={newConversation}>
+            <Plus size={18} aria-hidden="true" />新会话
+          </Button>
+          <h2 className="wb-assistant-history-label">最近会话</h2>
+          <nav className="wb-assistant-history" aria-label="选择聊天记录">
+            {conversations.map((conversation) => (
+              <Button key={conversation.id} variant="ghost"
+                className="wb-assistant-history-item"
+                aria-current={selected === conversation.id ? "true" : undefined}
+                disabled={pending || loading}
+                onClick={() => { void load(conversation.id); }}>
+                <MessageCircle size={16} aria-hidden="true" />
+                <span title={conversation.title}>{conversation.title || "未命名会话"}</span>
+              </Button>
+            ))}
+          </nav>
+          <span className="wb-assistant-scope">{scope === "work" ? "工作空间" : "私人空间"}</span>
+        </div>
         <div className="wb-assistant-body">
+          <header className="wb-assistant-header">
+            <h2 title={currentTitle}>{currentTitle}</h2>
+            <span className="wb-assistant-mobile-brand">DeepSeek</span>
+          </header>
+          <div className="wb-assistant-mobile-history">
+            <WorkspaceSelect label="选择聊天记录" value={selected || "new"}
+              disabled={pending || loading} options={historyOptions}
+              onValueChange={(id) => { void load(id === "new" ? "" : id); }} />
+            <WorkspaceIconButton label="新会话" icon={Plus} disabled={pending || loading} onClick={newConversation} />
+          </div>
           {configured === false && (
             <div className="wb-assistant-info" role="status">
               <strong>尚未配置 API Key</strong>
-              <p>
-                在 DeepSeek
-                开放平台创建密钥后，将它安全配置到工作台服务器即可开始聊天。
-              </p>
-              <a
-                href="https://platform.deepseek.com/api_keys"
-                target="_blank"
-                rel="noreferrer"
-              >
-                前往 DeepSeek 开放平台 ↗
-              </a>
+              <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noreferrer">DeepSeek 开放平台 ↗</a>
             </div>
           )}
-          <div className="wb-assistant-toolbar">
-            <WorkspaceSelect
-              label="选择聊天记录"
-              value={selected || "new"}
-              disabled={pending || loading}
-              options={[
-                { value: "new", label: "新会话" },
-                ...conversations.map((c) => ({ value: c.id, label: c.title })),
-                ...(selected && !conversations.some((c) => c.id === selected)
-                  ? [{ value: selected, label: "当前会话" }]
-                  : []),
-              ]}
-              onValueChange={(id) => {
-                void load(id === "new" ? "" : id);
-              }}
-            />
-            <Button
-              variant="outline"
-              disabled={pending || loading}
-              onClick={() => {
-                setPartial("");
-                void load("");
-              }}
-            >
-              新建
-            </Button>
-          </div>
           {loading && <p role="status">正在读取聊天记录…</p>}
           <div
             className="wb-assistant-messages"
             aria-label="聊天记录"
             aria-busy={pending || loading}
           >
+            {!loading && messages.length === 0 && !pending && !partial && (
+              <div className="wb-assistant-empty">
+                <MessageCircle size={36} aria-hidden="true" />
+                <h3>DeepSeek</h3>
+              </div>
+            )}
             {messages.map((message, index) => (
               <article
                 key={index}
@@ -281,14 +290,20 @@ export function WorkspaceAssistant({ scope }: { scope: string }) {
                 <p>{message.content}</p>
               </article>
             ))}
-            {pending && (
-              <article className="wb-assistant-message">
+            {pending && draft.trim() && (
+              <article className="wb-assistant-message" data-role="user">
+                <strong>你</strong>
+                <p>{draft.trim()}</p>
+              </article>
+            )}
+            {pending && draft.trim() && (
+              <article className="wb-assistant-message" data-role="assistant">
                 <strong>DeepSeek</strong>
                 <p>{partial || "正在生成回答…"}</p>
               </article>
             )}
             {!pending && partial && error && (
-              <article className="wb-assistant-message">
+              <article className="wb-assistant-message" data-role="assistant">
                 <strong>未完成的回答</strong>
                 <p>{partial}</p>
               </article>
@@ -317,39 +332,40 @@ export function WorkspaceAssistant({ scope }: { scope: string }) {
             }}
             className="wb-assistant-composer"
           >
-            <label htmlFor={"assistant-prompt-" + scope}>你的问题</label>
+            <label className="sr-only" htmlFor={"assistant-prompt-" + scope}>你的问题</label>
             <Textarea
               id={"assistant-prompt-" + scope}
-              value={draft}
+              value={pending ? "" : draft}
               maxLength={8000}
               disabled={pending}
-              placeholder="输入问题，点击发送"
+              placeholder="发送消息…"
               onChange={(event) => setDraft(event.target.value)}
             />
             <div className="wb-assistant-actions">
+              <p className="wb-assistant-feedback" role="status">{notice}</p>
               {pending ? (
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => request.current?.abort()}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    request.current?.abort();
+                  }}
                 >
-                  停止生成
+                  <Square size={16} aria-hidden="true" />停止生成
                 </Button>
               ) : (
                 <Button
                   type="submit"
                   disabled={!configured || loading || !draft.trim()}
                 >
-                  发送
+                  <ArrowUp size={18} aria-hidden="true" />发送
                 </Button>
               )}
             </div>
           </form>
-          <p className="wb-assistant-feedback" role="status">
-            {notice}
-          </p>
         </div>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }
