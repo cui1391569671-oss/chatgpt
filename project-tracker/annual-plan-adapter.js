@@ -1,4 +1,4 @@
-/* exported disposeAnnualPlans, renderAnnualPlans */
+/* exported isAnnualPlanEditing, disposeAnnualPlans, renderAnnualPlans */
 let annualPlanController=null;
 function isAnnualPlanEditing(){return !!annualPlanController?.isEditing();}
 function disposeAnnualPlans(){annualPlanController?.dispose();annualPlanController=null;}
@@ -17,4 +17,3 @@ function renderAnnualPlans(){
   if(!await change(next))throw Error(saveError||'保存失败，输入已保留。');return state.annualPlans||[];
  }});
 }
-window.addEventListener('beforeunload',event=>{if(isAnnualPlanEditing()){event.preventDefault();event.returnValue='';}});

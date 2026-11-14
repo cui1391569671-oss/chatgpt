@@ -255,11 +255,6 @@ export function WorkspaceAssistant({ scope }: { scope: string }) {
             aria-label="聊天记录"
             aria-busy={pending || loading}
           >
-            {!messages.length && !pending && !loading && (
-              <p className="wb-assistant-empty">
-                从一个问题开始，例如“帮我写一封项目进展邮件”。
-              </p>
-            )}
             {messages.map((message, index) => (
               <article
                 key={index}

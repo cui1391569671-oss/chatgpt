@@ -11,7 +11,8 @@ test('Drive bookmarks accept Google HTTPS links and reject unsafe destinations a
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const html=readFileSync(new URL('../workbench.html',import.meta.url),'utf8');
-const preview=vm.runInNewContext(html.slice(html.indexOf('function validDriveUrl('),html.indexOf('function drivePage('))+html.slice(html.indexOf('function sheetPreviewUrl('),html.indexOf('function previewSheet('))+';sheetPreviewUrl',{URL,URLSearchParams});
+const definitions=['validDriveUrl','sheetPreviewUrl'].map(name=>{const definition=html.split('\n').find(line=>line.startsWith('function '+name+'('));assert(definition,name+' definition missing');return definition;}).join('\n');
+const preview=vm.runInNewContext(definitions+';sheetPreviewUrl',{URL,URLSearchParams});
 test('sheet previews preserve tabs, support published sheets, and reject non-sheet or foreign links',()=>{
  assert.equal(preview('https://docs.google.com/spreadsheets/d/abc_123/edit#gid=42'),'https://docs.google.com/spreadsheets/d/abc_123/preview?gid=42');
  assert.equal(preview('https://docs.google.com/spreadsheets/d/e/pub_id/pubhtml?gid=9'),'https://docs.google.com/spreadsheets/d/e/pub_id/pubhtml?widget=true&gid=9');

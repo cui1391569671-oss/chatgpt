@@ -39,7 +39,9 @@ async function saveShipping(){
  try{if(await change(next,{renderPage:false})){shippingBaseline=shippingFormSnapshot();$('editor').close();renderShipping();setBusy(false);toast('发货信息已保存');}else $('formError').textContent=saveError||'保存失败，输入已保留，请重试。';}
  finally{$('fields').querySelectorAll('input,textarea,select').forEach(input=>input.disabled=false);}
 }
-async function closeShippingEditor(){
- if(busy)return;if(shippingDirty()&&!await window.WorkspacePrimitives.confirm({title:'放弃修改？',description:'尚未保存的发货信息将丢失。',action:'放弃修改'}))return;
- $('editor').close();
-}
+const shippingDiscardGuard=window.WorkspacePrimitives.createDiscardGuard({
+ isActive:()=>kind==='projectShipping'&&$('editor').open,isBusy:()=>busy,hasChanges:shippingDirty,
+ close:()=>$('editor').close(),description:'尚未保存的发货信息将丢失。'
+});
+window.addEventListener('beforeunload',shippingDiscardGuard.beforeUnload);
+async function closeShippingEditor(){return shippingDiscardGuard.requestClose();}

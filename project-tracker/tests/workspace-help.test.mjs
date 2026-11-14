@@ -22,6 +22,10 @@ test('help search matches operations across headings, Chinese text, shortcuts an
  assert(filterWorkspaceHelp('','work').every(topic=>topic.category==='work'));
  assert.equal(filterWorkspaceHelp('摄影','work').length,0);
  assert(filterWorkspaceHelp('原图').some(topic=>topic.id==='personal:photography'));
+ assert(filterWorkspaceHelp('自选搭配').some(topic=>topic.id==='personal:wardrobe'));
+ assert(filterWorkspaceHelp('关联 游戏').some(topic=>topic.id==='personal:tasks'));
+ const assistant=filterWorkspaceHelp('DeepSeek 会话').find(topic=>topic.id==='assistant');assert(assistant);
+ assert.deepEqual(assistant.scopes,['work','personal']);
 });
 test('account menu and both route allowlists expose help through existing navigation and leave guards',()=>{
  const shell=source('tasks-ui/src/workspace-shell.tsx'),page=source('workbench.html');

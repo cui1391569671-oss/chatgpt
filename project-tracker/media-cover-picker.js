@@ -33,13 +33,13 @@ function setupMediaCoverPicker(){
  };
  const autocomplete=enhanceWorkspaceAutocomplete($('title'),$('animeCoverChoices'),item=>{if(!busy)choose(item);},()=>search());
  $('title').setAttribute('aria-describedby','gameCoverStatus');$('title').closest('.workspace-autocomplete').after($('gameCoverStatus'));
- const changed=()=>{invalidate();const wasBound=!!$('mediaSource').value;if(wasBound&&$('coverMode').value==='source')$('coverUrl').value='';clearBinding();preview();$('gameCoverStatus').textContent='输入作品名称，选择对应年份、版本或季度。';if($('title').value.trim()&&!composition)timer=setTimeout(search,400);};
+ const changed=()=>{invalidate();const wasBound=!!$('mediaSource').value;if(wasBound&&$('coverMode').value==='source')$('coverUrl').value='';clearBinding();preview();$('gameCoverStatus').textContent='';if($('title').value.trim()&&!composition)timer=setTimeout(search,400);};
  $('coverUrl').oninput=()=>{invalidate();$('coverMode').value='manual';preview();binding();};
  $('title').oninput=e=>{if(!e.isComposing&&!composition)changed();};$('title').oncompositionstart=()=>{composition=true;invalidate();};$('title').oncompositionend=()=>{composition=false;changed();};
  $('mediaType').addEventListener('change',changed);$('season').addEventListener('change',()=>{invalidate();if($('mediaSource').value&&$('coverMode').value==='source')refresh();});
  $('matchGameCover').onclick=search;$('refreshMediaSource').onclick=refresh;$('clearMediaSource').onclick=()=>{invalidate();clearBinding();$('gameCoverStatus').textContent='已解除关联，保留当前自定义封面。';};
  $('gameCoverPreview').onerror=()=>{if(retryOriginalMediaCover($('gameCoverPreview')))return;$('gameCoverPreview').classList.add('hidden');$('gameCoverStatus').textContent='图片暂时无法加载，可刷新已选作品或填写其他封面链接。';};
- preview();binding();if($('mediaType').value==='game'&&$('coverMode').value==='source'&&!isSteamCover($('coverUrl').value))void refresh();$('gameCoverStatus').textContent=$('mediaSource').value?'已保留所选作品。可按作品 ID 刷新资料。':'输入名称后搜索，点击候选作品以关联封面。';
+ preview();binding();if($('mediaType').value==='game'&&$('coverMode').value==='source'&&!isSteamCover($('coverUrl').value))void refresh();$('gameCoverStatus').textContent=$('mediaSource').value?'已保留所选作品。':'';
  $('editor').addEventListener('close',()=>{autocomplete.destroy();clearTimeout(timer);controller?.abort();if(gameCoverSequence>=session)++gameCoverSequence;},{once:true});
 }
 const pendingMediaCovers=new Map();

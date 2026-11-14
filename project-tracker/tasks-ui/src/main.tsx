@@ -47,6 +47,7 @@ function App({bridge,controller}){
  const games=bridge.games||[],legacyGames=rows.filter(t=>t.taskType==='game'&&!t.mediaRecordId),locked=useRef(false),editorRef=useRef(null);editorRef.current=editor;
  const editButtons=useRef(new Map<string,HTMLButtonElement>()),createButton=useRef<HTMLButtonElement>(null),deleteButtons=useRef(new Map<string,HTMLButtonElement>()),deleteOrigin=useRef<string|null>(null);
  controller.update=data=>setRows(data);controller.open=id=>{if(!locked.current){setError('');setEditor(id?rows.find(t=>t.id===id)||null:{});}};controller.isEditing=()=>!!editorRef.current||locked.current||!!deleting||migrating;
+ useEffect(()=>{const unload=(event:BeforeUnloadEvent)=>{if(locked.current){event.preventDefault();event.returnValue='';}};window.addEventListener('beforeunload',unload);return()=>window.removeEventListener('beforeunload',unload);},[]);
  useEffect(()=>{bridge.onEditingChange?.(!!editor||pending||!!deleting||migrating);return()=>bridge.onEditingChange?.(false);},[editor,pending,deleting,migrating]);
  async function commit(op){if(locked.current)return;locked.current=true;setPending(true);setError('');try{const latest=await bridge.save(op);setRows(latest);setSelected([]);setEditor(null);setDeleting(null);setMigrating(false);window.WorkspaceFeedback?.show(document.getElementById('toast'),op.type==='delete'?'已删除待办':op.type==='save'?'已保存待办':op.type==='migrateGames'?'已整理游戏待办':'已更新待办','success');}catch(e){setError(e.message||'保存失败，输入已保留，请重试。');}finally{locked.current=false;setPending(false);}}
  const filtered=useMemo(()=>filterTaskList(rows,{query,status,priority,sorting},bridge.today),[rows,query,status,priority,sorting,bridge.today]);
@@ -81,7 +82,7 @@ function TasksMutateDrawer({currentRow,returnFocus,scope,games,pending,error,clo
  <div className='workspace-field-row'>{field('done','状态',f=><WorkspaceSelect value={f.value?'done':'open'} onValueChange={v=>f.onChange(v==='done')} label='状态' options={[{value:'open',label:'未完成'},{value:'done',label:'已完成'}]}/>)}{field('priority','优先级',f=><WorkspaceSelect {...f} onValueChange={f.onChange} label='优先级' options={[{value:'high',label:'高'},{value:'normal',label:'普通'},{value:'low',label:'低'}]}/>)}</div>
  {field('dueDate','截止日期（可选）',f=><Input {...f} type='date'/>)}
  {scope==='personal'&&field('mediaRecordId','关联游戏（可选）',f=><WorkspaceSelect value={f.value?'game:'+f.value:'none'} onValueChange={v=>f.onChange(v==='none'?'':v.slice(5))} label='关联游戏' options={[{value:'none',label:'不关联游戏'},...(currentRow.mediaRecordId&&!games.some(g=>g.id===currentRow.mediaRecordId)?[{value:'game:'+currentRow.mediaRecordId,label:'原关联游戏已移除'}]:[]),...games.map(g=>({value:'game:'+g.id,label:g.title+(g.platform?'（'+g.platform+'）':'')}))]}/>)}
- {scope==='personal'&&<p className='muted'>在娱乐记录中新建游戏后，可在这里关联。待办完成状态只代表提醒已处理。</p>}
+ {scope==='personal'&&<p className='muted'>待办完成状态只代表提醒已处理。</p>}
  {field('detail','详情（可选）',f=><Textarea {...f} maxLength={5000} rows={5} className='resize-none'/>)}
  </fieldset>{error&&<p className='tasks-error' role='alert'>{error}</p>}</form></FormProvider><SheetFooter><Button variant='outline' disabled={pending} onClick={()=>void guard.requestClose()}>取消</Button><SaveButton form='tasks-form' type='submit' pending={pending}/></SheetFooter></SheetContent></Sheet>;
 }

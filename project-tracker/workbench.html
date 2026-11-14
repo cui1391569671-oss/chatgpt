@@ -4063,7 +4063,7 @@ dialog[open]::backdrop {
 
 /* Immersive home and editorial inner pages: desktop reference layout. */
 .site-home{max-width:1370px;width:100%;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:40px;padding:72px 16px 24px;min-width:0}
-.site-home #workspaceHomeReminders{margin-top:auto;min-width:0;align-self:flex-start}
+.site-home #workspaceHomeReminders{margin-top:auto;min-width:0;max-width:100%;align-self:flex-start}
 .site-home-intro{--workspace-title-size:clamp(48px,5.6vw,88px);--workspace-title-weight:650;min-width:0}
 .site-home-date{margin:0 0 24px;font-size:18px}
 .site-home-intro h1{margin:0 0 24px;line-height:1.3;letter-spacing:-2px;overflow-wrap:anywhere}
@@ -7217,9 +7217,9 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 .wb-assistant-message-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .wb-assistant-message p{margin:6px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.7;color:var(--semantic-text)}
 .wb-assistant-message[data-role=user] strong{color:var(--semantic-primary)}
-.wb-assistant-empty,.wb-assistant-feedback{color:var(--semantic-text-muted);font-size:12px;line-height:1.6}
+.wb-assistant-feedback{color:var(--semantic-text-muted);font-size:12px;line-height:1.6}
 .wb-assistant-error{color:var(--semantic-error-text);font-size:12px}.wb-assistant-error p{margin:0 0 8px}
-.wb-assistant-composer{display:grid;gap:8px}.wb-assistant-composer label{font-size:13px}.wb-assistant-composer textarea{min-height:88px;max-height:160px;resize:none}
+.wb-assistant-composer{display:grid;gap:8px}.wb-assistant-composer label{font-size:13px}.wb-assistant-composer textarea{max-height:160px;resize:none}
 .wb-assistant-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
 .wb-assistant-feedback{min-height:18px;margin:0}
 @media(max-width:390px){.wb-assistant-body{padding:0 12px 12px}}
@@ -7323,7 +7323,6 @@ function mountWorkspaceTasks(){const node=document.getElementById('workspaceTask
  if(!await change(next))throw Error(saveError||'保存失败，输入已保留，请重试。');renderTaskBadge();workspaceTasksBridge.games=gameRecords(state);return state.tasks;
  }};workspaceTasks=window.WorkspaceTasks.mount(node,workspaceTasksBridge);}
 function openWorkspaceTask(id){if(!ready||busy||conflict)return;if(view==='home')workspaceTaskReturnId=id||null;if(view!=='tasks'&&!(view==='home'&&workspaceTasks)){view='tasks';render();}setTimeout(()=>workspaceTasks?.open?.(id),0);}
-window.addEventListener('beforeunload',event=>{if(isTasksEditing()){event.preventDefault();event.returnValue='';}});
 
 /* TASKS_ADAPTER_END */
 /* EVENT_RECURRENCE_START */
@@ -7733,10 +7732,12 @@ async function saveShipping(){
  try{if(await change(next,{renderPage:false})){shippingBaseline=shippingFormSnapshot();$('editor').close();renderShipping();setBusy(false);toast('发货信息已保存');}else $('formError').textContent=saveError||'保存失败，输入已保留，请重试。';}
  finally{$('fields').querySelectorAll('input,textarea,select').forEach(input=>input.disabled=false);}
 }
-async function closeShippingEditor(){
- if(busy)return;if(shippingDirty()&&!await window.WorkspacePrimitives.confirm({title:'放弃修改？',description:'尚未保存的发货信息将丢失。',action:'放弃修改'}))return;
- $('editor').close();
-}
+const shippingDiscardGuard=window.WorkspacePrimitives.createDiscardGuard({
+ isActive:()=>kind==='projectShipping'&&$('editor').open,isBusy:()=>busy,hasChanges:shippingDirty,
+ close:()=>$('editor').close(),description:'尚未保存的发货信息将丢失。'
+});
+window.addEventListener('beforeunload',shippingDiscardGuard.beforeUnload);
+async function closeShippingEditor(){return shippingDiscardGuard.requestClose();}
 
 /* PROJECT_SHIPPING_END */
 /* PROJECT_BUDGET_START */
@@ -8019,7 +8020,7 @@ function mediaPlatformOptions(game,current=''){
 }
 function mediaTrackingFields(item,id){
  const status=id?mediaDisplayStatus(item):'planned';
- return '<img id="gameCoverPreview" class="game-cover-preview hidden" alt="封面预览">'+['mediaSource','mediaSourceId','steamAppId','coverMode'].map(id=>'<input type="hidden" id="'+id+'" name="'+id+'" value="'+esc(item[id]||'')+'">').join('')+'<label for="mediaType">记录类型</label><select id="mediaType" name="mediaType">'+Object.entries(mediaTypes).map(([key,name])=>'<option value="'+key+'">'+name+'</option>').join('')+'</select>'+field('title','作品名称（可选）','text',item.title,'maxlength="200"')+'<div class="workspace-field-row"><div><label for="trackingStatus">记录状态</label><select id="trackingStatus" name="trackingStatus">'+Object.entries(MEDIA_DISPLAY_STATUSES).map(([key,label])=>'<option value="'+key+'" '+(status===key?'selected':'')+'>'+label+'</option>').join('')+'</select></div><div>'+'<label for="platform">平台（可选）</label><select id="platform" name="platform">'+mediaPlatformOptions((item.mediaType||'game')==='game',item.platform||'')+'</select></div></div>'+'<div class="workspace-field-row"><div>'+field('startedDate','开始日期（可选）','date',item.startedDate||'','max="'+day()+'"')+'</div><div>'+field('completedDate','完成日期','date',item.completedDate||'','max="'+day()+'"')+'</div></div>'+'<div class="media-progress-fields">'+field('season','季数（0 表示不分季）','number',item.season||0,'min="0" max="100000" step="1"')+field('progress','当前进度','number',item.progress||0,'min="0" max="100000" step="1" required')+field('total','总进度（0 表示未知）','number',item.total||0,'min="0" max="100000" step="1" required')+'</div>'+field('repeats','重看 / 重玩次数','number',item.repeats||0,'min="0" max="100000" step="1" required')+'<label for="rating">我的评分（可选）</label><select id="rating" name="rating"><option value="">暂不评分</option>'+Array.from({length:10},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+' / 10</option>').join('')+'</select>'+field('coverUrl','封面链接（自动匹配，可修改）','url',item.coverUrl||'','maxlength="2000" placeholder="https://…"')+'<button type="button" class="btn" id="matchGameCover">搜索作品</button><button type="button" class="btn hidden" id="refreshMediaSource">刷新已选封面</button><button type="button" class="btn hidden" id="clearMediaSource">解除关联</button><p id="selectedMediaSource" class="muted" role="status"></p><p id="gameCoverStatus" class="muted" role="status">填写名称后自动查找，未找到时仍可保存。</p><div id="animeCoverChoices" class="anime-cover-choices hidden" role="group" aria-label="选择作品封面"></div>'+textField('detail','感想 / 备注',item.detail||'',5000)+(item.history?.length?'<details class="media-history"><summary>跟踪历史（最近 '+Math.min(10,item.history.length)+' 条）</summary><ol>'+item.history.slice(-10).reverse().map(h=>'<li>'+esc(new Date(h.at).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}))+' · '+esc(MEDIA_DISPLAY_STATUSES[mediaDisplayStatus({trackingStatus:h.status})])+' · '+h.progress+' '+mediaProgressUnit(item)+(h.season?' · 第 '+h.season+' 季':'')+' · 重复 '+h.repeats+' 次</li>').join('')+'</ol></details>':'');
+ return '<img id="gameCoverPreview" class="game-cover-preview hidden" alt="封面预览">'+['mediaSource','mediaSourceId','steamAppId','coverMode'].map(id=>'<input type="hidden" id="'+id+'" name="'+id+'" value="'+esc(item[id]||'')+'">').join('')+'<label for="mediaType">记录类型</label><select id="mediaType" name="mediaType">'+Object.entries(mediaTypes).map(([key,name])=>'<option value="'+key+'">'+name+'</option>').join('')+'</select>'+field('title','作品名称（可选）','text',item.title,'maxlength="200"')+'<div class="workspace-field-row"><div><label for="trackingStatus">记录状态</label><select id="trackingStatus" name="trackingStatus">'+Object.entries(MEDIA_DISPLAY_STATUSES).map(([key,label])=>'<option value="'+key+'" '+(status===key?'selected':'')+'>'+label+'</option>').join('')+'</select></div><div>'+'<label for="platform">平台（可选）</label><select id="platform" name="platform">'+mediaPlatformOptions((item.mediaType||'game')==='game',item.platform||'')+'</select></div></div>'+'<div class="workspace-field-row"><div>'+field('startedDate','开始日期（可选）','date',item.startedDate||'','max="'+day()+'"')+'</div><div>'+field('completedDate','完成日期','date',item.completedDate||'','max="'+day()+'"')+'</div></div>'+'<div class="media-progress-fields">'+field('season','季数（0 表示不分季）','number',item.season||0,'min="0" max="100000" step="1"')+field('progress','当前进度','number',item.progress||0,'min="0" max="100000" step="1" required')+field('total','总进度（0 表示未知）','number',item.total||0,'min="0" max="100000" step="1" required')+'</div>'+field('repeats','重看 / 重玩次数','number',item.repeats||0,'min="0" max="100000" step="1" required')+'<label for="rating">我的评分（可选）</label><select id="rating" name="rating"><option value="">暂不评分</option>'+Array.from({length:10},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+' / 10</option>').join('')+'</select>'+field('coverUrl','封面链接（自动匹配，可修改）','url',item.coverUrl||'','maxlength="2000" placeholder="https://…"')+'<button type="button" class="btn" id="matchGameCover">搜索作品</button><button type="button" class="btn hidden" id="refreshMediaSource">刷新已选封面</button><button type="button" class="btn hidden" id="clearMediaSource">解除关联</button><p id="selectedMediaSource" class="muted" role="status"></p><p id="gameCoverStatus" class="muted" role="status"></p><div id="animeCoverChoices" class="anime-cover-choices hidden" role="group" aria-label="选择作品封面"></div>'+textField('detail','感想 / 备注',item.detail||'',5000)+(item.history?.length?'<details class="media-history"><summary>跟踪历史（最近 '+Math.min(10,item.history.length)+' 条）</summary><ol>'+item.history.slice(-10).reverse().map(h=>'<li>'+esc(new Date(h.at).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}))+' · '+esc(MEDIA_DISPLAY_STATUSES[mediaDisplayStatus({trackingStatus:h.status})])+' · '+h.progress+' '+mediaProgressUnit(item)+(h.season?' · 第 '+h.season+' 季':'')+' · 重复 '+h.repeats+' 次</li>').join('')+'</ol></details>':'');
 }
 function initMediaTrackingForm(item,id){
  $('mediaType').value=item.mediaType||(id?'game':mediaFilter==='all'?'game':mediaFilter);$('rating').value=item.rating??'';
@@ -8167,13 +8168,13 @@ function setupMediaCoverPicker(){
  };
  const autocomplete=enhanceWorkspaceAutocomplete($('title'),$('animeCoverChoices'),item=>{if(!busy)choose(item);},()=>search());
  $('title').setAttribute('aria-describedby','gameCoverStatus');$('title').closest('.workspace-autocomplete').after($('gameCoverStatus'));
- const changed=()=>{invalidate();const wasBound=!!$('mediaSource').value;if(wasBound&&$('coverMode').value==='source')$('coverUrl').value='';clearBinding();preview();$('gameCoverStatus').textContent='输入作品名称，选择对应年份、版本或季度。';if($('title').value.trim()&&!composition)timer=setTimeout(search,400);};
+ const changed=()=>{invalidate();const wasBound=!!$('mediaSource').value;if(wasBound&&$('coverMode').value==='source')$('coverUrl').value='';clearBinding();preview();$('gameCoverStatus').textContent='';if($('title').value.trim()&&!composition)timer=setTimeout(search,400);};
  $('coverUrl').oninput=()=>{invalidate();$('coverMode').value='manual';preview();binding();};
  $('title').oninput=e=>{if(!e.isComposing&&!composition)changed();};$('title').oncompositionstart=()=>{composition=true;invalidate();};$('title').oncompositionend=()=>{composition=false;changed();};
  $('mediaType').addEventListener('change',changed);$('season').addEventListener('change',()=>{invalidate();if($('mediaSource').value&&$('coverMode').value==='source')refresh();});
  $('matchGameCover').onclick=search;$('refreshMediaSource').onclick=refresh;$('clearMediaSource').onclick=()=>{invalidate();clearBinding();$('gameCoverStatus').textContent='已解除关联，保留当前自定义封面。';};
  $('gameCoverPreview').onerror=()=>{if(retryOriginalMediaCover($('gameCoverPreview')))return;$('gameCoverPreview').classList.add('hidden');$('gameCoverStatus').textContent='图片暂时无法加载，可刷新已选作品或填写其他封面链接。';};
- preview();binding();if($('mediaType').value==='game'&&$('coverMode').value==='source'&&!isSteamCover($('coverUrl').value))void refresh();$('gameCoverStatus').textContent=$('mediaSource').value?'已保留所选作品。可按作品 ID 刷新资料。':'输入名称后搜索，点击候选作品以关联封面。';
+ preview();binding();if($('mediaType').value==='game'&&$('coverMode').value==='source'&&!isSteamCover($('coverUrl').value))void refresh();$('gameCoverStatus').textContent=$('mediaSource').value?'已保留所选作品。':'';
  $('editor').addEventListener('close',()=>{autocomplete.destroy();clearTimeout(timer);controller?.abort();if(gameCoverSequence>=session)++gameCoverSequence;},{once:true});
 }
 const pendingMediaCovers=new Map();
@@ -8642,7 +8643,7 @@ window.addEventListener('beforeunload',event=>{if(isFitnessEditing()){event.prev
 
 /* FITNESS_END */
 /* ANNUAL_PLANS_START */
-/* exported disposeAnnualPlans, renderAnnualPlans */
+/* exported isAnnualPlanEditing, disposeAnnualPlans, renderAnnualPlans */
 let annualPlanController=null;
 function isAnnualPlanEditing(){return !!annualPlanController?.isEditing();}
 function disposeAnnualPlans(){annualPlanController?.dispose();annualPlanController=null;}
@@ -8661,7 +8662,6 @@ function renderAnnualPlans(){
   if(!await change(next))throw Error(saveError||'保存失败，输入已保留。');return state.annualPlans||[];
  }});
 }
-window.addEventListener('beforeunload',event=>{if(isAnnualPlanEditing()){event.preventDefault();event.returnValue='';}});
 
 /* ANNUAL_PLANS_END */
 let projectPlanController=null;

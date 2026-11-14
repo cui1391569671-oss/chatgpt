@@ -3,7 +3,30 @@ import assert from 'node:assert/strict';
 import {validProjectShipping,projectShippingRows} from '../project-shipping.mjs';
 import {recordChanges,WORKSPACE_COLLECTIONS} from '../cloud-records.mjs';
 import worker from './helpers/session-worker.mjs';
+import {readFileSync} from 'node:fs';
+import {runInNewContext} from 'node:vm';
+import {createDiscardGuard} from '../tasks-ui/src/discard-guard.mjs';
 const row={id:'shipping-12',title:'测试项目',recipient:'张先生',address:'上海市测试路 1 号',contact:'+86 138 0000 0000 / 分机 12'};
+
+function shippingEditor(){
+ const editor={open:true,close(){this.open=false;}},fields={editor,recipient:{value:''},address:{value:''},contact:{value:''}},listeners=[];
+ const context={kind:'projectShipping',busy:false,$:id=>fields[id],window:{WorkspacePrimitives:{createDiscardGuard:options=>createDiscardGuard({...options,confirm:()=>context.approve})},addEventListener:(type,handler)=>{if(type==='beforeunload')listeners.push(handler);}},approve:false};
+ const module=readFileSync(new URL('../project-shipping-adapter.js',import.meta.url),'utf8');
+ const api=runInNewContext(module+';({baseline:()=>{shippingBaseline=shippingFormSnapshot();},close:closeShippingEditor})',context);api.baseline();
+ return {context,fields,api,unload(){let prevented=false;const event={preventDefault(){prevented=true;},returnValue:undefined};listeners.forEach(handler=>handler(event));return prevented;}};
+}
+
+test('native shipping unload protection follows dirty and saving state only while its editor is active',()=>{
+ const h=shippingEditor();assert.equal(h.unload(),false);h.fields.address.value='合成收件地址';assert.equal(h.unload(),true);
+ h.api.baseline();assert.equal(h.unload(),false);h.context.busy=true;assert.equal(h.unload(),true);
+ h.context.kind='notes';assert.equal(h.unload(),false);h.context.kind='projectShipping';h.fields.editor.open=false;assert.equal(h.unload(),false);
+});
+
+test('native shipping cancel and busy dismissal retain the draft before an approved close',async()=>{
+ const h=shippingEditor();h.fields.recipient.value='合成联系人';assert.equal(await h.api.close(),false);assert.equal(h.fields.editor.open,true);
+ h.context.approve=true;h.context.busy=true;assert.equal(await h.api.close(),false);assert.equal(h.fields.editor.open,true);
+ h.context.busy=false;assert.equal(await h.api.close(),true);assert.equal(h.fields.editor.open,false);
+});
 test('shipping validation bounds required fields without imposing a domestic-only phone format',()=>{
  assert(validProjectShipping([row]));assert(validProjectShipping([]));
  for(const [key,max] of [['title',300],['recipient',100],['address',1000],['contact',200]]){
