@@ -7,7 +7,7 @@ import {motionDisabled,motionTiming,motionEase,workspaceCardSelector} from './wo
 const cardSelector=workspaceCardSelector;
 const surfaceSelector='.project-plan,.annual-chart,.workspace-help-page,.table-wrapper,#projectPanel';
 const headingSelector='.wb-page-location h1,.site-home-intro h1,.workspace-page-hero h1,.workspace-page-hero h2,.modern-project .header h1';
-const excluded='dialog,[role="dialog"],[data-rb-decoration],[data-motion-skip]';
+const excluded='dialog,[role="dialog"],[data-rb-decoration],[data-motion-skip],[data-home-sentence]';
 const recordAttributes=['data-motion-card','data-media-record','data-edit-clothing','data-pick-clothing','data-delete-outfit','data-read-note','data-portrait-id'];
 type Playback=Pick<ReturnType<typeof animate>,'cancel'> & {pause?:()=>void};
 type Target={identity:string;kind:'heading'|'card'|'surface'};

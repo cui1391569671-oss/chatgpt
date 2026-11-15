@@ -9,6 +9,7 @@ import {SaveButton} from '@/components/save-button';
 
 import './workspace-motion';
 import './workspace-entrance';
+import './workspace-home-fold-text';
 import './fitness';
 import './photography';
 import './workspace-help';

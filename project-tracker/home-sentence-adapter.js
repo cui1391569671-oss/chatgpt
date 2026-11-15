@@ -6,7 +6,8 @@ function paintHomeSentence(message=''){
  const heading=document.querySelector('[data-home-sentence]'),status=document.querySelector('[data-home-sentence-status]');
  if(view!=='home'||!heading||!status)return;
  const today=day(),current=homeSentenceCache?.date===today,example=current?homeSentenceCache.sentence:null;
- if(heading.textContent!==(example||'每日一句'))heading.textContent=example||'每日一句';
+ const sentence=example||'每日一句';
+ if(!window.WorkspaceHomeFoldText?.render(heading,sentence,!!example)&&heading.textContent!==sentence)heading.textContent=sentence;
  heading.lang=example?'en':'zh-CN';
  heading.classList.toggle('site-home-sentence',!!example);
  const feedback=message||(current?(example?'':'词汇库暂无英文例句，添加后刷新页面查看。'):'正在读取词汇库例句…');

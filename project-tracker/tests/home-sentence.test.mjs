@@ -23,3 +23,9 @@ test('cancelled or stale requests cannot replace the current home sentence',asyn
  resolve({ok:true,json:async()=>({date:'2026-11-12',sentence:'Stale.'})});await pending;assert.notEqual(p.heading.textContent,'Stale.');
  p.context.view='home';p.context.document.hidden=true;await p.run('refreshHomeSentence()');
 });
+
+test('FoldText owns visual nodes while the native sentence adapter retains data, language and feedback',async()=>{
+ const p=page(async()=>({ok:true,json:async()=>({date:p.context.date,sentence:'Keep the original example.'})}));const calls=[];
+ p.heading.textContent='React-owned visual nodes';p.context.window.WorkspaceHomeFoldText={render:(heading,text,english)=>{calls.push({heading,text,english});return true;}};
+ await p.run('refreshHomeSentence()');assert.equal(p.heading.textContent,'React-owned visual nodes');assert.equal(calls.at(-1).text,'Keep the original example.');assert.equal(calls.at(-1).english,true);assert.equal(p.heading.lang,'en');assert.equal(p.status.hidden,true);
+});

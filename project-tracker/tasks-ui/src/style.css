@@ -1,4 +1,6 @@
 @import "./vendor/react-bits/SpringCheck.css";
+@import "./vendor/react-bits/FoldText.css";
+@import "./vendor/react-bits/WakeSlider.css";
 @import "./vendor/react-bits/GlideSelect.css";
 @import "./vendor/react-bits/RubberSegment.css";
 @layer theme, base, components, utilities;

@@ -1,0 +1,3 @@
+import type {CSSProperties,ReactElement} from 'react';
+export type FoldTextProps={text?:string;splitBy?:'char'|'word'|'line';hinge?:'top'|'bottom'|'left'|'right';foldStyle?:'paper'|'blinds'|'flip';duration?:number;stagger?:number;staggerFrom?:string|number;foldAngle?:number;ease?:string;perspective?:number;creaseShading?:number;trigger?:'mount'|'hover'|'scroll'|'loop';loopDelay?:number;hoverRefold?:boolean;refoldRadius?:number;refoldAngle?:number;fontSize?:string|number;fontWeight?:string|number;color?:string;className?:string;style?:CSSProperties;container?:Element;motionOff?:boolean;initiallyRevealed?:boolean};
+export default function FoldText(props:FoldTextProps):ReactElement;

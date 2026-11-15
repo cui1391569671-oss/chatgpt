@@ -1530,6 +1530,7 @@ body .ui-dialog-body {
   overflow-wrap: anywhere;
 }
 .workspace-form-stack{display:grid;gap:8px;min-width:0}
+.workspace-wake-slider{width:320px;max-width:100%;min-width:0}
 .workspace-form-stack>:is(input,textarea,.ui-select-mount,.workspace-date-input){width:100%}
 .workspace-form-stack>label{display:block;margin:8px 0 0}
 body [data-ui-portal] :is(.actions,.card-head,.drive-preview-tools),body [data-tasks-portal] [data-slot=sheet-footer] {
@@ -2049,7 +2050,6 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-page-row[hidden]{display:none}
 /* Daylight home, shared with inner-page typography. */
 .site-home h1{color:var(--semantic-text)}
-.site-home h1 span{color:var(--semantic-primary-text)}
 .site-home-date{color:var(--semantic-text-muted)}
 .site-home-link{color:var(--semantic-text)}
 .site-home-link:hover{color:var(--semantic-primary-text)}

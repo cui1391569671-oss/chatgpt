@@ -17,8 +17,9 @@ class Element{
  contains(element){return element===this||this.children.some(child=>child.contains(element));}
  getClientRects(){return this.visible&&this.isConnected?[{}]:[];}
 }
-function setup({reduced=false,intersection=true,failAnimation=false}={}){
+function setup({reduced=false,intersection=true,failAnimation=false,homeTitle=false}={}){
  const root=new Element('','root'),heading=new Element('','heading'),body={dataset:{workspaceView:'notes'}},doc={...events(),body,readyState:'loading',hidden:false,activeElement:null},win=events(),media={...events(),matches:reduced};
+ if(homeTitle)heading.attrs.set('data-home-sentence','');
  let cards=[],surfaces=[],io,mutation,frame=0,disconnected=false;const raf=new Map(),played=[];
  root.querySelectorAll=s=>s===selector?cards:surfaces;
  doc.getElementById=id=>id==='content'?root:null;doc.querySelector=()=>null;doc.querySelectorAll=()=>[heading];
@@ -81,6 +82,10 @@ test('a card waits for ten percent visibility before beginning its entrance',()=
  assert(!h.played.some(row=>row.element===card));assert(h.io.observed.has(card));
  h.io.callback([{target:card,isIntersecting:true,intersectionRatio:.1}]);
  assert(h.played.some(row=>row.element===card));h.dispose();
+});
+
+test('the daily home title belongs solely to FoldText while ordinary card entrances remain enabled',()=>{
+ const h=setup({homeTitle:true}),card=h.card('home-card');h.setCards([card]);h.scan();h.enter([card]);assert(!h.played.some(row=>row.element===h.heading));assert(h.played.some(row=>row.element===card));h.dispose();
 });
 
 test('pointer activation freezes placement until click dispatch; focus freezes placement until activation or blur',()=>{
