@@ -7,7 +7,7 @@ export function closeSelectOnEscape(event: KeyboardEvent): boolean {
  const trigger=target.closest('[data-slot="select-trigger"][aria-expanded="true"]');
  const controlled=trigger?.getAttribute('aria-controls');
  const content=target.closest('[data-slot="select-content"][data-state="open"]')
-  ||(controlled?document.getElementById(controlled):null);
+  ||(controlled?document.getElementById(controlled)?.closest('[data-slot="select-content"]'):null);
  if(!content?.matches('[data-slot="select-content"][data-state="open"]'))return false;
  event.preventDefault();
  content.dispatchEvent(new Event('workspace-select-close',{bubbles:true}));

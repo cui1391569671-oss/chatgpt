@@ -1,4 +1,5 @@
 @import "./vendor/react-bits/SpringCheck.css";
+@import "./vendor/react-bits/GlideSelect.css";
 @import "./vendor/react-bits/RubberSegment.css";
 @layer theme, base, components, utilities;
 @import "@svar-ui/react-gantt/all.css";
@@ -42,8 +43,7 @@
 [data-ui-root] :focus-visible,[data-ui-portal] :focus-visible{outline:2px solid var(--ring);outline-offset:2px}
 
 .ui-confirm-field{display:grid;gap:8px;font-size:14px}
-[data-ui-portal] [data-slot=select-item]{min-height:var(--control-height,44px);padding-top:8px;padding-bottom:8px;cursor:pointer}[data-ui-portal] [data-slot=select-item][data-highlighted]{background:var(--admin-muted)}
-.ui-select{min-width:var(--workspace-select-min-width,100px);max-width:100%;padding:8px 12px;border:1px solid var(--input);background:var(--admin-background);justify-content:space-between;gap:12px;text-align:left;color:var(--admin-foreground);white-space:nowrap}.ui-select:hover{background:var(--admin-secondary)}
+.ui-select{min-width:var(--workspace-select-min-width,var(--control-height,44px));max-width:100%;padding:8px 12px;border:1px solid var(--input);background:var(--admin-background);justify-content:space-between;gap:12px;text-align:left;color:var(--admin-foreground);white-space:nowrap}.ui-select:hover{background:var(--admin-secondary)}
 .ui-select-mount{display:block;min-width:0}.ui-select-mount[hidden]{display:none}.ui-select-mount .ui-select{width:100%}
 [data-tasks-root] .ui-select,[data-tasks-portal] .ui-select{width:auto}.tasks-fields .ui-select{width:100%}
 .tasks-toolbar>.ui-select{border-style:solid}.tasks-pagination .ui-select{min-width:64px}
@@ -52,7 +52,6 @@
 /* Project tables use a sticky toolbar at z=100; modal primitives own a higher layer. */
 [data-ui-portal][data-slot=dialog-overlay]{z-index:10000;background:var(--modal-overlay)}
 [data-ui-portal][data-slot=dialog-content]{border:1px solid var(--border);background:var(--background);box-shadow:var(--shadow-sm);overflow:auto}
-[data-ui-portal][data-slot=select-content]{z-index:10020;width:var(--radix-select-trigger-width);min-width:var(--radix-select-trigger-width);max-height:min(320px,var(--radix-select-content-available-height));background:var(--admin-background);border:1px solid var(--border);color:var(--foreground);box-shadow:var(--shadow-sm)}
 [data-ui-portal].ui-project-drawer{box-shadow:var(--shadow-sm)}
 
 /* Canonical shadcn-admin token adapter. */

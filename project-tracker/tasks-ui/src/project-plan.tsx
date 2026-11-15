@@ -103,13 +103,13 @@ function ProjectPlan(){
    <WorkspaceIconButton icon={RefreshCw} label='刷新项目计划' disabled={loading} onClick={()=>void refresh()}/>
    <a className='workspace-icon-action' data-ui-control='button' data-workspace-size='icon' data-icon-label='打开任务清单源表' href={openSource} target='_blank' rel='noopener noreferrer' aria-label='打开任务清单源表'><ExternalLink size={18} aria-hidden='true'/></a>
   </WorkspaceToolbar>
-  {project&&<div className='project-plan-controls'>
+  {project&&<WorkspaceToolbar label='项目计划筛选'>
    <WorkspaceSelect label='选择项目' value={String(project.sheetId)} options={projects.map(item=>({value:String(item.sheetId),label:item.code+' '+item.name}))} onValueChange={value=>{
     setSelected(value);setFilter('all');const url=new URL(location.href);url.searchParams.set('planProject',value);history.replaceState(null,'',url.pathname+url.search);
    }}/>
    <WorkspaceSelect label='筛选任务' value={filter} options={filters} onValueChange={setFilter}/>
    <span className='project-plan-sync' role='status'>{loading?'正在读取…':snapshot.lastSyncedAt&&<>同步于 <time dateTime={snapshot.lastSyncedAt}>{syncTime.format(new Date(snapshot.lastSyncedAt))}</time></>}</span>
-  </div>}
+  </WorkspaceToolbar>}
   {error&&<p className='tasks-error' role='alert'>{error} {snapshot&&'仍显示上次读取的计划。'}</p>}
   {project?<PlanChart key={project.sheetId} project={project} filter={filter}/>:!error&&<p className='project-plan-empty' role='status'>{loading?'正在读取项目计划…':'尚未收到任务清单同步数据。'}</p>}
  </section>;
