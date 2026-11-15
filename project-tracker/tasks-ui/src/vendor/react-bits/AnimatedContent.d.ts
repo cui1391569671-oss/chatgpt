@@ -35,3 +35,4 @@ export interface AnimatedContentProps extends Omit<HTMLAttributes<HTMLDivElement
 }
 declare const AnimatedContent: (props: AnimatedContentProps) => ReactElement | null;
 export default AnimatedContent;
+export declare function animateAnimatedContent(element:HTMLElement, props?:AnimatedContentProps, callbacksRef?:{current:Pick<AnimatedContentProps,'onStart'|'onComplete'|'onDisappearanceComplete'>}):((()=>void)&{pause:()=>void})|undefined;

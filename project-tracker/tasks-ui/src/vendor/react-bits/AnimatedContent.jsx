@@ -1,3 +1,4 @@
+// React Bits JS-CSS registry adapter; exact upstream is AnimatedContent.registry.json.
 'use client';
 
 import { useEffect, useLayoutEffect, useRef } from 'react';
@@ -17,9 +18,8 @@ const WIPES = {
     'radial-gradient(farthest-corner at 50% 50%, #000 calc(var(--ac-wipe) * 140% - 40%), transparent calc(var(--ac-wipe) * 140%))'
 };
 
-const AnimatedContent = ({
-  target,
-  children,
+// The component and existing-node adapter share one upstream timeline implementation.
+export function animateAnimatedContent(el, {
   container,
   distance = 100,
   direction = 'vertical',
@@ -46,22 +46,17 @@ const AnimatedContent = ({
   onStart,
   onComplete,
   onDisappearanceComplete,
-  className = '',
-  style,
-  ...props
-}) => {
-  const ref = useRef(null);
-  const callbacksRef = useRef({ onStart, onComplete, onDisappearanceComplete });
-  callbacksRef.current = { onStart, onComplete, onDisappearanceComplete };
+} = {}, callbacksRef) {
+  const target = el;
+  callbacksRef ||= {current:{onStart,onComplete,onDisappearanceComplete}};
 
-  useIsomorphicLayoutEffect(() => {
-    const el = target ?? ref.current;
     if (!el) return undefined;
 
     let scroller = container || document.getElementById('snap-main-container') || null;
     if (typeof scroller === 'string') scroller = document.querySelector(scroller);
 
     const media = gsap.matchMedia();
+    let timeline;
     media.add({ reduce: '(prefers-reduced-motion: reduce)', animate: '(prefers-reduced-motion: no-preference)' }, ctx => {
       const targets = stagger > 0 && el.children.length ? Array.from(el.children) : [el];
       const horizontal = direction === 'horizontal';
@@ -147,6 +142,7 @@ const AnimatedContent = ({
           if (once && !scrub) disappear();
         }
       });
+      timeline = tl;
       tl.fromTo(targets, from, to, scrub ? 0 : Math.max(delay, 0));
 
       if (trigger === 'mount') {
@@ -183,8 +179,49 @@ const AnimatedContent = ({
       });
     }, el);
 
-    return () => media.revert();
-  }, [
+    const dispose = () => media.revert();
+    dispose.pause = () => timeline?.pause();
+    return dispose;
+
+}
+
+const AnimatedContent = ({
+  target,
+  children,
+  container,
+  distance = 100,
+  direction = 'vertical',
+  reverse = false,
+  duration = 0.8,
+  ease = 'power3.out',
+  initialOpacity = 0,
+  animateOpacity = true,
+  scale = 1,
+  blur = 0,
+  rotate = 0,
+  tilt = 0,
+  wipe = 'none',
+  threshold = 0.1,
+  delay = 0,
+  stagger = 0,
+  staggerFrom = 'start',
+  trigger = 'scroll',
+  once = true,
+  scrub = false,
+  disappearAfter = 0,
+  disappearDuration = 0.5,
+  disappearEase = 'power3.in',
+  onStart,
+  onComplete,
+  onDisappearanceComplete,
+  className = '',
+  style,
+  ...props
+}) => {
+  const ref=useRef(null);
+  const callbacksRef=useRef({onStart,onComplete,onDisappearanceComplete});
+  callbacksRef.current={onStart,onComplete,onDisappearanceComplete};
+  useIsomorphicLayoutEffect(()=>animateAnimatedContent(target ?? ref.current,{container,distance,direction,reverse,duration,ease,initialOpacity,animateOpacity,scale,blur,rotate,tilt,wipe,threshold,delay,stagger,staggerFrom,trigger,once,scrub,disappearAfter,disappearDuration,disappearEase,onStart,onComplete,onDisappearanceComplete},callbacksRef),[
     target,
     container,
     distance,
@@ -209,14 +246,8 @@ const AnimatedContent = ({
     disappearAfter,
     disappearDuration,
     disappearEase
-  ]);
-
-  if (target) return null;
-  return (
-    <div ref={ref} className={className} style={{ visibility: 'hidden', ...style }} {...props}>
-      {children}
-    </div>
-  );
+]);
+  if(target)return null;
+  return <div ref={ref} className={className} style={{visibility:'hidden',...style}} {...props}>{children}</div>;
 };
-
 export default AnimatedContent;

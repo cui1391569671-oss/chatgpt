@@ -177,7 +177,8 @@
   --semantic-interactive-border-hover: var(--gray-8);
 
   /* Shared motion contract: read by workspace-motion-policy.ts and native CSS. */
-  --workspace-motion-card: 500ms;
+  --workspace-motion-card: 800ms;
+  --workspace-motion-coordinate-card: 500ms;
   --workspace-motion-page: 320ms;
   --workspace-motion-scale: .985;
   --workspace-motion-heading: 480ms;
@@ -192,9 +193,10 @@
   --workspace-motion-navigation-item-step: 20ms;
   --workspace-motion-navigation-ease: cubic-bezier(.4,0,.6,1);
   --workspace-motion-exit: 180ms;
-  --workspace-motion-stagger: 70ms;
+  --workspace-motion-stagger: 80ms;
   --workspace-motion-stagger-max: 280ms;
-  --workspace-motion-distance: 18px;
+  --workspace-motion-heading-distance: 9px;
+  --workspace-motion-distance: 100px;
   --workspace-motion-ease: cubic-bezier(.22,1,.36,1);
   /* ========================================
      BASE COLORS (HSL format)
