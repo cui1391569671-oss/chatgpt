@@ -1,6 +1,6 @@
 import {closeSelectOnEscape} from '@/components/workspace-select-escape';
 import {restoreWorkspaceFocus} from '@/components/workspace-return-focus';
-import {motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
+import {motionEase,motionTiming,useWorkspaceMotionOff} from '@/workspace-motion-policy';
 'use client'
 
 import * as React from 'react'
@@ -57,6 +57,7 @@ function DialogContent({
   children,
   showCloseButton = true,
   showOverlay = true,
+  motionVariant = 'dialog',
   onCloseAutoFocus,
   onEscapeKeyDown,
   returnFocus,
@@ -65,6 +66,7 @@ function DialogContent({
 }: React.ComponentProps<typeof RadixDialog.Content> & {
   showCloseButton?: boolean
   showOverlay?: boolean
+  motionVariant?: 'dialog' | 'drawer'
   returnFocus?: () => HTMLElement | null | undefined
   returnFocusFallback?: () => HTMLElement | null | undefined
 }) {
@@ -88,8 +90,8 @@ function DialogContent({
         }}
       >
         <motion.div
-          initial={{opacity:0}}
-          animate={{opacity:1,transition:{duration:motionOff?0:motionTiming.control/1000}}}
+          initial={motionOff?false:{opacity:0,...(motionVariant==='drawer'?{x:'100%'}:{})}}
+          animate={{opacity:1,...(motionVariant==='drawer'?{x:0}:{}),transition:{duration:motionOff?0:(motionVariant==='drawer'?motionTiming.drawerEnter:motionTiming.control)/1000,...(motionVariant==='drawer'?{ease:motionEase.native}:{})}}}
           exit={{opacity:0,transition:{duration:motionOff?0:motionTiming.exit/1000}}}
         >
         {children}

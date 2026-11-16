@@ -1054,6 +1054,7 @@ SOFTWARE.
   --workspace-motion-scale: .985;
   --workspace-motion-heading: 480ms;
   --workspace-motion-control: 240ms;
+  --workspace-motion-drawer-enter: 400ms;
   --workspace-motion-navigation: 240ms;
   --workspace-motion-navigation-content: 320ms;
   --workspace-motion-navigation-close-delay: 120ms;
