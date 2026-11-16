@@ -6,6 +6,18 @@ export function validProjectCoreInfo(value){
  return !!value&&value.sourceSpreadsheetId==='1ta_eTbXEwFFr-r3szbPVgI83m2BBBzc_e5tYYs3HdcM'&&text(value.sourceTitle,200)&&/^\d{4}-\d{2}-\d{2}$/.test(value.syncedAt)&&Array.isArray(value.items)&&value.items.length<=200&&new Set(value.items.map(x=>x?.projectCode)).size===value.items.length&&new Set(value.items.map(x=>x?.sourceSheetId)).size===value.items.length&&value.items.every(x=>x&&(x.budget===undefined||validProjectBudget(x.budget))&&text(x.projectCode,80)&&x.projectCode.trim()&&text(x.projectName,300)&&x.projectName.trim()&&validAliases(x.aliases)&&(x.contractAmount===undefined||text(x.contractAmount,300))&&['supplyScope','transport','palletSize','equipmentLoad'].every(k=>text(x[k],5000))&&(x.efficiency===undefined||text(x.efficiency,5000))&&text(x.sourceSheet,300)&&Number.isInteger(x.sourceSheetId)&&x.sourceSheetId>=0&&text(x.sourceUpdatedAt,40));
 }
 
+// Read-only snapshot access for server-rendered labels. A missing table, a
+// missing row or malformed JSON all degrade to "no codes": labels then show the
+// project name alone instead of falling back to a stored legacy number.
+export async function readProjectCoreItems(env){
+ try{
+  const row=await env.DB.prepare('SELECT payload FROM project_core_information WHERE id=1').first();
+  if(!row)return [];
+  const payload=JSON.parse(row.payload);
+  return Array.isArray(payload?.items)?payload.items:[];
+ }catch{return [];}
+}
+
 export async function projectCoreInfoRoute(request,env){
  const respond=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
  if(!['GET','PUT'].includes(request.method))return respond({error:'不支持的操作'},405);

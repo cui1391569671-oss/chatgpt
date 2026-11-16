@@ -20,3 +20,4 @@ project-tracker/tasks-ui/dist/
 .DS_Store
 project-tracker/node_modules/
 project-tracker/.wrangler/
+shots/
