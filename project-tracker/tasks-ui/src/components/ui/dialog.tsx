@@ -56,6 +56,7 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  showOverlay = true,
   onCloseAutoFocus,
   onEscapeKeyDown,
   returnFocus,
@@ -63,13 +64,14 @@ function DialogContent({
   ...props
 }: React.ComponentProps<typeof RadixDialog.Content> & {
   showCloseButton?: boolean
+  showOverlay?: boolean
   returnFocus?: () => HTMLElement | null | undefined
   returnFocusFallback?: () => HTMLElement | null | undefined
 }) {
   const motionOff=useWorkspaceMotionOff();
   return (
     <DialogPortal data-slot='dialog-portal'>
-      <DialogOverlay />
+      {showOverlay && <DialogOverlay />}
       <RadixDialog.Content forceMount asChild
         data-ui-portal='' data-slot='dialog-content'
         className={cn(

@@ -11,6 +11,7 @@
   --card-radius: var(--radius-xl);
   --dialog-radius: 20px;
   --navigation-radius: 0px;
+  --project-issue-drawer-width: clamp(360px,38vw,480px);
   --workspace-select-backdrop: blur(var(--blur-lg));
   /* Fixed Radix Colors 3.0.0 sRGB primitives -> semantic scale aliases. */
   --theme-white: #ffffff;

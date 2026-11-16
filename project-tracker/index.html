@@ -887,6 +887,7 @@ SOFTWARE.
   --card-radius: var(--radius-xl);
   --dialog-radius: 20px;
   --navigation-radius: 0px;
+  --project-issue-drawer-width: clamp(360px,38vw,480px);
   --workspace-select-backdrop: blur(var(--blur-lg));
 
   --theme-white: #ffffff;
@@ -1997,7 +1998,7 @@ input:focus,select:focus,textarea:focus {
 }
 table {
   width: 100%;
-  min-width: 1100px;
+  min-width: 600px;
   border-collapse: collapse;
 }
 thead th:first-child {
@@ -3204,28 +3205,6 @@ body {
 .calendar-full-surface {
   min-width: 0;
 }
-/* Project name is a shared cell for all visible issues in its group. */
-.modern-project tbody .project-merged {
-  vertical-align: middle;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  background: var(--semantic-surface);
-  border-left: 0;
-  border-right: 0;
-  font-weight: 600;
-  color: var(--text);
-}
-.project-source-code{display:block;color:var(--semantic-text-muted);font-size:14px;font-weight:400;margin-bottom:8px}
-.modern-project .project-merged small {
-  display: block;
-  margin-top: 8px;
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--muted);
-}
-.modern-project .project-group-start td {
-  border-top: 1px solid var(--line);
-}
 .modern-project *::-webkit-scrollbar {
   width: 7px;
   height: 7px;
@@ -3327,8 +3306,8 @@ body {
   color: var(--accent);
 }
 .modern-project .table-wrapper {
-  background:transparent;
-  border:0;
+  background:var(--semantic-surface);
+  border:1px solid var(--semantic-border);
   border-radius:var(--card-radius);
   box-shadow:none;
   scrollbar-gutter: stable;
@@ -3345,6 +3324,7 @@ body {
 .modern-project .issue-group td {
   background: var(--semantic-surface);
 }
+.modern-project .compact-issue {--workspace-table-cell-padding:4px 16px}
 .modern-project .compact-issue:hover {
   background: var(--semantic-surface);
 }
@@ -3357,7 +3337,7 @@ body {
   padding: 0;
   background: none;
   border: 0;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   text-align: left;
   cursor: pointer;
@@ -3390,29 +3370,12 @@ body {
   white-space: nowrap;
 }
 .issue-state-pill {
-  min-width: var(--control-height,44px);
-  min-height: var(--control-height,44px);
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 7px;
-  border: 1px solid var(--semantic-border);
-  border-radius: 24px;
-  color: var(--semantic-primary-text);
-  background: var(--semantic-surface);
-  font-size: 13px;
-  cursor: pointer;
+  min-height:28px;display:inline-flex;align-items:center;padding:2px 8px;
+  border:0;border-radius:var(--radius-sm);color:var(--semantic-primary-text);
+  background:var(--semantic-primary-selected);font-size:14px;line-height:20px;
 }
-.issue-state-pill.paused {
-  color: var(--semantic-text-muted);
-  background: var(--semantic-surface);
-  border-color: var(--semantic-border);
-}
-.issue-state-pill.completed {
-  color: var(--semantic-text-muted);
-  background: var(--semantic-surface);
-}
-.issue-state-pill:hover {
-  border-color: var(--accent);
+.issue-state-pill.paused,.issue-state-pill.completed {
+  color:var(--semantic-text-muted);background:var(--semantic-surface-muted);
 }
 .modern-project .issue-date {
   color: var(--semantic-text-muted);
@@ -3647,27 +3610,6 @@ body {
   font-size: 14px;
   color: var(--muted);
 }
-/* Compact project controls and project urgency */
-.modern-project tbody .project-merged[data-priority=urgent] {
-  background: var(--semantic-surface);
-  color: var(--semantic-text);
-}
-.modern-project tbody .project-merged[data-priority=high] {
-  background: var(--semantic-surface);
-  color: var(--semantic-text);
-}
-.modern-project tbody .project-merged[data-priority=medium] {
-  background: var(--semantic-surface);
-  color: var(--semantic-text);
-}
-.modern-project tbody .project-merged[data-priority=low] {
-  background: var(--semantic-surface);
-  color: var(--semantic-text);
-}
-.modern-project .project-merged[data-priority] small {
-  color: inherit;
-  opacity: .8;
-}
 @media(max-width:760px) {
   .modern-project .toolbar-row {
     display: flex;
@@ -3678,59 +3620,26 @@ body {
     flex: none;
   }
 }
-/* Project notes share the existing details editor and cloud note field. */
-.modern-project table {
-  min-width: 1080px;
-  width: 100%;
-  table-layout: fixed;
-}
-.modern-project th:first-child {
-  width: 19%;
-}
-.modern-project th:nth-child(2) {
-  width: 27%;
-}
-.modern-project th:nth-child(3) {
-  width: 10%;
-}
-.modern-project th:nth-child(4) {
-  width: 12%;
-}
-.modern-project th:nth-child(5) {
-  width: 11%;
-}
-.modern-project th:nth-child(6) {
-  width: calc(21% - var(--control-height) - 32px);
-}
-.modern-project th:nth-child(7) {
-  width: calc(var(--control-height) + 32px);
-}
-.issue-note-button {
-  display: block;
-  width: 100%;
-  min-height: 44px;
-  border: 0;
-  background: transparent;
-  text-align: left;
-  padding: 6px 0;
-  font: inherit;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text);
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  cursor: pointer;
-}
-.issue-note-button:hover {
-  color: var(--accent);
-}
-.issue-note-button.empty-note {
-  color: var(--muted);
-}
-.issue-note-button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
+/* Project issues: grouped headers, one reading surface and shared controls. */
+.modern-project table {min-width:600px;width:100%;table-layout:fixed}
+.modern-project thead th:first-child {width:68px}
+.modern-project thead th:nth-child(3) {width:112px}
+.modern-project thead th:nth-child(4) {width:144px}
+.issue-project-heading {display:flex;align-items:center;gap:16px;min-height:60px;padding:8px 16px;background:var(--semantic-surface-muted);border-radius:var(--radius-md)}
+.issue-project-group th {padding:20px 0 0;text-align:left;position:static}
+.issue-project-toggle {--workspace-label-justify:flex-start;display:flex;align-items:center;gap:12px;min-height:44px;min-width:0;padding:0;border:0;background:transparent;color:var(--semantic-text);font:inherit;font-weight:600;text-align:left;cursor:pointer;flex:0 1 auto}
+.issue-project-toggle [data-ui-owner=action-label] {overflow-wrap:anywhere}
+.issue-project-toggle[aria-expanded=false] [data-ui-owner=action-icon] {rotate:-90deg}
+.issue-project-count {margin-inline-start:auto;color:var(--semantic-text-muted);font-size:14px;white-space:nowrap}
+.modern-project .compact-issue[data-selected=true] {background:var(--semantic-primary-selected);box-shadow:inset 3px 0 var(--semantic-primary)}
+.issue-note-button {display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;width:100%;min-height:24px;border:0;background:transparent;text-align:left;padding:0 0 8px;font:inherit;font-size:14px;line-height:1.6;color:var(--semantic-text-muted);cursor:pointer;overflow-wrap:anywhere}
+.issue-note-button:focus-visible {outline:2px solid var(--semantic-primary);outline-offset:2px}
+.project-empty-row td {padding:20px 24px;color:var(--semantic-text-muted)}
+.project-empty-row .btn {margin-inline-start:16px}
+.modern-project:has(#issueDetails[open]) .table-wrapper {--workspace-table-width:calc(100% - var(--project-issue-drawer-width) - 24px);margin-inline-end:calc(var(--project-issue-drawer-width) + 24px)}
+.issue-save-status {margin-inline-end:auto;color:var(--semantic-text-muted);font-size:14px}
+.issue-details-actions {align-items:center;flex-wrap:wrap}
+@media(max-width:760px){.modern-project:has(#issueDetails[open]) .table-wrapper{--workspace-table-width:100%;margin-inline-end:0}}
 /* All project-material tables share one reading surface. */
 .project-core-panel {
   background: var(--surface);
@@ -4109,7 +4018,7 @@ body.shadcn-workbench :is(img,iframe,video) {
 body.shadcn-workbench :is(.project-core-scroll,.tasks-table-scroll),body.modern-project .table-wrapper {
   background: var(--semantic-surface);
   min-width: 0;
-  width: 100%;
+  width: var(--workspace-table-width,100%);
   max-width: 100%;
   overflow: auto;
   overscroll-behavior: contain;
@@ -4498,6 +4407,7 @@ body.modern-project .toolbar {
   border-radius: 18px;
 }
 body.modern-project .table-wrapper {
+  --workspace-table-width:100%;
   min-height: 0;
   flex: 1;
 }
@@ -5119,7 +5029,7 @@ body [data-workspace-size=icon] {
 }
 .workspace-icon-action{--workspace-action-bg:var(--btn-ghost-bg);--workspace-action-hover-bg:var(--btn-ghost-hover-bg);--workspace-action-border:transparent;--workspace-action-shadow:none;position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
 .workspace-icon-action[aria-pressed=true]{--workspace-action-bg:var(--semantic-control-active);--btn-ghost-bg:var(--semantic-control-active);--btn-ghost-text:var(--semantic-primary-text);color:var(--semantic-primary-text)}
-.workspace-label-action{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.workspace-label-action{display:inline-flex;align-items:center;justify-content:var(--workspace-label-justify,center);gap:8px}
 .workspace-label-action>[data-ui-owner=action-icon]{display:inline-flex}
 .workspace-label-action[data-workspace-icon=forward]>[data-ui-owner=action-icon]{order:1}
 @media(hover:hover) and (pointer:fine){.workspace-record:not(:hover):not(:focus-within) .workspace-reveal-action{opacity:0;pointer-events:none}.workspace-label-action:not(:hover):not(:focus-visible) .workspace-reveal-icon{opacity:0}}
@@ -5337,7 +5247,7 @@ input[data-ui-date-native],body [data-workspace-file-native] {
 }
 /* Data table specification; widths and merged project cells remain business-owned. */
 body.shadcn-workbench :is(.tasks-table-scroll,.project-core-table) :is(th,td),body.modern-project :is(th,td) {
-  padding: 12px 16px;
+  padding: var(--workspace-table-cell-padding,12px 16px);
   font-size: 14px;
   line-height: 20px;
 }
@@ -5348,7 +5258,7 @@ body.shadcn-workbench :is(.tasks-table-scroll,.project-core-table) th,body.moder
 body.shadcn-workbench :is(.tasks-table-scroll,.project-core-table) td,body.modern-project td {
   height: 52px;
 }
-body.shadcn-workbench .row-meta,body.shadcn-workbench .task-title small,body.modern-project .project-merged small {
+body.shadcn-workbench .row-meta,body.shadcn-workbench .task-title small,body.modern-project .issue-project-count {
   font-size: 12px;
   line-height: 18px;
   color: var(--semantic-text-muted);
@@ -5428,7 +5338,7 @@ body.modern-project .table-wrapper {
   bottom: 0;
   translate: none;
   transform: none;
-  width: min(480px,100vw);
+  width: min(var(--project-issue-drawer-width,480px),100vw);
   height: 100dvh;
   max-height: 100dvh;
 }
@@ -5685,7 +5595,7 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 
   <div class="table-wrapper">
     <table>
-      <thead><tr><th>所属项目</th><th>项目问题 / 跟进事项</th><th>当前状态</th><th>计划日期</th><th>项目优先级</th><th>备注</th><th>完成</th></tr></thead>
+      <thead><tr><th><span class="sr-only">完成</span></th><th>项目问题 / 跟进事项</th><th>当前状态</th><th>计划日期</th></tr></thead>
       <tbody id="tableBody"></tbody>
     </table>
     <footer id="issueTableSummary" class="issue-table-summary muted" aria-live="polite"></footer>
@@ -5721,7 +5631,7 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<dialog id="issueDetails" aria-labelledby="issueDetailsTitle"><div class="issue-details-head"><span id="issueProjectName"></span><button id="issueClose" type="button" aria-label="关闭问题详情">×</button></div><form id="issueDetailsForm" novalidate><h2 id="issueDetailsTitle">问题详情</h2><label for="issue-task">项目问题 / 跟进事项（可选）</label><input id="issue-task" maxlength="2000"><div class="issue-field-pair"><div><label for="issue-status">当前状态</label><select id="issue-status"><option>进行中</option><option>暂停</option><option>已完成</option></select></div><div><label for="issue-plannedDate">计划日期</label><input id="issue-plannedDate" type="date"></div></div><label for="issue-reason">问题原因</label><textarea class="resize-none" id="issue-reason" maxlength="10000"></textarea><label for="issue-note">跟进备注</label><textarea class="resize-none" id="issue-note" maxlength="10000"></textarea><p id="issueDetailsError" class="form-error" role="alert"></p><div class="issue-details-actions"><button class="btn" id="issueCancel" type="button">取消</button><button class="btn btn-primary" type="submit">保存</button></div></form></dialog><script>
+<dialog id="issueDetails" aria-labelledby="issueDetailsTitle"><div class="issue-details-head"><span id="issueProjectName"></span><button id="issueClose" type="button" aria-label="关闭问题详情">×</button></div><form id="issueDetailsForm" novalidate><h2 id="issueDetailsTitle">问题详情</h2><label for="issue-task">项目问题 / 跟进事项（可选）</label><input id="issue-task" maxlength="2000"><div class="issue-field-pair"><div><label for="issue-status">当前状态</label><select id="issue-status"><option>进行中</option><option>暂停</option><option>已完成</option></select></div><div><label for="issue-plannedDate">计划日期</label><input id="issue-plannedDate" type="date"></div></div><label for="issue-reason">问题原因</label><textarea class="resize-none" id="issue-reason" maxlength="10000"></textarea><label for="issue-note">跟进备注</label><textarea class="resize-none" id="issue-note" maxlength="10000"></textarea><p id="issueDetailsError" class="form-error" role="alert"></p><div class="issue-details-actions"><span id="issueSaveStatus" class="issue-save-status" role="status">已自动保存</span><button class="btn btn-outline" id="issueRetry" type="button" hidden>重试保存</button><button class="btn btn-outline" id="issueComplete" type="button">标记完成</button></div></form></dialog><script>
 const projectToolbar=document.querySelector('.toolbar');
 /* PROJECT_LABELS_START */
 // Project identities confirmed by the user on 2026-10-27. Codes always come
@@ -5879,7 +5789,7 @@ function showPriorityDropdown(project, anchorEl) {
     const btn = document.createElement('button');
     btn.className = 'pd-item' + (level.key === current ? ' active' : '');
     const info = getPriorityInfo(level.key);
-    btn.innerHTML = '<span class="priority-badge ' + info.cls + '">' + level.label + '</span> ' + level.label;
+    btn.innerHTML = '<span class="priority-badge ' + info.cls + '">' + level.label + '</span>';
     btn.onclick = function(e) {
       e.stopPropagation();
       if (level.key) {
@@ -5997,6 +5907,7 @@ function saveData() {
   return flushSave();
 }
 async function manualSave(){
+  if(document.getElementById('issueDetails').open)return persistIssueDetails();
   if(!ready){showToast('云端尚未连接，请稍后重试','error');return false;}
   const editor=document.activeElement?.closest('[contenteditable="true"]');
   if(editor)editor.blur(); // Commit the focused cell before taking the snapshot.
@@ -6078,35 +5989,89 @@ function getOverdueDays(dateStr) {
 function getProjectRows(){const completed=new Set((cloudBase?.data||[]).filter(item=>item.done).map(item=>item.id));return data.map((item,idx)=>({...item,_idx:idx})).filter(item=>!item.done||!completed.has(item.id));}
 
 let issueEditingId=null,issueBaseline=null,issueSubmitting=false;
+const collapsedIssueProjects=new Set();
 function emptyProjectNames(){return projectNames().filter(name=>!data.some(item=>item.project===name));}
-function projectPriorityCell(name){const cell=document.createElement('td'),button=document.createElement('button'),info=getPriorityInfo(getPriority(name));button.type='button';button.className='priority-badge project-priority '+info.cls;button.textContent=info.label;button.setAttribute('aria-label','项目紧急程度：'+displayProject(name)+'，'+info.label);button.onclick=()=>showPriorityDropdown(name,button);cell.append(button);return cell;}
-function setProjectCellLabel(cell,name){const plain=projectNameOnly(name),label=displayProject(name);if(label!==plain&&label.endsWith(' '+plain)){const code=document.createElement('span');code.className='project-source-code';code.textContent=label.slice(0,-plain.length-1);cell.append(code,document.createTextNode(plain));}else cell.textContent=plain;}
-function emptyProjectRow(name){const row=document.createElement('tr');row.className='project-empty-row project-group-start';const project=document.createElement('td');project.className='issue-project-name project-merged';project.dataset.priority=getPriority(name);project.setAttribute('aria-label',displayProject(name)+'，'+getPriorityInfo(getPriority(name)).label);setProjectCellLabel(project,name);const count=document.createElement('small');count.textContent='0 项问题';project.append(count);const empty=document.createElement('td');empty.colSpan=3;const label=document.createElement('span');label.textContent='暂未添加问题';const add=document.createElement('button');add.type='button';add.className='btn btn-outline';add.textContent='添加问题';add.setAttribute('aria-label','为'+displayProject(name)+'添加问题');add.onclick=()=>showAddModal(name);empty.append(label,add);const complete=document.createElement('td');complete.textContent='—';const note=document.createElement('td');note.textContent='—';row.append(project,empty,projectPriorityCell(name),note,complete);return row;}
-function renderTable(){
- const tbody=document.getElementById('tableBody');tbody.replaceChildren();
- const filtered=getProjectRows();
- const grouped=new Map(emptyProjectNames().map(name=>[name,[]]));for(const item of filtered){if(!grouped.has(item.project))grouped.set(item.project,[]);grouped.get(item.project).push(item);}
- const summary=document.getElementById('issueTableSummary');if(summary)summary.textContent='共 '+grouped.size+' 个项目 · '+filtered.length+' 项问题';
- for(const [projectName,rows] of [...grouped].sort(([a],[b])=>compareProjectLabels(a,b))){
- if(!rows.length){tbody.append(emptyProjectRow(projectName));continue;}
- for(const item of rows){const status=item.done?'已完成':item.status;const row=document.createElement('tr');row.className='compact-issue';
- if(item===rows[0]){row.classList.add('project-group-start');const project=document.createElement('td');project.className='issue-project-name project-merged';project.dataset.priority=getPriority(projectName);project.setAttribute('aria-label',displayProject(projectName)+'，'+getPriorityInfo(getPriority(projectName)).label);project.rowSpan=rows.length;setProjectCellLabel(project,projectName);const count=document.createElement('small');count.textContent=rows.length+' 项问题';project.append(count);row.append(project);}
- const task=document.createElement('td'),open=document.createElement('button');open.type='button';open.className='issue-open';open.setAttribute('aria-label','查看问题：'+item.task);const title=document.createElement('span');title.textContent=item.task||'未命名问题';open.append(title);open.onclick=()=>openIssueDetails(item.id);task.append(open);row.append(task);
- const stateCell=document.createElement('td'),stateButton=document.createElement('button');stateButton.type='button';stateButton.className='issue-state-pill '+(status==='暂停'?'paused':item.done?'completed':'');stateButton.textContent=status;stateButton.setAttribute('aria-label','查看状态与详情：'+item.task);stateButton.onclick=()=>openIssueDetails(item.id);stateCell.append(stateButton);row.append(stateCell);
- const date=document.createElement('td');date.className='issue-date'+(!item.done&&getOverdueDays(item.plannedDate)?' overdue':'');date.textContent=item.plannedDate||'未设置';if(!item.done&&getOverdueDays(item.plannedDate))date.title='已逾期 '+getOverdueDays(item.plannedDate)+' 天';row.append(date);
- row.append(projectPriorityCell(item.project));
- const noteCell=document.createElement('td'),noteButton=document.createElement('button');noteButton.type='button';noteButton.className='issue-note-button'+(item.note?'':' empty-note');noteButton.textContent=item.note||'添加备注';noteButton.setAttribute('aria-label',(item.note?'编辑备注：':'添加备注：')+item.task);noteButton.onclick=()=>{openIssueDetails(item.id);if(document.getElementById('issueDetails').open)document.getElementById('issue-note').focus();};noteCell.className='issue-note-cell';noteCell.append(noteButton);row.append(noteCell);
- const complete=document.createElement('td'),checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=item.done;checkbox.dataset.idx=item._idx;checkbox.setAttribute('aria-label','完成问题：'+item.task);checkbox.onchange=handleCheckboxChange;complete.append(checkbox);row.append(complete);tbody.append(row);
- }}
- if(!grouped.size){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.className='issue-empty';td.textContent=ready?'暂无待跟进的问题。':'正在读取项目问题…';tr.append(td);tbody.append(tr);}
+function projectPriorityButton(name){const button=document.createElement('button'),info=getPriorityInfo(getPriority(name));button.type='button';button.className='priority-badge project-priority '+info.cls;button.textContent=info.label;button.setAttribute('aria-label','项目紧急程度：'+displayProject(name)+'，'+info.label);button.onclick=()=>showPriorityDropdown(name,button);return button;}
+function projectGroupRow(name,count){
+ const row=document.createElement('tr'),cell=document.createElement('th'),bar=document.createElement('div'),toggle=document.createElement('button'),label=document.createElement('span'),amount=document.createElement('span');
+ row.className='issue-project-group';cell.colSpan=4;cell.scope='rowgroup';bar.className='issue-project-heading';toggle.type='button';toggle.className='issue-project-toggle';toggle.setAttribute('aria-expanded',String(!collapsedIssueProjects.has(name)));toggle.setAttribute('aria-label',(collapsedIssueProjects.has(name)?'展开':'收起')+'项目：'+displayProject(name));
+ toggle.dataset.workspaceIcon='details';toggle.dataset.workspaceIconMode='label';label.textContent=displayProject(name);toggle.append(label);
+ toggle.onclick=()=>{if(collapsedIssueProjects.has(name))collapsedIssueProjects.delete(name);else collapsedIssueProjects.add(name);renderTable();document.querySelectorAll('.issue-project-toggle').forEach(button=>{if(button.dataset.project===name)button.focus({preventScroll:true});});};toggle.dataset.project=name;
+ amount.className='issue-project-count';amount.textContent=count+' 项问题';bar.append(toggle,projectPriorityButton(name),amount);cell.append(bar);row.append(cell);return row;
 }
-function openIssueDetails(id){if(!ready||conflicted||saving)return;const item=data.find(x=>x.id===id);if(!item)return;issueEditingId=id;issueBaseline=structuredClone(item);document.getElementById('issueDetailsTitle').textContent=item.task||'问题详情';document.getElementById('issueProjectName').textContent=displayProject(item.project);for(const field of ['task','plannedDate','status','reason','note'])document.getElementById('issue-'+field).value=field==='status'&&item.done?'已完成':item[field]||'';document.getElementById('issueDetailsError').textContent='';document.getElementById('issueDetails').showModal();document.getElementById('issueClose').focus();}
-document.getElementById('issueClose').onclick=()=>{if(!issueSubmitting)document.getElementById('issueDetails').close();};document.getElementById('issueCancel').onclick=document.getElementById('issueClose').onclick;
-document.getElementById('issueDetails').addEventListener('cancel',e=>{if(issueSubmitting)e.preventDefault();});
-document.getElementById('issueDetailsForm').onsubmit=async e=>{e.preventDefault();if(issueSubmitting||saving)return;const error=document.getElementById('issueDetailsError'),idx=data.findIndex(x=>x.id===issueEditingId),title=document.getElementById('issue-task').value.trim()||'未命名问题';if(idx<0){error.textContent='该问题已被删除，请关闭详情并刷新。';return;}const fields=['task','plannedDate','status','reason','note'];if(fields.some(k=>data[idx][k]!==issueBaseline[k])){error.textContent='该问题已更新，请关闭后重新打开核对。';return;}
- issueSubmitting=true;document.querySelectorAll('#issueDetails button,#issueDetails input,#issueDetails select,#issueDetails textarea').forEach(x=>x.disabled=true);error.textContent='';const item={...data[idx],task:title};for(const k of fields.filter(k=>k!=='task'))item[k]=document.getElementById('issue-'+k).value;item.done=item.status==='已完成';data[idx]=item;
- try{if(await saveData()){document.getElementById('issueDetails').close();renderTable();updateStats();}else {issueBaseline=structuredClone(data.find(x=>x.id===issueEditingId));error.textContent='保存未成功，输入仍保留。请按页面提示核对或重试。';}}catch(err){error.textContent=err.message;}finally{issueSubmitting=false;document.querySelectorAll('#issueDetails button,#issueDetails input,#issueDetails select,#issueDetails textarea').forEach(x=>x.disabled=false);}
-};
+function emptyProjectRow(name){const row=document.createElement('tr'),cell=document.createElement('td'),label=document.createElement('span'),add=document.createElement('button');row.className='project-empty-row';cell.colSpan=4;label.textContent='暂未添加问题';add.type='button';add.className='btn btn-outline';add.textContent='添加问题';add.setAttribute('aria-label','为'+displayProject(name)+'添加问题');add.onclick=()=>showAddModal(name);cell.append(label,add);row.append(cell);return row;}
+function renderTable(){
+ const tbody=document.getElementById('tableBody'),scroll=tbody.closest('.table-wrapper'),position=scroll?{top:scroll.scrollTop,left:scroll.scrollLeft}:null;tbody.replaceChildren();
+ const filtered=getProjectRows(),grouped=new Map(emptyProjectNames().map(name=>[name,[]]));for(const item of filtered){if(!grouped.has(item.project))grouped.set(item.project,[]);grouped.get(item.project).push(item);}
+ const summary=document.getElementById('issueTableSummary');if(summary)summary.textContent=grouped.size+' 个项目 · '+filtered.length+' 项问题';
+ for(const [name,rows] of [...grouped].sort((a,b)=>compareProjectLabels(a[0],b[0]))){
+  tbody.append(projectGroupRow(name,rows.length));if(collapsedIssueProjects.has(name))continue;if(!rows.length){tbody.append(emptyProjectRow(name));continue;}
+  for(const item of rows){
+   const row=document.createElement('tr');row.className='compact-issue';row.dataset.issueId=item.id;row.dataset.selected=String(issueEditingId===item.id&&document.getElementById('issueDetails').open);
+   const complete=document.createElement('td'),checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=item.done;checkbox.dataset.idx=item._idx;checkbox.setAttribute('aria-label','完成问题：'+item.task);checkbox.onchange=handleCheckboxChange;complete.append(checkbox);
+   const task=document.createElement('td'),open=document.createElement('button'),title=document.createElement('span');open.type='button';open.id='issue-open-'+item.id;open.className='issue-open';open.setAttribute('aria-label','查看问题：'+item.task);title.textContent=item.task||'未命名问题';open.append(title);open.onclick=()=>openIssueDetails(item.id);task.append(open);
+   if(item.note){const note=document.createElement('button');note.type='button';note.className='issue-note-button';note.textContent=item.note;note.setAttribute('aria-label','查看跟进备注：'+item.task);note.onclick=()=>openIssueDetails(item.id);task.append(note);}
+   const state=document.createElement('td'),label=document.createElement('span');label.className='issue-state-pill '+(item.status==='暂停'?'paused':item.done?'completed':'');label.textContent=item.done?'已完成':item.status||'进行中';state.append(label);
+   const date=document.createElement('td'),overdue=!item.done&&getOverdueDays(item.plannedDate);date.className='issue-date'+(overdue?' overdue':'');date.textContent=overdue?'已逾期 '+overdue+' 天':item.plannedDate||'未设置';if(overdue)date.title='计划日期：'+item.plannedDate;
+   row.append(complete,task,state,date);tbody.append(row);
+  }
+ }
+ if(!grouped.size){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=4;td.className='issue-empty';td.textContent=ready?'暂无待跟进的问题。':'正在读取项目问题…';tr.append(td);tbody.append(tr);}
+ if(scroll&&position){scroll.scrollTop=position.top;scroll.scrollLeft=position.left;}
+}
+const issueFields=['task','plannedDate','status','reason','note'];
+let issueSaveTimer=0,issueSavePromise=null,issueClosing=false;
+function readIssueDraft(){return Object.fromEntries(issueFields.map(field=>[field,document.getElementById('issue-'+field).value]));}
+function issueHasChanges(){return !!issueBaseline&&issueFields.some(field=>(issueBaseline[field]||'')!==(readIssueDraft()[field]||''));}
+function setIssueSaveStatus(message,error=''){document.getElementById('issueSaveStatus').textContent=message;document.getElementById('issueDetailsError').textContent=error;document.getElementById('issueRetry').hidden=!error;}
+function closeSavedIssue(){clearTimeout(issueSaveTimer);document.getElementById('issueDetails').close();issueEditingId=null;issueBaseline=null;renderTable();}
+async function persistIssueDetails(){
+ clearTimeout(issueSaveTimer);if(issueSavePromise)return issueSavePromise;if(!issueEditingId)return true;
+ issueSavePromise=(async()=>{
+  if(saving)await saving;
+  if(!issueHasChanges()&&!pendingState&&!conflicted){setIssueSaveStatus('已自动保存');return true;}
+  const idx=data.findIndex(item=>item.id===issueEditingId),error='保存未成功，输入仍保留。请重试；冲突时请先核对页面上的云端副本。';
+  if(idx<0||conflicted||unresolvedPending){setIssueSaveStatus('尚未保存',idx<0?'该问题已被删除，请核对云端数据。':error);return false;}
+  if(issueFields.some(field=>(data[idx][field]||'')!==(issueBaseline[field]||''))){setIssueSaveStatus('尚未保存','该问题已更新，请核对云端数据，当前输入仍保留。');return false;}
+  const draft=readIssueDraft();draft.task=draft.task.trim()||'未命名问题';
+  if(draft.task.length>2000||draft.reason.length>10000||draft.note.length>10000||!['进行中','暂停','已完成'].includes(draft.status)){
+   setIssueSaveStatus('尚未保存','请检查问题、状态及备注的长度。');return false;
+  }
+  const dateInput=document.getElementById('issue-plannedDate');if(!dateInput.validity.valid){setIssueSaveStatus('尚未保存','请填写有效的计划日期。');return false;}
+  issueSubmitting=true;setIssueSaveStatus('正在保存…');document.querySelectorAll('#issueDetails input,#issueDetails select,#issueDetails textarea,#issueDetails button').forEach(field=>field.disabled=true);
+  const next={...data[idx],...draft,done:draft.status==='已完成'};if(next.done)next.completedDate=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'});else delete next.completedDate;data[idx]=next;
+  try{
+   const ok=await saveData();issueBaseline=structuredClone(data.find(item=>item.id===issueEditingId)||next);
+   if(!ok){setIssueSaveStatus('尚未保存',error);return false;}
+   for(const field of issueFields)document.getElementById('issue-'+field).value=issueBaseline[field]||'';
+   setIssueSaveStatus('已自动保存');if(next.done)closeSavedIssue();return true;
+  }catch(error){issueBaseline=structuredClone(data.find(item=>item.id===issueEditingId)||next);setIssueSaveStatus('尚未保存',error.message||'保存失败，请重试。');return false;}
+  finally{issueSubmitting=false;document.querySelectorAll('#issueDetails input,#issueDetails select,#issueDetails textarea,#issueDetails button').forEach(field=>field.disabled=false);}
+ })();try{return await issueSavePromise;}finally{issueSavePromise=null;}
+}
+async function requestIssueClose(){if(issueClosing)return;issueClosing=true;try{if(await persistIssueDetails())closeSavedIssue();}finally{issueClosing=false;}}
+async function openIssueDetails(id){
+ if(!ready||conflicted||issueSubmitting||issueClosing)return;
+ const dialog=document.getElementById('issueDetails');if(dialog.open){if(id===issueEditingId)return;if(!await persistIssueDetails())return;}
+ if(saving)return;const item=data.find(row=>row.id===id);if(!item)return;
+ issueEditingId=id;issueBaseline=structuredClone(item);document.getElementById('issueDetailsTitle').textContent='问题详情';document.getElementById('issueProjectName').textContent=displayProject(item.project);
+ for(const field of issueFields)document.getElementById('issue-'+field).value=field==='status'&&item.done?'已完成':item[field]||'';
+ for(const field of issueFields)document.getElementById('issue-'+field).dispatchEvent(new Event('change',{bubbles:true}));
+ dialog.dataset.returnFocus='#'+CSS.escape('issue-open-'+id);dialog.dataset.returnFocusFallback='#btnAdd';setIssueSaveStatus('已自动保存');if(!dialog.open)dialog.showModal();renderTable();document.getElementById('issue-task').focus({preventScroll:true});
+}
+document.getElementById('issueClose').onclick=()=>void requestIssueClose();
+document.getElementById('issueDetails').addEventListener('cancel',event=>{event.preventDefault();void requestIssueClose();});
+document.getElementById('issueDetailsForm').onsubmit=event=>{event.preventDefault();void persistIssueDetails();};
+document.getElementById('issueRetry').onclick=()=>void persistIssueDetails();
+function scheduleIssueSave(event){
+ if(issueSubmitting||!issueBaseline)return;clearTimeout(issueSaveTimer);
+ dataDirty=issueHasChanges()||!!pendingState||!sameTracker(currentTracker(),cloudBase);
+ if(!issueHasChanges()){setIssueSaveStatus(pendingState?'尚未保存':'已自动保存');return;}
+ setIssueSaveStatus('尚未保存');if(!event.isComposing)issueSaveTimer=setTimeout(()=>void persistIssueDetails(),700);
+}
+for(const type of ['input','change','compositionend'])document.getElementById('issueDetailsForm').addEventListener(type,scheduleIssueSave);
+document.getElementById('issueComplete').onclick=()=>{document.getElementById('issue-status').value='已完成';void persistIssueDetails();};
+window.addEventListener('pagehide',()=>clearTimeout(issueSaveTimer));
 document.getElementById('tableBody').addEventListener('input',e=>{
  if(!e.target.closest('[contenteditable="true"]'))return;
  dataDirty=true;
@@ -6135,6 +6100,7 @@ function setIssueStatus(idx,status){
 
 function handleCheckboxChange(e) {
   const idx = parseInt(e.target.dataset.idx);
+  if(issueEditingId===data[idx]?.id&&document.getElementById('issueDetails').open){document.getElementById('issue-status').value=e.target.checked?'已完成':'进行中';void persistIssueDetails();return;}
   data[idx].done = e.target.checked;
   data[idx].status = e.target.checked ? '已完成' : '进行中';
   if (e.target.checked) {
