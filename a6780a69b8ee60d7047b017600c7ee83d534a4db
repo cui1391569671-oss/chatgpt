@@ -1,0 +1,3 @@
+agent: DeepSeek Harness (dsh@local)
+branch: dsh/overdue-card-source
+note: landed on main without a trailer; attributed retroactively from the dsh/ branch name
