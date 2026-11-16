@@ -20,3 +20,9 @@ project-tracker/tasks-ui/dist/
 .DS_Store
 project-tracker/node_modules/
 project-tracker/.wrangler/
+
+# tracker 报表导出：本地凭据与业务数据快照，不入库
+tracker-credentials.json
+.secrets/
+projects-report.md
+projects.csv
