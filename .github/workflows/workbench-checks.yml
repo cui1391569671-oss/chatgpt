@@ -47,6 +47,7 @@ jobs:
       - run: npm run build:ui
       - run: npm run build:pages
       - run: npm run check:assets
+      - run: npm run check:style
       - name: Check committed generated resources
         run: node scripts/check-generated.mjs
       - run: npm run lint:strict
