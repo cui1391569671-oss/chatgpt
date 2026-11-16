@@ -12,7 +12,7 @@ export function WorkspacePageActionBar({actions,view}:{actions:HTMLElement;view:
   const marked=new Set<HTMLElement>();
   const walk=(node:HTMLElement,units:HTMLElement[])=>{
    if(node.hidden||node.classList.contains('hidden')||getComputedStyle(node).display==='none')return;
-   if(node.matches('.workspace-search,[data-workspace-segment],.wb-segment-scroll,[role=radiogroup],.workspace-view-actions,.ui-select-mount,.workspace-select,.workspace-checkbox-target,button,a,label,input,select,form')){
+   if(node.matches('.workspace-search,.wb-calendar-date,.workspace-date,[data-workspace-segment],.wb-segment-scroll,[role=radiogroup],.workspace-view-actions,.ui-select-mount,.workspace-select,.workspace-checkbox-target,button,a,label,input,select,form')){
     if(!node.matches('[data-ui-native],[data-workspace-file-native],input[type=hidden]'))units.push(node);return;
    }
    if(!node.children.length){if(node.textContent?.trim())units.push(node);return;}

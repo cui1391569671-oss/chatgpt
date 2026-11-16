@@ -62,12 +62,11 @@ test('equivalent today-feed polling keeps the actual rows and expanded details m
  data.items[0].title='更新后的安排';await c.refreshTodayTasks();assert.equal(replacements,first+1);assert.match(node.innerHTML,/更新后的安排/);
 });
 
-test('DingTalk status polling preserves the same controls until status or the successful snapshot actually changes',()=>{
- let replacements=0,value='';const host={dataset:{},get innerHTML(){return value;},set innerHTML(next){value=next;replacements++;}};
- const source=read('calendar-adapter.js'),status=source.slice(source.indexOf('function setDingtalkStatus('),source.indexOf("document.addEventListener('click',event=>"));
- const c=vm.createContext({dingtalkStatusRendered:new WeakMap(),dingtalkLastSyncedAt:'2026-11-02T03:00:00Z',$:()=>host,esc:String});vm.runInContext(status,c);
- for(let i=0;i<8;i++)c.setDingtalkStatus('钉钉日历已同步','success');assert.equal(replacements,1);
- c.setDingtalkStatus('读取失败，原数据保留','error');assert.equal(replacements,2);assert.match(value,/2026\/11\/2|2026\/11\/02/);
- c.setDingtalkStatus('读取失败，原数据保留','error');assert.equal(replacements,2);
- c.setDingtalkStatus('钉钉日历已同步','success');assert.equal(replacements,3);
+test('calendar unload protects changed drafts and pending work, while pristine editors can refresh',()=>{
+ const source=read('calendar-adapter.js');const listener=source.split('\n').find(line=>line.includes("window.addEventListener('beforeunload'"));
+ let handler,blocked=false;const workspaceCalendar={editing:true};const c=vm.createContext({workspaceCalendar,window:{addEventListener:(name,fn)=>{handler=fn;}}});vm.runInContext(listener,c);
+ const dispatch=()=>{blocked=false;handler({preventDefault(){blocked=true;}});return blocked;};
+ assert.equal(dispatch(),false);
+ for(const key of ['formDirty','uploading','pending','failed','gestureScopeOpen']){workspaceCalendar[key]=true;assert.equal(dispatch(),true,key);workspaceCalendar[key]=false;}
+ assert.equal(dispatch(),false);
 });

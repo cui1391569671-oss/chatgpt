@@ -3023,7 +3023,7 @@ wardrobe-runway{display:grid;grid-template-columns:minmax(0,1fr) 256px;min-width
   padding: 7px 10px;
 }
 .actions button,.card-head button {
-  min-height: 36px;
+  min-height: var(--control-height,44px);
   padding: 6px 8px;
 }
 .row .actions {
@@ -4160,7 +4160,7 @@ dialog[open]::backdrop {
 /* Calendar and the existing today-plan feed share one bounded desktop layout. */
 body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direction:column;min-height:0}
 .calendar-with-today{display:grid;grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1fr) 280px;gap:24px;min-width:0;min-height:0;flex:1}
-.calendar-today-panel{min-width:0;min-height:0;overflow:auto;padding:16px 0;scrollbar-gutter:stable;overscroll-behavior:contain}
+.calendar-today-panel{min-width:0;min-height:0;overflow:auto;padding:16px;scrollbar-gutter:stable;overscroll-behavior:contain}
 .calendar-today-panel>.card-head{gap:12px;align-items:center}
 .calendar-today-panel h2{font-size:18px}
 .calendar-today-panel .row{display:flex;flex-direction:column;align-items:stretch;gap:8px}
@@ -4231,7 +4231,6 @@ body[data-workspace-view=projectPlan] #content{display:flex;flex-direction:colum
 .learning-calendar{min-width:0;padding:20px}
 .learning-calendar-title,.learning-calendar-month{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .learning-calendar-title h2{margin:0;font-size:18px}
-.learning-calendar-caption{font-size:12px;line-height:1.7;margin:8px 0 12px}
 .learning-calendar-month{margin-bottom:8px}
 .workspace-date-week .learning-calendar-day{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:18px}
 .learning-calendar-mark{display:flex;height:12px;color:var(--semantic-primary)}
@@ -6040,6 +6039,10 @@ body.shadcn-workbench.shared-workspace .calendar-full-surface {
   padding: 16px;
   overflow: hidden;
 }
+body.shadcn-workbench [data-calendar-viewport] {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
 body.shadcn-workbench .ilamy-surface {
   flex: 1;
   min-height: 0;
@@ -6294,7 +6297,8 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-site-nav-link[data-active=true]{color:var(--semantic-primary-text)}
 .wb-site-nav-link[data-active=true]::after{content:'';position:absolute;left:8px;right:8px;bottom:0;height:2px;background:var(--semantic-primary)}
 .wb-site-nav-link:hover,.wb-site-nav-link:focus-visible{background:transparent;color:var(--semantic-primary-text)}
-.wb-page-row{position:relative;z-index:0;width:100%;max-width:1290px;margin:28px auto 16px;display:flex;align-items:center;justify-content:space-between;gap:32px;min-width:0}
+.wb-page-row{position:relative;z-index:0;width:100%;max-width:1290px;margin:var(--workspace-page-top-gap,28px) auto 16px;display:flex;align-items:center;justify-content:space-between;gap:32px;min-width:0}
+body[data-workspace-view=calendar]{--workspace-page-top-gap:12px}
 .wb-page-row[hidden]{display:none}
 /* Daylight home, shared with inner-page typography. */
 .site-home h1{color:var(--semantic-text)}
@@ -6392,14 +6396,6 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .workspace-detail-list ul{margin:0;padding-left:20px}
 .project-core-detail-trigger{display:block;min-width:var(--control-height,44px);min-height:var(--control-height,44px);border:0;padding:8px 0;background:transparent;color:var(--semantic-primary-text);text-align:left;cursor:pointer;font:inherit}
 .project-core-detail-trigger:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:2px}
-.workspace-sync-status{display:flex;flex:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 16px;margin:16px 0 0;background:var(--semantic-surface);border:1px solid var(--semantic-border);border-radius:var(--radius-xl)}
-.workspace-sync-status strong{font-size:14px;font-weight:500}
-.workspace-sync-status time{color:var(--semantic-text-muted);font-size:12px}
-.workspace-sync-status p{margin:4px 0 0;color:var(--semantic-text-muted);font-size:12px}
-.workspace-sync-status[data-tone=warning] strong{color:var(--semantic-warning-text)}
-.workspace-sync-status[data-tone=error] strong{color:var(--semantic-error-text)}
-.workspace-sync-status details{max-width:48ch}
-.workspace-sync-status summary{display:flex;align-items:center;min-height:44px;cursor:pointer;color:var(--semantic-text)}
 
 @media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%;max-width:100%}}
 @media(max-width:640px){
@@ -7885,7 +7881,7 @@ if(['notes','photographyNotes'].includes(view)){
  const selected=items.find(n=>n.id===readingNoteId)||items[0];readingNoteId=selected?.id||null;
  $('results').innerHTML='<div class="workspace-notebook"><nav class="workspace-note-index" aria-label="笔记目录"><h2>笔记目录</h2>'+items.map(n=>'<button class="workspace-note-link" data-read-note="'+esc(n.id)+'" aria-current="'+(n.id===selected?.id?'true':'false')+'"><strong>'+esc(n.title)+'</strong></button>').join('')+'<p class="muted">共 '+items.length+' 篇笔记</p></nav><article class="workspace-note-reader">'+(selected?'<header><h2 tabindex="-1">'+esc(selected.title)+'</h2><p class="muted"><time datetime="'+esc(selected.updatedAt||'')+'">更新于 '+esc(noteDate(selected.updatedAt,true))+'</time></p>'+controls('notes',selected.id)+'</header><div class="workspace-note-body">'+esc(selected.body)+'</div>'+((selected.images||[]).length?'<div class="workspace-note-photos" aria-label="笔记照片">'+selected.images.map((url,i)=>'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer" aria-label="查看笔记照片 '+(i+1)+'"><img src="'+esc(url)+'" alt="笔记照片 '+(i+1)+'" loading="lazy"></a>').join('')+'</div>':''):'<div class="site-empty"><h2>'+(query?'没有符合条件的笔记':'写下第一篇笔记')+'</h2>'+(query?'<p>调整搜索文字，或清空搜索。</p>':'')+'</div>')+'</article></div>';return;
 }
-if(view==='maintenance')renderMaintenance();if(view==='completedGames')renderCompletedGames();if(view==='drive')renderDrive();if(view==='wardrobe')renderWardrobe();if(view==='vocabularyLibrary'){renderVocabulary();renderVocabularySync();}if(view==='calendar')renderCalendar();}
+if(view==='maintenance')renderMaintenance();if(view==='completedGames')renderCompletedGames();if(view==='drive')renderDrive();if(view==='wardrobe')renderWardrobe();if(view==='vocabularyLibrary'){renderVocabulary();if(!document.getElementById('vocabularySyncActions'))void renderVocabularySync();}if(view==='calendar')renderCalendar();}
 let projectCalendar=[],projectCalendarLoading=false,projectCalendarError='',projectCalendarLoaded=false,projectCalendarPending=false;
 async function refreshProjectCalendar(){
  if(scope!=='work')return;if(projectCalendarLoading){projectCalendarPending=true;return;}projectCalendarLoading=true;
@@ -7957,30 +7953,19 @@ function mountWorkspaceCalendar(items,tasks,issues){
  if(scope==='work')startDingtalkRefresh();
 }
 
-if(typeof window!=='undefined')window.addEventListener('beforeunload',event=>{if(isCalendarEditing()){event.preventDefault();event.returnValue='';}});
+if(typeof window!=='undefined')window.addEventListener('beforeunload',event=>{if(workspaceCalendar?.formCheck?.()||workspaceCalendar?.formDirty||workspaceCalendar?.uploading||workspaceCalendar?.pending||workspaceCalendar?.failed||workspaceCalendar?.gestureScopeOpen){event.preventDefault();event.returnValue='';}});
 
-const dingtalkStatusRendered=new WeakMap();
-let dingtalkLastSyncedAt='',dingtalkEvents=[],dingtalkTimer=null,dingtalkRequest=null,dingtalkGeneration=0;
+let dingtalkEvents=[],dingtalkTimer=null,dingtalkRequest=null,dingtalkGeneration=0;
 function stopDingtalkRefresh(){clearInterval(dingtalkTimer);dingtalkTimer=null;dingtalkRequest?.abort();dingtalkRequest=null;dingtalkGeneration++;document.removeEventListener('visibilitychange',refreshDingtalkCalendar);}
 function startDingtalkRefresh(){stopDingtalkRefresh();refreshDingtalkCalendar();dingtalkTimer=setInterval(refreshDingtalkCalendar,30000);document.addEventListener('visibilitychange',refreshDingtalkCalendar);}
 async function refreshDingtalkCalendar(){
  if(document.hidden||dingtalkRequest||isCalendarEditing()||!workspaceCalendar)return;
- const retry=$('calendarSyncStatus')?.querySelector('[data-refresh-dingtalk]');if(retry)retry.disabled=true;const generation=dingtalkGeneration;dingtalkRequest=new AbortController();
+ const generation=dingtalkGeneration;dingtalkRequest=new AbortController();
  try{const response=await fetch('/api/dingtalk-calendar?scope=work',{cache:'no-store',signal:dingtalkRequest.signal});if(!response.ok)throw Error('读取失败');const payload=await response.json();if(!Array.isArray(payload.events))throw Error('格式无效');if(generation!==dingtalkGeneration||!workspaceCalendar)return;
   if(isCalendarEditing())return;
-  dingtalkLastSyncedAt=payload.lastSyncedAt||'';const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);if(changed&&workspaceCalendar.updateExternal?.(payload.events)===false)return;dingtalkEvents=payload.events;
-  setDingtalkStatus(!payload.connected?'钉钉日历尚未同步':payload.stale?'钉钉日历暂未更新，已保留上次日程；请检查同步电脑和授权。':'钉钉日历已同步',payload.stale||!payload.connected?'warning':'success');
- }catch(error){if(error.name!=='AbortError'&&generation===dingtalkGeneration)setDingtalkStatus('钉钉日历读取失败，已保留上次日程，将自动重试。','error');}finally{if(generation===dingtalkGeneration){dingtalkRequest=null;const button=$('calendarSyncStatus')?.querySelector('[data-refresh-dingtalk]');if(button)button.disabled=false;}}
+  const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);if(changed&&workspaceCalendar.updateExternal?.(payload.events)===false)return;dingtalkEvents=payload.events;
+ }catch{/* Keep the last successful snapshot; the next timer retries. */}finally{if(generation===dingtalkGeneration)dingtalkRequest=null;}
 }
-function setDingtalkStatus(message,tone='warning'){
- const host=$('calendarSyncStatus');if(!host)return;const signature=JSON.stringify([message,tone,dingtalkLastSyncedAt]);if(dingtalkStatusRendered.get(host)===signature)return;dingtalkStatusRendered.set(host,signature);
- const synced=dingtalkLastSyncedAt&&!Number.isNaN(Date.parse(dingtalkLastSyncedAt)),time=synced?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false})+'（北京时间）':'尚无成功同步';
- const compactTime=synced?new Date(dingtalkLastSyncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}):'';
- const successTime=synced?'<time datetime="'+esc(new Date(dingtalkLastSyncedAt).toISOString())+'" title="最后成功同步：'+esc(time)+'" aria-label="最后成功同步：'+esc(time)+'">'+esc(compactTime)+'</time>':'';
- host.dataset.tone=tone;
- host.innerHTML='<div role="status"><strong>'+esc(message)+'</strong>'+(tone==='success'?(successTime?' · '+successTime:''):'<p>最后成功同步：'+esc(time)+' · 钉钉日程只读</p>')+'</div><div class="actions"><button type="button" class="btn" data-workspace-icon="refresh" aria-label="重试读取钉钉日历" data-refresh-dingtalk>重试读取</button>'+(tone!=='success'?'<details><summary>如何恢复同步</summary><p>请确认同步电脑已联网且未休眠，并检查钉钉授权。网页重试只读取已同步的日程，不会启动电脑端同步。</p></details>':'')+'</div>';
-}
-document.addEventListener('click',event=>{if(event.target.closest('[data-refresh-dingtalk]'))refreshDingtalkCalendar();});
 
 function showDingtalkEvent(id){
  const item=dingtalkEvents.find(event=>event.id===id)||todayTaskData?.items.find(event=>event.source==='dingtalk'&&event.id===id);if(!item)return;let dialog=$('dingtalkEventDetails');if(!dialog){dialog=document.createElement('dialog');dialog.id='dingtalkEventDetails';dialog.innerHTML='<h2></h2><p data-dingtalk-time></p><p data-dingtalk-location></p><p data-dingtalk-detail></p><p class="muted">来自钉钉主日历，请在钉钉中修改或取消。</p><button type="button">关闭</button>';document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.close();}
@@ -7997,7 +7982,7 @@ function renderCalendar(){
   return;
  }
  disposeWorkspaceCalendar();
- target.innerHTML=(scope==='work'?'<p id="calendarProjectError" class="form-error" role="alert"'+(projectCalendarError?'':' hidden')+'>'+esc(projectCalendarError)+'</p>':'')+'<div class="calendar-with-today"><section class="card calendar-full-surface"><div id="workspaceCalendar" aria-label="ilamy 日历，时间按北京时间展示"></div></section>'+todayTasksPage('calendar')+'</div>'+(scope==='work'?'<section id="calendarSyncStatus" class="workspace-sync-status" aria-label="钉钉同步状态"><p role="status">正在读取钉钉同步状态…</p></section>':'');
+ target.innerHTML=(scope==='work'?'<p id="calendarProjectError" class="form-error" role="alert"'+(projectCalendarError?'':' hidden')+'>'+esc(projectCalendarError)+'</p>':'')+'<div class="calendar-with-today"><section class="card calendar-full-surface"><div id="workspaceCalendar" aria-label="ilamy 日历，时间按北京时间展示"></div></section>'+todayTasksPage('calendar')+'</div>';
  mountWorkspaceCalendar(items,tasks,issues);renderTodayTaskResults();refreshTodayTasks();
 }
 
@@ -8403,7 +8388,7 @@ async function loadExpenseProjects(current=''){
  if(current&&!names.includes(current))names.push(current);fill(names,names.length?'请选择所属项目':'暂无项目，请先在项目问题表中新建项目');select.disabled=!names.length;
  }catch{if($('project')!==select||!$('editor').open)return;fill(current?[current]:[],'项目加载失败，请重新打开费用重试');select.disabled=!current;$('formError').textContent='项目列表加载失败，请关闭后重新打开费用重试。';}
 }
-function edit(type,id){if(type==='beautyRecords'&&scope!=='personal')return;if(type==='projectShipping'){openShippingEditor(id);return;}if(type==='tasks'){openWorkspaceTask(id);return;}if(type==='events'){openCalendarEvent(id);return;}if(!labels[type])return;if(!ready||busy||conflict)return;kind=type;editing=id||null;if(type==='notes'){$('editor').dataset.returnFocus=id?'[data-read-note="'+CSS.escape(id)+'"]':view==='home'?'.site-home [data-edit=notes]':'#add';$('editor').dataset.returnFocusFallback=view==='home'?'.site-home [data-edit=notes]':'#add';}else{delete $('editor').dataset.returnFocus;delete $('editor').dataset.returnFocusFallback;}$('deleteEntertainment').classList.toggle('hidden',type!=='completedGames'||!id);const item=(state[type]||[]).find(x=>x.id===id)||{};$('editorTitle').textContent=(id?'编辑':'新建')+labels[type];$('formError').textContent='';let fields=(type==='tasks'&&scope==='personal'?'<label for="taskType">记录类型</label><select id="taskType" name="taskType"><option value="task">普通待办</option><option value="game">想玩的游戏</option></select>':'')+field('title','标题（可选）','text',item.title,'maxlength="200"');if(type==='beautyRecords'){fields=beautyFields(item);}if(type==='completedGames'){fields=mediaTrackingFields(item,!!id);}if(type==='dailyRoutines'){fields=field('title','习惯名称（可选）','text',item.title,'maxlength="200"')+textField('detail','备注（可选）',item.detail||'',5000);}if(type==='maintenance'){fields=field('title','设备名称（可选）','text',item.title,'maxlength="200"')+field('location','设备位置（可选）','text',item.location||'','maxlength="500"')+'<label for="maintenanceFrequency">维保周期</label><select id="maintenanceFrequency" name="frequency" aria-describedby="maintenanceScheduleHint">'+Object.entries(MAINTENANCE_FREQUENCIES).map(([value,label])=>'<option value="'+value+'" '+((item.frequency||'none')===value?'selected':'')+'>'+label+'</option>').join('')+'</select><p id="maintenanceScheduleHint" class="muted">选择周期后按上次维保日期计算；未填写时按今天计算。下次日期可手动调整。</p>'+field('lastDate','上次维保日期（可选）','date',item.lastDate||'','max="'+day()+'"')+field('nextDate','下次维保日期','date',item.nextDate||'','required')+textField('detail','维保内容及备注',item.detail||'',5000);}if(type==='tasks'){fields+=field('dueDate','截止日期','date',item.dueDate)+ '<label for="priority">优先级</label><select id="priority" name="priority"><option value="normal">普通</option><option value="high">高优先级</option><option value="low">低优先级</option></select>'+textField('detail','详情',item.detail,5000);}if(type==='tasks'&&scope==='personal')fields+='<div id="gameFields">'+field('gamePlatform','游戏平台','text',item.gamePlatform||'','maxlength="100" placeholder="如 PC、PS5、Switch"')+'</div>';if(type==='driveLinks')fields+=field('url','Google 文件或文件夹链接','url',item.url,'required maxlength="2000" placeholder="https://drive.google.com/…"')+textField('description','备注（可选）',item.description,1000);if(type==='notes')fields+=textField('body','笔记内容',item.body)+noteImageFields(item.images);$('fields').innerHTML=fields;if(type==='maintenance'){
+function edit(type,id){if(type==='beautyRecords'&&scope!=='personal')return;if(type==='projectShipping'){openShippingEditor(id);return;}if(type==='tasks'){openWorkspaceTask(id);return;}if(type==='events'){openCalendarEvent(id);return;}if(!labels[type])return;if(!ready||busy||conflict)return;kind=type;editing=id||null;if(type==='notes'){$('editor').dataset.returnFocus=id?'[data-read-note="'+CSS.escape(id)+'"]':view==='home'?'.site-home [data-edit=notes]':'#add';$('editor').dataset.returnFocusFallback=view==='home'?'.site-home [data-edit=notes]':'#add';}else{delete $('editor').dataset.returnFocus;delete $('editor').dataset.returnFocusFallback;}$('deleteEntertainment').classList.toggle('hidden',type!=='completedGames'||!id);const item=(state[type]||[]).find(x=>x.id===id)||{};$('editorTitle').textContent=(id?'编辑':'新建')+labels[type];$('formError').textContent='';let fields=(type==='tasks'&&scope==='personal'?'<label for="taskType">记录类型</label><select id="taskType" name="taskType"><option value="task">普通待办</option><option value="game">想玩的游戏</option></select>':'')+field('title','标题（可选）','text',item.title,'maxlength="200"');if(type==='beautyRecords'){fields=beautyFields(item);}if(type==='completedGames'){fields=mediaTrackingFields(item,!!id);}if(type==='dailyRoutines'){fields=field('title','习惯名称（可选）','text',item.title,'maxlength="200"')+textField('detail','备注（可选）',item.detail||'',5000);}if(type==='maintenance'){fields=field('title','设备名称（可选）','text',item.title,'maxlength="200"')+field('location','设备位置（可选）','text',item.location||'','maxlength="500"')+'<label for="maintenanceFrequency">维保周期</label><select id="maintenanceFrequency" name="frequency">'+Object.entries(MAINTENANCE_FREQUENCIES).map(([value,label])=>'<option value="'+value+'" '+((item.frequency||'none')===value?'selected':'')+'>'+label+'</option>').join('')+'</select>'+field('lastDate','上次维保日期（可选）','date',item.lastDate||'','max="'+day()+'"')+field('nextDate','下次维保日期','date',item.nextDate||'','required')+textField('detail','维保内容及备注',item.detail||'',5000);}if(type==='tasks'){fields+=field('dueDate','截止日期','date',item.dueDate)+ '<label for="priority">优先级</label><select id="priority" name="priority"><option value="normal">普通</option><option value="high">高优先级</option><option value="low">低优先级</option></select>'+textField('detail','详情',item.detail,5000);}if(type==='tasks'&&scope==='personal')fields+='<div id="gameFields">'+field('gamePlatform','游戏平台','text',item.gamePlatform||'','maxlength="100" placeholder="如 PC、PS5、Switch"')+'</div>';if(type==='driveLinks')fields+=field('url','Google 文件或文件夹链接','url',item.url,'required maxlength="2000" placeholder="https://drive.google.com/…"')+textField('description','备注（可选）',item.description,1000);if(type==='notes')fields+=textField('body','笔记内容',item.body)+noteImageFields(item.images);$('fields').innerHTML=fields;if(type==='maintenance'){
  window.WorkspacePrimitives.groupFields($('fields'),['lastDate','nextDate']);
  const updateSchedule=()=>{const frequency=$('maintenanceFrequency').value;if(frequency==='none')return;const next=nextMaintenanceDate($('lastDate').value||day(),frequency);if(next){$('nextDate').value=next;$('nextDate').dispatchEvent(new Event('input',{bubbles:true}));$('nextDate').dispatchEvent(new Event('change',{bubbles:true}));}};
  $('maintenanceFrequency').addEventListener('change',updateSchedule);$('lastDate').addEventListener('change',updateSchedule);
@@ -8752,16 +8737,21 @@ onWorkspaceContent('click',e=>{if(!e.target.closest('[data-word-practice]')||sco
 window.addEventListener('beforeunload',e=>{if(isWordPracticing()){e.preventDefault();e.returnValue='';}});
 
 let vocabularySyncLoading=false;
+let vocabularySyncGeneration=0;
 async function renderVocabularySync(){
+ const generation=++vocabularySyncGeneration;
  const node=$('vocabularySync');if(!node)return;node.textContent='正在读取同步状态…';
- try{const response=await fetch('/api/vocabulary/sync',{cache:'no-store'});if(!response.ok)throw Error();const data=await response.json();if(!node.isConnected)return;
+ let actions=$('vocabularySyncActions');
+ if(!actions){actions=document.createElement('div');actions.id='vocabularySyncActions';actions.dataset.pageToolbar='';node.after(actions);}
+ try{const response=await fetch('/api/vocabulary/sync',{cache:'no-store'});if(!response.ok)throw Error();const data=await response.json();if(!node.isConnected||generation!==vocabularySyncGeneration)return;
   const stamp=data.syncedAt?new Date(data.syncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}):'';
   const normal=data.status==='success'||data.status==='idle'&&!!data.syncedAt;
   const text=data.status==='running'?'正在同步…':normal?'已同步':data.message||'等待首次同步';
-  node.innerHTML='<span>'+esc(text)+(stamp?' · <time title="最后成功同步（北京时间）：'+esc(new Date(data.syncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}))+'">'+esc(stamp)+'</time>':'')+'</span><a class="btn" data-workspace-icon="external" aria-label="打开词汇源表格" href="'+esc(data.source)+'" target="_blank" rel="noopener noreferrer">打开源表格</a><button type="button" class="btn" data-sync-vocabulary '+(!data.configured?'disabled':'')+'>刷新同步状态</button>';
- }catch{if(node.isConnected)node.innerHTML='<span class="form-error" role="alert">同步状态读取失败</span><button type="button" class="btn" data-sync-vocabulary>重试读取</button>';}
+  node.innerHTML='<span>'+esc(text)+(stamp?' · <time title="最后成功同步（北京时间）：'+esc(new Date(data.syncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}))+'">'+esc(stamp)+'</time>':'')+'</span>';
+  actions.innerHTML='<a class="btn" data-workspace-icon="external" aria-label="打开词汇源表格" href="'+esc(data.source)+'" target="_blank" rel="noopener noreferrer">打开源表格</a><button type="button" class="btn" data-sync-vocabulary '+(!data.configured?'disabled data-disabled-when-idle':'')+'>刷新同步状态</button>';
+ }catch{if(node.isConnected&&generation===vocabularySyncGeneration){node.innerHTML='<span class="form-error" role="alert">同步状态读取失败</span>';actions.innerHTML='<button type="button" class="btn" data-sync-vocabulary>重试读取</button>';}}
 }
-onWorkspaceContent('click',async e=>{if(!e.target.closest('[data-sync-vocabulary]')||vocabularySyncLoading||busy||scope!=='personal')return;vocabularySyncLoading=true;const button=e.target.closest('button');button.disabled=true;button.textContent='正在刷新…';try{await refreshWorkspace();}finally{vocabularySyncLoading=false;if(view==='vocabularyLibrary')renderVocabularySync();}});
+onWorkspaceContent('click',async e=>{if(!e.target.closest('[data-sync-vocabulary]')||vocabularySyncLoading||busy||scope!=='personal')return;vocabularySyncLoading=true;const button=e.target.closest('button');button.disabled=true;button.textContent='正在刷新…';try{await refreshWorkspace();if(view==='vocabularyLibrary')await renderVocabularySync();}finally{vocabularySyncLoading=false;}});
 
 /* WORD_PRACTICE_END */
 /* FITNESS_START */

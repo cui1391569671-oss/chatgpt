@@ -19,13 +19,18 @@ onWorkspaceContent('click',e=>{if(!e.target.closest('[data-word-practice]')||sco
 window.addEventListener('beforeunload',e=>{if(isWordPracticing()){e.preventDefault();e.returnValue='';}});
 
 let vocabularySyncLoading=false;
+let vocabularySyncGeneration=0;
 async function renderVocabularySync(){
+ const generation=++vocabularySyncGeneration;
  const node=$('vocabularySync');if(!node)return;node.textContent='正在读取同步状态…';
- try{const response=await fetch('/api/vocabulary/sync',{cache:'no-store'});if(!response.ok)throw Error();const data=await response.json();if(!node.isConnected)return;
+ let actions=$('vocabularySyncActions');
+ if(!actions){actions=document.createElement('div');actions.id='vocabularySyncActions';actions.dataset.pageToolbar='';node.after(actions);}
+ try{const response=await fetch('/api/vocabulary/sync',{cache:'no-store'});if(!response.ok)throw Error();const data=await response.json();if(!node.isConnected||generation!==vocabularySyncGeneration)return;
   const stamp=data.syncedAt?new Date(data.syncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}):'';
   const normal=data.status==='success'||data.status==='idle'&&!!data.syncedAt;
   const text=data.status==='running'?'正在同步…':normal?'已同步':data.message||'等待首次同步';
-  node.innerHTML='<span>'+esc(text)+(stamp?' · <time title="最后成功同步（北京时间）：'+esc(new Date(data.syncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}))+'">'+esc(stamp)+'</time>':'')+'</span><a class="btn" data-workspace-icon="external" aria-label="打开词汇源表格" href="'+esc(data.source)+'" target="_blank" rel="noopener noreferrer">打开源表格</a><button type="button" class="btn" data-sync-vocabulary '+(!data.configured?'disabled':'')+'>刷新同步状态</button>';
- }catch{if(node.isConnected)node.innerHTML='<span class="form-error" role="alert">同步状态读取失败</span><button type="button" class="btn" data-sync-vocabulary>重试读取</button>';}
+  node.innerHTML='<span>'+esc(text)+(stamp?' · <time title="最后成功同步（北京时间）：'+esc(new Date(data.syncedAt).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}))+'">'+esc(stamp)+'</time>':'')+'</span>';
+  actions.innerHTML='<a class="btn" data-workspace-icon="external" aria-label="打开词汇源表格" href="'+esc(data.source)+'" target="_blank" rel="noopener noreferrer">打开源表格</a><button type="button" class="btn" data-sync-vocabulary '+(!data.configured?'disabled data-disabled-when-idle':'')+'>刷新同步状态</button>';
+ }catch{if(node.isConnected&&generation===vocabularySyncGeneration){node.innerHTML='<span class="form-error" role="alert">同步状态读取失败</span>';actions.innerHTML='<button type="button" class="btn" data-sync-vocabulary>重试读取</button>';}}
 }
-onWorkspaceContent('click',async e=>{if(!e.target.closest('[data-sync-vocabulary]')||vocabularySyncLoading||busy||scope!=='personal')return;vocabularySyncLoading=true;const button=e.target.closest('button');button.disabled=true;button.textContent='正在刷新…';try{await refreshWorkspace();}finally{vocabularySyncLoading=false;if(view==='vocabularyLibrary')renderVocabularySync();}});
+onWorkspaceContent('click',async e=>{if(!e.target.closest('[data-sync-vocabulary]')||vocabularySyncLoading||busy||scope!=='personal')return;vocabularySyncLoading=true;const button=e.target.closest('button');button.disabled=true;button.textContent='正在刷新…';try{await refreshWorkspace();if(view==='vocabularyLibrary')await renderVocabularySync();}finally{vocabularySyncLoading=false;}});

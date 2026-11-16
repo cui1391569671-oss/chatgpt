@@ -28,7 +28,7 @@ function entries(options){
  for(const item of options.externalEvents||[])events.push({id:'source:dingtalk:'+item.id,title:'钉钉 · '+item.title,start:dayjs.tz(item.start,'Asia/Shanghai'),end:dayjs.tz(item.end,'Asia/Shanghai'),allDay:item.allDay,description:item.detail,location:item.location,color:palette('--semantic-info-text'),backgroundColor:palette('--semantic-info-subtle'),data:{source:'dingtalk',recordId:item.id}});
  return events;
 }
-function Observer({controller,onEditing,options}){const api=useIlamyCalendarContext();useLayoutEffect(()=>{controller.api=api;onEditing(api.isEventFormOpen);controller.focus.update(api.isEventFormOpen);bindCalendarControls(document.getElementById('workspaceCalendar'));queueMicrotask(()=>options.onIdle?.());for(const cell of document.querySelectorAll('[class*=ilamy-date-]')){const key=[...cell.classList].find(x=>x.startsWith('ilamy-date-'))?.slice(11),holiday=key&&options.holiday(key);if(holiday){cell.title=holiday.label;cell.dataset.holiday=holiday.name+' · '+(holiday.type==='work'?'班':holiday.type==='rest'?'休':'节');cell.dataset.holidayShort=holiday.type==='work'?'班':holiday.type==='rest'?'休':'节';}}},[api]);return null;}
+function Observer({controller,onEditing,options}){const api=useIlamyCalendarContext();useLayoutEffect(()=>{controller.api=api;onEditing(api.isEventFormOpen);if(!api.isEventFormOpen){controller.formInitial=undefined;controller.formDirty=false;controller.uploading=false;}controller.focus.update(api.isEventFormOpen);bindCalendarControls(document.getElementById('workspaceCalendar'));queueMicrotask(()=>options.onIdle?.());for(const cell of document.querySelectorAll('[class*=ilamy-date-]')){const key=[...cell.classList].find(x=>x.startsWith('ilamy-date-'))?.slice(11),holiday=key&&options.holiday(key);if(holiday){cell.title=holiday.label;cell.dataset.holiday=holiday.name+' · '+(holiday.type==='work'?'班':holiday.type==='rest'?'休':'节');cell.dataset.holidayShort=holiday.type==='work'?'班':holiday.type==='rest'?'休':'节';}}},[api]);return null;}
 function PageCalendarHeader({disabled,controller}){
  const api=useIlamyCalendarContext(),controls=useRef(null);
  const latest=useRef(null);
@@ -41,11 +41,23 @@ function PageCalendarHeader({disabled,controller}){
  useLayoutEffect(()=>{controls.current?.update(props);});
  return null;
 }
+function CalendarFormState({context,controller,scope}){
+ useLayoutEffect(()=>{
+  const current=JSON.stringify(context.event);
+  if(controller.formInitial===undefined)controller.formInitial=current;
+  controller.formDirty=current!==controller.formInitial;
+ });
+ return <Attachments {...context} scope={scope} onPending={value=>{controller.uploading=value;}} onFormReady={form=>{
+  const snapshot=()=>JSON.stringify([...new FormData(form)].filter(([,value])=>typeof value==='string'));
+  const initial=snapshot();
+  controller.formCheck=()=>form.isConnected&&snapshot()!==initial;
+ }}/>;
+}
 function CalendarApp({options,controller}){
  const gesture=useEventGesture(controller);controller.onGestureIdle=()=>options.onIdle?.();
  const appPlugins=useMemo(()=>[...plugins,
   {name:'workbench-agenda',views:[{...agendaView,component:()=><CalendarAgenda openSource={options.openSource} focus={controller.focus}/>} ]},
-  {name:'workbench-images',renderSlot:(name,context)=>name==='event-form'?<Attachments {...context} scope={options.scope}/>:null},
+  {name:'workbench-images',renderSlot:(name,context)=>name==='event-form'?<CalendarFormState context={context} controller={controller} scope={options.scope}/>:null},
   {name:'workbench-observer',provider:({children})=><><Observer options={options} controller={controller} onEditing={value=>{controller.editing=value;}}/>{children}{React.createElement(GestureScope,{controller})}</>}
  ],[controller]);
  const [events,setEvents]=useState(()=>entries(options)),[pending,setPending]=useState(false),[failure,setFailure]=useState(null);const locked=useRef(false),base=useRef(events);controller.failed=!!failure;controller.pending=pending;useEffect(()=>{if(!pending&&!failure)queueMicrotask(()=>{options.onIdle?.();controller.focus.restore();});},[pending,failure]);

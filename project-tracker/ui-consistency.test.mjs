@@ -13,12 +13,11 @@ test('unlocking the workspace retains business-disabled actions while enabling a
  sandbox.setBusy(false);assert.equal(protectedAction.disabled,true);assert.equal(availableAction.disabled,false);
  assert.equal(runway.dataset.locked,'false');
 });
-test('calendar stale/error feedback preserves the last snapshot and successful timestamp',async()=>{
+test('calendar polling retains its snapshot offline and retries without status controls',async()=>{
  const adapter=readFileSync(new URL('./calendar-adapter.js',import.meta.url),'utf8');
- const source=adapter.slice(adapter.indexOf('async function refreshDingtalkCalendar'),adapter.indexOf("document.addEventListener('click'"));
- const retry={},host={dataset:{},innerHTML:'',querySelector:()=>retry};let fail=false;
- const sandbox={document:{hidden:false},AbortController,Date,JSON,esc:value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'),$:()=>host,isCalendarEditing:()=>false,fetch:async()=>{if(fail)throw Error('offline');return {ok:true,json:async()=>({events:[{id:'cached'}],connected:true,stale:true,lastSyncedAt:'2026-10-30T04:00:00.000Z'})};}};
- vm.createContext(sandbox);vm.runInContext("const dingtalkStatusRendered=new WeakMap();let dingtalkLastSyncedAt='',dingtalkEvents=[],dingtalkRequest=null,dingtalkGeneration=0;const workspaceCalendar={updateExternal(){}};"+source,sandbox);
- await sandbox.refreshDingtalkCalendar();assert.equal(host.dataset.tone,'warning');assert.match(host.innerHTML,/2026\/10\/30/);assert.match(host.innerHTML,/同步电脑/);
- fail=true;await sandbox.refreshDingtalkCalendar();assert.equal(host.dataset.tone,'error');assert.match(host.innerHTML,/2026\/10\/30/);assert.match(host.innerHTML,/已保留/);assert.equal(vm.runInContext('dingtalkEvents[0].id',sandbox),'cached');assert.equal(retry.disabled,false);
+ const source=adapter.slice(adapter.indexOf('async function refreshDingtalkCalendar'),adapter.indexOf('function showDingtalkEvent'));
+ let fail=false,calls=0;const sandbox={document:{hidden:false},AbortController,JSON,isCalendarEditing:()=>false,fetch:async()=>{if(fail)throw Error('offline');return {ok:true,json:async()=>({events:[{id:'cached'}]})};}};
+ vm.createContext(sandbox);vm.runInContext('let dingtalkEvents=[],dingtalkRequest=null,dingtalkGeneration=0;const workspaceCalendar={updateExternal(){}};'+source,sandbox);
+ await sandbox.refreshDingtalkCalendar();fail=true;await sandbox.refreshDingtalkCalendar();assert.equal(vm.runInContext('dingtalkEvents[0].id',sandbox),'cached');assert.equal(vm.runInContext('dingtalkRequest',sandbox),null);
+ fail=false;sandbox.fetch=async()=>{calls++;return {ok:true,json:async()=>({events:[{id:'recovered'}]})};};await sandbox.refreshDingtalkCalendar();assert.equal(calls,1);assert.equal(vm.runInContext('dingtalkEvents[0].id',sandbox),'recovered');
 });

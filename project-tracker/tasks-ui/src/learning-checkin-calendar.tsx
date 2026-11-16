@@ -39,7 +39,6 @@ export function LearningCheckinCalendar({sessions, checkins, today}) {
  }
  return <section className='learning-calendar card' aria-label='学习打卡日历'>
   <div className='learning-calendar-title'><h2>打卡日历</h2><Button variant='ghost' onClick={() => {setMonth(today.slice(0, 7)); setSelected(today);}}>今天</Button></div>
-  <p className='muted learning-calendar-caption'>完成一轮练习即点亮当天，已有英语打卡同步显示。</p>
   <div className='learning-calendar-month'>
    <WorkspaceIconButton label='打卡日历上个月' icon={ChevronLeft} disabled={month === '1900-01'} onClick={() => moveMonth(-1)}/>
    <strong aria-live='polite'>{title}</strong>
