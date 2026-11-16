@@ -82,7 +82,6 @@ export default function GlideSelect({
     const el = menuRef.current;
     const root = rootRef.current;
     if (!el || !root) return;
-    el.dataset.state = 'open';
     const p = pillRef.current;
     if (p) {
       p.style.transition = 'none';
@@ -111,6 +110,7 @@ export default function GlideSelect({
   };
   const close = mode => {
     setActive(null);
+    scrub.current = null;
     clearTimeout(closeTimer.current);
     const el = menuRef.current;
     if (mode === 'instant' || motionOff || !el) {
@@ -118,7 +118,6 @@ export default function GlideSelect({
       return;
     }
     el.style.transitionDuration = '';
-    el.dataset.state = 'closed';
     setPhase('closing');
     closeTimer.current = setTimeout(() => setPhase('closed'), popOut + 20);
   };
@@ -129,13 +128,14 @@ export default function GlideSelect({
       return;
     }
     if (it.disabled) return;
-    if (it.value !== current) {
-      if (value === undefined) setInner(it.value);
-      onChange?.(it.value, it);
-      if (!viaKey && rootRef.current) rootRef.current.dataset.swap = '';
-    }
+    const changed = it.value !== current;
     close('pop');
     triggerRef.current?.focus({ preventScroll: true });
+    if (changed) {
+      if (value === undefined) setInner(it.value);
+      if (!viaKey && rootRef.current) rootRef.current.dataset.swap = '';
+      onChange?.(it.value, it);
+    }
   };
 
   const onTriggerKey = e => {
@@ -185,8 +185,10 @@ export default function GlideSelect({
   useEffect(() => () => clearTimeout(closeTimer.current), []);
   useEffect(() => {
     const closeExternal = e => { if (menuRef.current?.contains(e.target) || e.target === menuRef.current) close('pop'); };
+    const closeAll = () => close('instant');
     document.addEventListener('workspace-select-close', closeExternal);
-    return () => document.removeEventListener('workspace-select-close', closeExternal);
+    document.addEventListener('workspace-select-close-all', closeAll);
+    return () => { document.removeEventListener('workspace-select-close', closeExternal); document.removeEventListener('workspace-select-close-all', closeAll); };
   }, []);
   useLayoutEffect(() => {
     if (phase === 'open' && active !== null) menuRef.current?.querySelector(`[data-index="${active}"]`)?.scrollIntoView({block:'nearest'});
@@ -289,8 +291,8 @@ export default function GlideSelect({
       </button>
       </div></Popover.Anchor>
       {phase !== 'closed' ? (
-        <Popover.Portal><Popover.Content asChild side={placement} align={align === 'left' ? 'start' : 'end'} sideOffset={6} collisionPadding={8} onOpenAutoFocus={e => e.preventDefault()} onCloseAutoFocus={e => e.preventDefault()} onEscapeKeyDown={e => { e.preventDefault(); e.stopPropagation(); close('pop'); }}>
-        <div ref={attachMenu} data-ui-portal='' data-slot='select-content' aria-hidden={phase === 'closing' || undefined} inert={phase === 'closing'} data-motion-off={motionOff ? '' : undefined} className="glide-select__menu" role='presentation' style={{'--gs-accent':accentColor,'--gs-surface':surfaceColor,'--gs-highlight':highlightColor,'--gs-text':textColor,'--gs-row':`${rowHeight ?? S.row}px`,'--gs-font':`${S.font}px`,'--gs-menu-w':menuSize,'--gs-radius':`${radius}px`,'--gs-inner-radius':`${Math.max(3,radius-4)}px`,'--gs-pop':`${popDuration}ms`,'--gs-pop-out':`${popOut}ms`,'--gs-glide':`${glideDuration}ms`,'--gs-origin':origin,...style}}>
+        <Popover.Portal><Popover.Content asChild side={placement} align={align === 'left' ? 'start' : 'end'} sideOffset={6} collisionPadding={8} onInteractOutside={e => { if (rootRef.current?.contains(e.target)) e.preventDefault(); }} onOpenAutoFocus={e => e.preventDefault()} onCloseAutoFocus={e => e.preventDefault()} onEscapeKeyDown={e => { e.preventDefault(); e.stopPropagation(); close('pop'); }}>
+        <div ref={attachMenu} data-ui-portal='' data-slot='select-content' data-state={phase === 'open' ? 'open' : 'closed'} aria-hidden={phase === 'closing' || undefined} inert={phase === 'closing'} data-motion-off={motionOff ? '' : undefined} className="glide-select__menu" role='presentation' style={{'--gs-accent':accentColor,'--gs-surface':surfaceColor,'--gs-highlight':highlightColor,'--gs-text':textColor,'--gs-row':`${rowHeight ?? S.row}px`,'--gs-font':`${S.font}px`,'--gs-menu-w':menuSize,'--gs-radius':`${radius}px`,'--gs-inner-radius':`${Math.max(3,radius-4)}px`,'--gs-pop':`${popDuration}ms`,'--gs-pop-out':`${popOut}ms`,'--gs-glide':`${glideDuration}ms`,'--gs-origin':origin,...style,pointerEvents:phase === 'open' ? 'auto' : 'none'}}>
           <div
             id={`${id}-list`}
             role="listbox"
