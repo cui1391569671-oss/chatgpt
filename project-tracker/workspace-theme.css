@@ -11,6 +11,7 @@
   --card-radius: var(--radius-xl);
   --dialog-radius: 20px;
   --navigation-radius: 0px;
+  --workspace-select-backdrop: blur(var(--blur-lg));
   /* Fixed Radix Colors 3.0.0 sRGB primitives -> semantic scale aliases. */
   --theme-white: #ffffff;
   --theme-canvas: #f8f9fa;

@@ -880,6 +880,7 @@ SOFTWARE.
   --card-radius: var(--radius-xl);
   --dialog-radius: 20px;
   --navigation-radius: 0px;
+  --workspace-select-backdrop: blur(var(--blur-lg));
 
   --theme-white: #ffffff;
   --theme-canvas: #f8f9fa;

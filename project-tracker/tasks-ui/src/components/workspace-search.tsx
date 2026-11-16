@@ -12,5 +12,5 @@ export function enhanceWorkspaceSearch(input:HTMLInputElement){
  const icon=makeIcon('search');wrap.prepend(icon);
  const clear=document.createElement('button');clear.type='button';clear.className='workspace-search-clear';clear.setAttribute('aria-label','清空'+(input.getAttribute('aria-label')||'搜索'));clear.append(makeIcon('clear'));wrap.append(clear);
  const sync=()=>{clear.hidden=!input.value;};input.addEventListener('input',sync);input.addEventListener('change',sync);sync();
- clear.addEventListener('click',()=>{input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));if(input.isConnected)input.focus();else document.getElementById(input.id)?.focus();});
+ clear.addEventListener('click',()=>{Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,'');input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));if(input.isConnected)input.focus({preventScroll:true});else document.getElementById(input.id)?.focus({preventScroll:true});});
 }

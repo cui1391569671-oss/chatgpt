@@ -3,6 +3,7 @@
 
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { Popover } from 'radix-ui';
+import { moveSelectHighlight } from '../../components/workspace-select-motion.mjs';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowDown01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 
@@ -81,9 +82,6 @@ export default function GlideSelect({
     const el = menuRef.current;
     const root = rootRef.current;
     if (!el || !root) return;
-    el.style.transitionDuration = instant.current ? '0ms' : '';
-    el.dataset.state = 'closed';
-    void el.offsetHeight;
     el.dataset.state = 'open';
     const p = pillRef.current;
     if (p) {
@@ -99,14 +97,7 @@ export default function GlideSelect({
   useLayoutEffect(() => {
     const p = pillRef.current;
     if (!p || phase !== 'open') return;
-    if (active === null) {
-      p.style.opacity = '0';
-      return;
-    }
-    const jump = instant.current || p.style.opacity !== '1';
-    p.style.transitionDuration = jump ? '0ms, 150ms' : '';
-    p.style.transform = `translateY(${active * step}px)`;
-    p.style.opacity = '1';
+    moveSelectHighlight(p, active === null ? null : active * step, {instant:instant.current});
     instant.current = false;
   }, [active, phase, step, menuNode]);
 
@@ -122,7 +113,7 @@ export default function GlideSelect({
     setActive(null);
     clearTimeout(closeTimer.current);
     const el = menuRef.current;
-    if (mode === 'instant' || !el) {
+    if (mode === 'instant' || motionOff || !el) {
       setPhase('closed');
       return;
     }
@@ -134,7 +125,7 @@ export default function GlideSelect({
   const pick = (i, viaKey) => {
     const it = items[i];
     if (!it) {
-      close('instant');
+      close('pop');
       return;
     }
     if (it.disabled) return;
@@ -143,7 +134,7 @@ export default function GlideSelect({
       onChange?.(it.value, it);
       if (!viaKey && rootRef.current) rootRef.current.dataset.swap = '';
     }
-    close('instant');
+    close('pop');
     triggerRef.current?.focus({ preventScroll: true });
   };
 
@@ -174,7 +165,7 @@ export default function GlideSelect({
     } else if (k === 'Escape' || k === 'Tab') {
       if (k === 'Escape') e.preventDefault();
       e.stopPropagation();
-      close('instant');
+      close('pop');
     } else if (k.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) go(typeaheadIndex(items, cur, k));
   };
 
@@ -193,7 +184,7 @@ export default function GlideSelect({
   }, [disabled]);
   useEffect(() => () => clearTimeout(closeTimer.current), []);
   useEffect(() => {
-    const closeExternal = e => { if (menuRef.current?.contains(e.target) || e.target === menuRef.current) close('instant'); };
+    const closeExternal = e => { if (menuRef.current?.contains(e.target) || e.target === menuRef.current) close('pop'); };
     document.addEventListener('workspace-select-close', closeExternal);
     return () => document.removeEventListener('workspace-select-close', closeExternal);
   }, []);
@@ -298,7 +289,7 @@ export default function GlideSelect({
       </button>
       </div></Popover.Anchor>
       {phase !== 'closed' ? (
-        <Popover.Portal><Popover.Content asChild side={placement} align={align === 'left' ? 'start' : 'end'} sideOffset={6} collisionPadding={8} onOpenAutoFocus={e => e.preventDefault()} onCloseAutoFocus={e => e.preventDefault()} onEscapeKeyDown={e => { e.preventDefault(); e.stopPropagation(); close('instant'); }}>
+        <Popover.Portal><Popover.Content asChild side={placement} align={align === 'left' ? 'start' : 'end'} sideOffset={6} collisionPadding={8} onOpenAutoFocus={e => e.preventDefault()} onCloseAutoFocus={e => e.preventDefault()} onEscapeKeyDown={e => { e.preventDefault(); e.stopPropagation(); close('pop'); }}>
         <div ref={attachMenu} data-ui-portal='' data-slot='select-content' aria-hidden={phase === 'closing' || undefined} inert={phase === 'closing'} data-motion-off={motionOff ? '' : undefined} className="glide-select__menu" role='presentation' style={{'--gs-accent':accentColor,'--gs-surface':surfaceColor,'--gs-highlight':highlightColor,'--gs-text':textColor,'--gs-row':`${rowHeight ?? S.row}px`,'--gs-font':`${S.font}px`,'--gs-menu-w':menuSize,'--gs-radius':`${radius}px`,'--gs-inner-radius':`${Math.max(3,radius-4)}px`,'--gs-pop':`${popDuration}ms`,'--gs-pop-out':`${popOut}ms`,'--gs-glide':`${glideDuration}ms`,'--gs-origin':origin,...style}}>
           <div
             id={`${id}-list`}

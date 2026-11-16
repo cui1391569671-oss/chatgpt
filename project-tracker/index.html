@@ -887,6 +887,7 @@ SOFTWARE.
   --card-radius: var(--radius-xl);
   --dialog-radius: 20px;
   --navigation-radius: 0px;
+  --workspace-select-backdrop: blur(var(--blur-lg));
 
   --theme-white: #ffffff;
   --theme-canvas: #f8f9fa;
@@ -4897,8 +4898,8 @@ body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal],[data-ilamy-po
   color: var(--dropdown-item-text);
   border: 1px solid var(--dropdown-border);
   box-shadow: var(--dropdown-glow);
-  backdrop-filter: blur(var(--blur-lg));
-  -webkit-backdrop-filter: blur(var(--blur-lg));
+  backdrop-filter: var(--workspace-select-backdrop,blur(var(--blur-lg)));
+  -webkit-backdrop-filter: var(--workspace-select-backdrop,blur(var(--blur-lg)));
 }
 body :is([data-ui-portal],[data-shell-portal],[data-tasks-portal],[data-ilamy-portal]) :is([role=option],[role=menuitem]):is(:hover,[data-highlighted]) {
   background: var(--dropdown-item-hover);
