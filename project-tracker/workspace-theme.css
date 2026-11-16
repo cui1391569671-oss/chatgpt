@@ -778,4 +778,25 @@
   --sidebar-glow: 0 4px 20px var(--semantic-shadow);
   --sidebar-backdrop-blur: var(--blur-md);
   --sidebar-foreground: var(--semantic-text);
+
+  /* Layout tokens (2026-11-16): spacing, type and layering. Page CSS references these
+     instead of raw pixel values; see 开发规则.md「页面与布局标准」. Radius keeps the
+     existing --control-radius / --radius-xl owners. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --type-caption: 12px;
+  --type-body: 14px;
+  --type-subtitle: 16px;
+  --type-title: 18px;
+  --type-display: 28px;
+  --control-height: 44px;
+  --z-sticky: 10;
+  --z-overlay: 100;
+  --z-modal: 200;
+  --z-toast: 300;
 }
