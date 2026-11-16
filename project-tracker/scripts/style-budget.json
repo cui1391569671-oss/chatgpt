@@ -4,7 +4,7 @@
     "breakpoints": []
   },
   "projects-page.css": {
-    "rawPx": 175,
+    "rawPx": 130,
     "breakpoints": [
       760,
       1000
@@ -29,7 +29,7 @@
     "breakpoints": []
   },
   "workspace.css": {
-    "rawPx": 841,
+    "rawPx": 585,
     "breakpoints": [
       420,
       600,
