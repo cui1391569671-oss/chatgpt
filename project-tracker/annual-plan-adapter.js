@@ -4,7 +4,7 @@ function isAnnualPlanEditing(){return !!annualPlanController?.isEditing();}
 function disposeAnnualPlans(){annualPlanController?.dispose();annualPlanController=null;}
 function renderAnnualPlans(){
  if(scope!=='personal')return;
- $('heading').textContent='年度计划';$('add').classList.add('hidden');$('projectPanel').classList.add('hidden');document.body.classList.remove('project-view');document.body.dataset.workspaceView='annualPlans';
+ setPageHeader({title:'年度计划'});$('add').classList.add('hidden');$('projectPanel').classList.add('hidden');document.body.classList.remove('project-view');document.body.dataset.workspaceView='annualPlans';
  if(annualPlanController){annualPlanController.update(state.annualPlans||[]);return;}
  disposeWorkspaceTasks();disposeWorkspaceCalendar();disposePersonalInfo();stopWordAudio();
  $('content').innerHTML='<div id="workspaceAnnualPlans" data-ui-root data-ui-owner="annual-plans"></div>';
