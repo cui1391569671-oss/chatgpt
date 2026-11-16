@@ -7,7 +7,7 @@ function renderPersonalInfo(){
  if(personalInfoController)return;
  disposeWorkspaceTasks();disposeWorkspaceCalendar();stopWordAudio();
  document.body.dataset.workspaceView='personalInfo';document.body.classList.remove('project-view');
- $('heading').textContent='个人信息';$('add').classList.add('hidden');$('projectPanel').classList.add('hidden');$('status').classList.add('hidden');
+ setPageHeader({title:'个人信息'});$('add').classList.add('hidden');$('projectPanel').classList.add('hidden');$('status').classList.add('hidden');
  $('content').innerHTML='<div id="workspacePersonalInfo" data-ui-root data-ui-owner="personal-info"></div>';
  personalInfoController=window.WorkspacePersonalInfo.mount($('workspacePersonalInfo'));
 }
