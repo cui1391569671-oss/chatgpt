@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { Popover } from 'radix-ui';
-import { moveSelectHighlight } from '../../components/workspace-select-motion.mjs';
+import { moveSelectHighlight, revealSelectOption } from '../../components/workspace-select-motion.mjs';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowDown01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 
@@ -69,6 +69,7 @@ export default function GlideSelect({
   const attachMenu = useCallback(node => { menuRef.current = node; setMenuNode(node); }, []);
   const pillRef = useRef(null);
   const instant = useRef(false);
+  const revealActive = useRef(true);
   const closeTimer = useRef(undefined);
   const scrub = useRef(null);
   const id = useId();
@@ -103,6 +104,7 @@ export default function GlideSelect({
   const open = viaKey => {
     if (disabled) return;
     clearTimeout(closeTimer.current);
+    revealActive.current = true;
     instant.current = true;
     const first = items.findIndex(it => !it.disabled);
     setActive(selected >= 0 && !items[selected].disabled ? selected : viaKey && first >= 0 ? first : null);
@@ -151,6 +153,7 @@ export default function GlideSelect({
     }
     const go = i => {
       e.preventDefault();
+      revealActive.current = true;
       instant.current = true;
       const direction = k === 'Home' ? 1 : k === 'End' ? -1 : i < cur ? -1 : 1;
       let next = Math.min(n - 1, Math.max(0, i));
@@ -190,14 +193,17 @@ export default function GlideSelect({
     document.addEventListener('workspace-select-close-all', closeAll);
     return () => { document.removeEventListener('workspace-select-close', closeExternal); document.removeEventListener('workspace-select-close-all', closeAll); };
   }, []);
-  useLayoutEffect(() => {
-    if (phase === 'open' && active !== null) menuRef.current?.querySelector(`[data-index="${active}"]`)?.scrollIntoView({block:'nearest'});
-  }, [active, phase]);
+  const scrollActiveIntoView = () => {
+    if (phase === 'open' && active !== null && revealActive.current) revealSelectOption(menuRef.current,menuRef.current?.querySelector(`[data-index="${active}"]`));
+  };
+  useLayoutEffect(scrollActiveIntoView, [active, phase, menuNode]);
 
-  const rowAt = y => {
-    const s = scrub.current;
-    if (!s) return null;
-    const i = Math.floor((y - s.top + (menuRef.current?.scrollTop || 0) - s.scroll) / step);
+  const rowAt = (x, y) => {
+    const menu = menuRef.current;
+    if (!scrub.current || !menu) return null;
+    const row = menu.ownerDocument.elementFromPoint(x, y)?.closest('[data-index]');
+    if (!row || !menu.contains(row)) return null;
+    const i = Number(row.dataset.index);
     return i >= 0 && i < items.length ? i : null;
   };
   const onListDown = e => {
@@ -205,18 +211,20 @@ export default function GlideSelect({
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {}
-    scrub.current = { id: e.pointerId, top: e.currentTarget.getBoundingClientRect().top, scroll:menuRef.current?.scrollTop || 0 };
+    scrub.current = { id: e.pointerId };
+    revealActive.current = false;
     instant.current = true;
-    setActive(rowAt(e.clientY));
+    setActive(rowAt(e.clientX, e.clientY));
   };
   const onListMove = e => {
-    if (!scrub.current || scrub.current.id !== e.pointerId) return;
-    const i = rowAt(e.clientY);
+    if (!scrub.current) { onListOver(e); return; }
+    if (scrub.current.id !== e.pointerId) return;
+    const i = rowAt(e.clientX, e.clientY);
     if (i !== active && (i === null || !items[i].disabled)) setActive(i);
   };
   const onListUp = e => {
     if (!scrub.current || scrub.current.id !== e.pointerId) return;
-    const i = e.type === 'pointerup' ? rowAt(e.clientY) : null;
+    const i = e.type === 'pointerup' ? rowAt(e.clientX, e.clientY) : null;
     scrub.current = null;
     if (i !== null) pick(i, false);
     else if (!rememberPosition) setActive(null);
@@ -227,6 +235,7 @@ export default function GlideSelect({
     if (!row) return;
     const i = Number(row.dataset.index);
     if (items[i]?.disabled) return;
+    revealActive.current = false;
     if (i !== active && (i === null || !items[i].disabled)) setActive(i);
   };
 
@@ -276,10 +285,13 @@ export default function GlideSelect({
         onPointerDown={e => {
           if (e.button !== 0 || disabled) return;
           e.currentTarget.focus({ preventScroll: true });
-          if (phase === 'open') close('pop');
-          else open(false);
         }}
-        onClick={e => { if (e.detail === 0) { if (phase === 'open') close('pop'); else open(true); } }}
+        onClick={e => {
+          if (disabled || e.button !== 0) return;
+          e.currentTarget.focus({ preventScroll: true });
+          if (phase === 'open') close('pop');
+          else open(e.detail === 0);
+        }}
         onKeyDown={onTriggerKey}
       >
         <span className="glide-select__label" key={current} data-empty={selected < 0 ? '' : undefined}>
@@ -291,15 +303,14 @@ export default function GlideSelect({
       </button>
       </div></Popover.Anchor>
       {phase !== 'closed' ? (
-        <Popover.Portal><Popover.Content asChild side={placement} align={align === 'left' ? 'start' : 'end'} sideOffset={6} collisionPadding={8} onInteractOutside={e => { if (rootRef.current?.contains(e.target)) e.preventDefault(); }} onOpenAutoFocus={e => e.preventDefault()} onCloseAutoFocus={e => e.preventDefault()} onEscapeKeyDown={e => { e.preventDefault(); e.stopPropagation(); close('pop'); }}>
-        <div ref={attachMenu} data-ui-portal='' data-slot='select-content' data-state={phase === 'open' ? 'open' : 'closed'} aria-hidden={phase === 'closing' || undefined} inert={phase === 'closing'} data-motion-off={motionOff ? '' : undefined} className="glide-select__menu" role='presentation' style={{'--gs-accent':accentColor,'--gs-surface':surfaceColor,'--gs-highlight':highlightColor,'--gs-text':textColor,'--gs-row':`${rowHeight ?? S.row}px`,'--gs-font':`${S.font}px`,'--gs-menu-w':menuSize,'--gs-radius':`${radius}px`,'--gs-inner-radius':`${Math.max(3,radius-4)}px`,'--gs-pop':`${popDuration}ms`,'--gs-pop-out':`${popOut}ms`,'--gs-glide':`${glideDuration}ms`,'--gs-origin':origin,...style,pointerEvents:phase === 'open' ? 'auto' : 'none'}}>
+        <Popover.Portal><Popover.Content asChild side={placement} align={align === 'left' ? 'start' : 'end'} sideOffset={6} collisionPadding={8} onPlaced={scrollActiveIntoView} onInteractOutside={e => { if (rootRef.current?.contains(e.target)) e.preventDefault(); }} onOpenAutoFocus={e => e.preventDefault()} onCloseAutoFocus={e => e.preventDefault()} onEscapeKeyDown={e => { e.preventDefault(); e.stopPropagation(); close('pop'); }}>
+        <div ref={attachMenu} onWheel={e => { revealActive.current = false; e.stopPropagation(); }} onTouchMove={e => { revealActive.current = false; e.stopPropagation(); }} data-ui-portal='' data-slot='select-content' data-state={phase === 'open' ? 'open' : 'closed'} aria-hidden={phase === 'closing' || undefined} inert={phase === 'closing'} data-motion-off={motionOff ? '' : undefined} className="glide-select__menu" role='presentation' style={{'--gs-accent':accentColor,'--gs-surface':surfaceColor,'--gs-highlight':highlightColor,'--gs-text':textColor,'--gs-row':`${rowHeight ?? S.row}px`,'--gs-font':`${S.font}px`,'--gs-menu-w':menuSize,'--gs-radius':`${radius}px`,'--gs-inner-radius':`${Math.max(3,radius-4)}px`,'--gs-pop':`${popDuration}ms`,'--gs-pop-out':`${popOut}ms`,'--gs-glide':`${glideDuration}ms`,'--gs-origin':origin,...style,pointerEvents:phase === 'open' ? 'auto' : 'none'}}>
           <div
             id={`${id}-list`}
             role="listbox"
             aria-label={ariaLabel}
             className="glide-select__list"
             data-live={active !== null ? '' : undefined}
-            onPointerOver={onListOver}
             onPointerLeave={() => {
               if (!scrub.current && !rememberPosition) setActive(null);
             }}

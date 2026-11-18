@@ -18,3 +18,14 @@ export function moveSelectHighlight(pill,offset,{instant=false}={}){
  pill.style.transform=`translateY(${offset}px)`;
  pill.style.opacity='1';
 }
+// Scroll only the menu: scrollIntoView can move its parent dialog and iframe.
+export function revealSelectOption(menu,option){
+ if(!menu||!option||!menu.clientHeight)return;
+ const bounds=menu.getBoundingClientRect(),row=option.getBoundingClientRect();
+ const scale=menu.offsetHeight?bounds.height/menu.offsetHeight:1;
+ if(!scale)return;
+ const top=(row.top-bounds.top)/scale-menu.clientTop+menu.scrollTop;
+ const bottom=top+row.height/scale;
+ if(top<menu.scrollTop)menu.scrollTop=Math.max(0,top);
+ else if(bottom>menu.scrollTop+menu.clientHeight)menu.scrollTop=bottom-menu.clientHeight;
+}
