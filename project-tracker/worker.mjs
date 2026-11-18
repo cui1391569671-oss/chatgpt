@@ -24,7 +24,8 @@ import {validAnnualPlans} from './annual-plans.mjs';
 import {TASKS_JS,TASKS_CSS,TASKS_LICENSE} from './tasks-assets.mjs';
 import {ILAMY_JS,ILAMY_CSS,ILAMY_LICENSE} from './ilamy-assets.mjs';
 import {validEventRecurrence} from './event-recurrence.mjs';
-import {projectCoreInfoRoute} from './project-core-info.mjs';
+import {projectCoreInfoRoute,readProjectCoreItems} from './project-core-info.mjs';
+import {projectLabel} from './project-labels.mjs';
 import {projectCorePushRoute} from './project-core-sync.mjs';
 import {projectPlanPush,projectPlanRead} from './project-plan-sync.mjs';
 import {personalVaultRoute} from './personal-vault.mjs';
@@ -81,7 +82,7 @@ async function writeState(db,s){
 
 
 
-function reminderTasks(s,requestedScope){const tasks=[];for(const [scope,key] of [['work','workWorkspace'],['personal','workspace']])for(const t of s[key]?.tasks||[])if(scope===requestedScope&&!t.done&&t.dueDate)tasks.push({id:scope+':'+t.id,recordId:t.id,scope,title:t.title,dueDate:t.dueDate,done:false,source:scope==='work'?'工作待办':t.taskType==='game'?'私人游戏待办':'私人待办'});if(requestedScope==='work')for(const [index,x] of projectCalendarItems(s).entries())tasks.push({id:'project:'+index,scope:'projects',title:x.title,project:x.project,dueDate:x.date,done:false,source:'项目问题 · '+x.project});return tasks;}
+function reminderTasks(s,requestedScope,coreItems=[]){const tasks=[];for(const [scope,key] of [['work','workWorkspace'],['personal','workspace']])for(const t of s[key]?.tasks||[])if(scope===requestedScope&&!t.done&&t.dueDate)tasks.push({id:scope+':'+t.id,recordId:t.id,scope,title:t.title,dueDate:t.dueDate,done:false,source:scope==='work'?'工作待办':t.taskType==='game'?'私人游戏待办':'私人待办'});if(requestedScope==='work')for(const [index,x] of projectCalendarItems(s).entries())tasks.push({id:'project:'+index,scope:'projects',title:x.title,project:x.project,dueDate:x.date,done:false,source:'项目问题 · '+projectLabel(x.project,coreItems)});return tasks;}
 
 function sameProjectState(a,b){const normalize=v=>Array.isArray(v)?v.map(normalize):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,normalize(v[k])])):v;const fields=v=>({data:v.data,archive:v.archive,priorities:v.priorities,projects:v.projects||[],deletedProjects:v.deletedProjects||[]});return JSON.stringify(normalize(fields(a)))===JSON.stringify(normalize(fields(b)));}
 
@@ -265,7 +266,7 @@ async function fetchRoute(request,env,ctx){
      return json({error:'Version conflict'},409);
     }
    }
-   if(url.pathname==='/api/reminders'&&request.method==='GET'){const scope=url.searchParams.get('scope');if(!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);return json({tasks:reminderTasks(await readState(env.DB),scope)});}
+   if(url.pathname==='/api/reminders'&&request.method==='GET'){const scope=url.searchParams.get('scope');if(!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);const coreItems=scope==='work'?await readProjectCoreItems(env):[];return json({tasks:reminderTasks(await readState(env.DB),scope,coreItems)});}
    if(url.pathname==='/api/today-tasks'&&request.method==='GET'){const scope=url.searchParams.get('scope');if(!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);const [state,external]=await Promise.all([readState(env.DB),scope==='work'?readDingtalkCalendar(env):Promise.resolve({events:[]})]);return json(todayTasks(state,scope,undefined,external.events));}
    if(url.pathname==='/api/project-calendar'&&request.method==='GET'){const s=await readState(env.DB),today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'}),open=s.data.filter(x=>!x.done);return json({items:projectCalendarItems(s),summary:{openIssues:open.length,overdueIssues:open.filter(x=>x.plannedDate&&x.plannedDate<today).length,activeProjects:new Set(open.map(x=>x.project)).size}});}
    if(url.pathname==='/api/state' && request.method==='GET'){

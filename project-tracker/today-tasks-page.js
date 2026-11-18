@@ -13,7 +13,7 @@ function renderTodayTaskResults(){
  const expanded=new Set(Array.from(node.querySelectorAll?.('details[open][data-today-details]')||[]).map(element=>element.dataset.todayDetails));
  const focused=node.contains?.(document.activeElement)?document.activeElement?.closest?.('details[data-today-details]')?.dataset.todayDetails:null;
  let html='';if(todayTaskError)html+='<p class="form-error" role="alert">'+esc(todayTaskError)+' 当前内容保留，可点击刷新重试。</p>';
- if(!todayTaskData){node.innerHTML=html+(todayTaskLoading?'<div class="card empty" role="status">正在读取今日计划…</div>':'');return;}
+ if(!todayTaskData){node.innerHTML=html+(todayTaskLoading?'<div class="workspace-state" data-state="loading" role="status">正在读取今日计划…</div>':'');return;}
  const rows=todayTaskData.items,sidebar=!!node.closest('.calendar-today-panel');
  html+='<p class="muted today-task-date">'+esc(todayTaskData.date)+' · '+rows.length+' 项</p><section class="'+(sidebar||node.closest('.work-home-today')?'':'card ')+'today-task-group" aria-label="今日日历清单">';
  html+=rows.length?rows.map(item=>{
@@ -21,7 +21,7 @@ function renderTodayTaskResults(){
   const status=item.status&&!['未完成','只读'].includes(item.status)?'<span class="tag">'+esc(item.status)+'</span>':'';
   const details=item.detail||item.project?'<details class="today-task-details" data-today-details="'+esc(key)+'"'+(expanded.has(key)?' open':'')+'><summary data-workspace-icon="details" aria-label="查看'+esc(item.title)+'详情">详情</summary><div>'+(item.project?'<p>'+esc(displayProject(item.project))+'</p>':'')+(item.detail?'<p class="today-task-detail">'+esc(item.detail)+'</p>':'')+'</div></details>':'';
   return '<article class="row"><div class="row-content"><div class="row-title"><button type="button" class="site-task-title" '+todayTaskAction(item)+'>'+esc(item.title)+'</button></div><div class="row-meta"><span>'+esc(item.time)+'</span><span>'+source+'</span>'+status+'</div>'+details+'</div></article>';
- }).join(''):'<div class="empty">今天的日历暂无安排。</div>';
+ }).join(''):'<div class="workspace-state" data-state="empty">今天的日历暂无安排。</div>';
  node.innerHTML=html+'</section>';
  if(focused)Array.from(node.querySelectorAll?.('details[data-today-details]')||[]).find(element=>element.dataset.todayDetails===focused)?.querySelector('summary')?.focus({preventScroll:true});
 }

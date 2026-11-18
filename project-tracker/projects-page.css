@@ -30,7 +30,7 @@ a {
   display: inline-flex;
   align-items: center;
   min-height: var(--control-height,44px);
-  padding: 8px 0;
+  padding: var(--space-2) 0;
   text-decoration: none;
   color: var(--accent);
 }
@@ -51,10 +51,10 @@ a {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 select {
-  padding: 10px 12px;
+  padding: 10px var(--space-3);
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--text);
@@ -141,13 +141,13 @@ tbody tr.danger-row {
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   font-weight: 600;
   cursor: pointer;
 }
 .project-group-header .badge {
   font-size: 14px;
-  padding: 2px 8px;
+  padding: 2px var(--space-2);
   border-radius: 6px;
   background: var(--card);
   color: var(--accent);
@@ -174,7 +174,7 @@ td[contenteditable=true]:focus,.proj-name:focus {
 .status-badge {
   white-space: nowrap;
   display: inline-block;
-  padding: 4px 10px;
+  padding: var(--space-1) 10px;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
@@ -212,7 +212,7 @@ td[contenteditable=true]:focus,.proj-name:focus {
 .date-cell input {
   width: 140px;
   border: 1px solid var(--border);
-  padding: 6px 8px;
+  padding: 6px var(--space-2);
   color: var(--text);
   background: var(--card);
   cursor: pointer;
@@ -240,13 +240,13 @@ td[contenteditable=true]:focus,.proj-name:focus {
 .table-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-2);
 }
 .proj-cell-wrap,.status-cell-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 .proj-name {
   font-weight: 600;
@@ -258,7 +258,7 @@ td[contenteditable=true]:focus,.proj-name:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 8px;
+  padding: 3px var(--space-2);
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
@@ -302,7 +302,7 @@ td[contenteditable=true]:focus,.proj-name:focus {
   min-width: 120px;
 }
 .priority-dropdown .pd-item,.status-dropdown .sd-item {
-  padding: 10px 12px;
+  padding: 10px var(--space-3);
   min-height: 40px;
   background: none;
   border: 0;
@@ -333,11 +333,11 @@ td[contenteditable=true]:focus,.proj-name:focus {
 }
 .modal h3 {
   font-size: 22px;
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
 }
 .modal input[type=text],.modal input[type=date],.modal select,.modal textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px var(--space-3);
   border: 1px solid var(--border);
   color: var(--text);
   background: var(--card);
@@ -354,13 +354,13 @@ td[contenteditable=true]:focus,.proj-name:focus {
   background: var(--text);
   color: white;
   border-radius: 10px;
-  padding: 12px 18px;
+  padding: var(--space-3) 18px;
   font-size: 16px;
   z-index: 2000;
   max-width: calc(100% - 32px);
   display: none;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 .toast.show {
   display: flex;
@@ -377,18 +377,18 @@ td[contenteditable=true]:focus,.proj-name:focus {
 }
 @media(max-width:760px) {
   .container {
-    padding: 20px 16px;
+    padding: 20px var(--space-4);
   }
   .header h1 {
     font-size: 27px;
   }
   .toolbar {
-    padding: 16px;
+    padding: var(--space-4);
   }
   .toolbar-row {
     display: grid;
     grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 8px;
+    gap: var(--space-2);
   }
   .toolbar-row>* {
     width: 100%;
@@ -402,13 +402,13 @@ td[contenteditable=true]:focus,.proj-name:focus {
     grid-column: 1/-1;
   }
   .btn,select {
-    padding: 10px 12px;
+    padding: 10px var(--space-3);
   }
   table {
     min-width: 1050px;
   }
   .modal {
-    padding: 24px 20px;
+    padding: var(--space-6) 20px;
   }
   .modal-actions {
     flex-wrap: wrap;
@@ -417,8 +417,8 @@ td[contenteditable=true]:focus,.proj-name:focus {
     flex: 1;
   }
   .legend {
-    padding: 14px 16px;
-    gap: 12px;
+    padding: 14px var(--space-4);
+    gap: var(--space-3);
   }
 }
 /* Compact table: equal filters, smaller gutters, touch targets retained. */
@@ -435,7 +435,7 @@ td[contenteditable=true]:focus,.proj-name:focus {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
 }
 .toolbar-row>select {
   width: 160px;
@@ -443,7 +443,7 @@ td[contenteditable=true]:focus,.proj-name:focus {
   padding: 6px 10px;
 }
 .btn {
-  padding: 7px 12px;
+  padding: 7px var(--space-3);
   border: 1px solid var(--border);
   font-weight: 500;
   background: var(--card);
@@ -456,16 +456,16 @@ td[contenteditable=true]:focus,.proj-name:focus {
   touch-action: manipulation;
 }
 thead th:first-child,tbody td:first-child {
-  padding-left: 12px;
+  padding-left: var(--space-3);
 }
 .status-cell-wrap,.proj-cell-wrap {
-  gap: 4px;
+  gap: var(--space-1);
 }
 .legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  padding: 8px 12px;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
   border-top: 1px solid var(--border);
   color: var(--text-light);
   font-size: 14px;
@@ -475,17 +475,17 @@ thead th:first-child,tbody td:first-child {
   display: block;
   font-size: 16px;
   font-weight: 600;
-  margin: 12px 0 4px;
+  margin: var(--space-3) 0 var(--space-1);
 }
 .modal-actions {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  margin-top: 16px;
+  margin-top: var(--space-4);
 }
 .search-box input {
   width: 100%;
-  padding: 7px 12px 7px 36px;
+  padding: 7px var(--space-3) 7px 36px;
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--text);
@@ -515,7 +515,7 @@ thead th:first-child,tbody td:first-child {
 }
 @media(max-width:760px) {
   .container {
-    padding: 12px;
+    padding: var(--space-3);
   }
   .toolbar {
     padding: 10px;
@@ -530,7 +530,7 @@ thead th:first-child,tbody td:first-child {
     top: 27px;
   }
   .modal {
-    padding: 16px;
+    padding: var(--space-4);
   }
   .legend {
     gap: 10px;
@@ -545,7 +545,7 @@ thead th:first-child,tbody td:first-child {
   border: 1px solid transparent;
   gap: 5px;
   min-height: 30px;
-  padding: 4px 8px;
+  padding: var(--space-1) var(--space-2);
 }
 .project-priority::before {
   content: '';
@@ -557,7 +557,7 @@ thead th:first-child,tbody td:first-child {
 .issue-status {
   width: 110px;
   min-height: var(--control-height,44px);
-  padding: 6px 8px;
+  padding: 6px var(--space-2);
   font-size: 15px;
   background: var(--card);
   color: var(--accent);
@@ -580,7 +580,7 @@ body[data-project-embedded] :is(.header,.footer){display:none}
 .container {
   max-width: none;
   margin: 0 auto;
-  padding: 20px 24px;
+  padding: 20px var(--space-6);
   height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -593,18 +593,18 @@ body[data-project-embedded] :is(.header,.footer){display:none}
   border: 1px solid var(--border);
   background: var(--card);
   border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 12px;
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: stretch;
   position: relative;
   z-index: 100;
 }
 .table-wrapper {
   overflow-x: auto;
-  margin-bottom: var(--project-table-bottom-space,12px);
+  margin-bottom: var(--project-table-bottom-space,var(--space-3));
   flex: 1;
   min-height: 120px;
   overflow: auto;
@@ -626,7 +626,7 @@ thead th {
   .toolbar {
     flex-direction: row;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-2);
   }
   .search-box {
     flex: 1;
@@ -725,4 +725,4 @@ thead th {
 
 /* Page-owned filter layout; shared WorkspaceSegment owns keyboard/selection. */
 
-.issue-table-summary{padding:24px 0;font-size:14px}
+.issue-table-summary{padding:var(--space-6) 0;font-size:14px}

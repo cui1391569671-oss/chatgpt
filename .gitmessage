@@ -1,0 +1,15 @@
+# <type>: <一句话说明>   type = feat | fix | chore | docs | test | refactor
+#
+# 正文说明：为什么改、改了什么、怎么验证的。
+# 空行后附工具标记（二选一，勿删）：
+#
+#   Co-authored-by: DeepSeek Harness <dsh@local>
+#   Co-authored-by: Codex <noreply@openai.com>
+#
+# 分支前缀同样按工具划分：
+#   dsh/<topic>  ← DeepSeek Harness
+#   codex/<topic> ← Codex
+#
+# 查询示例：
+#   git log --grep='dsh@local' --oneline
+#   git log --grep='Co-authored-by' --format='%h %s'

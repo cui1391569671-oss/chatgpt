@@ -1,0 +1,44 @@
+{
+  "admin-theme.css": {
+    "rawPx": 0,
+    "breakpoints": []
+  },
+  "projects-page.css": {
+    "rawPx": 130,
+    "breakpoints": [
+      760,
+      1000
+    ]
+  },
+  "workbench-page.css": {
+    "rawPx": 552,
+    "breakpoints": [
+      360,
+      374,
+      520,
+      600,
+      640,
+      760,
+      767,
+      900,
+      1000
+    ]
+  },
+  "workspace-theme.css": {
+    "rawPx": 0,
+    "breakpoints": []
+  },
+  "workspace.css": {
+    "rawPx": 585,
+    "breakpoints": [
+      420,
+      600,
+      640,
+      641,
+      760,
+      767,
+      900,
+      1000
+    ]
+  }
+}
