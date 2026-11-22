@@ -779,6 +779,12 @@ nav button[data-view="tasks"] {
   min-height: 44px;
 }
 .clothing-selection input[type=checkbox]{flex:none;width:18px;height:18px;min-height:0;padding:0}
+.clothing-material-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 7rem);
+  align-items: center;
+  gap: var(--space-2);
+}
 .clothing-tile {
   position: relative;
 }
@@ -790,7 +796,10 @@ nav button[data-view="tasks"] {
   background: var(--semantic-surface);
   pointer-events: none;
 }
-.clothing-photo-zoom {
+.clothing-tile > .clothing-photo-zoom {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
   position: absolute;
   inset-block-start: var(--space-1);
   inset-inline-end: var(--space-1);

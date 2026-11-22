@@ -35,3 +35,17 @@ test('clothing material and purchase year accept new records and preserve legacy
  assert.equal(validWorkspace(updated),false);
  assert.equal(validWorkspace(workspace),true);
 });
+
+test('split autumn seasons and optional prices validate alongside legacy autumn',()=>{
+ const updated=structuredClone(workspace);
+ updated.wardrobe[0].seasons=['autumn','earlyAutumn','lateAutumn'];
+ updated.wardrobe[0].price=129.95;
+ for(const season of ['autumn','earlyAutumn','lateAutumn']){
+  updated.outfits[0].season=season;
+  assert.equal(validWorkspace(updated),true);
+ }
+ for(const price of [-1,1.001,'10']){
+  updated.wardrobe[0].price=price;
+  assert.equal(validWorkspace(updated),false);
+ }
+});
