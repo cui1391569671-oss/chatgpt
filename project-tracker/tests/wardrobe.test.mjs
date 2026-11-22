@@ -11,7 +11,7 @@ test('wardrobe validates photos, seasons and outfit references',()=>{
  for(const mutate of [w=>w.wardrobe[0].image='javascript:alert(1)',w=>w.wardrobe[0].seasons=['invalid'],w=>w.outfits[0].items=['missing'],w=>w.wardrobe.push(w.wardrobe[0])]){const w=structuredClone(workspace);mutate(w);assert.equal(validWorkspace(w),false);}
 });
 const html=readFileSync(new URL('../workbench.html',import.meta.url),'utf8');
-const fn=vm.runInNewContext(html.slice(html.indexOf('function basicOutfit('),html.indexOf('async function saveOutfit('))+';basicOutfit');
+const fn=vm.runInNewContext(html.slice(html.indexOf('function basicOutfit('),html.indexOf('let outfitSaveItems='))+';basicOutfit');
 test('seasonal outfit suggestions only use eligible items and require a complete base',()=>{
  const clothes=[clothing('t','top'),clothing('b','bottom'),clothing('coat','outer',['winter']),clothing('shoe','shoes')];
  assert.equal(JSON.stringify(fn(clothes,'spring')),JSON.stringify(['t','b','shoe']));assert.equal(fn(clothes,'winter').length,0);
