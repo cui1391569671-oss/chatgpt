@@ -119,7 +119,7 @@ function validWorkspace(w){
  }
  if(w.wardrobe!==undefined){
   if(!Array.isArray(w.wardrobe)||w.wardrobe.length>1000)return false;
-  const seen=new Set();if(!w.wardrobe.every(c=>c&&str(c.id,100)&&c.id&&!seen.has(c.id)&&(seen.add(c.id),true)&&str(c.name,100)&&c.name.trim()&&['top','bottom','dress','outer','shoes','accessory'].includes(c.category)&&Array.isArray(c.seasons)&&c.seasons.length>0&&c.seasons.every(x=>['spring','summer','autumn','winter'].includes(x))&&str(c.color,50)&&/^\/api\/wardrobe-images\/[a-f0-9-]{36}$/.test(c.image)))return false;
+  const seen=new Set();if(!w.wardrobe.every(c=>c&&str(c.id,100)&&c.id&&!seen.has(c.id)&&(seen.add(c.id),true)&&str(c.name,100)&&c.name.trim()&&['top','bottom','dress','outer','shoes','accessory'].includes(c.category)&&Array.isArray(c.seasons)&&c.seasons.length>0&&c.seasons.every(x=>['spring','summer','autumn','winter'].includes(x))&&str(c.color,50)&&(c.material===undefined||str(c.material,200))&&(c.purchaseYear===undefined||c.purchaseYear===''||typeof c.purchaseYear==='string'&&/^[1-9]\d{3}$/.test(c.purchaseYear))&&/^\/api\/wardrobe-images\/[a-f0-9-]{36}$/.test(c.image)))return false;
  }
  if(w.outfits!==undefined){if(!Array.isArray(w.outfits)||w.outfits.length>1000||!w.outfits.every(o=>o&&str(o.id,100)&&o.id&&str(o.name,100)&&o.name.trim()&&['spring','summer','autumn','winter'].includes(o.season)&&Array.isArray(o.items)&&o.items.length>0&&o.items.length<=12&&o.items.every(id=>w.wardrobe?.some(c=>c.id===id))))return false;}
  const ids=new Set();

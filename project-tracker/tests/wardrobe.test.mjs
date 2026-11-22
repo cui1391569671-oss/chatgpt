@@ -23,3 +23,15 @@ test('cloud photo upload stays authenticated, checks origin and serves uploaded 
  assert.equal((await worker.fetch(req(false),env)).status,401);assert.equal((await worker.fetch(req(true,'https://evil.local'),env)).status,403);assert.equal((await worker.fetch(req(true,'https://test.local',new Uint8Array([1,2,3,4])),env)).status,400);
  const r=await worker.fetch(req(),env);assert.equal(r.status,200);const path=(await r.json()).image;const fetched=await worker.fetch(new Request('https://test.local'+path,{headers:{Authorization:'Basic '+btoa('u:p')}}),env);assert.equal(fetched.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(new Uint8Array(await fetched.arrayBuffer()),new Uint8Array([255,216,255,217]));
 });
+
+test('clothing material and purchase year accept new records and preserve legacy compatibility',()=>{
+ const updated=structuredClone(workspace);
+ Object.assign(updated.wardrobe[0],{material:'100% 棉',purchaseYear:'2025'});
+ assert.equal(validWorkspace(updated),true);
+ updated.wardrobe[0].purchaseYear='25';
+ assert.equal(validWorkspace(updated),false);
+ updated.wardrobe[0].purchaseYear='';
+ updated.wardrobe[0].material='棉'.repeat(201);
+ assert.equal(validWorkspace(updated),false);
+ assert.equal(validWorkspace(workspace),true);
+});

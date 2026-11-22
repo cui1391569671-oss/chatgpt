@@ -2690,6 +2690,14 @@ nav button[data-view="tasks"] {
 .clothing-tile {
   position: relative;
 }
+.clothing-season-badge {
+  position: absolute;
+  inset-inline-start: var(--space-1);
+  inset-block-end: var(--space-1);
+  max-width: calc(100% - var(--space-2));
+  background: var(--semantic-surface);
+  pointer-events: none;
+}
 .clothing-photo-zoom {
   position: absolute;
   inset-block-start: var(--space-1);
@@ -7209,7 +7217,7 @@ body.shadcn-workbench,body.modern-project,body.glass-login{color-scheme:light;is
 }
 </style><!-- PRODUCT_DESIGN_END --></head>
 <body><div class="shell"><aside><div class="sidebar-head"><div class="brand">我的工作台<small>PERSONAL WORKSPACE</small></div></div><nav aria-label="顶部主导航"><button data-view="home" class="active">首页</button><button data-view="tasks">个人待办</button><button data-view="notes">我的笔记</button><button data-view="completedGames" id="completedGamesLink" class="hidden">通关游戏</button><button data-view="maintenance" id="maintenanceLink" class="hidden">设备维保</button><button data-view="wardrobe" id="wardrobeLink" class="hidden">我的衣橱</button><button data-view="vocabulary" id="vocabularyLink" class="hidden">英语词汇</button><button data-view="drive" id="driveLink" class="hidden">Google Drive</button><button data-view="projects" id="projectLink">项目问题表</button></nav><button id="notificationToggle" class="btn notification-toggle" aria-label="消息通知" title="消息通知" aria-haspopup="dialog" disabled><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span id="notificationBadge" class="notification-badge hidden" aria-hidden="true"></span></button><button id="accountToggle" class="btn account-toggle" type="button" aria-label="个人中心" title="个人中心" aria-haspopup="dialog"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg></button></aside><main><header><div class="header-title"><div class="eyebrow" id="today"></div><h1 id="heading">首页</h1></div><div class="header-actions"><button id="add" data-workspace-icon="plus" data-workspace-icon-mode="label" class="btn primary" disabled>＋ 新建待办</button></div></header><div class="status hidden" id="status" role="status"><span id="statusText">正在连接云端…</span><button class="btn hidden" id="recover">重新加载</button></div><div id="projectPanel" class="hidden"><iframe id="projectFrame" title="项目问题跟进表" ></iframe></div><div id="content" aria-busy="true"><div class="workspace-state" data-state="loading" role="status">正在加载你的工作台…</div></div></main><footer class="page-footer">v1.2.1</footer></div>
-<dialog id="accountCenter" aria-labelledby="accountTitle"><div class="card-head"><h2 id="accountTitle">个人中心</h2><button id="accountClose" class="btn" type="button">关闭</button></div><p id="accountStatus" role="status">正在确认登录状态…</p><button id="personalInfoLink" class="btn" type="button">证件与银行卡</button><form action="/auth/logout" method="post" novalidate><button class="btn danger" type="submit">退出登录</button></form></dialog><dialog id="drivePreview" class="drive-preview" aria-labelledby="drivePreviewTitle"><div class="card-head"><h2 id="drivePreviewTitle">表格预览</h2><div class="drive-preview-tools"><a id="drivePreviewExternal" data-workspace-icon="external" aria-label="在 Google 中打开" class="btn" target="_blank" rel="noopener noreferrer">在 Google 中打开 ↗</a><button id="drivePreviewClose" class="btn" type="button">关闭</button></div></div><iframe id="drivePreviewFrame" title="Google 表格预览" referrerpolicy="no-referrer" allow="fullscreen"></iframe></dialog><dialog id="clothingPhotoViewer" aria-labelledby="clothingPhotoTitle"><h2 id="clothingPhotoTitle">衣服照片</h2><img id="clothingPhotoFull" alt=""><div class="actions"><button type="button" class="btn" id="clothingPhotoClose">关闭</button></div></dialog><dialog id="clothingEditor" aria-labelledby="clothingTitle"><form id="clothingForm" class="wardrobe-form" novalidate><h2 id="clothingTitle">添加衣服</h2><label for="clothingPhoto">衣服照片</label><input id="clothingPhoto" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="clothingPhotoStatus" required><p id="clothingPhotoStatus" class="muted" role="status"></p><div id="clothingPreview" class="clothing-previews hidden"></div><label for="clothingName">名称（可选）</label><input id="clothingName" maxlength="100" placeholder="如 白色衬衫"><label for="clothingCategory">衣服类别</label><select id="clothingCategory" data-ui-owner="native-select" required></select><label for="clothingColor">颜色</label><input id="clothingColor" maxlength="50" placeholder="如 白色"><fieldset id="clothingSeasons"><legend>适用季节（可多选）</legend></fieldset><label id="clothingOutfitOption" class="clothing-selection hidden"><input id="clothingOutfit" type="checkbox"> 加入搭配</label><p id="clothingError" class="form-error" role="alert"></p><div class="actions"><button type="button" class="btn danger hidden" id="clothingDelete">删除衣服</button><button type="button" class="btn" id="clothingCancel">取消</button><button class="btn primary" id="clothingSave">保存</button></div></form></dialog><dialog id="notifications" aria-labelledby="notificationSummary"><div class="card-head"><h2 id="notificationSummary">消息通知</h2><button class="btn" id="notificationClose" aria-label="关闭消息通知">关闭</button></div><div id="notificationList" class="notification-list"></div></dialog><dialog id="editor"><form id="form" novalidate><h2 id="editorTitle"></h2><div id="fields"></div><p id="formError" class="form-error" role="alert"></p><div class="actions"><button type="button" class="btn danger hidden" id="deleteEntertainment">删除记录</button><button type="button" class="btn" id="cancel">取消</button><button class="btn primary" id="submit">保存</button></div></form></dialog><div class="toast hidden" role="status" id="toast"></div>
+<dialog id="accountCenter" aria-labelledby="accountTitle"><div class="card-head"><h2 id="accountTitle">个人中心</h2><button id="accountClose" class="btn" type="button">关闭</button></div><p id="accountStatus" role="status">正在确认登录状态…</p><button id="personalInfoLink" class="btn" type="button">证件与银行卡</button><form action="/auth/logout" method="post" novalidate><button class="btn danger" type="submit">退出登录</button></form></dialog><dialog id="drivePreview" class="drive-preview" aria-labelledby="drivePreviewTitle"><div class="card-head"><h2 id="drivePreviewTitle">表格预览</h2><div class="drive-preview-tools"><a id="drivePreviewExternal" data-workspace-icon="external" aria-label="在 Google 中打开" class="btn" target="_blank" rel="noopener noreferrer">在 Google 中打开 ↗</a><button id="drivePreviewClose" class="btn" type="button">关闭</button></div></div><iframe id="drivePreviewFrame" title="Google 表格预览" referrerpolicy="no-referrer" allow="fullscreen"></iframe></dialog><dialog id="clothingPhotoViewer" aria-labelledby="clothingPhotoTitle"><h2 id="clothingPhotoTitle">衣服照片</h2><img id="clothingPhotoFull" alt=""><div class="actions"><button type="button" class="btn" id="clothingPhotoClose">关闭</button></div></dialog><dialog id="clothingEditor" aria-labelledby="clothingTitle"><form id="clothingForm" class="wardrobe-form" novalidate><h2 id="clothingTitle">添加衣服</h2><label for="clothingPhoto">衣服照片</label><input id="clothingPhoto" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="clothingPhotoStatus" required><p id="clothingPhotoStatus" class="muted" role="status"></p><div id="clothingPreview" class="clothing-previews hidden"></div><label for="clothingName">名称（可选）</label><input id="clothingName" maxlength="100" placeholder="如 白色衬衫"><label for="clothingCategory">衣服类别</label><select id="clothingCategory" data-ui-owner="native-select" required></select><label for="clothingMaterial">面料构成</label><input id="clothingMaterial" maxlength="200" placeholder="如 100% 棉"><label for="clothingPurchaseYear">购买年份</label><input id="clothingPurchaseYear" type="text" inputmode="numeric" maxlength="4" placeholder="如 2025"><details id="clothingSeasonDropdown"><summary id="clothingSeasonSummary" class="btn"></summary><fieldset id="clothingSeasons"><legend>适用季节</legend></fieldset></details><label id="clothingOutfitOption" class="clothing-selection hidden"><input id="clothingOutfit" type="checkbox"> 加入搭配</label><p id="clothingError" class="form-error" role="alert"></p><div class="actions"><button type="button" class="btn danger hidden" id="clothingDelete">删除衣服</button><button type="button" class="btn" id="clothingCancel">取消</button><button class="btn primary" id="clothingSave">保存</button></div></form></dialog><dialog id="notifications" aria-labelledby="notificationSummary"><div class="card-head"><h2 id="notificationSummary">消息通知</h2><button class="btn" id="notificationClose" aria-label="关闭消息通知">关闭</button></div><div id="notificationList" class="notification-list"></div></dialog><dialog id="editor"><form id="form" novalidate><h2 id="editorTitle"></h2><div id="fields"></div><p id="formError" class="form-error" role="alert"></p><div class="actions"><button type="button" class="btn danger hidden" id="deleteEntertainment">删除记录</button><button type="button" class="btn" id="cancel">取消</button><button class="btn primary" id="submit">保存</button></div></form></dialog><div class="toast hidden" role="status" id="toast"></div>
 <script>
 /* MAINTENANCE_SCHEDULE_START */
 // Shared by the maintenance editor and server-side record validation.
@@ -8383,7 +8391,9 @@ function renderClothingCard(clothing){
  const selected=selectedClothes.has(clothing.id);
  const action=selectingClothes?'data-pick-clothing="'+id+'" aria-pressed="'+selected+'" aria-label="选择'+name+'"':'data-edit-clothing="'+id+'" aria-label="编辑'+name+'"';
  const cover='<button type="button" class="clothing-cover'+(selected?' clothing-cover-selected':'')+'" '+action+'><img loading="lazy" src="'+esc(clothing.image)+'" alt=""></button>';
- return selectingClothes?cover:'<div class="clothing-tile">'+cover+'<button type="button" class="btn clothing-photo-zoom" data-workspace-icon="plus" data-workspace-icon-mode="label" data-view-clothing-photo="'+id+'" aria-label="放大查看'+name+'" title="放大查看">＋</button></div>';
+ const seasonText=clothing.seasons.map(key=>seasons[key]).filter(Boolean).join('、');
+ const badge='<span class="clothing-season-badge tag">'+esc(seasonText)+'</span>';
+ return '<div class="clothing-tile">'+cover+badge+(selectingClothes?'':'<button type="button" class="btn clothing-photo-zoom" data-view-clothing-photo="'+id+'" aria-label="放大查看'+name+'" ><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>')+'</div>';
 }
 function setOutfitSelection(id,selected){
  if(selected&&!selectedClothes.has(id)&&selectedClothes.size>=MAX_OUTFIT_ITEMS){
@@ -8397,7 +8407,12 @@ function setOutfitSelection(id,selected){
 }
 const MAX_CLOTHING_PHOTOS=8;
 let clothingDrafts=[],clothingPreviewUrls=[],photoSequence=0,clothingSaving=false,clothingBaseline='';
-function clothingFormSnapshot(){return JSON.stringify({name:$('clothingName').value,category:$('clothingCategory').value,color:$('clothingColor').value,seasons:[...$('clothingSeasons').querySelectorAll('input:checked')].map(input=>input.value),photos:[...$('clothingPhoto').files].map(file=>[file.name,file.size,file.lastModified])});}
+function updateClothingSeasonSummary(){
+ const labels=[...$('clothingSeasons').querySelectorAll('input:checked')].map(input=>seasons[input.value]);
+ $('clothingSeasonSummary').textContent='适用季节：'+(labels.join('、')||'请选择');
+}
+$('clothingSeasons').addEventListener('change',updateClothingSeasonSummary);
+function clothingFormSnapshot(){return JSON.stringify({name:$('clothingName').value,category:$('clothingCategory').value,material:$('clothingMaterial').value,purchaseYear:$('clothingPurchaseYear').value,seasons:[...$('clothingSeasons').querySelectorAll('input:checked')].map(input=>input.value),photos:[...$('clothingPhoto').files].map(file=>[file.name,file.size,file.lastModified])});}
 const clothingDiscardGuard=window.WorkspacePrimitives.createDiscardGuard({isActive:()=>$('clothingEditor').open,isBusy:()=>clothingSaving||busy,hasChanges:()=>clothingFormSnapshot()!==clothingBaseline,close:()=>$('clothingEditor').close(),description:'尚未保存的衣服修改和所选照片将丢失。'});
 window.addEventListener('beforeunload',clothingDiscardGuard.beforeUnload);
 function showClothingPreviews(images){
@@ -8439,10 +8454,13 @@ function openClothing(id){
  const categoryField=$('clothingCategory');
  categoryField.replaceChildren(...Object.entries(categories).map(([key,label])=>new Option(label,key)));
  categoryField.value=item?.category||'top';
- $('clothingColor').value=item?.color||'';
+ $('clothingMaterial').value=item?.material||'';
+ $('clothingPurchaseYear').value=item?.purchaseYear||'';
+ $('clothingSeasonDropdown').open=false;
  $('clothingError').textContent='';
  showClothingPreviews(clothingImage?[clothingImage]:[]);
  $('clothingSeasons').innerHTML='<legend>适用季节（可多选）</legend>'+Object.entries(seasons).map(([key,label])=>'<label style="display:inline-flex;align-items:center;gap:6px;margin:8px"><input style="width:auto;min-height:0" type="checkbox" name="season" value="'+key+'" '+((item?.seasons||[wardrobeSeason]).includes(key)?'checked':'')+'>'+label+'</label>').join('');
+ updateClothingSeasonSummary();
  clothingBaseline=clothingFormSnapshot();
  $('clothingEditor').showModal();
 }
@@ -8512,7 +8530,10 @@ $('clothingForm').onsubmit=async event=>{
  if($('clothingPhoto').files.length&&!clothingDrafts.length||!clothingDrafts.length&&!clothingImage){
   error.textContent='请选择有效的衣服照片';return;
  }
- const fields={name:$('clothingName').value.trim()||'未命名衣服',category:$('clothingCategory').value,color:$('clothingColor').value.trim(),seasons:selected};
+ const purchaseYear=$('clothingPurchaseYear').value.trim();
+ if(purchaseYear&&!/^[1-9]\d{3}$/.test(purchaseYear)){error.textContent='请输入四位购买年份';$('clothingPurchaseYear').focus();return;}
+ const existing=(state.wardrobe||[]).find(item=>item.id===clothingEditId);
+ const fields={name:$('clothingName').value.trim()||'未命名衣服',category:$('clothingCategory').value,color:existing?.color||'',material:$('clothingMaterial').value.trim(),purchaseYear,seasons:selected};
  const drafts=clothingDrafts.length?clothingDrafts:[{id:clothingEditId,image:clothingImage}];
  const controls=[...$('clothingForm').querySelectorAll('input,select,button')].filter(input=>!input.disabled);
  clothingSaving=true;
