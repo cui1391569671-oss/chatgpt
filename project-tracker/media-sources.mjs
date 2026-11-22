@@ -64,5 +64,5 @@ export async function mediaSourcesRoute(request,env){
  if(details?(!validMediaIdentity({mediaSource:source,mediaSourceId:id,mediaType:type})||!Number.isInteger(season)||season<0||season>100000):(!title||title.length>200))return reply({error:'查询条件不正确'},400);
  const credentials=JSON.stringify([tmdbToken(env),igdbId(env),env.IGDB_CLIENT_SECRET||env.IGDB_SECRET,malId(env)]),key=credentials+'|'+url.pathname+'|'+url.search;
  const cached=responseCache.get(key);if(cached?.expires>Date.now())return reply(cached.data);
- try{const data=details?await mediaSourceDetails(source,id,type,season,env):await searchMediaSources(type,title,env);if(responseCache.size>200)responseCache.clear();if(details||!data.warnings.length)responseCache.set(key,{data,expires:Date.now()+300000});return reply(data);}catch{return reply({error:'作品资料暂时无法读取，请稍后重试。'},502);}
+ try{const data=details?await mediaSourceDetails(source,id,type,season,env):await searchMediaSources(type,title,env);if(responseCache.size>200)responseCache.clear();if(details||!data.warnings.length&&(type!=='game'||data.candidates.length))responseCache.set(key,{data,expires:Date.now()+300000});return reply(data);}catch{return reply({error:'作品资料暂时无法读取，请稍后重试。'},502);}
 }

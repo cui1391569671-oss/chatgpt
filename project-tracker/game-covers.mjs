@@ -25,7 +25,7 @@ const KNOWN_STEAM_GAMES=[
 async function englishGameTitle(title,fetcher){
  try{
   const query=new URLSearchParams({action:'query',format:'json',formatversion:'2',redirects:'1',converttitles:'1',titles:title,prop:'langlinks|categories',lllang:'en',cllimit:'max'});
-  const response=await fetcher('https://zh.wikipedia.org/w/api.php?'+query,{signal:AbortSignal.timeout(3500)});
+  const response=await fetcher('https://zh.wikipedia.org/w/api.php?'+query,{headers:{'User-Agent':'Workbench/1.0 (https://github.com/cui1391569671-oss/chatgpt)'},signal:AbortSignal.timeout(7000)});
   if(!response.ok)return '';
   const page=(await response.json()).query?.pages?.[0];
   if(!page?.categories?.some(category=>/电子游戏|電子遊戲|電玩遊戲/.test(category.title)))return '';
