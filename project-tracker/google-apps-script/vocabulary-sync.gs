@@ -2,6 +2,7 @@
 const VOCAB_SYNC = {
   spreadsheetId: '1oXdYD6Lf5E3d2mgv8Lt7DP_cS9r0PJyAUZuhz5kY_fY',
   sheetName: '词汇库',
+  grammarSheetName: '语法',
   endpoint: 'https://tracker.managementplatformlee.com/api/vocabulary/push'
 };
 
@@ -38,7 +39,7 @@ function uninstallVocabularySync() {
 }
 
 function vocabularyEdited(event) {
-  if (!event || !event.range || event.source.getId() !== VOCAB_SYNC.spreadsheetId || event.range.getSheet().getName() !== VOCAB_SYNC.sheetName || event.range.getColumn() > 12) return;
+  if (!event || !event.range || event.source.getId() !== VOCAB_SYNC.spreadsheetId || ![VOCAB_SYNC.sheetName,VOCAB_SYNC.grammarSheetName].includes(event.range.getSheet().getName()) || event.range.getColumn() > 12) return;
   pushVocabulary_(false);
 }
 function vocabularyTimer() { pushVocabulary_(false); }
@@ -50,11 +51,15 @@ function pushVocabulary_(force) {
   try {
     const properties = PropertiesService.getScriptProperties(), secret = properties.getProperty('SYNC_SECRET');
     if (!secret || secret.length < 32) throw new Error('请先运行 prepareVocabularySync，并在 Cloudflare 配置相同的同步密钥。');
-    const sheet = SpreadsheetApp.openById(VOCAB_SYNC.spreadsheetId).getSheetByName(VOCAB_SYNC.sheetName);
+    const spreadsheet = SpreadsheetApp.openById(VOCAB_SYNC.spreadsheetId);
+    const sheet = spreadsheet.getSheetByName(VOCAB_SYNC.sheetName);
     if (!sheet || sheet.getLastRow() < 2) throw new Error('词汇库为空，已保留工作台原数据。');
     if (sheet.getLastRow() > 5002) throw new Error('表格行数超出限制，请先检查词汇库。');
     const rows = sheet.getRange(1, 1, sheet.getLastRow(), 12).getDisplayValues();
-    const body = JSON.stringify({spreadsheetId: VOCAB_SYNC.spreadsheetId, sheetName: VOCAB_SYNC.sheetName, rows: rows});
+    const grammar = spreadsheet.getSheetByName(VOCAB_SYNC.grammarSheetName);
+    if (grammar && grammar !== sheet && grammar.getLastRow() > 5002) throw new Error('语法表行数超出限制。');
+    const grammarRows = grammar && grammar !== sheet && grammar.getLastRow() ? grammar.getRange(1, 1, grammar.getLastRow(), 12).getDisplayValues() : undefined;
+    const body = JSON.stringify({spreadsheetId: VOCAB_SYNC.spreadsheetId, sheetName: VOCAB_SYNC.sheetName, rows: rows, grammarRows: grammarRows});
     const hash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, body, Utilities.Charset.UTF_8).map(function(x) { return ('0' + ((x + 256) % 256).toString(16)).slice(-2); }).join('');
     if (!force && hash === properties.getProperty('LAST_SUCCESS_HASH')) return;
     const timestamp = String(Date.now());

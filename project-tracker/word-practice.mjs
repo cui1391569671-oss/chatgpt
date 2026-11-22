@@ -21,5 +21,12 @@ export function vocabularyMastery(value){
 function orderedWords(words,scope){return [...words].filter(w=>w?.word?.trim()&&(scope!=='unknown'||vocabularyMastery(w.mastery)==='unknown')).sort((a,b)=>String(a.lastReviewed||'').localeCompare(String(b.lastReviewed||''))||String(a.word).localeCompare(String(b.word),'en'));}
 export function practiceQueue(words,scope='all',limit=20){return orderedWords(words,scope).slice(0,Math.max(1,Math.min(100,Number(limit)||20))).map(w=>({...w}));}
 
+export function dailyPracticeQueue(words){
+ const grammar=orderedWords(words.filter(word=>word.kind==='grammar'),'all')
+  .flatMap(word=>sentenceQueue([word],'all',1)).slice(0,7);
+ const vocabulary=practiceQueue(words.filter(word=>word.kind!=='grammar'&&word.meaning?.trim()),'all',10-grammar.length);
+ return [...grammar,...vocabulary];
+}
+
 export function reviewedWord(word,correct,date){const count=Number.parseInt(word.reviewCount||'0',10);return {...word,mastery:correct?'已掌握':'不会',reviewCount:String((Number.isFinite(count)&&count>=0?count:0)+1),firstLearned:word.firstLearned||date,lastReviewed:date};}
-export function validPracticeSession(s){return !!s&&typeof s.id==='string'&&s.id.length>0&&s.id.length<=100&&['typing','dictation','sentence'].includes(s.mode)&&Number.isInteger(s.total)&&s.total>0&&s.total<=100&&Number.isInteger(s.correct)&&s.correct>=0&&s.correct<=s.total&&Number.isInteger(s.durationSeconds)&&s.durationSeconds>=0&&s.durationSeconds<=604800&&typeof s.completedOn==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s.completedOn)&&!Number.isNaN(Date.parse(s.completedOn))&&new Date(s.completedOn).toISOString().slice(0,10)===s.completedOn&&[s.startedAt,s.completedAt].every(v=>typeof v==='string'&&v.length<=40&&!Number.isNaN(Date.parse(v)))&&Date.parse(s.completedAt)>=Date.parse(s.startedAt);}
+export function validPracticeSession(s){return !!s&&typeof s.id==='string'&&s.id.length>0&&s.id.length<=100&&['typing','dictation','sentence','daily'].includes(s.mode)&&Number.isInteger(s.total)&&s.total>0&&s.total<=100&&Number.isInteger(s.correct)&&s.correct>=0&&s.correct<=s.total&&Number.isInteger(s.durationSeconds)&&s.durationSeconds>=0&&s.durationSeconds<=604800&&typeof s.completedOn==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s.completedOn)&&!Number.isNaN(Date.parse(s.completedOn))&&new Date(s.completedOn).toISOString().slice(0,10)===s.completedOn&&[s.startedAt,s.completedAt].every(v=>typeof v==='string'&&v.length<=40&&!Number.isNaN(Date.parse(v)))&&Date.parse(s.completedAt)>=Date.parse(s.startedAt);}

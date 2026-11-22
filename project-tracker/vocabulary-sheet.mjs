@@ -39,7 +39,17 @@ export async function vocabularyPushRoute(request,env,{readState,writeState,vali
  let body;try{body=await readPushBody(request);}catch{return reply({error:'Invalid or oversized body'},413);}
  const hmac=await crypto.subtle.importKey('raw',new TextEncoder().encode(env.VOCABULARY_SYNC_SECRET),{name:'HMAC',hash:'SHA-256'},false,['verify']);const bytes=Uint8Array.from(signature.match(/../g),x=>Number.parseInt(x,16));
  if(!await crypto.subtle.verify('HMAC',hmac,bytes,new TextEncoder().encode(timestamp+'.'+body)))return reply({error:'Invalid signature'},401);
- let incoming;try{const data=JSON.parse(body);if(data.spreadsheetId!==VOCABULARY_SHEET.id||data.sheetName!==VOCABULARY_SHEET.tab)throw Error('同步源不匹配');incoming=parseVocabularyRows(data.rows);}catch(error){return reply({error:error.message||'Invalid data'},400);}
+ let incoming;try{const data=JSON.parse(body);if(data.spreadsheetId!==VOCABULARY_SHEET.id||data.sheetName!==VOCABULARY_SHEET.tab)throw Error('同步源不匹配');incoming=parseVocabularyRows(data.rows);
+ if(data.grammarRows!==undefined){
+  const [header,...rows]=data.grammarRows;
+  if(header?.[1]!=='语法条目')throw Error('语法表头不匹配');
+  if(rows.some(row=>String(row?.[1]||'').trim())){
+   const grammar=parseVocabularyRows([header.map((name,i)=>i===1?'单词':name),...rows]);
+   const vocabularyKeys=new Set(incoming.map(item=>key(item.word)));
+   if(grammar.some(item=>vocabularyKeys.has(key(item.word))))throw Error('词汇库和语法表含有重复条目');
+   incoming.push(...grammar.map(item=>({...item,kind:'grammar'})));
+  }
+ }}catch(error){return reply({error:error.message||'Invalid data'},400);}
  await ensureSyncTable(env);const stamp=Number(timestamp),lease=await env.DB.prepare("INSERT INTO vocabulary_sheet_sync (id,attempted_at,status) VALUES (1,?,'running') ON CONFLICT(id) DO UPDATE SET attempted_at=excluded.attempted_at,status='running' WHERE attempted_at<? AND (status!='running' OR attempted_at<=?)").bind(stamp,stamp,now-60000).run();
  if(!lease.meta?.changes){const current=await env.DB.prepare('SELECT attempted_at,status,synced_at,summary FROM vocabulary_sheet_sync WHERE id=1').first();if(current?.status==='success'&&current.attempted_at>=stamp)return reply({ok:true,skipped:true});return reply({error:'同步正在进行，请稍后重试'},503);}
  try{for(let attempt=0;attempt<5;attempt++){
