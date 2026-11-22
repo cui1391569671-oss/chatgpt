@@ -40,3 +40,28 @@ test('identity validation and authenticated routes prevent forged source queries
  const invalid=await worker.fetch(new Request('https://site.test/api/media/details?type=game&source=igdb&id=1%3Bfields*',{headers:auth}),env);assert.equal(invalid.status,400);
  const unconfigured=await worker.fetch(new Request('https://site.test/api/media/search?type=movie&q=x',{headers:auth}),env);assert.equal(unconfigured.status,200);assert.match((await unconfigured.json()).warnings[0],/未配置/);
 });
+
+test('Chinese cover search tries the official English title and excludes unrelated recommendations',async()=>{
+ const calls=[];
+ const result=await searchMediaSources('game','碧蓝幻想：Relink',{},async url=>{
+  if(!url.includes('search/results'))return json({});
+  const term=new URL(url).searchParams.get('term');calls.push(term);
+  const matches=term==='Granblue Fantasy: Relink'?'<a data-ds-appid="881020"><span class="title">Granblue Fantasy: Relink</span></a>':'';
+  return json({results_html:'<a data-ds-appid="1"><span class="title">Unrelated game</span></a>'+matches});
+ });
+ assert(calls.includes('Granblue Fantasy: Relink'));
+ assert.deepEqual(result.candidates.map(candidate=>candidate.sourceId),['881020']);
+});
+
+test('an unlisted Chinese title uses a verified game article to find its English Steam title',async()=>{
+ const result=await searchMediaSources('game','空洞骑士',{},async url=>{
+  const request=new URL(url);
+  if(request.hostname==='zh.wikipedia.org'){
+   assert.equal(request.searchParams.get('titles'),'空洞骑士');
+   return json({query:{pages:[{categories:[{title:'Category:2017年电子游戏'}],langlinks:[{lang:'en',title:'Hollow Knight (video game)'}]}]}});
+  }
+  if(request.pathname==='/search/results/')return json({results_html:request.searchParams.get('term')==='Hollow Knight'?'<a data-ds-appid="367520"><span class="title">Hollow Knight</span></a>':'<a data-ds-appid="1"><span class="title">Unrelated game</span></a>'});
+  return json({});
+ });
+ assert.deepEqual(result.candidates.map(candidate=>candidate.sourceId),['367520']);
+});

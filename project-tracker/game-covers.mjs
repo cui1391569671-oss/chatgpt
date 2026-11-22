@@ -1,6 +1,14 @@
 import {getSteamPortrait,isSteamPortrait} from './steam-artwork.mjs';
 import {parseSteamGames} from './steam-search.mjs';
-const ALIASES=[['黑神话悟空','Black Myth: Wukong'],['剑星','Stellar Blade'],['33号远征队','Clair Obscur: Expedition 33'],['光与影33号远征队','Clair Obscur: Expedition 33'],['博德之门3','Baldur’s Gate 3'],['艾尔登法环','Elden Ring'],['传送门2','Portal 2'],['无主之地1','Borderlands'],['无主之地2','Borderlands 2'],['无主之地3','Borderlands 3'],['无主之地4','Borderlands 4']];
+const ALIASES=[['黑神话悟空','Black Myth: Wukong'],['剑星','Stellar Blade'],['33号远征队','Clair Obscur: Expedition 33'],['光与影33号远征队','Clair Obscur: Expedition 33'],['博德之门3','Baldur’s Gate 3'],['艾尔登法环','Elden Ring'],['传送门2','Portal 2'],['无主之地1','Borderlands'],['无主之地2','Borderlands 2'],['无主之地3','Borderlands 3'],['无主之地4','Borderlands 4'],
+ ['碧蓝幻想 Relink','碧蓝幻想：重连','Granblue Fantasy: Relink'],
+ ['龙珠 Z 卡卡罗特','龙珠Z卡卡洛特','七龙珠Z卡卡洛特','DRAGON BALL Z: KAKAROT'],
+ ['第一狂战士卡赞','第一狂战士：卡赞','The First Berserker: Khazan'],
+ ['地平线零之曙光','地平线零之黎明','Horizon Zero Dawn'],
+ ['地平线零之曙光重制版','Horizon Zero Dawn Remastered'],
+ ['影之刃零','Phantom Blade Zero'],
+ ['圣兽之王','Unicorn Overlord']
+];
 export function gameSearchTerms(title){
  const text=title.normalize('NFKC').trim(),match=text.match(/^(?:最终幻想|最終幻想|final\s*fantasy)\s*(\d{1,2}|[ivx]+)?\s*(.*)$/i);
  if(match){const roman=['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX'];const value=match[1]||'',n=/^\d+$/.test(value)?Number(value):roman.indexOf(value.toUpperCase());const suffix=match[2].replace(/重制版|重製版|重制|重製/g,' Remake').replace(/重生/g,' Rebirth').trim();const prefix='Final Fantasy'+(n>0&&n<roman.length?' '+roman[n]:value?' '+value.toUpperCase():'');return [...new Set([(prefix+' '+suffix).trim(),n>0?('Final Fantasy '+n+' '+suffix).trim():text,text])];}
@@ -14,19 +22,40 @@ const KNOWN_STEAM_GAMES=[
  {id:'8980',title:'Borderlands Game of the Year',names:['无主之地','无主之地1','无主之地 1','Borderlands','Borderlands 1','Borderlands I','Borderlands GOTY','Borderlands Game of the Year','Borderlands Game of the Year Edition','无主之地1年度版']},
  {id:'729040',title:'Borderlands Game of the Year Enhanced',names:['Borderlands Game of the Year Enhanced','Borderlands GOTY Enhanced','无主之地1增强版','无主之地1年度增强版','无主之地年度版增强版']}
 ];
+async function englishGameTitle(title,fetcher){
+ try{
+  const query=new URLSearchParams({action:'query',format:'json',formatversion:'2',redirects:'1',converttitles:'1',titles:title,prop:'langlinks|categories',lllang:'en',cllimit:'max'});
+  const response=await fetcher('https://zh.wikipedia.org/w/api.php?'+query,{signal:AbortSignal.timeout(3500)});
+  if(!response.ok)return '';
+  const page=(await response.json()).query?.pages?.[0];
+  if(!page?.categories?.some(category=>/电子游戏|電子遊戲|電玩遊戲/.test(category.title)))return '';
+  return (page.langlinks?.[0]?.title||'').replace(/\s*\((?:video game|game|\d{4} video game)\)$/i,'').trim().slice(0,120);
+ }catch{return '';}
+}
 // Candidate search keeps Steam editions and app IDs distinct; it never auto-selects a title.
 export async function searchSteamGames(title,fetcher=fetch){
  const known=KNOWN_STEAM_GAMES.find(g=>g.names.some(n=>normalizeGameName(n)===normalizeGameName(title.trim())));
  if(known)return [{id:known.id,title:known.title,coverUrl:await getSteamPortrait(known.id,fetcher),url:'https://store.steampowered.com/app/'+known.id+'/',releaseDate:'',platform:''}];
  const games=new Map();let available=false;
- for(const term of gameSearchTerms(title).slice(0,3)){
+ const terms=gameSearchTerms(title).slice(0,3),wanted=new Set(terms.map(normalizeGameName));
+ const score=game=>{const name=normalizeGameName(game.title);return wanted.has(name)?2:[...wanted].some(term=>term&&name.startsWith(term))?1:0;};
+ const chinese=/[\u3400-\u9fff]/u.test(title);
+ async function querySteam(term){
   await Promise.all(['schinese','english'].map(async language=>{
    try{const query=new URLSearchParams({term,category1:'998',infinite:'1',l:language,count:'20',start:'0'});const response=await fetcher('https://store.steampowered.com/search/results/?'+query,{signal:AbortSignal.timeout(7000)});if(!response.ok)throw Error();const data=await response.json();if(typeof data.results_html!=='string')throw Error();available=true;for(const game of parseSteamGames(data.results_html))if(!games.has(game.id))games.set(game.id,game);}catch{/* One Steam language may still succeed. */}
   }));
-  if(games.size)break;
+ }
+ const hasMatch=()=>[...games.values()].some(game=>score(game)>0);
+ for(const term of terms){
+  await querySteam(term);
+  if(chinese?hasMatch():games.size)break;
+ }
+ if(chinese&&!hasMatch()){
+  const english=await englishGameTitle(title,fetcher),key=normalizeGameName(english);
+  if(key&&!wanted.has(key)){wanted.add(key);await querySteam(english);}
  }
  if(!available)throw Error('Steam unavailable');
- const rows=[...games.values()].slice(0,20);let cursor=0;
+ const rows=[...games.values()].filter(game=>!chinese||score(game)>0).sort((a,b)=>score(b)-score(a)).slice(0,20);let cursor=0;
  await Promise.all(Array.from({length:Math.min(4,rows.length)},async()=>{while(cursor<rows.length){const row=rows[cursor++];row.coverUrl=await getSteamPortrait(row.id,fetcher);}}));
  return rows;
 }
