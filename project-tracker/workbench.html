@@ -7592,10 +7592,16 @@ async function refreshHomeSentence(){
 window.addEventListener('pagehide',cancelHomeSentence);
 
 /* HOME_SENTENCE_END */
+function homeMaintenance(today){
+ if(scope!=='personal'||!ready)return '';
+ const upcoming=(state.maintenance||[]).reduce((next,item)=>item.nextDate>=today&&(!next||item.nextDate<next.nextDate)?item:next,null);
+ const body=upcoming?'<button class="workspace-overdue-title" data-nav="maintenance">'+esc(upcoming.title)+'</button><p class="workspace-overdue-meta"><time datetime="'+esc(upcoming.nextDate)+'">'+esc(upcoming.nextDate)+'</time></p>':'<p class="workspace-overdue-empty">暂无即将到期的维保</p>';
+ return '<section class="workspace-overdue-card" aria-label="下一项维保"><div class="workspace-overdue-head"><h2>下一项维保</h2></div><div class="workspace-overdue-body">'+body+'</div></section>';
+}
 function productHome(){
  const today=day(),date=new Date(today+'T12:00:00+08:00');
  const dateLabel=date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',month:'long',day:'numeric'})+' · '+date.toLocaleDateString('zh-CN',{timeZone:'Asia/Shanghai',weekday:'long'});
- return `<article class="site-home" data-scope="${scope}" aria-label="${scope==='work'?'工作':'私人'}首页"><div class="site-home-intro"><p class="site-home-date"><time datetime="${today}">${esc(dateLabel)}</time></p><h1 data-home-sentence>每日一句</h1><p class="site-home-sentence-status" data-home-sentence-status role="status">正在读取词汇库例句…</p><div class="site-home-actions"><button class="btn primary" data-workspace-icon="plus" data-workspace-icon-mode="label" data-edit="notes">新建笔记</button><button class="site-home-link" data-workspace-icon="forward" data-workspace-icon-mode="label" data-nav="${scope==='work'?'today':'calendar'}">查看今日安排</button></div></div><div id="workspaceHomeReminders"></div><div id="workspaceTasks" data-tasks-root></div></article>`;
+ return `<article class="site-home" data-scope="${scope}" aria-label="${scope==='work'?'工作':'私人'}首页"><div class="site-home-intro"><p class="site-home-date"><time datetime="${today}">${esc(dateLabel)}</time></p><h1 data-home-sentence>每日一句</h1><p class="site-home-sentence-status" data-home-sentence-status role="status">正在读取词汇库例句…</p>${scope==='work'?`<div class="site-home-actions"><button class="btn primary" data-workspace-icon="plus" data-workspace-icon-mode="label" data-edit="notes">新建笔记</button><button class="site-home-link" data-workspace-icon="forward" data-workspace-icon-mode="label" data-nav="today">查看今日安排</button></div>`:''}</div><div id="workspaceHomeReminders">${homeMaintenance(today)}</div><div id="workspaceTasks" data-tasks-root></div></article>`;
 }
 function openHomeEvent(id){view='calendar';render();history.replaceState(null,'',location.pathname+'?view=calendar');let attempts=0;const open=()=>{if(view!=='calendar')return;if(workspaceCalendar?.api){openCalendarEvent(id);return;}if(attempts++<30)requestAnimationFrame(open);else toast('日历尚未加载，请稍后重试。');};requestAnimationFrame(open);}
 
