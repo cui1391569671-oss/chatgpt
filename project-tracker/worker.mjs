@@ -270,7 +270,7 @@ async function fetchRoute(request,env,ctx){
     }
    }
    if(url.pathname==='/api/account/dida/test/reminder'){
-    if(request.method==='GET')return new Response('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>测试待办提醒</title><main><h1>测试待办提醒</h1><form method="post"><button type="submit">通过接口设置上午 9 点提醒</button></form></main>',{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; form-action 'self'; frame-ancestors 'none'"}});
+    if(request.method==='GET')return new Response('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>测试待办提醒</title><main><h1>测试待办提醒</h1><form method="post"><button type="submit">通过接口设置 16:30 待办，提前 5 分钟提醒</button></form></main>',{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; form-action 'self'; frame-ancestors 'none'"}});
     if(request.method!=='POST')return json({error:'Method not allowed'},405);
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     if(!env.DIDA_API_TOKEN)return json({error:'滴答清单未配置'},503);
