@@ -62,3 +62,21 @@ export async function sendDidaTest(token,now=Date.now(),fetcher=fetch){
  if(!entry)throw new Error('Dida did not confirm the created task');
  return {id:entry.id,date};
 }
+
+export async function updateDidaTestReminder(token,receipt,fetcher=fetch){
+ if(!/^[a-f0-9]{24}$/.test(receipt.id)||!/^\d{4}-\d{2}-\d{2}$/.test(receipt.date)){
+  throw new Error('Invalid Dida test receipt');
+ }
+ const send=await didaSession(token,fetcher);
+ const time=receipt.date+'T09:00:00+08:00';
+ const result=await send('tools/call',{name:'update_task',arguments:{
+  task_id:receipt.id,client_timezone:'Asia/Shanghai',
+  task:{id:receipt.id,projectId:testProject,startDate:time,dueDate:time,isAllDay:false,timeZone:'Asia/Shanghai',reminders:['TRIGGER:PT0S']}
+ }},2);
+ if(result.isError)throw new Error('Dida rejected test reminder');
+ const value=result.structuredContent??result.content?.find(item=>item.type==='text')?.text;
+ const data=typeof value==='string'?JSON.parse(value):value;
+ const entry=[data,data?.task,data?.data,data?.result].find(item=>item?.id===receipt.id&&item.projectId===testProject);
+ if(!entry)throw new Error('Dida did not confirm the updated task');
+ return {id:entry.id,requestedTime:time,savedDueDate:entry.dueDate??null,savedReminders:entry.reminders??null};
+}
