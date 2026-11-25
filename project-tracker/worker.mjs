@@ -1,4 +1,4 @@
-import {inspectDidaConnection,sendDidaTest} from './dida-connection.mjs';
+import {inspectDidaConnection,sendDidaTest,updateDidaTestReminder} from './dida-connection.mjs';
 import {barkRoute,runBark} from './bark.mjs';
 import {deepseekRoute} from './deepseek.mjs';
 import {validBeautyRecords} from './beauty-records.mjs';
@@ -268,6 +268,16 @@ async function fetchRoute(request,env,ctx){
      }
      return json({error:'Version conflict'},409);
     }
+   }
+   if(url.pathname==='/api/account/dida/test/reminder'){
+    if(request.method==='GET')return new Response('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>测试待办提醒</title><main><h1>测试待办提醒</h1><form method="post"><button type="submit">通过接口设置上午 9 点提醒</button></form></main>',{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; form-action 'self'; frame-ancestors 'none'"}});
+    if(request.method!=='POST')return json({error:'Method not allowed'},405);
+    if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
+    if(!env.DIDA_API_TOKEN)return json({error:'滴答清单未配置'},503);
+    const row=await env.DB.prepare('SELECT result FROM dida_test_receipts WHERE result IS NOT NULL ORDER BY day DESC LIMIT 1').first();
+    if(!row)return json({error:'未找到测试待办'},404);
+    try{return json(await updateDidaTestReminder(env.DIDA_API_TOKEN,JSON.parse(row.result)));}
+    catch{return json({error:'滴答清单未确认提醒更新'},502);}
    }
    if(url.pathname==='/api/account/dida/test'&&request.method==='GET')return new Response('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>滴答清单连接测试</title><main><h1>滴答清单连接测试</h1><p>发送一条测试待办到指定清单。</p><form method="post" action="/api/account/dida/test"><button type="submit">发送测试待办</button></form></main>',{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; form-action 'self'; frame-ancestors 'none'"}});
    if(url.pathname==='/api/account/dida/test'&&request.method==='POST'){
