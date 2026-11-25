@@ -1,3 +1,4 @@
+import {inspectDidaConnection} from './dida-connection.mjs';
 import {barkRoute,runBark} from './bark.mjs';
 import {deepseekRoute} from './deepseek.mjs';
 import {validBeautyRecords} from './beauty-records.mjs';
@@ -267,6 +268,10 @@ async function fetchRoute(request,env,ctx){
      }
      return json({error:'Version conflict'},409);
     }
+   }
+   if(url.pathname==='/api/account/dida/status'&&request.method==='GET'){
+    try{return json(await inspectDidaConnection(env.DIDA_API_TOKEN));}
+    catch{return json({error:'滴答清单连接失败，请核对 API 口令'},502);}
    }
    if(url.pathname==='/api/reminders'&&request.method==='GET'){const scope=url.searchParams.get('scope');if(!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);const coreItems=scope==='work'?await readProjectCoreItems(env):[];return json({tasks:reminderTasks(await readState(env.DB),scope,coreItems)});}
    if(url.pathname==='/api/today-tasks'&&request.method==='GET'){const scope=url.searchParams.get('scope');if(!['work','personal'].includes(scope))return json({error:'Invalid scope'},400);const [state,external]=await Promise.all([readState(env.DB),scope==='work'?readDingtalkCalendar(env):Promise.resolve({events:[]})]);return json(todayTasks(state,scope,undefined,external.events));}
