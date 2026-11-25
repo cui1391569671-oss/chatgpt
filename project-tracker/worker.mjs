@@ -269,6 +269,7 @@ async function fetchRoute(request,env,ctx){
      return json({error:'Version conflict'},409);
     }
    }
+   if(url.pathname==='/api/account/dida/test'&&request.method==='GET')return new Response('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>滴答清单连接测试</title><main><h1>滴答清单连接测试</h1><p>发送一条测试待办到指定清单。</p><form method="post" action="/api/account/dida/test"><button type="submit">发送测试待办</button></form></main>',{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; form-action 'self'; frame-ancestors 'none'"}});
    if(url.pathname==='/api/account/dida/test'&&request.method==='POST'){
     if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
     if(!env.DIDA_API_TOKEN)return json({error:'滴答清单未配置'},503);
