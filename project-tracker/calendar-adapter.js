@@ -1,6 +1,18 @@
-/* exported disposeWorkspaceCalendar, openCalendarEvent, mountWorkspaceCalendar */
+/* exported disposeWorkspaceCalendar, openCalendarEvent, mountWorkspaceCalendar, prepareBarkTarget, openBarkTarget */
 // ilamy owns the calendar and its standard event form. This adapter owns only
 // workbench routing, scope isolation and the existing cloud persistence boundary.
+let barkTarget=null;
+function prepareBarkTarget(params){
+ const id=params.get('event'),date=params.get('date');
+ if(params.get('view')==='calendar'&&id&&/^\d{4}-\d{2}-\d{2}$/.test(date||'')){selectedDate=date;workspaceCalendarAnchor=date;barkTarget={id,source:params.get('source')};}
+ const push=params.get('push');if(/^[-a-f0-9]{36}$/.test(push||''))fetch('/api/account/bark/opened',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:push})}).catch(()=>{});
+}
+function openBarkTarget(){
+ if(!barkTarget||busy||!ready||view!=='calendar'||!workspaceCalendar?.api)return;
+ const {id,source}=barkTarget;
+ if(source==='dingtalk'){if(!dingtalkEvents.some(e=>e.id===id))return;barkTarget=null;showDingtalkEvent(id);}
+ else {barkTarget=null;openCalendarEvent(id);}
+}
 let workspaceCalendar=null,workspaceCalendarView='',workspaceCalendarAnchor='',calendarDeferredRender=false;
 function isCalendarEditing(){return !!(workspaceCalendar?.gesturing||workspaceCalendar?.gestureScopeOpen||workspaceCalendar?.editing||workspaceCalendar?.pending||workspaceCalendar?.failed);}
 function disposeWorkspaceCalendar(){stopDingtalkRefresh();if(!workspaceCalendar)return;workspaceCalendarView=workspaceCalendar.view;workspaceCalendarAnchor=workspaceCalendar.anchor;workspaceCalendar.dispose();workspaceCalendar=null;}
@@ -12,7 +24,7 @@ function mountWorkspaceCalendar(items,tasks,issues){
  const host=$('workspaceCalendar');if(!host)return;
  if(!window.IlamyCalendarRuntime){host.innerHTML='<p class="form-error" role="alert">日历加载失败，请刷新页面重试。</p>';return;}
  workspaceCalendar=window.IlamyCalendarRuntime.mount(host,{scope,events:items,tasks,issues,externalEvents:scope==='work'?dingtalkEvents:[],projectName:displayProject,holiday:holidayInfo,selectedDate,view:workspaceCalendarView,anchor:workspaceCalendarAnchor,
-  onIdle:()=>{if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;if(view==='calendar')renderCalendar();else render();}},
+  onIdle:()=>{openBarkTarget();if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;if(view==='calendar')renderCalendar();else render();}},
   openSource:(source,id)=>{if(source==='dingtalk'){showDingtalkEvent(id);return;}if(source==='projects'){view='projects';render();}else edit('tasks',id);},
   persist:async mutation=>{if(busy||!ready)return {ok:false,error:'云端暂不可用，请稍后重试。'};try{const next=structuredClone(state);next.events=applyCalendarMutation(state.events,mutation);const ok=await change(next,{renderPage:false});if(ok){refreshTodayTasks();renderTaskBadge();workspaceTasks?.update?.(state.tasks);}return {ok,error:saveError,events:ok?state.events:undefined};}catch(error){return {ok:false,error:error.message};}}
  });
@@ -30,7 +42,7 @@ async function refreshDingtalkCalendar(){
  const generation=dingtalkGeneration;dingtalkRequest=new AbortController();
  try{const response=await fetch('/api/dingtalk-calendar?scope=work',{cache:'no-store',signal:dingtalkRequest.signal});if(!response.ok)throw Error('读取失败');const payload=await response.json();if(!Array.isArray(payload.events))throw Error('格式无效');if(generation!==dingtalkGeneration||!workspaceCalendar)return;
   if(isCalendarEditing())return;
-  const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);if(changed&&workspaceCalendar.updateExternal?.(payload.events)===false)return;dingtalkEvents=payload.events;
+  const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);if(changed&&workspaceCalendar.updateExternal?.(payload.events)===false)return;dingtalkEvents=payload.events;openBarkTarget();
  }catch{/* Keep the last successful snapshot; the next timer retries. */}finally{if(generation===dingtalkGeneration)dingtalkRequest=null;}
 }
 

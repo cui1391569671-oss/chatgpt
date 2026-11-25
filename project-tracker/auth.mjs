@@ -3,7 +3,13 @@ import {GLASS_STYLE} from './glass-theme.mjs';
 const encoder=new TextEncoder();
 const COOKIE='__Host-tracker_session';
 const LOGIN_STYLE=`*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;font:14px/1.6 Inter,-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased}.card{width:100%;max-width:440px;border-radius:var(--radius-xl);padding:38px}h1{font-size:32px;letter-spacing:-1px;line-height:1.3;font-weight:600;margin:24px 0}.login-brand{display:inline-flex;align-items:center;gap:12px;color:var(--semantic-text);text-decoration:none;font-size:16px;font-weight:600;min-height:44px}.login-brand img{width:28px;height:28px}label{display:block;font-size:14px;margin:18px 0 6px}input:not([type=checkbox]),button{width:100%;font:inherit;border:1px solid var(--semantic-border);border-radius:var(--control-radius);height:var(--control-height);min-height:var(--control-height);padding:8px 14px}button{cursor:pointer;margin:22px 0 0}.remember{display:flex;gap:8px;align-items:center;min-height:44px;color:var(--semantic-text-muted)}.remember input{width:18px;height:18px;accent-color:var(--semantic-primary)}.error{color:var(--semantic-error-text);background:var(--semantic-error-subtle);padding:12px;border-radius:var(--radius-md)}@media(max-width:480px){body{padding:20px}.card{padding:28px 24px}h1{font-size:30px}}`;
-const safeNext=value=>['/','/work','/personal','/projects'].includes(value)?value:'/work';
+export function safeNext(value){
+ if(typeof value!=='string'||!value.startsWith('/')||value.startsWith('//')||value.includes('\\'))return '/work';
+ const url=new URL(value,'https://workbench.invalid');
+ if(url.origin!=='https://workbench.invalid'||!['/','/work','/personal','/projects'].includes(url.pathname))return '/work';
+ const params=new URLSearchParams();for(const key of ['view','task','event','date','source','issue','push']){const val=url.searchParams.get(key);if(val&&val.length<=500)params.set(key,val);}
+ return url.pathname+(params.size?'?'+params:'');
+}
 async function key(env){return crypto.subtle.importKey('raw',await crypto.subtle.digest('SHA-256',encoder.encode(JSON.stringify([env.TRACKER_USER,env.TRACKER_PASSWORD]))),{name:'HMAC',hash:'SHA-256'},false,['sign','verify']);}
 const encode=bytes=>btoa(String.fromCharCode(...bytes)).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
 function decode(text){return Uint8Array.from(atob(text.replaceAll('-','+').replaceAll('_','/')),c=>c.charCodeAt(0));}

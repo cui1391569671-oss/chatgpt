@@ -11,4 +11,4 @@ function mountWorkspaceTasks(){const node=document.getElementById('workspaceTask
  else throw Error('不支持的待办操作');
  if(!await change(next))throw Error(saveError||'保存失败，输入已保留，请重试。');renderTaskBadge();workspaceTasksBridge.games=gameRecords(state);return state.tasks;
  }};workspaceTasks=window.WorkspaceTasks.mount(node,workspaceTasksBridge);}
-function openWorkspaceTask(id){if(!ready||busy||conflict)return;if(view==='home')workspaceTaskReturnId=id||null;if(view!=='tasks'&&!(view==='home'&&workspaceTasks)){view='tasks';render();}setTimeout(()=>workspaceTasks?.open?.(id),0);}
+function openWorkspaceTask(id){if(!ready||busy||conflict)return;if(view==='home')workspaceTaskReturnId=id||null;if(view!=='tasks'&&!(view==='home'&&workspaceTasks)){view='tasks';render();}workspaceTasks?.open?.(id);}
