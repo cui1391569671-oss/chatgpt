@@ -68,10 +68,10 @@ export async function updateDidaTestReminder(token,receipt,fetcher=fetch){
   throw new Error('Invalid Dida test receipt');
  }
  const send=await didaSession(token,fetcher);
- const time=receipt.date+'T09:00:00+08:00';
+ const time=receipt.date+'T16:30:00+08:00';
  const result=await send('tools/call',{name:'update_task',arguments:{
   task_id:receipt.id,client_timezone:'Asia/Shanghai',
-  task:{id:receipt.id,projectId:testProject,startDate:time,dueDate:time,isAllDay:false,timeZone:'Asia/Shanghai',reminders:['TRIGGER:PT0S']}
+  task:{id:receipt.id,projectId:testProject,startDate:time,dueDate:time,isAllDay:false,timeZone:'Asia/Shanghai',reminders:['TRIGGER:-PT5M']}
  }},2);
  if(result.isError)throw new Error('Dida rejected test reminder');
  const value=result.structuredContent??result.content?.find(item=>item.type==='text')?.text;
