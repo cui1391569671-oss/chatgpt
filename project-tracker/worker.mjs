@@ -1,3 +1,4 @@
+import {syncDida} from './dida-sync.mjs';
 import {syncDidaCalendar,didaCalendarStatus} from './dida-calendar-sync.mjs';
 import {inspectDidaConnection,sendDidaTest,updateDidaTestReminder} from './dida-connection.mjs';
 import {barkRoute,runBark} from './bark.mjs';
@@ -350,6 +351,7 @@ export default {
   if(event.cron==='*/5 * * * *'){
    const sources=Promise.all([readState(env.DB),readDingtalkCalendar(env)]);
    ctx.waitUntil(sources.then(([state,external])=>runBark(env,state,external.stale?[]:external.events)));
+   if(env.DIDA_API_TOKEN)ctx.waitUntil(sources.then(([state])=>syncDida(env,state)));
    if(env.DIDA_API_TOKEN)ctx.waitUntil(sources.then(async ([state,external])=>{
     const report=await syncDidaCalendar(env,state,external);
     if(report.failed)throw new Error('Dida calendar sync had unconfirmed operations: '+report.failed);
