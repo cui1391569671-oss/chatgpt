@@ -80,3 +80,16 @@ export async function updateDidaTestReminder(token,receipt,date,clock,fetcher=fe
  if(!entry)throw new Error('Dida did not confirm the updated task');
  return {id:entry.id,requestedTime:time,savedDueDate:entry.dueDate??null,savedReminders:entry.reminders??null};
 }
+
+export const didaWorkProject=testProject;
+export async function openDidaTools(token,fetcher=fetch){
+ const send=await didaSession(token,fetcher);
+ let id=1;
+ return async(name,args)=>{
+  const result=await send('tools/call',{name,arguments:args},++id);
+  if(result.isError)throw new Error('Dida rejected '+name);
+  const value=result.structuredContent??result.content?.find(item=>item.type==='text')?.text;
+  if(typeof value!=='string')return value;
+  try{return JSON.parse(value);}catch{return value;}
+ };
+}

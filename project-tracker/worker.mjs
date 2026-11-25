@@ -1,3 +1,4 @@
+import {syncDidaCalendar,didaCalendarStatus} from './dida-calendar-sync.mjs';
 import {inspectDidaConnection,sendDidaTest,updateDidaTestReminder} from './dida-connection.mjs';
 import {barkRoute,runBark} from './bark.mjs';
 import {deepseekRoute} from './deepseek.mjs';
@@ -269,6 +270,9 @@ async function fetchRoute(request,env,ctx){
      return json({error:'Version conflict'},409);
     }
    }
+   if(url.pathname==='/api/account/dida/calendar/status'&&request.method==='GET'){
+    return json({configured:!!env.DIDA_API_TOKEN,...await didaCalendarStatus(env.DB)});
+   }
    if(url.pathname==='/api/account/dida/test/reminder'){
     if(request.method==='GET')return new Response('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>测试待办提醒</title><main><h1>测试待办提醒</h1><form method="post"><label>日期 <input type="date" name="date" required></label> <label>北京时间 <input type="time" name="time" required></label> <button type="submit">通过接口保存并提前 5 分钟提醒</button></form></main>',{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; form-action 'self'; frame-ancestors 'none'"}});
     if(request.method!=='POST')return json({error:'Method not allowed'},405);
@@ -344,7 +348,12 @@ export default {
  },
  async scheduled(event,env,ctx){
   if(event.cron==='*/5 * * * *'){
-   ctx.waitUntil((async()=>{const state=await readState(env.DB),external=await readDingtalkCalendar(env);await runBark(env,state,external.stale?[]:external.events);})());
+   const sources=Promise.all([readState(env.DB),readDingtalkCalendar(env)]);
+   ctx.waitUntil(sources.then(([state,external])=>runBark(env,state,external.stale?[]:external.events)));
+   if(env.DIDA_API_TOKEN)ctx.waitUntil(sources.then(async ([state,external])=>{
+    const report=await syncDidaCalendar(env,state,external);
+    if(report.failed)throw new Error('Dida calendar sync had unconfirmed operations: '+report.failed);
+   }));
    return;
   }
   ctx.waitUntil((async()=>{
