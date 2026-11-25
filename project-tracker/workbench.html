@@ -7323,7 +7323,7 @@ function mountWorkspaceTasks(){const node=document.getElementById('workspaceTask
  else throw Error('不支持的待办操作');
  if(!await change(next))throw Error(saveError||'保存失败，输入已保留，请重试。');renderTaskBadge();workspaceTasksBridge.games=gameRecords(state);return state.tasks;
  }};workspaceTasks=window.WorkspaceTasks.mount(node,workspaceTasksBridge);}
-function openWorkspaceTask(id){if(!ready||busy||conflict)return;if(view==='home')workspaceTaskReturnId=id||null;if(view!=='tasks'&&!(view==='home'&&workspaceTasks)){view='tasks';render();}setTimeout(()=>workspaceTasks?.open?.(id),0);}
+function openWorkspaceTask(id){if(!ready||busy||conflict)return;if(view==='home')workspaceTaskReturnId=id||null;if(view!=='tasks'&&!(view==='home'&&workspaceTasks)){view='tasks';render();}workspaceTasks?.open?.(id);}
 
 /* TASKS_ADAPTER_END */
 /* EVENT_RECURRENCE_START */
@@ -7452,7 +7452,7 @@ function status(text,error=false,source=''){$('status').dataset.source=source;$(
 async function workspaceConfirm(description){if(!window.WorkspacePrimitives){toast('确认组件加载失败，请刷新页面后重试。');return false;}return window.WorkspacePrimitives.confirm({title:'确认操作',description,action:description.includes('移除')?'移除':'删除'});}
 function toast(text,tone){const kind=tone||(/失败|无法|错误|未保存|不支持|请先|需要/.test(text)?'error':/已保存|已更新|已删除|成功/.test(text)?'success':'info');if(window.WorkspaceFeedback)return window.WorkspaceFeedback.show($('toast'),text,kind);$('toast').textContent=text;$('toast').hidden=false;}
 function setBusy(value){busy=value;renderNotifications();document.querySelectorAll('[data-workspace-segment]').forEach(node=>{node.dataset.segmentDisabled=String(value||!ready||conflict);});$('add').disabled=value||!ready||conflict;$('submit').disabled=value;document.querySelectorAll('#content button,#content input[type=checkbox],#workspaceNativeActions button').forEach(x=>{if(!x.closest('#workspaceCalendar,#workspaceTasks,#workspacePersonalInfo,#workspaceAnnualPlans,#workspaceWordPractice,#workspaceFitness,#workspacePhotography,#workspaceHelp'))x.disabled=value||!ready||conflict||x.hasAttribute('data-disabled-when-idle')||x.hasAttribute('data-refresh-today')&&todayTaskLoading||x.hasAttribute('data-refresh-core')&&projectCoreLoading||x.hasAttribute('data-refresh-dingtalk')&&!!dingtalkRequest;});}
-async function load(){setBusy(true);try{if(scope==='work')await loadProjectLabels();const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const s=await r.json();state=s.workspace;state.driveLinks??=[];version=s.version;ready=true;conflict=false;refreshProjectCalendar();refreshReminders();const target=new URLSearchParams(location.search);const allowedViews=scope==='work'?['today','calendar','home','tasks','projects','drive','projectBudget','projectShipping','projectPlan','notes','personalInfo','help']:['home','calendar','today','checkins','tasks','annualPlans','notes','vocabulary','vocabularyLibrary','fitness','completedGames','wardrobe','beauty','maintenance','photography','photographyNotes','personalInfo','help'];if(allowedViews.includes(target.get('view')))view=target.get('view');else if(['requirements','upcoming'].includes(target.get('view')))history.replaceState(null,'',location.pathname+'?view=home');status('已连接云端 · '+(scope==='work'?'工作':'私人')+'数据独立保存');render();if(target.has('task')){const task=state.tasks.find(t=>t.id===target.get('task'));if(task){setBusy(false);edit('tasks',task.id);}else toast('该任务已移除，请查看最新待办。');}}catch(e){ready=false;status(e.message+'，请重新加载。',true);}finally{setBusy(false);$('content').setAttribute('aria-busy','false');}}
+async function load(){setBusy(true);try{if(scope==='work')await loadProjectLabels();const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const s=await r.json();state=s.workspace;state.driveLinks??=[];version=s.version;ready=true;conflict=false;refreshProjectCalendar();refreshReminders();const target=new URLSearchParams(location.search);const allowedViews=scope==='work'?['today','calendar','home','tasks','projects','drive','projectBudget','projectShipping','projectPlan','notes','personalInfo','help']:['home','calendar','today','checkins','tasks','annualPlans','notes','vocabulary','vocabularyLibrary','fitness','completedGames','wardrobe','beauty','maintenance','photography','photographyNotes','personalInfo','help'];if(allowedViews.includes(target.get('view')))view=target.get('view');else if(['requirements','upcoming'].includes(target.get('view')))history.replaceState(null,'',location.pathname+'?view=home');status('已连接云端 · '+(scope==='work'?'工作':'私人')+'数据独立保存');prepareBarkTarget(target);render();if(target.has('task')){const task=state.tasks.find(t=>t.id===target.get('task'));if(task){setBusy(false);edit('tasks',task.id);}else toast('该任务已移除，请查看最新待办。');}}catch(e){ready=false;status(e.message+'，请重新加载。',true);}finally{setBusy(false);openBarkTarget();$('content').setAttribute('aria-busy','false');}}
 let workspaceRefreshing=false;
 async function refreshWorkspace(){
  if(!ready||busy||workspaceRefreshing||(document.querySelector('#editor[open],#clothingEditor[open],#outfitSaveEditor[open]')||isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()||isPhotographyEditing()))return;
@@ -7866,9 +7866,21 @@ function applyCalendarMutation(records,mutation){
 
 /* ILAMY_RECORDS_END */
 /* ILAMY_ADAPTER_START */
-/* exported disposeWorkspaceCalendar, openCalendarEvent, mountWorkspaceCalendar */
+/* exported disposeWorkspaceCalendar, openCalendarEvent, mountWorkspaceCalendar, prepareBarkTarget, openBarkTarget */
 // ilamy owns the calendar and its standard event form. This adapter owns only
 // workbench routing, scope isolation and the existing cloud persistence boundary.
+let barkTarget=null;
+function prepareBarkTarget(params){
+ const id=params.get('event'),date=params.get('date');
+ if(params.get('view')==='calendar'&&id&&/^\d{4}-\d{2}-\d{2}$/.test(date||'')){selectedDate=date;workspaceCalendarAnchor=date;barkTarget={id,source:params.get('source')};}
+ const push=params.get('push');if(/^[-a-f0-9]{36}$/.test(push||''))fetch('/api/account/bark/opened',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:push})}).catch(()=>{});
+}
+function openBarkTarget(){
+ if(!barkTarget||busy||!ready||view!=='calendar'||!workspaceCalendar?.api)return;
+ const {id,source}=barkTarget;
+ if(source==='dingtalk'){if(!dingtalkEvents.some(e=>e.id===id))return;barkTarget=null;showDingtalkEvent(id);}
+ else {barkTarget=null;openCalendarEvent(id);}
+}
 let workspaceCalendar=null,workspaceCalendarView='',workspaceCalendarAnchor='',calendarDeferredRender=false;
 function isCalendarEditing(){return !!(workspaceCalendar?.gesturing||workspaceCalendar?.gestureScopeOpen||workspaceCalendar?.editing||workspaceCalendar?.pending||workspaceCalendar?.failed);}
 function disposeWorkspaceCalendar(){stopDingtalkRefresh();if(!workspaceCalendar)return;workspaceCalendarView=workspaceCalendar.view;workspaceCalendarAnchor=workspaceCalendar.anchor;workspaceCalendar.dispose();workspaceCalendar=null;}
@@ -7880,7 +7892,7 @@ function mountWorkspaceCalendar(items,tasks,issues){
  const host=$('workspaceCalendar');if(!host)return;
  if(!window.IlamyCalendarRuntime){host.innerHTML='<p class="form-error" role="alert">日历加载失败，请刷新页面重试。</p>';return;}
  workspaceCalendar=window.IlamyCalendarRuntime.mount(host,{scope,events:items,tasks,issues,externalEvents:scope==='work'?dingtalkEvents:[],projectName:displayProject,holiday:holidayInfo,selectedDate,view:workspaceCalendarView,anchor:workspaceCalendarAnchor,
-  onIdle:()=>{if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;if(view==='calendar')renderCalendar();else render();}},
+  onIdle:()=>{openBarkTarget();if(calendarDeferredRender&&!isCalendarEditing()){calendarDeferredRender=false;if(view==='calendar')renderCalendar();else render();}},
   openSource:(source,id)=>{if(source==='dingtalk'){showDingtalkEvent(id);return;}if(source==='projects'){view='projects';render();}else edit('tasks',id);},
   persist:async mutation=>{if(busy||!ready)return {ok:false,error:'云端暂不可用，请稍后重试。'};try{const next=structuredClone(state);next.events=applyCalendarMutation(state.events,mutation);const ok=await change(next,{renderPage:false});if(ok){refreshTodayTasks();renderTaskBadge();workspaceTasks?.update?.(state.tasks);}return {ok,error:saveError,events:ok?state.events:undefined};}catch(error){return {ok:false,error:error.message};}}
  });
@@ -7898,7 +7910,7 @@ async function refreshDingtalkCalendar(){
  const generation=dingtalkGeneration;dingtalkRequest=new AbortController();
  try{const response=await fetch('/api/dingtalk-calendar?scope=work',{cache:'no-store',signal:dingtalkRequest.signal});if(!response.ok)throw Error('读取失败');const payload=await response.json();if(!Array.isArray(payload.events))throw Error('格式无效');if(generation!==dingtalkGeneration||!workspaceCalendar)return;
   if(isCalendarEditing())return;
-  const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);if(changed&&workspaceCalendar.updateExternal?.(payload.events)===false)return;dingtalkEvents=payload.events;
+  const changed=JSON.stringify(dingtalkEvents)!==JSON.stringify(payload.events);if(changed&&workspaceCalendar.updateExternal?.(payload.events)===false)return;dingtalkEvents=payload.events;openBarkTarget();
  }catch{/* Keep the last successful snapshot; the next timer retries. */}finally{if(generation===dingtalkGeneration)dingtalkRequest=null;}
 }
 

@@ -5889,6 +5889,7 @@ async function init() {
   await loadPriorities();
   console.log("[init] data length:", data.length); renderTable();
   updateStats();
+  if(ready){const target=new URLSearchParams(location.search),id=target.get('issue');if(id){if(data.some(item=>item.id===id))openIssueDetails(id);else setSync('通知中的项目问题已移除，请查看当前列表');}const push=target.get('push');if(/^[-a-f0-9]{36}$/.test(push||''))fetch('/api/account/bark/opened',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:push})}).catch(()=>{});}
 }
 
 async function loadData() {

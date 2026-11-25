@@ -1,3 +1,4 @@
+import {barkRoute,runBark} from './bark.mjs';
 import {deepseekRoute} from './deepseek.mjs';
 import {validBeautyRecords} from './beauty-records.mjs';
 import {validMaintenanceFrequency} from './maintenance-schedule.mjs';
@@ -143,10 +144,11 @@ async function fetchRoute(request,env,ctx){
   const auth=await authRoute(request,env);if(auth)return auth;
   const authorization=await authorized(request,env);if(authorization instanceof Response)return authorization;
   if(!authorization){
-   if(['/', '/work', '/personal', '/projects'].includes(url.pathname)&&request.method==='GET')return loginResponse(url.pathname,'',401);
+   if(['/', '/work', '/personal', '/projects'].includes(url.pathname)&&request.method==='GET')return loginResponse(url.pathname+url.search,'',401);
    return json({error:'需要登录'},401);
   }
   try{
+   if(url.pathname==='/api/account/bark'||url.pathname.startsWith('/api/account/bark/'))return await barkRoute(request,env);
    if(['/api/ai/status','/api/ai/conversations','/api/ai/chat'].includes(url.pathname))return await deepseekRoute(request,env,ctx);
    if(url.pathname==='/api/daily-sentence'){
     if(request.method!=='GET')return json({error:'Method not allowed'},405);
@@ -301,6 +303,10 @@ export default {
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
  },
  async scheduled(event,env,ctx){
+  if(event.cron==='*/5 * * * *'){
+   ctx.waitUntil((async()=>{const state=await readState(env.DB),external=await readDingtalkCalendar(env);await runBark(env,state,external.stale?[]:external.events);})());
+   return;
+  }
   ctx.waitUntil((async()=>{
    for(let attempt=0;attempt<3;attempt++){
     const s=await readState(env.DB),done=s.data.filter(x=>x.done);
