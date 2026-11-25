@@ -1,4 +1,4 @@
-import {inspectDidaConnection} from './dida-connection.mjs';
+import {inspectDidaConnection,sendDidaTest} from './dida-connection.mjs';
 import {barkRoute,runBark} from './bark.mjs';
 import {deepseekRoute} from './deepseek.mjs';
 import {validBeautyRecords} from './beauty-records.mjs';
@@ -268,6 +268,23 @@ async function fetchRoute(request,env,ctx){
      }
      return json({error:'Version conflict'},409);
     }
+   }
+   if(url.pathname==='/api/account/dida/test'&&request.method==='GET')return new Response('<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>滴答清单连接测试</title><main><h1>滴答清单连接测试</h1><p>发送一条测试待办到指定清单。</p><form method="post" action="/api/account/dida/test"><button type="submit">发送测试待办</button></form></main>',{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; form-action 'self'; frame-ancestors 'none'"}});
+   if(url.pathname==='/api/account/dida/test'&&request.method==='POST'){
+    if(request.headers.get('Origin')!==url.origin)return json({error:'Invalid origin'},403);
+    if(!env.DIDA_API_TOKEN)return json({error:'滴答清单未配置'},503);
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS dida_test_receipts (day TEXT PRIMARY KEY, result TEXT)').run();
+    const day=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'});
+    const claim=await env.DB.prepare('INSERT OR IGNORE INTO dida_test_receipts(day) VALUES (?)').bind(day).run();
+    if(!claim.meta.changes){
+     const row=await env.DB.prepare('SELECT result FROM dida_test_receipts WHERE day=?').bind(day).first();
+     return row?.result?json(JSON.parse(row.result)):json({error:'今天已尝试发送，请先检查清单，避免重复创建'},409);
+    }
+    try{
+     const result=await sendDidaTest(env.DIDA_API_TOKEN);
+     await env.DB.prepare('UPDATE dida_test_receipts SET result=? WHERE day=?').bind(JSON.stringify(result),day).run();
+     return json(result);
+    }catch{return json({error:'发送结果未确认，请先检查滴答清单'},502);}
    }
    if(url.pathname==='/api/account/dida/status'&&request.method==='GET'){
     try{return json(await inspectDidaConnection(env.DIDA_API_TOKEN));}
