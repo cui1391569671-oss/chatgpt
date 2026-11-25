@@ -63,12 +63,12 @@ export async function sendDidaTest(token,now=Date.now(),fetcher=fetch){
  return {id:entry.id,date};
 }
 
-export async function updateDidaTestReminder(token,receipt,fetcher=fetch){
+export async function updateDidaTestReminder(token,receipt,date,clock,fetcher=fetch){
  if(!/^[a-f0-9]{24}$/.test(receipt.id)||!/^\d{4}-\d{2}-\d{2}$/.test(receipt.date)){
   throw new Error('Invalid Dida test receipt');
  }
  const send=await didaSession(token,fetcher);
- const time=receipt.date+'T16:30:00+08:00';
+ const time=date+'T'+clock+':00+08:00';
  const result=await send('tools/call',{name:'update_task',arguments:{
   task_id:receipt.id,client_timezone:'Asia/Shanghai',
   task:{id:receipt.id,projectId:testProject,startDate:time,dueDate:time,isAllDay:false,timeZone:'Asia/Shanghai',reminders:['TRIGGER:-PT5M']}
