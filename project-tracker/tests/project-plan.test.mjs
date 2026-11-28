@@ -61,13 +61,11 @@ test('five-day ticks restart each month and use the actual final days, including
  assert.equal(timeline.width,(29+31+30)*18);
 });
 
-test('project plan is a work-only navigation route and Apps Script uses the same parser',()=>{
- const group=workspaceSiteNavigation('work').find(group=>group.title==='项目计划');
- assert.equal(group.direct,true);assert.deepEqual(group.items,[['work','projectPlan']]);
- assert(!workspaceSiteNavigation('personal').some(group=>group.items.some(([,view])=>view==='projectPlan')));
+test('project plan is absent from navigation and Apps Script still uses the same parser',()=>{
+ for(const scope of ['work','personal'])assert(!workspaceSiteNavigation(scope).some(group=>group.items.some(([,view])=>view==='projectPlan')));
  const script=readFileSync(new URL('../google-apps-script/project-plan-sync.gs',import.meta.url),'utf8');
  const parser=readFileSync(new URL('../project-plan-sheet.mjs',import.meta.url),'utf8').replace(/^export /gm,'');
- assert(script.includes(parser));
+ assert(script.replace(/\r\n/g,'\n').includes(parser.replace(/\r\n/g,'\n')));
 });
 
 test('Apps Script inventories all source sheet IDs and rejects a partial task read',()=>{

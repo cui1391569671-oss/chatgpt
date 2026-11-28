@@ -4202,52 +4202,6 @@ body[data-workspace-view=calendar] #results{height:100%;display:flex;flex-direct
 .project-budget-table :is(td,thead th):not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
 .project-budget-table{--project-column-1:25%;--project-column-2:15%;--project-column-3:15%;--project-column-4:15%;--project-column-5:15%;--project-column-6:15%}
 
-/* Read-only project schedule. The task column and date ruler stay in view. */
-body[data-workspace-view=projectPlan] #content{display:flex;flex-direction:column}
-#workspaceProjectPlan,.project-plan{display:flex;flex-direction:column;min-height:0;min-width:0;flex:1}
-.project-plan{gap:var(--space-4)}
-.project-plan-controls{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-2)}
-.project-plan-controls .ui-select{min-width:0;max-width:min(350px,100%)}
-.project-plan-sync{margin-inline-start:auto;color:var(--semantic-text-muted);font-size:12px}
-.project-plan-empty{margin:0;padding:var(--space-6);border:1px solid var(--semantic-border);border-radius:var(--card-radius);background:var(--semantic-surface-strong)}
-.project-plan-scroll{min-height:0;min-width:0;overflow:auto;border:1px solid var(--semantic-border);border-radius:var(--card-radius);background:var(--semantic-surface-strong)}
-.project-plan-scroll:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:-2px}
-.project-plan-table{width:100%;border-collapse:separate;border-spacing:0;text-align:left;font-variant-numeric:tabular-nums}
-.project-plan-table th,.project-plan-table td{border-bottom:1px solid var(--semantic-border);vertical-align:middle}
-.project-plan-table thead{position:sticky;top:0;z-index:2;background:var(--semantic-surface-elevated)}
-.project-plan-table thead th{height:44px}
-.project-plan-name{position:sticky;left:0;z-index:1;width:280px;min-width:280px;max-width:280px;padding:var(--space-2) var(--space-4);border-inline-end:1px solid var(--semantic-border);background:var(--semantic-surface-strong);overflow-wrap:anywhere}
-.project-plan-table thead .project-plan-name{background:var(--semantic-surface-elevated)}
-.project-plan-phase>*{background:var(--semantic-info-subtle)}
-.project-plan-name small,.project-plan-table thead .project-plan-name span{color:var(--semantic-text-muted);font-size:12px;font-weight:400}
-.project-plan-table thead .project-plan-name span{margin-inline-start:8px}
-.project-plan-name small{display:block;margin-top:2px}
-.project-plan-phase th{color:var(--semantic-info-text);font-size:12px}
-.project-plan-table td{padding:0}
-.project-plan-axis{width:100%;padding:0;font-size:12px;color:var(--semantic-text-muted)}
-.project-plan-axis>span{padding-inline:var(--space-3)}
-.project-plan-months,.project-plan-days{position:relative;height:28px}
-.project-plan-months{border-bottom:1px solid var(--semantic-border)}
-.project-plan-months span,.project-plan-days span{position:absolute;inset-block:0;display:flex;align-items:center;white-space:nowrap}
-.project-plan-months span{padding-inline:var(--space-2);border-inline-start:1px solid var(--semantic-border-strong)}
-.project-plan-days span{justify-content:center;border-inline-start:1px solid var(--semantic-border)}
-.project-plan-days span[data-month-start=true]{border-inline-start-color:var(--semantic-border-strong)}
-.project-plan-axis-today{position:absolute;z-index:1;bottom:0;padding:0 var(--space-1);border-inline-start:1px solid var(--semantic-primary);background:var(--semantic-surface-elevated);color:var(--semantic-primary);font-weight:600}
-.project-plan-time-cell{position:relative;background-image:var(--project-plan-grid)}
-.project-plan-track{min-height:52px;display:flex;align-items:center}
-.project-plan-today{position:absolute;inset-block:0;border-inline-start:1px solid var(--semantic-primary);opacity:.65}
-.project-plan-table tr[data-status]{--project-plan-status-color:var(--semantic-text-muted)}
-.project-plan-table tr[data-status="进行中"]{--project-plan-status-color:var(--semantic-secondary)}
-.project-plan-table tr[data-status="已完成"]{--project-plan-status-color:var(--semantic-success)}
-.project-plan-table tr[data-status="阻塞"]{--project-plan-status-color:var(--semantic-error)}
-.project-plan-task-status{color:var(--project-plan-status-color)}
-.project-plan-bar{position:absolute;min-width:2px;height:12px;border-radius:8px;background:var(--project-plan-status-color)}
-.project-plan-bar[data-kind=point]{width:8px;height:8px;border-radius:2px;transform:translateX(-50%) rotate(45deg)}
-@media(max-width:640px){
- .project-plan-name{width:44vw;min-width:44vw;max-width:44vw;padding-inline:var(--space-2)}
- .project-plan-sync{margin-inline-start:0}
-}
-
 .word-practice-layout{display:grid;grid-template-columns:minmax(0,1fr) 370px;align-items:start;gap:var(--space-6)}
 .learning-calendar{min-width:0;padding:20px}
 .learning-calendar-title,.learning-calendar-month{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2)}
@@ -6227,7 +6181,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-site-nav-link[data-active=true]{color:var(--semantic-primary-text)}
 .wb-site-nav-link[data-active=true]::after{content:'';position:absolute;left:8px;right:8px;bottom:0;height:2px;background:var(--semantic-primary)}
 .wb-site-nav-link:hover,.wb-site-nav-link:focus-visible{background:transparent;color:var(--semantic-primary-text)}
-.wb-page-row{position:relative;z-index:0;width:100%;max-width:1290px;margin:var(--workspace-page-top-gap,28px) auto var(--space-4);display:flex;align-items:center;justify-content:space-between;gap:var(--space-8);min-width:0}
+.wb-page-row{position:relative;z-index:0;width:100%;max-width:1290px;margin:var(--workspace-page-top-gap,28px) auto var(--space-4);display:flex;align-items:center;justify-content:flex-end;min-width:0}
 body[data-workspace-view=calendar]{--workspace-page-top-gap:var(--space-3)}
 .wb-page-row[hidden]{display:none}
 /* Daylight home, shared with inner-page typography. */
@@ -6250,7 +6204,7 @@ body[data-workspace-view=calendar]{--workspace-page-top-gap:var(--space-3)}
 .workspace-overdue-error{display:flex;align-items:center;gap:var(--space-2);color:var(--semantic-error-text);font-size:12px;line-height:20px}
 .workspace-overdue-error p{flex:1;margin:var(--space-2) 0 0}
 
-.wb-page-location{flex:1;min-width:260px;color:var(--semantic-text);--workspace-title-size:40px;--workspace-title-weight:650}.wb-page-location p{margin:0 0 var(--space-4);font-size:16px;color:var(--semantic-text-muted)}.wb-page-location h1{font-size:40px;line-height:1.3;letter-spacing:-1px;margin:0}.wb-page-location h1 span{color:var(--semantic-primary-text)}
+
 .wb-nav-menu{min-width:200px;max-width:calc(100vw - 32px);max-height:var(--radix-dropdown-menu-content-available-height);overflow-y:auto;padding:var(--space-2);isolation:isolate;border:1px solid var(--semantic-border-muted);border-radius:var(--navigation-radius);background:var(--semantic-surface-strong);color:var(--semantic-text);box-shadow:var(--popover-shadow)}
 .wb-nav-menu[data-state=closed]{pointer-events:none}
 .wb-nav-menu [data-slot=dropdown-menu-label]{padding:var(--space-2) var(--space-3);font-size:12px;color:var(--semantic-text-muted)}
@@ -6269,7 +6223,7 @@ body[data-workspace-view=calendar]{--workspace-page-top-gap:var(--space-3)}
   .wb-site-nav-link{min-width:44px;padding:0 var(--space-2);font-size:14px;white-space:nowrap}
   .wb-navigation-columns{--navigation-menu-width:calc(100vw - 2 * var(--app-gutter));grid-template-columns:minmax(0,1fr);gap:var(--space-6);margin-left:var(--app-gutter);padding:20px var(--space-2) var(--space-6)}
   .wb-page-row{flex-direction:column;align-items:stretch;gap:var(--space-2)}
-  .wb-page-row>.wb-page-location{padding-left:var(--space-1)}
+
   .wb-topbar-actions{justify-content:flex-end}
 }
 
@@ -6330,7 +6284,7 @@ body[data-workspace-view=calendar]{--workspace-page-top-gap:var(--space-3)}
 @media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%;max-width:100%}}
 @media(max-width:640px){
   body[data-workspace-view=calendar] .wb-page-row{margin:var(--space-1) auto 0}
-  body[data-workspace-view=calendar] .wb-page-location h1{font-size:24px}
+
   body[data-workspace-view=calendar] .wb-page-actions-mount{max-width:none}
   body[data-workspace-view=calendar] #workspaceReactActions{flex:1;min-width:0}
   .wb-page-toolbar[data-ui-owner=calendar-controls]{
@@ -7076,8 +7030,8 @@ body.shadcn-workbench {
 .workspace-surface-action{appearance:none;border:0;background:transparent;color:var(--semantic-text);font:inherit;cursor:pointer}.workspace-surface-action:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:3px}
 
 /* V2 shell and browser-local preferences. */
-.wb-page-location{display:flex;flex-direction:column;gap:2px;min-width:0;margin-right:auto}.wb-page-location small{font-size:12px;color:var(--semantic-text-muted)}.wb-page-location strong{font-size:16px;white-space:nowrap}.wb-personal-form{display:grid;gap:var(--space-3);min-width:0}.wb-personal-form small{font-size:12px;color:var(--semantic-text-muted)}.wb-preference-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);min-height:52px;border-top:1px solid var(--semantic-border-muted);cursor:pointer}.wb-preference-row input{flex-shrink:0;width:20px;height:20px;accent-color:var(--semantic-primary)}.wb-personal-actions{display:flex;justify-content:space-between;gap:var(--space-3)}.workspace-surface-action:active{background:var(--semantic-primary-subtle)}
-@media(max-width:600px){.wb-page-location small{display:none}.wb-page-location strong{font-size:14px}.wb-personal-actions{flex-wrap:wrap}}
+.wb-personal-form{display:grid;gap:var(--space-3);min-width:0}.wb-personal-form small{font-size:12px;color:var(--semantic-text-muted)}.wb-preference-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);min-height:52px;border-top:1px solid var(--semantic-border-muted);cursor:pointer}.wb-preference-row input{flex-shrink:0;width:20px;height:20px;accent-color:var(--semantic-primary)}.wb-personal-actions{display:flex;justify-content:space-between;gap:var(--space-3)}.workspace-surface-action:active{background:var(--semantic-primary-subtle)}
+@media(max-width:600px){.wb-personal-actions{flex-wrap:wrap}}
 
 /* Decorative effects never receive pointer events or alter calendar geometry. */
 /* Card-local positioning remains owned by the shared card. */
@@ -7452,7 +7406,7 @@ function status(text,error=false,source=''){$('status').dataset.source=source;$(
 async function workspaceConfirm(description){if(!window.WorkspacePrimitives){toast('确认组件加载失败，请刷新页面后重试。');return false;}return window.WorkspacePrimitives.confirm({title:'确认操作',description,action:description.includes('移除')?'移除':'删除'});}
 function toast(text,tone){const kind=tone||(/失败|无法|错误|未保存|不支持|请先|需要/.test(text)?'error':/已保存|已更新|已删除|成功/.test(text)?'success':'info');if(window.WorkspaceFeedback)return window.WorkspaceFeedback.show($('toast'),text,kind);$('toast').textContent=text;$('toast').hidden=false;}
 function setBusy(value){busy=value;renderNotifications();document.querySelectorAll('[data-workspace-segment]').forEach(node=>{node.dataset.segmentDisabled=String(value||!ready||conflict);});$('add').disabled=value||!ready||conflict;$('submit').disabled=value;document.querySelectorAll('#content button,#content input[type=checkbox],#workspaceNativeActions button').forEach(x=>{if(!x.closest('#workspaceCalendar,#workspaceTasks,#workspacePersonalInfo,#workspaceAnnualPlans,#workspaceWordPractice,#workspaceFitness,#workspacePhotography,#workspaceHelp'))x.disabled=value||!ready||conflict||x.hasAttribute('data-disabled-when-idle')||x.hasAttribute('data-refresh-today')&&todayTaskLoading||x.hasAttribute('data-refresh-core')&&projectCoreLoading||x.hasAttribute('data-refresh-dingtalk')&&!!dingtalkRequest;});}
-async function load(){setBusy(true);try{if(scope==='work')await loadProjectLabels();const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const s=await r.json();state=s.workspace;state.driveLinks??=[];version=s.version;ready=true;conflict=false;refreshProjectCalendar();refreshReminders();const target=new URLSearchParams(location.search);const allowedViews=scope==='work'?['today','calendar','home','tasks','projects','drive','projectBudget','projectShipping','projectPlan','notes','personalInfo','help']:['home','calendar','today','checkins','tasks','annualPlans','notes','vocabulary','vocabularyLibrary','fitness','completedGames','wardrobe','beauty','maintenance','photography','photographyNotes','personalInfo','help'];if(allowedViews.includes(target.get('view')))view=target.get('view');else if(['requirements','upcoming'].includes(target.get('view')))history.replaceState(null,'',location.pathname+'?view=home');status('已连接云端 · '+(scope==='work'?'工作':'私人')+'数据独立保存');prepareBarkTarget(target);render();if(target.has('task')){const task=state.tasks.find(t=>t.id===target.get('task'));if(task){setBusy(false);edit('tasks',task.id);}else toast('该任务已移除，请查看最新待办。');}}catch(e){ready=false;status(e.message+'，请重新加载。',true);}finally{setBusy(false);openBarkTarget();$('content').setAttribute('aria-busy','false');}}
+async function load(){setBusy(true);try{if(scope==='work')await loadProjectLabels();const r=await fetch(api,{cache:'no-store'});if(!r.ok)throw Error('读取失败（'+r.status+'）');const s=await r.json();state=s.workspace;state.driveLinks??=[];version=s.version;ready=true;conflict=false;refreshProjectCalendar();refreshReminders();const target=new URLSearchParams(location.search);const allowedViews=scope==='work'?['today','calendar','home','tasks','projects','drive','projectBudget','projectShipping','notes','personalInfo','help']:['home','calendar','today','checkins','tasks','annualPlans','notes','vocabulary','vocabularyLibrary','fitness','completedGames','wardrobe','beauty','maintenance','photography','photographyNotes','personalInfo','help'];if(allowedViews.includes(target.get('view')))view=target.get('view');else if(['requirements','upcoming','projectPlan'].includes(target.get('view')))history.replaceState(null,'',location.pathname+'?view=home');status('已连接云端 · '+(scope==='work'?'工作':'私人')+'数据独立保存');prepareBarkTarget(target);render();if(target.has('task')){const task=state.tasks.find(t=>t.id===target.get('task'));if(task){setBusy(false);edit('tasks',task.id);}else toast('该任务已移除，请查看最新待办。');}}catch(e){ready=false;status(e.message+'，请重新加载。',true);}finally{setBusy(false);openBarkTarget();$('content').setAttribute('aria-busy','false');}}
 let workspaceRefreshing=false;
 async function refreshWorkspace(){
  if(!ready||busy||workspaceRefreshing||(document.querySelector('#editor[open],#clothingEditor[open],#outfitSaveEditor[open]')||isCalendarEditing()||isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()||isPhotographyEditing()))return;
@@ -7614,7 +7568,7 @@ document.addEventListener('workspace-segment-change',event=>{
  else event.preventDefault();
 });
 function onWorkspaceContent(type,handler,options){document.addEventListener(type,event=>{if(event.target instanceof Element&&event.target.closest('#content,#workspaceNativeActions'))handler(event);},options);}
-function render(){if(view!=='home')cancelHomeSentence();if(['requirements','upcoming'].includes(view)){view='home';const retiredUrl=new URL(location.href);retiredUrl.searchParams.set('view','home');history.replaceState(null,'',retiredUrl.pathname+retiredUrl.search);}if(isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()||isPhotographyEditing())return;window.WorkspacePageActions?.restore();const pageAdd=$('add');if(pageAdd)document.querySelector('.header-actions').append(pageAdd);if(view==='projectPlan'&&scope==='work'){renderProjectPlan();return;}disposeProjectPlan();if(view==='help'){renderHelp();return;}disposeHelp();if(view==='photography'&&scope==='personal'){renderPhotography();return;}disposePhotography();if(view==='fitness'&&scope==='personal'){renderFitness();return;}disposeFitness();if(view==='vocabulary'&&scope==='personal'){renderWordPractice();return;}disposeWordPractice();if(view==='annualPlans'&&scope==='personal'){renderAnnualPlans();return;}disposeAnnualPlans();if(view==='personalInfo'){renderPersonalInfo();return;}disposePersonalInfo();document.body.dataset.workspaceView=view;disposeWorkspaceTasks();if(isCalendarEditing()){calendarDeferredRender=true;return;}disposeWorkspaceCalendar();document.body.classList.toggle('project-view',view==='projects');stopWordAudio();renderTaskBadge();renderNotifications();const today=day(),open=state.tasks.filter(t=>!t.done),overdue=open.filter(t=>t.dueDate&&t.dueDate<today),todayEvents=eventsOn(today,state.events).sort((a,b)=>a.start.localeCompare(b.start));setPageHeader({title:view==='tasks'?'待办事项':view==='home'?(scope==='work'?'工作概览':'我的一天'):(scope==='personal'&&view==='completedGames'?'娱乐':titles[view])});$('add').textContent='＋ 新建'+(view==='beauty'?'记录':view==='maintenance'?'设备':view==='completedGames'?'记录':view==='drive'?'常用文件':['notes','photographyNotes'].includes(view)?'笔记':['calendar','home'].includes(view)?'日程':'待办');document.querySelectorAll('.nav-group').forEach(g=>g.classList.toggle('group-active',!!g.querySelector('[data-view="'+view+'"]')));document.querySelectorAll('nav button[data-view]').forEach(b=>{b.classList.toggle('active',(b.dataset.view===view||(b.dataset.view==='home'&&view==='tasks')));b.setAttribute('aria-current',(b.dataset.view===view||(b.dataset.view==='home'&&view==='tasks'))?'page':'false');});$('add').classList.toggle('hidden',view==='home'||view==='calendar'||view==='checkins'||view==='today'||view==='tasks'||view==='projects'||view==='drive'||view==='projectBudget'||view==='projectShipping'||view==='vocabularyLibrary'||view==='wardrobe');$('status').classList.toggle('hidden',view==='projects'||!$('status').classList.contains('error'));$('projectPanel').classList.toggle('hidden',view!=='projects');if(view==='projects'&&!$('projectFrame').getAttribute('src'))$('projectFrame').src='/projects?embedded=1';let html='';if(view==='checkins'&&scope==='personal'){html=checkinPage();}else if(view==='today'){html=todayTasksPage();}else if(view==='beauty'&&scope==='personal'){html=beautyPage();}else if(view==='maintenance'){html='<div class="filters"><input id="search" aria-label="搜索设备" placeholder="搜索设备名称、位置或维保内容" value="'+esc(query)+'"></div><div id="results"></div>';}else if(view==='completedGames'){html='<div class="filters"><input id="search" aria-label="搜索娱乐记录" placeholder="搜索名称、平台或感想" value="'+esc(query)+'"></div><div id="results"></div>';}else if(view==='projectShipping'){html='<section class="project-core-panel" aria-label="项目发货信息"><div id="results"></div></section>';}else if(view==='projectBudget'){html='<section class="project-core-panel" aria-label="项目预算成本"><div id="results"></div></section>';}else if(view==='drive'){html=drivePage();}else if(view==='wardrobe'){html=wardrobePage();}else if(view==='vocabularyLibrary'){html='<div class="card"><div data-page-toolbar><button class="btn primary" type="button" data-word-practice>英语练习</button><label class="btn" for="vocabImport">导入词汇<input id="vocabImport" type="file" accept="application/json,.json" class="hidden"></label></div>'+'<div class="filters"><input id="search" aria-label="搜索英语词汇" placeholder="搜索单词、中文释义、例句或课程" value="'+esc(query)+'"><select id="vocabFilter" aria-label="熟练度筛选"><option value="all">全部熟练度</option><option value="unknown">尚未掌握</option><option value="mastered">已掌握</option></select></div><div class="vocabulary-sync-line"><div id="vocabularySync" class="vocabulary-sync" role="status"></div>'+'</div><div id="results"></div></div>';}else if(view==='calendar'){html='<div id="results"></div>';}else if(view==='projects'){html='';}else if(view==='home'){html=productHome();}else if(view==='tasks'){html='<div id="workspaceTasks" data-tasks-root></div>';}
+function render(){if(view!=='home')cancelHomeSentence();if(['requirements','upcoming','projectPlan'].includes(view)){view='home';const retiredUrl=new URL(location.href);retiredUrl.searchParams.set('view','home');history.replaceState(null,'',retiredUrl.pathname+retiredUrl.search);}if(isTasksEditing()||isAnnualPlanEditing()||isWordPracticing()||isFitnessEditing()||isPhotographyEditing())return;window.WorkspacePageActions?.restore();const pageAdd=$('add');if(pageAdd)document.querySelector('.header-actions').append(pageAdd);if(view==='help'){renderHelp();return;}disposeHelp();if(view==='photography'&&scope==='personal'){renderPhotography();return;}disposePhotography();if(view==='fitness'&&scope==='personal'){renderFitness();return;}disposeFitness();if(view==='vocabulary'&&scope==='personal'){renderWordPractice();return;}disposeWordPractice();if(view==='annualPlans'&&scope==='personal'){renderAnnualPlans();return;}disposeAnnualPlans();if(view==='personalInfo'){renderPersonalInfo();return;}disposePersonalInfo();document.body.dataset.workspaceView=view;disposeWorkspaceTasks();if(isCalendarEditing()){calendarDeferredRender=true;return;}disposeWorkspaceCalendar();document.body.classList.toggle('project-view',view==='projects');stopWordAudio();renderTaskBadge();renderNotifications();const today=day(),open=state.tasks.filter(t=>!t.done),overdue=open.filter(t=>t.dueDate&&t.dueDate<today),todayEvents=eventsOn(today,state.events).sort((a,b)=>a.start.localeCompare(b.start));setPageHeader({title:view==='tasks'?'待办事项':view==='home'?(scope==='work'?'工作概览':'我的一天'):(scope==='personal'&&view==='completedGames'?'娱乐':titles[view])});$('add').textContent='＋ 新建'+(view==='beauty'?'记录':view==='maintenance'?'设备':view==='completedGames'?'记录':view==='drive'?'常用文件':['notes','photographyNotes'].includes(view)?'笔记':['calendar','home'].includes(view)?'日程':'待办');document.querySelectorAll('.nav-group').forEach(g=>g.classList.toggle('group-active',!!g.querySelector('[data-view="'+view+'"]')));document.querySelectorAll('nav button[data-view]').forEach(b=>{b.classList.toggle('active',(b.dataset.view===view||(b.dataset.view==='home'&&view==='tasks')));b.setAttribute('aria-current',(b.dataset.view===view||(b.dataset.view==='home'&&view==='tasks'))?'page':'false');});$('add').classList.toggle('hidden',view==='home'||view==='calendar'||view==='checkins'||view==='today'||view==='tasks'||view==='projects'||view==='drive'||view==='projectBudget'||view==='projectShipping'||view==='vocabularyLibrary'||view==='wardrobe');$('status').classList.toggle('hidden',view==='projects'||!$('status').classList.contains('error'));$('projectPanel').classList.toggle('hidden',view!=='projects');if(view==='projects'&&!$('projectFrame').getAttribute('src'))$('projectFrame').src='/projects?embedded=1';let html='';if(view==='checkins'&&scope==='personal'){html=checkinPage();}else if(view==='today'){html=todayTasksPage();}else if(view==='beauty'&&scope==='personal'){html=beautyPage();}else if(view==='maintenance'){html='<div class="filters"><input id="search" aria-label="搜索设备" placeholder="搜索设备名称、位置或维保内容" value="'+esc(query)+'"></div><div id="results"></div>';}else if(view==='completedGames'){html='<div class="filters"><input id="search" aria-label="搜索娱乐记录" placeholder="搜索名称、平台或感想" value="'+esc(query)+'"></div><div id="results"></div>';}else if(view==='projectShipping'){html='<section class="project-core-panel" aria-label="项目发货信息"><div id="results"></div></section>';}else if(view==='projectBudget'){html='<section class="project-core-panel" aria-label="项目预算成本"><div id="results"></div></section>';}else if(view==='drive'){html=drivePage();}else if(view==='wardrobe'){html=wardrobePage();}else if(view==='vocabularyLibrary'){html='<div class="card"><div data-page-toolbar><button class="btn primary" type="button" data-word-practice>英语练习</button><label class="btn" for="vocabImport">导入词汇<input id="vocabImport" type="file" accept="application/json,.json" class="hidden"></label></div>'+'<div class="filters"><input id="search" aria-label="搜索英语词汇" placeholder="搜索单词、中文释义、例句或课程" value="'+esc(query)+'"><select id="vocabFilter" aria-label="熟练度筛选"><option value="all">全部熟练度</option><option value="unknown">尚未掌握</option><option value="mastered">已掌握</option></select></div><div class="vocabulary-sync-line"><div id="vocabularySync" class="vocabulary-sync" role="status"></div>'+'</div><div id="results"></div></div>';}else if(view==='calendar'){html='<div id="results"></div>';}else if(view==='projects'){html='';}else if(view==='home'){html=productHome();}else if(view==='tasks'){html='<div id="workspaceTasks" data-tasks-root></div>';}
 else{html='<div class="filters"><input id="search" aria-label="搜索'+titles[view]+'" placeholder="搜索'+(view==='tasks'?'待办标题和详情':['notes','photographyNotes'].includes(view)?'笔记标题和内容':'日程、地点和详情')+'" value="'+esc(query)+'">'+(view==='tasks'?'<select id="filter" aria-label="待办状态"><option value="open">未完成</option><option value="done">已完成</option><option value="all">全部</option><option value="overdue">已逾期</option>'+ (scope==='personal'?'<option value="games">想玩的游戏</option><option value="gamesDone">已玩游戏</option>':'')+'</select>':'')+'</div><div id="results"></div>';}$('content').innerHTML=html;if(view==='home'){mountWorkspaceTasks();refreshHomeSentence();}if(view!=='home')renderResults();setBusy(busy);if(['drive','projectShipping','projectBudget'].includes(view)&&!projectCoreInfo&&!projectCoreLoading&&!projectCoreError)loadProjectCoreInfo();}
 
 function validDriveUrl(value){try{const u=new URL(value);return u.protocol==='https:'&&['drive.google.com','docs.google.com'].includes(u.hostname)&&!u.username&&!u.password&&!u.port;}catch{return false;}}
@@ -8783,18 +8737,6 @@ function renderAnnualPlans(){
 }
 
 /* ANNUAL_PLANS_END */
-let projectPlanController=null;
-function disposeProjectPlan(){projectPlanController?.dispose();projectPlanController=null;}
-function renderProjectPlan(){
- if(projectPlanController)return;
- disposeWorkspaceTasks();disposeWorkspaceCalendar();disposePersonalInfo();disposeHelp();stopWordAudio();
- document.body.dataset.workspaceView='projectPlan';document.body.classList.remove('project-view');
- setPageHeader({title:'项目计划'});$('add').classList.add('hidden');$('projectPanel').classList.add('hidden');
- $('status').classList.toggle('hidden',!$('status').classList.contains('error'));
- $('content').innerHTML='<div id="workspaceProjectPlan" data-ui-root data-ui-owner="project-plan"></div>';
- if(!window.WorkspaceProjectPlan){$('workspaceProjectPlan').textContent='项目计划页面加载失败，请刷新重试。';return;}
- projectPlanController=window.WorkspaceProjectPlan.mount($('workspaceProjectPlan'));
-}
 /* HELP_START */
 let helpController=null;
 function disposeHelp(){helpController?.dispose();helpController=null;}

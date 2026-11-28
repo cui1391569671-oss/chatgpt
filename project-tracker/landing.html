@@ -3880,7 +3880,7 @@ body.shadcn-workbench #workbenchTopbar{position:relative;z-index:35;flex:none;mi
 .wb-site-nav-link[data-active=true]{color:var(--semantic-primary-text)}
 .wb-site-nav-link[data-active=true]::after{content:'';position:absolute;left:8px;right:8px;bottom:0;height:2px;background:var(--semantic-primary)}
 .wb-site-nav-link:hover,.wb-site-nav-link:focus-visible{background:transparent;color:var(--semantic-primary-text)}
-.wb-page-row{position:relative;z-index:0;width:100%;max-width:1290px;margin:var(--workspace-page-top-gap,28px) auto var(--space-4);display:flex;align-items:center;justify-content:space-between;gap:var(--space-8);min-width:0}
+.wb-page-row{position:relative;z-index:0;width:100%;max-width:1290px;margin:var(--workspace-page-top-gap,28px) auto var(--space-4);display:flex;align-items:center;justify-content:flex-end;min-width:0}
 body[data-workspace-view=calendar]{--workspace-page-top-gap:var(--space-3)}
 .wb-page-row[hidden]{display:none}
 /* Daylight home, shared with inner-page typography. */
@@ -3903,7 +3903,7 @@ body[data-workspace-view=calendar]{--workspace-page-top-gap:var(--space-3)}
 .workspace-overdue-error{display:flex;align-items:center;gap:var(--space-2);color:var(--semantic-error-text);font-size:12px;line-height:20px}
 .workspace-overdue-error p{flex:1;margin:var(--space-2) 0 0}
 
-.wb-page-location{flex:1;min-width:260px;color:var(--semantic-text);--workspace-title-size:40px;--workspace-title-weight:650}.wb-page-location p{margin:0 0 var(--space-4);font-size:16px;color:var(--semantic-text-muted)}.wb-page-location h1{font-size:40px;line-height:1.3;letter-spacing:-1px;margin:0}.wb-page-location h1 span{color:var(--semantic-primary-text)}
+
 .wb-nav-menu{min-width:200px;max-width:calc(100vw - 32px);max-height:var(--radix-dropdown-menu-content-available-height);overflow-y:auto;padding:var(--space-2);isolation:isolate;border:1px solid var(--semantic-border-muted);border-radius:var(--navigation-radius);background:var(--semantic-surface-strong);color:var(--semantic-text);box-shadow:var(--popover-shadow)}
 .wb-nav-menu[data-state=closed]{pointer-events:none}
 .wb-nav-menu [data-slot=dropdown-menu-label]{padding:var(--space-2) var(--space-3);font-size:12px;color:var(--semantic-text-muted)}
@@ -3922,7 +3922,7 @@ body[data-workspace-view=calendar]{--workspace-page-top-gap:var(--space-3)}
   .wb-site-nav-link{min-width:44px;padding:0 var(--space-2);font-size:14px;white-space:nowrap}
   .wb-navigation-columns{--navigation-menu-width:calc(100vw - 2 * var(--app-gutter));grid-template-columns:minmax(0,1fr);gap:var(--space-6);margin-left:var(--app-gutter);padding:20px var(--space-2) var(--space-6)}
   .wb-page-row{flex-direction:column;align-items:stretch;gap:var(--space-2)}
-  .wb-page-row>.wb-page-location{padding-left:var(--space-1)}
+
   .wb-topbar-actions{justify-content:flex-end}
 }
 
@@ -3983,7 +3983,7 @@ body[data-workspace-view=calendar]{--workspace-page-top-gap:var(--space-3)}
 @media(max-width:767px){.wb-page-actions-mount{order:2;flex-basis:100%;max-width:100%}}
 @media(max-width:640px){
   body[data-workspace-view=calendar] .wb-page-row{margin:var(--space-1) auto 0}
-  body[data-workspace-view=calendar] .wb-page-location h1{font-size:24px}
+
   body[data-workspace-view=calendar] .wb-page-actions-mount{max-width:none}
   body[data-workspace-view=calendar] #workspaceReactActions{flex:1;min-width:0}
   .wb-page-toolbar[data-ui-owner=calendar-controls]{
@@ -4729,8 +4729,8 @@ body.shadcn-workbench {
 .workspace-surface-action{appearance:none;border:0;background:transparent;color:var(--semantic-text);font:inherit;cursor:pointer}.workspace-surface-action:focus-visible{outline:2px solid var(--semantic-primary);outline-offset:3px}
 
 /* V2 shell and browser-local preferences. */
-.wb-page-location{display:flex;flex-direction:column;gap:2px;min-width:0;margin-right:auto}.wb-page-location small{font-size:12px;color:var(--semantic-text-muted)}.wb-page-location strong{font-size:16px;white-space:nowrap}.wb-personal-form{display:grid;gap:var(--space-3);min-width:0}.wb-personal-form small{font-size:12px;color:var(--semantic-text-muted)}.wb-preference-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);min-height:52px;border-top:1px solid var(--semantic-border-muted);cursor:pointer}.wb-preference-row input{flex-shrink:0;width:20px;height:20px;accent-color:var(--semantic-primary)}.wb-personal-actions{display:flex;justify-content:space-between;gap:var(--space-3)}.workspace-surface-action:active{background:var(--semantic-primary-subtle)}
-@media(max-width:600px){.wb-page-location small{display:none}.wb-page-location strong{font-size:14px}.wb-personal-actions{flex-wrap:wrap}}
+.wb-personal-form{display:grid;gap:var(--space-3);min-width:0}.wb-personal-form small{font-size:12px;color:var(--semantic-text-muted)}.wb-preference-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);min-height:52px;border-top:1px solid var(--semantic-border-muted);cursor:pointer}.wb-preference-row input{flex-shrink:0;width:20px;height:20px;accent-color:var(--semantic-primary)}.wb-personal-actions{display:flex;justify-content:space-between;gap:var(--space-3)}.workspace-surface-action:active{background:var(--semantic-primary-subtle)}
+@media(max-width:600px){.wb-personal-actions{flex-wrap:wrap}}
 
 /* Decorative effects never receive pointer events or alter calendar geometry. */
 /* Card-local positioning remains owned by the shared card. */

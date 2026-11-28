@@ -20,7 +20,6 @@ import './workspace-shell';
 import './workspace-primitives';
 import './personal-info';
 import './annual-plans';
-import './project-plan';
 import './word-practice';
 import {WorkspaceSelect} from '@/components/workspace-select';
 import {Textarea} from '@/components/ui/textarea';
