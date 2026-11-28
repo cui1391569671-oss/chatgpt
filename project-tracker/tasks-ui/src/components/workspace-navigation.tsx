@@ -45,10 +45,6 @@ export function WorkspaceNavigation({bridge,snapshot,accountMenu}){
    <Menu.Item className='wb-site-logo-item'><Menu.Link href={'/'+bridge.scope+'?view=home'} className='wb-site-logo' active={current==='home'} aria-label='我的工作台首页' title='我的工作台' onClick={event=>event.preventDefault()} onSelect={event=>choose(event,bridge.scope,'home')} onPointerEnter={event=>leave(event.pointerType)}><img src='/favicon.svg?v=workbench-daylight-1' width={28} height={28} alt='' aria-hidden='true'/></Menu.Link></Menu.Item>
 
    {groups.map(group=>{
-    if(group.direct){
-     const [[space,id]]=group.items,active=space===bridge.scope&&current===id;
-     return <Menu.Item className='wb-site-nav-item' key={group.title} value={group.title}><Menu.Link href={'/'+space+'?view='+encodeURIComponent(id)} className='wb-site-nav-link' active={active} data-active={String(active)} aria-current={active?'page':undefined} onClick={event=>event.preventDefault()} onSelect={event=>choose(event,space,id)} onPointerEnter={event=>leave(event.pointerType)}>{group.title}</Menu.Link></Menu.Item>;
-    }
     return <Menu.Item className='wb-site-nav-item' key={group.title} value={group.title}>
     <Menu.Trigger className='wb-site-nav-link' data-nav-group={group.title} data-active={group.items.some(([space,id])=>space===bridge.scope&&id===current)} onPointerEnter={event=>enter(group.title,event.pointerType)} onClick={event=>{if(click(group.title))event.preventDefault();}} onKeyDown={event=>{if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();keyboardEntry.current={value:group.title,last:event.key==='ArrowUp'};if(open===group.title){const links=root.current?.querySelectorAll<HTMLAnchorElement>('[data-nav-panel="'+open+'"] a');focusNavigationLink(links?.[event.key==='ArrowUp'?links.length-1:0]);keyboardEntry.current=null;}else change(group.title);}}}>{group.title}</Menu.Trigger>
     <Menu.Content asChild onPointerEnter={cancel} onPointerLeave={event=>leave(event.pointerType)}>
